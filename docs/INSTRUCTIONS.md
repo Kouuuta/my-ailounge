@@ -1053,13 +1053,3 @@ You're now equipped with the AI-powered tools that make our team 100x more produ
 **Last Updated:** June 2026  
 **Maintained by:** Engineering Team
 
-**Changes in v2.0:**
-- Completed all placeholder sections with real instructions
-- Added time breakdown by section
-- Added Tool Tier Comparison table
-- Added comprehensive Model Selection Guide with decision tree
-- Expanded rate limit guidance and monitoring
-- Added real workflow examples
-- Expanded troubleshooting (especially npm global install issues)
-- Added Support & Resources section with team contacts
-- Improved clarity on API key authentication
