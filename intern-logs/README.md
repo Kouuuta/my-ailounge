@@ -16,14 +16,22 @@ intern-logs/
 │   └── NOTES.md
 ```
 
+## Contributors
+
+- Carl
+- Diego
+- Ken
+- Shawn
+- Yuta
+
 ## Contents
 
 Each contributor workspace may contain:
 
-* TODO lists
-* Research notes
-* Progress logs
-* Documentation drafts
-* Personal findings related to AI Lounge
+- TODO lists
+- Research notes
+- Progress logs
+- Documentation drafts
+- Personal findings related to AI Lounge
 
 This structure is currently a proposal and may evolve as the project grows.
