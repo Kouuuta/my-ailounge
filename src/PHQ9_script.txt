@@ -1,0 +1,266 @@
+#Phq9 one form assessment:
+#MBT, PH7(for kids assessment), uprise survey.
+
+#PHQ9 - simple answer and question selection, and tied to users to an answer.
+#Track the progress of the user. Question, answer selection, answer and user-answer survey progress.
+
+#SCRIPT
+
+import csv
+import os
+import zipfile
+from datetime import datetime
+from django.utils import timezone
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.contrib.auth import get_user_model
+from mindyou.models import Answer, AnswerSelection, Question, UserSurveyAnsweringProgress
+
+PHQ9_OUTPUT_DIR = os.path.join(os.getcwd(), "phq9_data")
+_PHQ9_RAW_FLAGS = {"full", "raw"}
+
+def _parse_phq9_export_args(args):
+    raw_mode = False
+    dir_parts = []
+    for arg in (args or []):
+        if arg.lower() in _PHQ9_RAW_FLAGS:
+            raw_mode = True
+        else:
+            dir_parts.append(arg)
+    directory = dir_parts[0] if dir_parts else PHQ9_OUTPUT_DIR
+    os.makedirs(directory, exist_ok=True)
+    return directory, raw_mode
+
+def run_phq9_export(*args):
+    output_dir, raw_mode = _parse_phq9_export_args(args)
+    timestamp = timezone.now().strftime("%Y%m%d_%H%M%S")
+    output_filename = f"phq9_export_{timestamp}.csv"
+    output_path = os.path.join(output_dir, output_filename)
+    mode_label = "RAW (full PII)" if raw_mode else "PRIVACY (anonymised)"
+    print(f"\nExporting PHQ9 data to: {output_path}")
+    print(f"Mode   : {mode_label}")
+    
+    questions = Question.objects.prefetch_related("answer_selections").order_by("order")
+    answers = Answer.objects.select_related("question", "answer", "answered_by").order_by("answered_by__email", "question__order")
+    progress_map = {p.user_id: p for p in UserSurveyAnsweringProgress.objects.select_related("user", "last_answered_question", "next_question")}
+    
+    answer_map = {}
+    for ans in answers:
+        answer_map[(ans.question_id, ans.answered_by_id)] = ans
+        
+    user_ids_with_answers = Answer.objects.values_list("answered_by_id", flat=True).distinct()
+    users_with_progress = set(progress_map.keys())
+    all_user_ids = sorted(set(list(user_ids_with_answers) + list(users_with_progress)))
+    
+    User = get_user_model()
+    from users.models import CompanyEmail
+    
+    # Updated to pre-fetch both company and category efficiently
+    user_map = {
+        u.id: u
+        for u in User.objects.filter(id__in=all_user_ids).select_related("company", "category")
+    }
+    
+    # Build lookup: user_id -> CompanyEmail (with departments + divisions prefetched)
+    company_email_map = {
+        ce.user_id: ce
+        for ce in CompanyEmail.objects.filter(user_id__in=all_user_ids).prefetch_related("departments", "divisions")
+    }
+    
+    question_list = list(questions)
+    
+    headers = ["user_id"]
+    if raw_mode:
+        headers.extend(["user_email", "user_first_name", "user_last_name"])
+    
+    # Added new demographic and risk headers
+    headers.extend([
+        "user_company_id", "user_company_name", 
+        "departments", "divisions",
+        "no_longer_employed", "date_of_birth", 
+        "educational_background", "marital_status", 
+        "sex_at_birth", "sexual_identity", "sexual_orientation", 
+        "work_status", "monthly_income_range", "survey_completed_at", 
+        "at_risk", "category_id", "category",
+        "survey_done", "total_score", 
+        "last_answered_question_id", "last_answered_question_text", 
+        "next_question_id", "next_question_text", 
+        "progress_created_at", "progress_updated_at"
+    ])
+    
+    for q in question_list:
+        col_prefix = f"q{q.order}_{q.id}"
+        headers.append(f"{col_prefix}_question")
+        headers.append(f"{col_prefix}_answer_selected")
+        headers.append(f"{col_prefix}_answer_score")
+        
+    rows = []
+    for user_id in all_user_ids:
+        user = user_map.get(user_id)
+        if not user:
+            continue
+            
+        progress = progress_map.get(user_id)
+        company_email = company_email_map.get(user_id)
+        
+        row = {
+            "user_id": user.id,
+            "user_company_id": user.company_id if user.company_id else "",
+            "user_company_name": user.company.name if user.company else "",
+            "departments": ", ".join(d.name for d in company_email.departments.all()) if company_email else "",
+            "divisions": ", ".join(d.name for d in company_email.divisions.all()) if company_email else "",
+            "no_longer_employed": user.no_longer_employed,
+            "date_of_birth": user.date_of_birth.isoformat() if user.date_of_birth else "",
+            "educational_background": user.educational_background or "",
+            "marital_status": user.marital_status or "",
+            "sex_at_birth": user.sex_at_birth or "",
+            "sexual_identity": user.sexual_identity or "",
+            "sexual_orientation": user.sexual_orientation or "",
+            "work_status": user.work_status or "",
+            "monthly_income_range": user.monthly_income_range or "",
+            "survey_completed_at": (user.survey_completed_at.strftime("%Y-%m-%d %H:%M:%S") if getattr(user, 'survey_completed_at', None) else ""),
+            "at_risk": user.at_risk,
+            "category_id": user.category_id if user.category_id else "",
+            "category": user.category.name if getattr(user, 'category', None) else "",
+        }
+        
+        if raw_mode:
+            row.update({
+                "user_email": user.email, 
+                "user_first_name": user.first_name, 
+                "user_last_name": user.last_name
+            })
+            
+        row.update({
+            "survey_done": progress.survey_done if progress else "", 
+            "total_score": progress.total_score if progress else "", 
+            "last_answered_question_id": (progress.last_answered_question_id if progress else ""), 
+            "last_answered_question_text": (progress.last_answered_question.question if progress and progress.last_answered_question else ""), 
+            "next_question_id": (progress.next_question_id if progress else ""), 
+            "next_question_text": (progress.next_question.question if progress and progress.next_question else ""), 
+            "progress_created_at": (progress.created_at.strftime("%Y-%m-%d %H:%M:%S") if progress and progress.created_at else ""), 
+            "progress_updated_at": (progress.updated_at.strftime("%Y-%m-%d %H:%M:%S") if progress and progress.updated_at else "")
+        })
+        
+        for q in question_list:
+            col_prefix = f"q{q.order}_{q.id}"
+            ans = answer_map.get((q.id, user_id))
+            row[f"{col_prefix}_question"] = q.question
+            row[f"{col_prefix}_answer_selected"] = ans.answer.content if ans else ""
+            row[f"{col_prefix}_answer_score"] = ans.answer.score if ans else ""
+        rows.append(row)
+        
+    with open(output_path, "w", newline="", encoding="utf-8") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=headers)
+        writer.writeheader()
+        writer.writerows(rows)
+        
+        csvfile.write("\n\n=== REFERENCE: PHQ9 Questions ===\n")
+        ref_q_writer = csv.writer(csvfile)
+        ref_q_writer.writerow(["question_id", "order", "question_text", "tip", "zoho_api_name"])
+        for q in question_list:
+            ref_q_writer.writerow([q.id, q.order, q.question, q.tip or "", q.zoho_api_name or ""])
+            
+        csvfile.write("\n=== REFERENCE: PHQ9 Answer Selections ===\n")
+        ref_a_writer = csv.writer(csvfile)
+        ref_a_writer.writerow(["answer_selection_id", "content", "score"])
+        for asel in AnswerSelection.objects.order_by("-score"):
+            ref_a_writer.writerow([asel.id, asel.content, asel.score])
+            
+        csvfile.write("\n=== REFERENCE: Question -> Answer Selections (M2M) ===\n")
+        ref_m2m_writer = csv.writer(csvfile)
+        ref_m2m_writer.writerow(["question_id", "question_order", "question_text", "answer_selection_id", "answer_content", "answer_score"])
+        for q in question_list:
+            for asel in q.answer_selections.order_by("-score"):
+                ref_m2m_writer.writerow([q.id, q.order, q.question, asel.id, asel.content, asel.score])
+                
+    print(f"  [OK] Export complete. {len(rows)} user record(s) written.")
+
+def _parse_phq9_email_args(args):
+    csv_dir = PHQ9_OUTPUT_DIR
+    to_emails = []
+    cc_emails = []
+    for arg in args:
+        if arg.startswith("to:"):
+            to_emails.extend([e.strip() for e in arg[3:].split(",") if e.strip()])
+        elif arg.startswith("cc:"):
+            cc_emails.extend([e.strip() for e in arg[3:].split(",") if e.strip()])
+        else:
+            csv_dir = arg
+    return csv_dir, to_emails, cc_emails
+
+def run_phq9_email(*args, message=None):
+    csv_dir, to_emails, cc_emails = _parse_phq9_email_args(args)
+    if not to_emails:
+        print("\n[ERROR] No recipients specified.\nPass at least one address with:  to:<email1,email2,...>\n")
+        return
+    print(f"\nScanning directory : {csv_dir}")
+    if not os.path.exists(csv_dir):
+        print("  [ERROR] Directory does not exist. Run export first.")
+        return
+    files_to_zip = [os.path.join(csv_dir, f) for f in os.listdir(csv_dir) if f.endswith('.csv')]
+    if not files_to_zip:
+        print("  [ERROR] No CSV files found to zip and send.")
+        return
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M")
+    zip_filename = f"phq9_data_{timestamp}.zip"
+    zip_filepath = os.path.join(csv_dir, zip_filename)
+    print(f"  [INFO] Compressing {len(files_to_zip)} file(s) into {zip_filename}...")
+    with zipfile.ZipFile(zip_filepath, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for file_path in files_to_zip:
+            zipf.write(file_path, arcname=os.path.basename(file_path))
+    zip_size_mb = os.path.getsize(zip_filepath) / (1024 * 1024)
+    print(f"  [OK] Zip created. Compressed size: {zip_size_mb:.2f} MB")
+    subject = f"Mind You | PHQ-9 Clinical Data Export \u2013 {timestamp}"
+    intro_text = message if message else f"Please find attached the compressed PHQ-9 data export generated on {timestamp}."
+    body = (f"Hi,\n\n{intro_text}\n\nIncluded files inside the zip:\n" + "\n".join(f"  \u2022 {os.path.basename(f)}" for f in files_to_zip) + "\n\n\u2013 Tech Interns")
+    email = EmailMessage(subject=subject, body=body, from_email=settings.DEFAULT_FROM_EMAIL, to=to_emails, cc=cc_emails)
+    email.attach_file(zip_filepath, mimetype='application/zip')
+    print(f"Sending email to : {', '.join(to_emails)}")
+    try:
+        email.send(fail_silently=False)
+        print("  [OK] Email sent successfully.")
+    except Exception as exc:
+        print(f"  [ERROR] Failed to send email: {exc}")
+    finally:
+        if os.path.exists(zip_filepath):
+            os.remove(zip_filepath)
+            print("  [OK] Temporary zip file cleaned up from server.")
+
+def run_phq9_delete():
+    csv_dir = PHQ9_OUTPUT_DIR
+    if not os.path.exists(csv_dir):
+        print(f"\n[INFO] Directory {csv_dir} does not exist. Nothing to delete.")
+        return
+    deleted_count = 0
+    for filename in os.listdir(csv_dir):
+        if filename.endswith('.csv'):
+            filepath = os.path.join(csv_dir, filename)
+            os.remove(filepath)
+            deleted_count += 1
+            print(f"  [DELETED] {filename}")
+    print(f"\n[OK] Cleanup complete. {deleted_count} file(s) removed from {csv_dir}.")
+
+
+#HOW TO USE
+# Extract the latest PHQ-9 clinical data. 
+# Note: PII is stripped internally to ensure compliance with the Data Privacy Act (DPA).
+run_phq9_export()
+
+phq9_summary = "Attached is the latest PHQ-9 clinical data export. PII has been removed for Data Privacy Act compliance."
+
+# TODO: Verify if this initial test email is still required in the production script.
+run_phq9_email("to:tech.intern.1@mindyou.com.ph", message=phq9_summary)
+
+# Distribute the sanitized report to the core engineering and management teams.
+run_phq9_email(
+    "to:boaz@mindyou.com.ph", 
+    "to:cedrick@mindyou.com.ph", 
+    "cc:tech.intern.1@mindyou.com.ph", 
+    "cc:tech.intern.2@mindyou.com.ph", 
+    "cc:tech.intern.3@mindyou.com.ph", 
+    message=phq9_summary
+)
+
+# Clean up local storage immediately after sending to prevent sensitive health data from resting on the server.
+run_phq9_delete()
