@@ -14,6 +14,7 @@ By the end of this guide, you'll have access to:
 **Estimated Total Time:** 2-3 hours (including approval wait times)
 
 **Time Breakdown by Section:**
+
 - Prerequisites: 15 minutes
 - GitHub Education & Copilot: 1-2 days (approval wait) + 10 min setup
 - Gemini Setup: 20 minutes
@@ -31,12 +32,11 @@ By the end of this guide, you'll have access to:
 3. [Google Education & Gemini Pro Access](#3-google-education--gemini-pro-access)
 4. [VS Code & GitHub Copilot Setup](#4-vs-code--github-copilot-setup)
 5. [Tool Tier Comparison](#5-tool-tier-comparison)
-6. [opencode CLI Setup](#6-opencode-cli-setup)
-7. [Gemini CLI Setup](#7-gemini-cli-setup)
-8. [Model Selection Guide](#8-model-selection-guide)
-9. [Verification & Testing](#9-verification--testing)
-10. [Troubleshooting](#10-troubleshooting)
-11. [Support & Resources](#11-support--resources)
+6. [AI CLI Tool Installation](#6-ai-cli-tool-installation)
+7. [Model Selection Guide](#7-model-selection-guide)
+8. [Verification & Testing](#8-verification--testing)
+9. [Troubleshooting](#9-troubleshooting)
+10. [Support & Resources](#10-support--resources)
 
 ---
 
@@ -47,7 +47,9 @@ Before you begin, make sure you have the following:
 ### Required Software
 
 #### Git
+
 Check if installed:
+
 ```bash
 git --version
 ```
@@ -55,17 +57,22 @@ git --version
 If not installed, download from: https://git-scm.com/downloads
 
 #### Node.js & npm
+
 Check if installed:
+
 ```bash
 node --version
 npm --version
 ```
 
-**Required:** Node.js 16+ and npm 8+
+**Required:** Node.js 18+ (LTS) and npm 9+
+
+> If your Node.js version is lower than 18, update it at https://nodejs.org/ even if a version number appears. Older versions will not work with these tools.
 
 If not installed, download from: https://nodejs.org/ (LTS version recommended)
 
 #### Visual Studio Code
+
 Check if installed by running `code` in your terminal.
 
 If not installed, download from: https://code.visualstudio.com/
@@ -84,10 +91,10 @@ Run these commands to verify your prerequisites:
 # Check Git
 git --version
 
-# Check Node.js
+# Check Node.js (must be v18 or higher)
 node --version
 
-# Check npm
+# Check npm (must be v9 or higher)
 npm --version
 
 # Check VS Code
@@ -95,6 +102,7 @@ code --version
 ```
 
 **Expected Output Example:**
+
 ```
 git version 2.40.0
 v18.16.0
@@ -102,7 +110,7 @@ v18.16.0
 1.85.0
 ```
 
-> If all commands return version numbers, you're ready to proceed!
+> If all commands return version numbers at or above the required versions, you're ready to proceed!
 
 ---
 
@@ -190,7 +198,7 @@ Google provides AI tools through their education and cloud platforms.
 4. **Get your API key** (if needed for CLI tools)
    - Click on **"Get API key"** in the left sidebar
    - Click **"Create API key"**
-   - **Copy and save it securely** (you'll need this later)
+   - **Copy and save it securely** (you'll need this later in Step 6)
 
 > **Important:** Never share your API key or commit it to version control!
 
@@ -213,6 +221,7 @@ If your institution has Google Cloud Education credits:
 ### Understanding Free Tier & Limits
 
 **Google AI Studio Free Tier:**
+
 - 60 requests per minute
 - 1,500 requests per day
 - 1 million tokens per minute
@@ -289,6 +298,7 @@ Let's verify Copilot is working:
    - Save it as `test.js`
 
 2. **Start typing a function**
+
    ```javascript
    // Function to calculate the factorial of a number
    function factorial
@@ -321,274 +331,52 @@ While you're here, install these helpful extensions:
 
 Here's a quick reference for understanding which tier each tool operates on and when to use it:
 
-| Tool | Free Tier | Paid/Education | Best For | Notes |
-|------|-----------|---|---|---|
-| **GitHub Copilot** | $20/month | Free with education benefits | In-editor code completion | Requires VS Code |
-| **Gemini (AI Studio)** | 60 req/min, 1,500/day | Cloud credits available | API-based access, planning | Free tier is sufficient for learning |
-| **opencode CLI** | Requires API key | Team managed | Structured coding workflows | Model selection is manual & deliberate |
-| **Gemini CLI** | Free with Google account | Auto-upgrade available | Planning, coordination, summaries | Auto model selection by default |
+| Tool                   | Free Tier                | Paid/Education               | Best For                          | Notes                                  |
+| ---------------------- | ------------------------ | ---------------------------- | --------------------------------- | -------------------------------------- |
+| **GitHub Copilot**     | $20/month                | Free with education benefits | In-editor code completion         | Requires VS Code                       |
+| **Gemini (AI Studio)** | 60 req/min, 1,500/day    | Cloud credits available      | API-based access, planning        | Free tier is sufficient for learning   |
+| **opencode CLI**       | Requires API key         | Team managed                 | Structured coding workflows       | Model selection is manual & deliberate |
+| **Gemini CLI**         | Free with Google account | Auto-upgrade available       | Planning, coordination, summaries | Auto model selection by default        |
 
 ### Cost Overview for Teams
 
-- **Students/Educators:** All tools free (GitHub Copilot, Gemini free tier)
+- **Students/Educators:** All tools free (GitHub Copilot via education, Gemini free tier)
 - **Individual Developers:** ~$240/year (GitHub Copilot only if paying)
-- **Teams:** Contact for organization-level pricing
+- **Teams:** Contact your team lead for organization-level pricing
 
 ---
 
-## 6. opencode CLI Setup
+## 6. AI CLI Tool Installation
 
-opencode is our primary tool for structured agent execution and coding workflows.
+Our team uses two primary command-line tools: `opencode` for structured coding and `gemini` for planning and coordination.
+
+> **Quick path:** For a fast ~10-minute setup, follow the **[AI CLI Tools: Quick Start Guide](./AI-installation-tutorial.md)**
 
 ### What is opencode?
 
 opencode is a CLI tool that helps you execute complex coding tasks using AI agents. Our team uses it for:
+
 - Code generation and refactoring
 - Automated code reviews
 - Multi-file editing
 - Structured development workflows
 
-> **Team Philosophy:** opencode requires manual and deliberate model selection. Choose models based on the task at hand.
-
-### Step 1: Install opencode CLI
-
-Open your terminal and run:
-
-```bash
-npm install -g opencode
-```
-
-**Expected output:**
-```
-added 1 package in 3s
-```
-
-### Step 2: Verify Installation
-
-```bash
-opencode --version
-```
-
-You should see a version number like `1.2.3`
-
-### Step 3: Configure Authentication
-
-opencode uses API keys for authentication. Set up your API key from your preferred AI provider:
-
-**For Gemini:**
-```bash
-export GEMINI_API_KEY="your-api-key-here"
-```
-
-**For Claude/Anthropic:**
-```bash
-export ANTHROPIC_API_KEY="your-api-key-here"
-```
-
-**For OpenAI:**
-```bash
-export OPENAI_API_KEY="your-api-key-here"
-```
-
-> **Security Note:** Never commit API keys to version control. Use `.env` files or environment variables instead.
-
-Alternatively, use the provided authentication script (if available in your team's setup):
-```bash
-opencode auth setup
-```
-
-### Step 4: Configure Model Selection
-
-opencode requires you to choose models explicitly. Review our team's model strategy:
-
-**Quick Reference:**
-- **Code Review:** Use `Claude 3.5 Sonnet` or `GPT-5.2`
-- **Large Features:** Use `GPT-5.2` or `Claude 3.5 Sonnet`
-- **Quick Debugging:** Use `Gemini 2.5 Flash` or `GPT-4o`
-
-See [oh-my-opencode-models.md](../oh-my-opencode-models.md) for the complete model strategy.
-
-### Step 5: Test opencode
-
-Let's run a simple test:
-
-1. **Create a test directory:**
-   ```bash
-   mkdir opencode-test
-   cd opencode-test
-   ```
-
-2. **Initialize a simple project:**
-   ```bash
-   npm init -y
-   ```
-
-3. **Run opencode with a simple task:**
-   ```bash
-   opencode --model "gemini-2.5-flash" "Create a simple hello world function in JavaScript"
-   ```
-
-4. **Follow the prompts:**
-   - Review the generated code
-   - Approve or modify as needed
-
-5. **Clean up:**
-   ```bash
-   cd ..
-   rm -rf opencode-test
-   ```
-
-> If opencode generated code successfully, you're ready to go!
-
-### Common opencode Commands
-
-```bash
-# Check authentication status
-opencode auth status
-
-# List available models
-opencode models list
-
-# Run a task with a specific model
-opencode --model "claude-3.5-sonnet" "Your task here"
-
-# Get help
-opencode --help
-```
-
----
-
-## 7. Gemini CLI Setup
-
-Gemini CLI is our tool for management, planning, summaries, and coordination tasks.
+> **Team philosophy:** opencode requires **manual and deliberate model selection**. Always choose a model based on the task at hand. See [Section 7](#7-model-selection-guide) for guidance.
 
 ### What is Gemini CLI?
 
 Our team uses Gemini CLI for:
+
 - Project planning and coordination
 - Meeting summaries
 - Jira/ticket management
 - Strategic decision-making
 
-> **Team Philosophy:** Gemini uses auto model selection, which is sufficient for most tasks. The system decides when to switch models automatically.
+> **Team philosophy:** Gemini uses **auto model selection** by default, which is sufficient for most planning tasks.
 
-### Step 1: Install Gemini CLI
+## 7. Model Selection Guide
 
-Gemini CLI is available from npm. Run:
-
-```bash
-npm install -g gemini-cli
-```
-
-**Expected output:**
-```
-added 1 package in 2s
-```
-
-> **Note for Private Registries:** If your team uses a private npm registry, ensure you have access configured. Contact your team lead for registry setup.
-
-### Step 2: Verify Installation
-
-```bash
-gemini --version
-```
-
-You should see a version number.
-
-### Step 3: Authenticate with OAuth
-
-Similar to opencode, use OAuth for easy authentication:
-
-```bash
-gemini login
-```
-
-A browser window will open:
-1. Sign in with your Google account (the one with Gemini access)
-2. Authorize the Gemini CLI application
-3. Return to the terminal
-
-**Alternative:** If OAuth isn't available, use API key authentication:
-```bash
-export GEMINI_API_KEY="your-api-key-here"
-```
-
-### Step 4: Configure Auto Model Selection
-
-Gemini CLI uses auto model selection by default. Verify your configuration:
-
-```bash
-gemini config show
-```
-
-You should see:
-```
-auto_model_selection: true
-```
-
-If not, enable it:
-
-```bash
-gemini config set auto_model_selection true
-```
-
-### Step 5: Understanding Rate Limits
-
-Each Gemini account has independent rate limits:
-- **60 requests per minute**
-- **1,500 requests per day**
-
-**Team Coordination:**
-- Monitor your usage regularly: `gemini usage`
-- Be aware of rate limits during heavy usage periods
-- Coordinate with teammates if you hit limits
-- Use partner accounts when appropriate (ask your team lead)
-
-**What happens when you hit the limit:**
-- Additional requests will return a rate limit error (429)
-- Requests will resume after the limit window resets (1 minute for per-minute limit, 24 hours for daily limit)
-- Plan important work during off-peak hours if you're approaching daily limits
-
-### Step 6: Test Gemini CLI
-
-Let's run a simple test:
-
-```bash
-gemini chat "Explain the difference between let and const in JavaScript"
-```
-
-**Expected output:**
-You should see a detailed explanation from Gemini.
-
-If you receive a response, Gemini CLI is working correctly!
-
-### Common Gemini CLI Commands
-
-```bash
-# Interactive chat mode
-gemini chat
-
-# One-off question
-gemini chat "Your question here"
-
-# Generate a summary from a file
-gemini summarize document.md
-
-# Plan a project
-gemini plan "Build a todo app with React"
-
-# Check your usage/limits
-gemini usage
-
-# Get help
-gemini --help
-```
-
----
-
-## 8. Model Selection Guide
-
-Choosing the right model for the right task ensures better results and efficient resource usage.
+Choosing the right model for the right task ensures better results and efficient resource usage. The table below reflects the team's **current model lineup** as of June 2026 — always cross-reference with [oh-my-opencode-models.md](./oh-my-opencode-models.md) for the latest updates.
 
 ### Decision Tree for Model Selection
 
@@ -596,19 +384,19 @@ Choosing the right model for the right task ensures better results and efficient
 What are you doing?
 
 ├─ Code Generation
-│  ├─ Quick scripts/functions → Gemini 2.5 Flash
-│  ├─ Complex features → GPT-5.2 or Claude 3.5 Sonnet
-│  └─ Edge cases/tricky logic → Claude 3.5 Sonnet
+│  ├─ Quick scripts/functions → Claude Haiku 4.5 (fastest)
+│  ├─ Complex features → Claude Sonnet 4.6 or GPT-5
+│  └─ Edge cases/tricky logic → Claude Opus 4.6
 │
 ├─ Code Review
-│  ├─ PR review → Claude 3.5 Sonnet (best balanced)
-│  ├─ Quick check → Gemini 2.5 Flash
-│  └─ Architecture review → GPT-5.2
+│  ├─ PR review → Claude Sonnet 4.6 (best balanced)
+│  ├─ Quick check → Claude Haiku 4.5
+│  └─ Architecture review → Claude Opus 4.6
 │
 ├─ Debugging
-│  ├─ Quick fix → Gemini 2.5 Flash (fastest)
-│  ├─ Complex bug → Claude 3.5 Sonnet
-│  └─ System issue → GPT-5.2 (most thorough)
+│  ├─ Quick fix → Claude Haiku 4.5 (fastest)
+│  ├─ Complex bug → Claude Sonnet 4.6
+│  └─ System issue → Claude Opus 4.6 (most thorough)
 │
 └─ Planning/Coordination (Gemini CLI)
    └─ Use auto model selection (recommended)
@@ -616,23 +404,25 @@ What are you doing?
 
 ### Model Comparison Table
 
-| Model | Speed | Cost | Best For | Token Limit |
-|-------|-------|------|----------|------------|
-| **Gemini 2.5 Flash** | Very Fast | Cheapest | Quick tasks, prototyping | 1M tokens |
-| **GPT-4o** | Fast | Moderate | Balanced, reliable | 200K tokens |
-| **Claude 3.5 Sonnet** | Medium | Moderate | Code review, complex logic | 200K tokens |
-| **GPT-5.2** | Slower | Higher | Complex features, thorough analysis | 100K tokens |
+| Model                 | Speed     | Cost     | Best For                         | Notes                                |
+| --------------------- | --------- | -------- | -------------------------------- | ------------------------------------ |
+| **Claude Haiku 4.5**  | Very Fast | Cheapest | Quick tasks, search, prototyping | Best for high-volume, low-complexity |
+| **Claude Sonnet 4.6** | Fast      | Moderate | Code review, everyday coding     | Team default for most tasks          |
+| **Claude Opus 4.6**   | Slower    | Higher   | Complex features, architecture   | Use when Sonnet isn't enough         |
+
+> **Note:** For non-Claude models (GPT, Gemini), refer to [oh-my-opencode-models.md](./oh-my-opencode-models.md) for current model strings and alternatives per agent role.
 
 ### Tips for Model Selection
 
-1. **Start with the fastest model** for your task type
-2. **Upgrade if results are insufficient** (use the decision tree)
-3. **Monitor your API usage** to manage costs
-4. **Share findings** with your team about what works best
+1. **Start with Claude Sonnet 4.6** — it handles most tasks well
+2. **Drop down to Haiku 4.5** for simple, fast jobs to save cost
+3. **Step up to Opus 4.6** only when Sonnet falls short
+4. **Monitor your API usage** to stay within budget
+5. **Share findings** with your team about what works best per task type
 
 ---
 
-## 9. Verification & Testing
+## 8. Verification & Testing
 
 Let's verify everything is working together.
 
@@ -644,10 +434,10 @@ Run these commands one by one:
 # 1. Check Git
 git --version
 
-# 2. Check Node.js
+# 2. Check Node.js (expect v18+)
 node --version
 
-# 3. Check npm
+# 3. Check npm (expect v9+)
 npm --version
 
 # 4. Check VS Code
@@ -667,64 +457,65 @@ gemini usage
 ```
 
 **Expected Results:**
-- All version commands return version numbers
+
+- All version commands return version numbers at or above the required versions
 - `opencode auth status` shows authenticated state
 - `gemini usage` shows your current request count (e.g., "23/1500 requests today")
 
 ### Real Workflow Example
 
-Let's test all tools working together on a real task:
-
 #### Example: Build a String Validator
 
 **Step 1: Generate with Copilot (VS Code)**
+
 - Create a new file: `validator.js`
 - Write a comment: `// Function to validate email format`
 - Let Copilot suggest the implementation
-- **Result:** Quick prototype
 
 **Step 2: Review with opencode CLI**
+
 ```bash
-opencode --model "claude-3.5-sonnet" "Review this JavaScript code for edge cases and security: [paste code]"
+opencode --model "claude-sonnet-4-6" "Review this JavaScript code for edge cases and security: [paste code]"
 ```
-- **Result:** Detailed review with improvements
 
 **Step 3: Plan Testing with Gemini CLI**
+
 ```bash
 gemini chat "Create a test plan for an email validator function with these test cases: valid email, missing @, invalid domain"
 ```
-- **Result:** Structured testing approach
 
 #### Example: Coordinate Team on Feature
 
 **Step 1: Plan with Gemini CLI**
+
 ```bash
 gemini plan "We need to add two-factor authentication to our app. What are the steps?"
 ```
 
 **Step 2: Generate Code with opencode**
+
 ```bash
-opencode --model "gpt-5.2" "Generate a 2FA implementation using TOTP (Time-based One-Time Password)"
+opencode --model "claude-opus-4-6" "Generate a 2FA implementation using TOTP (Time-based One-Time Password)"
 ```
 
-**Step 3: Use Copilot for refinements**
+**Step 3: Refine with Copilot**
+
 - Open the generated code in VS Code
 - Use Copilot Chat to add error handling and edge cases
-- **Result:** Production-ready implementation
 
 ### Verification Checklist
 
-Complete these to ensure your setup works:
-
-- [ ] Git installed and working (`git --version`)
-- [ ] Node.js and npm installed (`node --version`, `npm --version`)
+- [ ] Git installed and working (`git --version` returns v2+)
+- [ ] Node.js 18+ installed (`node --version` returns v18+)
+- [ ] npm 9+ installed (`npm --version` returns v9+)
 - [ ] VS Code installed and working (`code --version`)
-- [ ] GitHub Copilot active in VS Code (see "GitHub Copilot: Ready" in status bar)
+- [ ] GitHub Copilot active in VS Code ("GitHub Copilot: Ready" in status bar)
 - [ ] GitHub Copilot suggesting code (create test.js and verify suggestions appear)
 - [ ] opencode CLI installed (`opencode --version`)
+- [ ] opencode API key set (`echo $ANTHROPIC_API_KEY` or `echo $OPENAI_API_KEY` returns a value)
 - [ ] opencode authenticated (`opencode auth status` shows authenticated)
-- [ ] opencode can generate code (test with simple task)
 - [ ] Gemini CLI installed (`gemini --version`)
+- [ ] Gemini API key set (`echo $GEMINI_API_KEY` returns a value)
 - [ ] Gemini CLI authenticated (`gemini login` completed)
 - [ ] Gemini CLI responding to prompts (`gemini chat "test"` returns response)
 - [ ] Rate limits visible (`gemini usage` shows request count)
@@ -733,13 +524,14 @@ Complete these to ensure your setup works:
 
 ---
 
-## 10. Troubleshooting
+## 9. Troubleshooting
 
 ### GitHub Education Issues
 
 **Problem:** GitHub Education application is pending for a long time
 
 **Solutions:**
+
 - Wait 1-3 business days for approval
 - Check your spam folder for approval emails
 - Make sure you uploaded clear documentation (student ID, enrollment letter)
@@ -748,6 +540,7 @@ Complete these to ensure your setup works:
 **Problem:** GitHub Copilot not showing in VS Code
 
 **Solutions:**
+
 - Make sure you're signed into GitHub in VS Code
 - Check that GitHub Copilot is enabled at: https://github.com/settings/copilot
 - Reload VS Code window: `Ctrl+Shift+P` > "Reload Window"
@@ -760,6 +553,7 @@ Complete these to ensure your setup works:
 **Problem:** Can't access Google AI Studio
 
 **Solutions:**
+
 - Make sure you're signed in with a Google account
 - Try using an incognito/private browser window
 - Clear your browser cache and cookies
@@ -768,6 +562,7 @@ Complete these to ensure your setup works:
 **Problem:** Hit rate limits on Gemini
 
 **Solutions:**
+
 - Check current usage: `gemini usage`
 - Wait for the limit window to reset (1 minute or 24 hours depending on limit)
 - Coordinate with teammates to use partner accounts
@@ -777,6 +572,7 @@ Complete these to ensure your setup works:
 **Problem:** API key errors
 
 **Solutions:**
+
 - If using OAuth, re-authenticate: `gemini login`
 - If using API key, verify it hasn't been revoked at https://aistudio.google.com/
 - Check that you copied the entire API key (no spaces or line breaks)
@@ -789,6 +585,7 @@ Complete these to ensure your setup works:
 **Problem:** Copilot not suggesting code
 
 **Solutions:**
+
 - Check the Copilot icon in the bottom status bar (should be blue/active)
 - Make sure it's not disabled for the file type: `Ctrl+Shift+P` > "GitHub Copilot: Toggle"
 - Try manually triggering: `Ctrl+Enter` (or `Cmd+Enter` on Mac)
@@ -797,6 +594,7 @@ Complete these to ensure your setup works:
 **Problem:** Copilot suggestions are slow or poor quality
 
 **Solutions:**
+
 - Write clearer comments describing what you want
 - Provide more context in your code (nearby functions, imports)
 - Break complex tasks into smaller, simpler steps
@@ -809,6 +607,7 @@ Complete these to ensure your setup works:
 **Problem:** `opencode: command not found` or `gemini: command not found`
 
 **Root Causes:**
+
 - Global npm packages not in PATH
 - Permissions issues with global install directory
 - npm bin directory not configured correctly
@@ -816,16 +615,17 @@ Complete these to ensure your setup works:
 **Solutions (try in order):**
 
 1. **Check npm global bin path:**
+
    ```bash
    npm bin -g
    ```
-   This shows where npm installs global packages.
 
 2. **Add to PATH (if not already there):**
+
    ```bash
-   # On Mac/Linux, add to ~/.bashrc or ~/.zshrc:
+   # macOS/Linux — add to ~/.bashrc or ~/.zshrc:
    export PATH="$(npm bin -g):$PATH"
-   
+
    # Then reload:
    source ~/.bashrc
    # or
@@ -833,17 +633,16 @@ Complete these to ensure your setup works:
    ```
 
 3. **Try running with npx:**
+
    ```bash
    npx opencode "Your task"
    npx gemini chat "Your question"
    ```
 
 4. **Reinstall with correct permissions:**
+
    ```bash
-   # Option A: Use sudo (not recommended)
-   sudo npm install -g opencode
-   
-   # Option B: Configure npm to avoid sudo (recommended)
+   # Recommended — configure npm to avoid sudo:
    # See: https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
    ```
 
@@ -856,28 +655,29 @@ Complete these to ensure your setup works:
 **Problem:** OAuth authentication failing
 
 **Solutions:**
+
 - Try logging out first: `opencode logout`
 - Then authenticate again: `opencode auth setup`
 - Clear browser cookies and try again
-- Make sure you're using the correct Google account
-- Check that your API key is valid: `opencode auth status`
+- Check that your API key environment variable is set: `env | grep API_KEY`
 
 **Problem:** Can't select a model
 
 **Solutions:**
+
 - List available models: `opencode models list`
 - Make sure you're authenticated: `opencode auth status`
-- Try specifying the model explicitly: `opencode --model "claude-3.5-sonnet" "Your task"`
-- Ensure environment variables are set (check with `env | grep API`)
+- Try specifying the model explicitly: `opencode --model "claude-sonnet-4-6" "Your task"`
+- Ensure environment variables are set: `env | grep API`
 
 **Problem:** Generated code has issues or doesn't compile
 
 **Solutions:**
+
 - Provide more detailed prompts/comments
 - Specify the exact language version or framework
 - Ask for unit tests to be included in generation
-- Use `--model` flag to try a different, more capable model
-- Review with Copilot Chat for refinements
+- Use `--model` flag to try a more capable model (e.g. Opus instead of Sonnet)
 
 ---
 
@@ -886,6 +686,7 @@ Complete these to ensure your setup works:
 **Problem:** `gemini: command not found`
 
 **Solutions:**
+
 - Check npm installation: `npm list -g gemini-cli`
 - Reinstall: `npm install -g gemini-cli`
 - Check npm global bin path: `npm bin -g`
@@ -895,6 +696,7 @@ Complete these to ensure your setup works:
 **Problem:** Authentication errors
 
 **Solutions:**
+
 - Re-authenticate: `gemini login`
 - Check that you have Gemini API access at https://aistudio.google.com/
 - Verify your API quota hasn't been exceeded: `gemini usage`
@@ -903,6 +705,7 @@ Complete these to ensure your setup works:
 **Problem:** Auto model selection not working
 
 **Solutions:**
+
 - Enable it: `gemini config set auto_model_selection true`
 - Check config: `gemini config show`
 - Try updating Gemini CLI: `npm update -g gemini-cli`
@@ -912,26 +715,27 @@ Complete these to ensure your setup works:
 ### Platform-Specific Issues
 
 **Windows:**
+
 - If npm commands fail, try running terminal as Administrator
 - Use PowerShell or Git Bash instead of Command Prompt
 - Make sure Node.js is in your system PATH: `echo %PATH%`
 - Reinstall Node.js if PATH issues persist
 
 **Mac:**
-- If you get permission errors, use `sudo` with npm install (or follow npm's recommended PATH fix)
-- Or configure npm to use a user directory: https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+
+- If you get permission errors, configure npm to use a user directory:
+  https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
 - Make sure Xcode Command Line Tools are installed: `xcode-select --install`
 
 **Linux:**
-- Use your package manager for Node.js: `sudo apt install nodejs npm` (Ubuntu/Debian)
-- Or use nvm (Node Version Manager) for easier version management: https://github.com/nvm-sh/nvm
+
+- Use nvm (Node Version Manager) for easier version management: https://github.com/nvm-sh/nvm
+- Or install via package manager: `sudo apt install nodejs npm` (Ubuntu/Debian)
 - Check file permissions if commands fail: `ls -la /usr/local/bin/`
 
 ---
 
 ### Still Having Issues?
-
-**Get Help:**
 
 1. **Check official documentation:**
    - GitHub Copilot: https://docs.github.com/en/copilot
@@ -939,23 +743,17 @@ Complete these to ensure your setup works:
    - opencode: Run `opencode --help`
    - Gemini CLI: Run `gemini --help`
 
-2. **Ask your team:**
-   - Reach out to your team lead or mentor
-   - Ask in your team's Slack channel or communication platform
-   - Someone has likely encountered the same issue!
+2. **Ask your team** in the `#dev-help` Slack channel — someone has likely seen the same issue.
 
-3. **Search for solutions:**
-   - GitHub Issues for the respective tools
-   - Stack Overflow
-   - Official support channels
+3. **Search:** GitHub Issues for the respective tools, or Stack Overflow.
 
 ---
 
-## 11. Support & Resources
+## 10. Support & Resources
 
 ### Team Contacts
 
-- **Team Lead:** [Add team lead name/contact]
+- **Team Lead:** []
 - **Technical Issues:** Reach out in #dev-help channel
 - **Setup Problems:** Direct message your onboarding buddy
 - **Documentation Issues:** File an issue in the team repo
@@ -963,93 +761,72 @@ Complete these to ensure your setup works:
 ### Useful Links
 
 **Official Documentation:**
+
 - GitHub Copilot: https://docs.github.com/en/copilot
 - GitHub Education: https://education.github.com/
 - Google AI Studio: https://aistudio.google.com/
 - Google AI Documentation: https://ai.google.dev/
+- opencode: https://opencode.ai/
+- Gemini CLI: https://geminicli.com/
 
 **Team Resources:**
-- Main README: [README.md](../README.md)
-- Model Strategy: [oh-my-opencode-models.md](../oh-my-opencode-models.md)
-- Contributing Guide: [CONTRIBUTING.md](../CONTRIBUTING.md) (if available)
 
-**Related Tools:**
-- opencode GitHub: (add link)
-- Gemini CLI GitHub: (add link)
+- Main README: [README.md](../README.md)
+- Model Strategy: [oh-my-opencode-models.md](./oh-my-opencode-models.md)
+- Quick Start: [AI-installation-tutorial.md](./AI-installation-tutorial.md)
+
+> **Note:** A `CONTRIBUTING.md` guide is coming soon. Until then, reach out to your team lead for contribution guidelines.
 
 ### Providing Feedback
 
 Found an issue with this guide? Have suggestions for improvement?
 
-1. **Option A:** Create an issue in the team repo with the tag `documentation`
-2. **Option B:** Send feedback directly to your team lead
-3. **Option C:** Make a pull request with improvements!
+1. Create an issue in the team repo with the label `documentation`
+2. Send feedback directly to your team lead
+3. Make a pull request with improvements
 
 ---
 
 ## Next Steps
 
-Now that your environment is set up, here's what to do next:
-
 ### 1. Review Team Documentation
 
-Read the main [README.md](../README.md) to understand:
-- Our AI Council philosophy
-- Model strategy per role
-- Best practices for tool usage
+Read the main [README.md](../README.md) to understand the AI Council philosophy, model strategy, and best practices.
 
 ### 2. Explore the Repository
 
-- Explore the repository structure and key project directories
-- Review any existing agent or tool configuration files (if present)
-- Understand the team's workflow
+- Scan the folder structure to understand where things live
+- Read [oh-my-opencode-models.md](./oh-my-opencode-models.md) to understand the agent roles
+- Check out the `/diagrams/` folder for system architecture visuals
 
 ### 3. Start Small
 
-- Try using Copilot for daily coding tasks
-- Use Gemini CLI for planning your work
-- Use opencode for code reviews and refactoring
-- Get comfortable with each tool before tackling complex tasks
+- Use Copilot for everyday coding in VS Code
+- Use Gemini CLI for planning your tasks
+- Use opencode for code reviews and larger refactors
+- Get comfortable with one tool before stacking them together
 
-### 4. Learn Model Selection
+### 4. Coordinate with Your Team
 
-Understand which model to use when:
-- Review the [Model Selection Guide](#8-model-selection-guide) above
-- Start with recommended models for your tasks
-- Ask your team when unsure
-
-### 5. Coordinate with Your Team
-
-- Be aware of rate limits and check `gemini usage` regularly
-- Share knowledge about what works well
-- Help improve this documentation if you find issues
-- Coordinate with teammates during heavy usage periods
-
-### 6. Deep Dive Topics (Optional)
-
-Once comfortable with basics:
-- Advanced opencode workflows (multi-file editing)
-- Custom model configurations
-- Team rate limit coordination
-- Contributing improvements to team tools
+- Check `gemini usage` regularly to stay within rate limits
+- Share model recommendations with teammates
+- Help keep this documentation up to date if you spot issues
 
 ---
 
 ## Welcome to the Team!
 
-You're now equipped with the AI-powered tools that make our team 100x more productive. Remember:
+You're now equipped with the AI-powered tools that make our team productive. Remember the core philosophy:
 
-> **Team Philosophy:**
-> - Knowledge before automation
-> - Read-only before action
-> - Human-in-the-loop by default
-> - Python-first execution
+> - **Knowledge before automation**
+> - **Read-only before action**
+> - **Human-in-the-loop by default**
+> - **Python-first execution**
 
-**Happy coding!** If you have questions or suggestions for improving this guide, reach out to your team lead or create an issue in the team repo.
+**Happy coding!** If you have questions or suggestions for improving this guide, reach out to your team lead or open an issue in the repo.
 
 ---
 
-**Document Version:** 2.0  
-**Last Updated:** June 2026  
+**Document Version:** 3.0
+**Last Updated:** June 2026
 **Maintained by:** Engineering Team
-
