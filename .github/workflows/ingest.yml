@@ -1,10 +1,6 @@
 name: Daily Feed Ingestion
 
 on:
-  # Runs every day at 8:00 AM UTC (4:00 PM PHT)
-  schedule:
-    - cron: '0 8 * * *'
-
   # Allows manual trigger from GitHub Actions UI
   # Use this for breaking news (critical CVEs, major releases)
   workflow_dispatch:
@@ -54,23 +50,23 @@ jobs:
       # ── 5. Run ingestion ──────────────────────────────────────────────────
 
       - name: Run Hacker News ingester
-        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'hacker-news' || github.event_name == 'schedule' }}
+        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'hacker-news' }}
         run: npx ts-node src/ingesters/hacker-news/index.ts
 
       - name: Run GitHub Trending scraper
-        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'github-trending' || github.event_name == 'schedule' }}
+        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'github-trending' }}
         run: python src/scraper.py
 
       - name: Run GitHub Trending → SQLite sync
-        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'github-trending' || github.event_name == 'schedule' }}
+        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'github-trending' }}
         run: npx ts-node src/ingesters/github-trending/index.ts
 
       - name: Run RSS ingester
-        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'rss' || github.event_name == 'schedule' }}
+        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'rss' }}
         run: npx ts-node src/ingesters/rss/index.ts
 
       - name: Run manual feeds ingester (docs/feeds/*.md)
-        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'manual-feeds' || github.event_name == 'schedule' }}
+        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == 'manual-feeds' }}
         run: npx ts-node src/ingesters/manual-feeds/index.ts
 
       # ── 6. Commit any changes to trending.md back to repo ────────────────
