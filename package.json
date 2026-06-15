@@ -1,0 +1,42 @@
+{
+  "name": "my-ailounge",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "ingest": "npx tsx src/ingesters/run-all.ts",
+    "ingest:hn": "npx tsx src/ingesters/hacker-news/index.ts",
+    "ingest:trending": "npx tsx src/ingesters/github-trending/index.ts",
+    "ingest:rss": "npx tsx src/ingesters/rss/index.ts",
+    "ingest:manual": "npx tsx src/ingesters/manual-feeds/index.ts",
+    "db:migrate": "npx tsx src/db/migrate.ts"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.1",
+    "ts-node": "^10.9.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@radix-ui/react-select": "^2.3.0",
+    "@radix-ui/react-separator": "^1.1.9",
+    "@radix-ui/react-slot": "^1.2.5",
+    "@radix-ui/react-tabs": "^1.1.14",
+    "@radix-ui/react-toggle": "^1.1.11",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.18.0",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwind-merge": "^3.6.0"
+  }
+}

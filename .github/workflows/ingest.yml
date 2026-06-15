@@ -1,7 +1,7 @@
 name: Daily Feed Ingestion
 
 on:
-  # Allows manual trigger from GitHub Actions UI
+  # Allows manual trigger from GitHub Actions UI (Temporary)
   # Use this for breaking news (critical CVEs, major releases)
   workflow_dispatch:
     inputs:

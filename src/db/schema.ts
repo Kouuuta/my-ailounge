@@ -21,6 +21,11 @@ CREATE TABLE IF NOT EXISTS feed_items (
 CREATE INDEX IF NOT EXISTS idx_feed_category ON feed_items(category);
 CREATE INDEX IF NOT EXISTS idx_feed_source ON feed_items(source);
 CREATE INDEX IF NOT EXISTS idx_feed_published ON feed_items(published_at);
+
+CREATE TABLE IF NOT EXISTS kv_store (
+  key   TEXT PRIMARY KEY,
+  value TEXT
+);
 `;
 
 export function migrate(): void {
