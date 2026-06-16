@@ -33,7 +33,7 @@ export function Navbar() {
                 "relative px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
                 pathname === item.href
                   ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                  : "text-foreground dark:text-muted-foreground hover:text-primary dark:hover:text-foreground hover:bg-accent/50"
               )}
             >
               {item.label}

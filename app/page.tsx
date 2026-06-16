@@ -1,11 +1,6 @@
 import { getDb } from "@/src/db/client";
 import { INTERN_TASKS } from "@/src/config/intern-tasks";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -41,7 +36,11 @@ function formatDate(dateStr: string | null): string {
   if (!dateStr) return "N/A";
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return "N/A";
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 function timeAgo(dateStr: string): string {
@@ -52,14 +51,29 @@ function timeAgo(dateStr: string): string {
   if (hrs < 24) return `${hrs}h ago`;
   const days = Math.floor(hrs / 24);
   if (days < 30) return `${days}d ago`;
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 const STAT_ICONS = [
   { icon: Brain, label: "AI Updates", gradient: "from-sky-500 to-cyan-500" },
-  { icon: Code, label: "Framework Updates", gradient: "from-violet-500 to-purple-500" },
-  { icon: Shield, label: "Security Alerts", gradient: "from-rose-500 to-pink-500" },
-  { icon: BookOpen, label: "Total Items", gradient: "from-emerald-500 to-teal-500" },
+  {
+    icon: Code,
+    label: "Framework Updates",
+    gradient: "from-violet-500 to-purple-500",
+  },
+  {
+    icon: Shield,
+    label: "Security Alerts",
+    gradient: "from-rose-500 to-pink-500",
+  },
+  {
+    icon: BookOpen,
+    label: "Total Items",
+    gradient: "from-emerald-500 to-teal-500",
+  },
 ];
 
 function StatCard({
@@ -83,12 +97,16 @@ function StatCard({
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent-vibrant/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <CardContent className="relative z-10 py-4">
         <div className="flex items-center gap-3">
-          <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${gradient} shadow-sm`}>
+          <div
+            className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${gradient} shadow-sm`}
+          >
             <Icon className="h-4 w-4 text-white" />
           </div>
           <div>
             <p className="text-xs text-muted-foreground">{label}</p>
-            <p className="text-2xl font-bold tabular-nums tracking-tight">{value}</p>
+            <p className="text-2xl font-bold tabular-nums tracking-tight">
+              {value}
+            </p>
           </div>
         </div>
       </CardContent>
@@ -118,7 +136,11 @@ function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
                 </Badge>
                 {item.tags && (
                   <span className="text-[10px] text-muted-foreground">
-                    {item.tags.split(",").slice(0, 3).map((t) => t.trim()).join(", ")}
+                    {item.tags
+                      .split(",")
+                      .slice(0, 3)
+                      .map((t) => t.trim())
+                      .join(", ")}
                   </span>
                 )}
                 <span className="text-[10px] text-muted-foreground ml-auto">
@@ -172,9 +194,17 @@ function SectionCard({
       </CardHeader>
       <CardContent className="space-y-1">
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-4 text-center">No items yet. Run <code className="text-xs bg-muted px-1 rounded">npm run ingest</code> to fetch data.</p>
+          <p className="text-sm text-muted-foreground py-4 text-center">
+            No items yet. Run{" "}
+            <code className="text-xs bg-muted px-1 rounded">
+              npm run ingest
+            </code>{" "}
+            to fetch data.
+          </p>
         ) : (
-          items.map((item, i) => <ItemCard key={item.id} item={item} delay={i * 60 + delay + 200} />)
+          items.map((item, i) => (
+            <ItemCard key={item.id} item={item} delay={i * 60 + delay + 200} />
+          ))
         )}
       </CardContent>
     </Card>
@@ -191,56 +221,65 @@ export default function HomePage() {
   const aiItems = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE category = 'ai' ORDER BY score DESC, published_at DESC LIMIT 5"
+        "SELECT * FROM feed_items WHERE category = 'ai' ORDER BY score DESC, published_at DESC LIMIT 5",
       )
-      .all()
+      .all(),
   );
 
   const frameworkItems = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE category IN ('nextjs', 'django') ORDER BY published_at DESC, fetched_at DESC LIMIT 5"
+        "SELECT * FROM feed_items WHERE category IN ('nextjs', 'django') ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
       )
-      .all()
+      .all(),
   );
 
   const trendingItems = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE source = 'github_trending' ORDER BY fetched_at DESC LIMIT 5"
+        "SELECT * FROM feed_items WHERE source = 'github_trending' ORDER BY fetched_at DESC LIMIT 5",
       )
-      .all()
+      .all(),
   );
 
   const securityItems = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE category = 'security' OR tags LIKE '%cve%' ORDER BY published_at DESC, fetched_at DESC LIMIT 5"
+        "SELECT * FROM feed_items WHERE category = 'security' OR tags LIKE '%cve%' ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
       )
-      .all()
+      .all(),
   );
 
   const recommendedItem = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE is_read = 0 AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1"
+        "SELECT * FROM feed_items WHERE is_read = 0 AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1",
       )
-      .all()
+      .all(),
   );
 
   const totalItems = (
-    db.prepare("SELECT COUNT(*) as count FROM feed_items").get() as { count: number }
+    db.prepare("SELECT COUNT(*) as count FROM feed_items").get() as {
+      count: number;
+    }
   ).count;
 
   const unreadItems = (
-    db.prepare("SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0").get() as { count: number }
+    db
+      .prepare("SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0")
+      .get() as { count: number }
   ).count;
 
-  const dayOffset = Math.floor(Date.now() / 86400000);
-  const task1 = INTERN_TASKS[dayOffset % INTERN_TASKS.length];
-  const task2 = INTERN_TASKS[(dayOffset + 1) % INTERN_TASKS.length];
+  const taskIndex = Math.floor(Date.now() / 86400000);
+  const todayTask = INTERN_TASKS[taskIndex % INTERN_TASKS.length];
+  const tomorrowTask = INTERN_TASKS[(taskIndex + 1) % INTERN_TASKS.length];
 
-  const statValues = [aiItems.length, frameworkItems.length, securityItems.length, totalItems];
+  const statValues = [
+    aiItems.length,
+    frameworkItems.length,
+    securityItems.length,
+    totalItems,
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -248,7 +287,9 @@ export default function HomePage() {
         <div className="animate-fade-in flex items-center justify-between mb-8">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight">Engineering Briefing</h1>
+              <h1 className="text-3xl font-bold tracking-tight">
+                Engineering Briefing
+              </h1>
               <Sparkles className="h-5 w-5 text-accent-vibrant" />
             </div>
             <p className="text-muted-foreground text-sm mt-1">
@@ -267,12 +308,20 @@ export default function HomePage() {
 
         <div className="animate-fade-in grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
           {STAT_ICONS.map((s, i) => (
-            <StatCard key={s.label} {...s} value={statValues[i]} delay={i * 100} />
+            <StatCard
+              key={s.label}
+              {...s}
+              value={statValues[i]}
+              delay={i * 100}
+            />
           ))}
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-4 animate-slide-up" style={{ animationDelay: "200ms" }}>
+          <div
+            className="space-y-4 animate-slide-up"
+            style={{ animationDelay: "200ms" }}
+          >
             <SectionCard
               title="AI Changes"
               icon={Brain}
@@ -288,7 +337,10 @@ export default function HomePage() {
               delay={100}
             />
           </div>
-          <div className="space-y-4 animate-slide-up" style={{ animationDelay: "300ms" }}>
+          <div
+            className="space-y-4 animate-slide-up"
+            style={{ animationDelay: "300ms" }}
+          >
             <SectionCard
               title="Framework Updates"
               icon={Code}
@@ -309,7 +361,10 @@ export default function HomePage() {
         <Separator className="my-8" />
 
         <div className="grid gap-4 md:grid-cols-2">
-          <Card className="animate-slide-up transition-all duration-300 hover:shadow-md" style={{ animationDelay: "500ms" }}>
+          <Card
+            className="animate-slide-up transition-all duration-300 hover:shadow-md"
+            style={{ animationDelay: "500ms" }}
+          >
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-vibrant/10">
@@ -330,17 +385,24 @@ export default function HomePage() {
                     {recommendedItem[0].title}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {recommendedItem[0].summary || recommendedItem[0].tags || "No description"}
+                    {recommendedItem[0].summary ||
+                      recommendedItem[0].tags ||
+                      "No description"}
                   </p>
                 </a>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  No recommendations yet. Add items tagged with <code className="text-xs bg-muted px-1 rounded">ai</code> or <code className="text-xs bg-muted px-1 rounded">tool</code>.
+                  No recommendations yet. Add items tagged with{" "}
+                  <code className="text-xs bg-muted px-1 rounded">ai</code> or{" "}
+                  <code className="text-xs bg-muted px-1 rounded">tool</code>.
                 </p>
               )}
             </CardContent>
           </Card>
-          <Card className="animate-slide-up transition-all duration-300 hover:shadow-md" style={{ animationDelay: "600ms" }}>
+          <Card
+            className="animate-slide-up transition-all duration-300 hover:shadow-md"
+            style={{ animationDelay: "600ms" }}
+          >
             <CardHeader className="pb-3">
               <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-vibrant/10">
@@ -349,28 +411,40 @@ export default function HomePage() {
                 <CardTitle className="text-lg">Intern Tasks</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="space-y-0">
-              <div>
-                <p className="text-sm font-medium">{task1.title}</p>
-                <p className="text-xs text-muted-foreground mt-1">{task1.description}</p>
-                <Badge
-                  variant={task1.difficulty === "beginner" ? "secondary" : task1.difficulty === "intermediate" ? "default" : "destructive"}
-                  className="mt-2 text-[10px]"
-                >
-                  {task1.difficulty}
-                </Badge>
-              </div>
-              <Separator className="my-4" />
-              <div>
-                <p className="text-sm font-medium">{task2.title}</p>
-                <p className="text-xs text-muted-foreground mt-1">{task2.description}</p>
-                <Badge
-                  variant={task2.difficulty === "beginner" ? "secondary" : task2.difficulty === "intermediate" ? "default" : "destructive"}
-                  className="mt-2 text-[10px]"
-                >
-                  {task2.difficulty}
-                </Badge>
-              </div>
+            <CardContent>
+              <p className="text-sm font-medium">{todayTask.title}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {todayTask.description}
+              </p>
+              <Badge
+                variant={
+                  todayTask.difficulty === "beginner"
+                    ? "secondary"
+                    : todayTask.difficulty === "intermediate"
+                      ? "default"
+                      : "destructive"
+                }
+                className="mt-2 text-[10px]"
+              >
+                {todayTask.difficulty}
+              </Badge>
+              <Separator className="my-3" />
+              <p className="text-sm font-medium">{tomorrowTask.title}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {tomorrowTask.description}
+              </p>
+              <Badge
+                variant={
+                  tomorrowTask.difficulty === "beginner"
+                    ? "secondary"
+                    : tomorrowTask.difficulty === "intermediate"
+                      ? "default"
+                      : "destructive"
+                }
+                className="mt-2 text-[10px]"
+              >
+                {tomorrowTask.difficulty}
+              </Badge>
             </CardContent>
           </Card>
         </div>

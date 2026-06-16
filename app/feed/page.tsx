@@ -51,12 +51,26 @@ type FeedResponse = {
 };
 
 const SOURCES = ["manual", "hn", "rss", "github_trending"];
-const CATEGORIES = ["ai", "cloud", "django", "nextjs", "hn", "github", "security", "rumors", "general"];
+const CATEGORIES = [
+  "ai",
+  "cloud",
+  "django",
+  "nextjs",
+  "hn",
+  "github",
+  "security",
+  "rumors",
+  "general",
+];
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return "";
   const d = new Date(dateStr);
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 }
 
 function timeAgo(dateStr: string): string {
@@ -75,7 +89,8 @@ function timeAgo(dateStr: string): string {
 const SOURCE_BADGE: Record<string, string> = {
   hn: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
   rss: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
-  github_trending: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+  github_trending:
+    "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
   manual: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
 };
 
@@ -83,7 +98,17 @@ export const dynamic = "force-dynamic";
 
 export default function FeedPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-background"><div className="mx-auto max-w-7xl px-6 py-8 space-y-2"><CardSkeleton /><CardSkeleton /><CardSkeleton /></div></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background">
+          <div className="mx-auto max-w-7xl px-6 py-8 space-y-2">
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+          </div>
+        </div>
+      }
+    >
       <FeedContent />
     </Suspense>
   );
@@ -132,7 +157,10 @@ function FilterBar({
             className="pl-9"
           />
         </div>
-        <Select value={source} onValueChange={(v) => setSource(v === "all" ? "" : v)}>
+        <Select
+          value={source}
+          onValueChange={(v) => setSource(v === "all" ? "" : v)}
+        >
           <SelectTrigger className="w-32">
             <SelectValue placeholder="Source" />
           </SelectTrigger>
@@ -145,7 +173,10 @@ function FilterBar({
             ))}
           </SelectContent>
         </Select>
-        <Select value={category} onValueChange={(v) => setCategory(v === "all" ? "" : v)}>
+        <Select
+          value={category}
+          onValueChange={(v) => setCategory(v === "all" ? "" : v)}
+        >
           <SelectTrigger className="w-32">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
@@ -158,7 +189,10 @@ function FilterBar({
             ))}
           </SelectContent>
         </Select>
-        <Select value={isRead} onValueChange={(v) => setIsRead(v === "all" ? "" : v)}>
+        <Select
+          value={isRead}
+          onValueChange={(v) => setIsRead(v === "all" ? "" : v)}
+        >
           <SelectTrigger className="w-28">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -168,7 +202,10 @@ function FilterBar({
             <SelectItem value="1">Read</SelectItem>
           </SelectContent>
         </Select>
-        <Select value={isPinned} onValueChange={(v) => setIsPinned(v === "all" ? "" : v)}>
+        <Select
+          value={isPinned}
+          onValueChange={(v) => setIsPinned(v === "all" ? "" : v)}
+        >
           <SelectTrigger className="w-28">
             <SelectValue placeholder="Pinned" />
           </SelectTrigger>
@@ -184,7 +221,13 @@ function FilterBar({
             Clear
           </Button>
         )}
-        <Button variant="ghost" size="icon" className="h-9 w-9" onClick={onRefresh} title="Refresh">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9"
+          onClick={onRefresh}
+          title="Refresh"
+        >
           <RotateCcw className="h-4 w-4" />
         </Button>
       </div>
@@ -224,30 +267,33 @@ function FeedContent() {
     localStorage.setItem("feed_last_visited_at", new Date().toISOString());
   }, []);
 
-  const fetchItems = useCallback(async (append = false) => {
-    setLoading(true);
-    setError(null);
-    const params = new URLSearchParams();
-    if (source) params.set("source", source);
-    if (category) params.set("category", category);
-    if (q) params.set("q", q);
-    if (isRead !== "") params.set("is_read", isRead);
-    if (isPinned !== "") params.set("is_pinned", isPinned);
-    if (append) params.set("offset", String(items.length));
-    params.set("limit", "50");
+  const fetchItems = useCallback(
+    async (append = false) => {
+      setLoading(true);
+      setError(null);
+      const params = new URLSearchParams();
+      if (source) params.set("source", source);
+      if (category) params.set("category", category);
+      if (q) params.set("q", q);
+      if (isRead !== "") params.set("is_read", isRead);
+      if (isPinned !== "") params.set("is_pinned", isPinned);
+      if (append) params.set("offset", String(items.length));
+      params.set("limit", "50");
 
-    try {
-      const res = await fetch(`/api/feed?${params}`);
-      if (!res.ok) throw new Error(`Status ${res.status}`);
-      const data: FeedResponse = await res.json();
-      setItems(append ? [...items, ...data.items] : data.items);
-      setTotal(data.total);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch");
-    } finally {
-      setLoading(false);
-    }
-  }, [source, category, q, isRead, isPinned]);
+      try {
+        const res = await fetch(`/api/feed?${params}`);
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const data: FeedResponse = await res.json();
+        setItems(append ? [...items, ...data.items] : data.items);
+        setTotal(data.total);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to fetch");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [source, category, q, isRead, isPinned],
+  );
 
   useEffect(() => {
     fetchItems();
@@ -265,7 +311,13 @@ function FeedContent() {
     router.replace(`/feed${qs ? `?${qs}` : ""}`, { scroll: false });
   }, [source, category, q, isRead, isPinned, router]);
 
-  const hasFilters = !!(source || category || q || isRead !== "" || isPinned !== "");
+  const hasFilters = !!(
+    source ||
+    category ||
+    q ||
+    isRead !== "" ||
+    isPinned !== ""
+  );
 
   const clearFilters = () => {
     setSource("");
@@ -282,7 +334,11 @@ function FeedContent() {
       body: JSON.stringify({ is_pinned: !item.is_pinned }),
     });
     if (res.ok) {
-      setItems(items.map((i) => (i.id === item.id ? { ...i, is_pinned: i.is_pinned ? 0 : 1 } : i)));
+      setItems(
+        items.map((i) =>
+          i.id === item.id ? { ...i, is_pinned: i.is_pinned ? 0 : 1 } : i,
+        ),
+      );
     }
   };
 
@@ -293,7 +349,11 @@ function FeedContent() {
       body: JSON.stringify({ is_read: !item.is_read }),
     });
     if (res.ok) {
-      setItems(items.map((i) => (i.id === item.id ? { ...i, is_read: i.is_read ? 0 : 1 } : i)));
+      setItems(
+        items.map((i) =>
+          i.id === item.id ? { ...i, is_read: i.is_read ? 0 : 1 } : i,
+        ),
+      );
     }
   };
 
@@ -359,7 +419,11 @@ function FeedContent() {
           </div>
           <div className="flex gap-2">
             <Button size="sm" onClick={() => setShowAddForm(!showAddForm)}>
-              {showAddForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              {showAddForm ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Plus className="h-4 w-4" />
+              )}
               {showAddForm ? "Cancel" : "Add Item"}
             </Button>
           </div>
@@ -424,12 +488,19 @@ function FeedContent() {
           total={total}
         />
 
-        {lastVisit && items.filter((i) => new Date(i.fetched_at) > new Date(lastVisit)).length > 0 && (
-          <div className="animate-slide-down mb-4 px-4 py-2.5 rounded-lg bg-blue-50/80 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-sm text-blue-700 dark:text-blue-300 flex items-center gap-2">
-            <CheckCheck className="h-4 w-4 shrink-0" />
-            {items.filter((i) => new Date(i.fetched_at) > new Date(lastVisit)).length} new since your last visit
-          </div>
-        )}
+        {lastVisit &&
+          items.filter((i) => new Date(i.fetched_at) > new Date(lastVisit))
+            .length > 0 && (
+            <div className="animate-slide-down mb-4 px-4 py-2.5 rounded-lg bg-blue-50/80 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-sm text-blue-700 dark:text-blue-300 flex items-center gap-2">
+              <CheckCheck className="h-4 w-4 shrink-0" />
+              {
+                items.filter(
+                  (i) => new Date(i.fetched_at) > new Date(lastVisit),
+                ).length
+              }{" "}
+              new since your last visit
+            </div>
+          )}
 
         {error && (
           <div className="mb-4 px-4 py-2 rounded-md bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 text-sm text-red-700 dark:text-red-300">
@@ -453,7 +524,8 @@ function FeedContent() {
               <div
                 key={item.id}
                 className={cn(
-                  deletingIds.has(item.id) && "animate-scale-in pointer-events-none opacity-0 scale-95"
+                  deletingIds.has(item.id) &&
+                    "animate-scale-in pointer-events-none opacity-0 scale-95",
                 )}
                 style={{
                   animation: deletingIds.has(item.id)
@@ -467,7 +539,7 @@ function FeedContent() {
                   className={cn(
                     "transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-vibrant/30 hover:shadow-md",
                     item.is_read && "opacity-60",
-                    item.is_pinned && "border-primary/40 bg-primary/[0.02]"
+                    item.is_pinned && "border-primary/40 bg-primary/[0.02]",
                   )}
                 >
                   <CardContent className="py-3 px-4">
@@ -476,11 +548,17 @@ function FeedContent() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <Badge
                             variant="secondary"
-                            className={cn("text-[10px] px-1.5 py-0 font-medium", SOURCE_BADGE[item.source])}
+                            className={cn(
+                              "text-[10px] px-1.5 py-0 font-medium",
+                              SOURCE_BADGE[item.source],
+                            )}
                           >
                             {item.source.replace("_", " ")}
                           </Badge>
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] px-1.5 py-0"
+                          >
                             {item.category}
                           </Badge>
                           <span className="text-[11px] text-muted-foreground">
@@ -514,7 +592,9 @@ function FeedContent() {
                           </div>
                         )}
                         {item.summary && (
-                          <p className="text-xs text-muted-foreground line-clamp-2">{item.summary}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-2">
+                            {item.summary}
+                          </p>
                         )}
                       </div>
                       <div className="flex flex-col gap-1 shrink-0">
@@ -525,7 +605,11 @@ function FeedContent() {
                           onClick={() => togglePin(item)}
                           title={item.is_pinned ? "Unpin" : "Pin"}
                         >
-                          {item.is_pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
+                          {item.is_pinned ? (
+                            <PinOff className="h-3.5 w-3.5" />
+                          ) : (
+                            <Pin className="h-3.5 w-3.5" />
+                          )}
                         </Button>
                         <Button
                           variant="ghost"
@@ -560,8 +644,14 @@ function FeedContent() {
 
         {hasMore && (
           <div className="flex justify-center mt-6 animate-fade-in">
-            <Button variant="outline" onClick={() => fetchItems(true)} disabled={loading}>
-              {loading ? "Loading..." : `Load more (${items.length} of ${total})`}
+            <Button
+              variant="outline"
+              onClick={() => fetchItems(true)}
+              disabled={loading}
+            >
+              {loading
+                ? "Loading..."
+                : `Load more (${items.length} of ${total})`}
             </Button>
           </div>
         )}
