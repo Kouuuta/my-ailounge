@@ -2,6 +2,39 @@ import fs from "fs";
 import path from "path";
 
 const FEEDS_DIR = path.join(process.cwd(), "docs", "feeds");
+const MAX_FEED_LINES = 500;
+
+function trimFeedFile(filePath: string): void {
+  const content = fs.readFileSync(filePath, "utf-8");
+  let lines = content.split("\n");
+
+  if (lines.length <= MAX_FEED_LINES) return;
+
+  // Strip trailing empty lines first so we count only meaningful lines
+  while (lines.length > 0 && lines[lines.length - 1].trim() === "") {
+    lines.pop();
+  }
+
+  if (lines.length <= MAX_FEED_LINES) {
+    fs.writeFileSync(filePath, lines.join("\n"), "utf-8");
+    return;
+  }
+
+  const excess = lines.length - MAX_FEED_LINES;
+  const removeIndices = new Set<number>();
+
+  // Walk from bottom up, removing oldest item lines first
+  for (let i = lines.length - 1; i >= 0 && removeIndices.size < excess; i--) {
+    if (lines[i].startsWith("- [")) {
+      removeIndices.add(i);
+    }
+  }
+
+  lines = lines.filter((_, i) => !removeIndices.has(i));
+
+  fs.writeFileSync(filePath, lines.join("\n"), "utf-8");
+  console.log(`  ✂️  Trimmed ${filePath} to ${MAX_FEED_LINES} lines (removed ${removeIndices.size} oldest entries)`);
+}
 
 export function appendToFeed(filename: string, title: string, url: string, publishedAt: string, tags: string): void {
   const filePath = path.join(FEEDS_DIR, filename);
@@ -47,6 +80,8 @@ export function appendToFeed(filename: string, title: string, url: string, publi
   }
 
   console.log(`  📝 Appended to ${filename}: ${title.substring(0, 60)}`);
+
+  trimFeedFile(filePath);
 }
 
 function getMonthHeader(dateStr: string): string {

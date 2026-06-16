@@ -6,8 +6,8 @@ export interface RSSFeedConfig {
 
 export const RSS_FEEDS: RSSFeedConfig[] = [
   // AI News
-  { url: "https://openai.com/blog/news.xml",       category: "ai",       feedFile: "01-ai-news.md" },
-  { url: "https://www.anthropic.com/feed.xml",       category: "ai",       feedFile: "01-ai-news.md" },
+  { url: "https://openai.com/news/rss.xml",       category: "ai",       feedFile: "01-ai-news.md" },
+  { url: "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml",       category: "ai",       feedFile: "01-ai-news.md" },
   { url: "https://blog.google/technology/ai/rss",   category: "ai",       feedFile: "01-ai-news.md" },
 
   // Next.js News
@@ -19,7 +19,7 @@ export const RSS_FEEDS: RSSFeedConfig[] = [
   { url: "https://blog.python.org/feeds/posts/default", category: "django", feedFile: "03-django-news.md" },
 
   // Security
-  { url: "https://github.com/security/advisories.rss", category: "security", feedFile: "08-security-alerts.md" },
+  { url: "https://github-security-advisory-rss.vercel.app/rss", category: "security", feedFile: "08-security-alerts.md" },
 
   // Cloud
   { url: "https://aws.amazon.com/blogs/aws/feed/", category: "cloud", feedFile: "02-cloud-news.md" },

@@ -145,7 +145,6 @@ function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
                 )}
                 <span className="text-[10px] text-muted-foreground ml-auto">
                   {formatDate(item.published_at)}
-                  {formatDate(item.published_at)}
                 </span>
               </div>
             </div>
