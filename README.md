@@ -37,17 +37,17 @@ This guide walks you through:
 - Getting GitHub Copilot through GitHub Education
 - Getting Gemini Pro through Google Education
 - Setting up VS Code with GitHub Copilot
-- Installing and configuring opencode CLI
+- Installing and configuring OpenCode CLI
 - Installing and configuring Gemini CLI
 - Complete verification and testing
 
-**Estimated time:** 2-3 hours (including approval wait times)
+**Estimated time:** 2–3 hours (including approval wait times)
 
 ---
 
 ## Developer Intelligence Feed
 
-The Developer Intelligence Feed is an engineering intelligence dashboard currently being developed within the AI Factory ecosystem. Its purpose is to aggregate and centralize high-signal technical news, discussions, trends, security updates, and engineering resources from multiple sources into a single searchable interface.
+The Developer Intelligence Feed is an engineering intelligence dashboard currently being developed within the AI Factory ecosystem. Its purpose is to aggregate and centralize high-signal technical news, discussions, trends, security updates, engineering resources, and curated feed sources into a single searchable interface.
 
 The platform currently supports ingestion from:
 
@@ -78,33 +78,99 @@ Feed Dashboard
 
 #### Frontend
 
-- Next.js
-- React
+- Next.js 16
+- React 19
 - TypeScript
 - Tailwind CSS
+- Radix UI
 
 #### Backend
 
-- Next.js API Routes
+- Next.js Route Handlers
+- TypeScript
 
 #### Database
 
 - SQLite
-- better-sqlite3
+- node:sqlite
 
 #### Automation
 
 - GitHub Actions
+- Feed Ingestion Pipelines
 
-### Running the Dashboard
+---
 
-Install dependencies:
+### Dashboard Dependencies
+
+The Developer Intelligence Feed dashboard is built using the following packages.
+
+#### Core Framework
+
+- next
+- react
+- react-dom
+- typescript
+
+#### UI Components
+
+- @radix-ui/react-select
+- @radix-ui/react-separator
+- @radix-ui/react-slot
+- @radix-ui/react-tabs
+- @radix-ui/react-toggle
+
+#### Styling
+
+- tailwindcss
+- @tailwindcss/postcss
+- postcss
+- autoprefixer
+- class-variance-authority
+- clsx
+- tailwind-merge
+
+#### Icons
+
+- lucide-react
+
+#### Development Tooling
+
+- tsx
+- ts-node
+- @types/node
+- @types/react
+- @types/react-dom
+
+---
+
+### First-Time Setup
+
+Clone the repository and install dependencies:
 
 ```bash
 npm install
 ```
 
-Start the development server:
+Create the local database directory:
+
+```bash
+mkdir data
+```
+
+Initialize the SQLite database:
+
+```bash
+npm run db:migrate
+```
+
+Run all feed ingesters:
+
+```bash
+npm run ingest
+```
+
+Start the dashboard:
 
 ```bash
 npm run dev
@@ -116,45 +182,121 @@ Open:
 http://localhost:3000
 ```
 
-Dashboard:
+Dashboard Feed:
 
 ```text
 http://localhost:3000/feed
 ```
 
-### Running Feed Ingestion
+> Note: `data/dashboard.db` is intentionally not committed to Git and must be generated locally.
 
-Run all configured feed ingesters:
+---
+
+### Available Commands
+
+#### Dashboard
+
+```bash
+npm run dev
+npm run build
+npm run start
+```
+
+#### Database
+
+```bash
+npm run db:migrate
+```
+
+#### Feed Ingestion
+
+```bash
+npm run ingest
+npm run ingest:hn
+npm run ingest:rss
+npm run ingest:trending
+npm run ingest:manual
+```
+
+---
+
+### End-to-End Workflow
+
+The Developer Intelligence Feed operates through a straightforward ingestion and visualization pipeline.
+
+1. Run:
 
 ```bash
 npm run ingest
 ```
 
-The workflow is straightforward. Running the ingestion pipeline triggers all configured ingesters — Manual Feeds, RSS Feeds, Hacker News, and GitHub Trending. Each ingester fetches new entries, normalizes the content, and stores records in the centralized SQLite database located at:
+2. The ingestion pipeline executes all configured ingesters:
+   - Manual Feeds
+   - RSS Feeds
+   - Hacker News
+   - GitHub Trending
+
+3. Each ingester fetches new content and stores it in:
 
 ```text
 data/dashboard.db
 ```
 
-Duplicate entries are automatically prevented through database constraints, allowing ingestion to be executed repeatedly without generating duplicate records.
+4. Records are normalized and inserted into SQLite using database constraints that automatically prevent duplicate entries.
 
-Once ingestion completes, the Next.js dashboard reads directly from the same database, making newly ingested content available immediately after refreshing the browser.
+5. The Next.js application reads directly from the same database.
+
+6. The Engineering Briefing page loads statistics and recent feed items directly from SQLite using Server Components.
+
+7. The Feed Dashboard retrieves records through:
+
+```text
+/api/feed
+```
+
+8. Users can:
+   - Search content
+   - Filter by source
+   - Filter by category
+   - Browse paginated results
+   - Mark items as read
+   - Pin important items
+   - Add manual entries
+   - Delete entries
+
+9. Refreshing the browser immediately reflects newly ingested content without requiring a rebuild or restart.
+
+---
 
 ### Current Dashboard Features
 
-- Feed aggregation
+- Engineering Briefing Dashboard
+- Feed Aggregation
 - Search
-- Source filtering
-- Category filtering
+- Source Filtering
+- Category Filtering
 - Pagination
-- Read/unread tracking
-- Item pinning
-- Manual feed creation
-- Feed item deletion
+- Read/Unread Tracking
+- Item Pinning
+- Manual Feed Creation
+- Feed Item Deletion
+- SQLite Persistence
+
+---
 
 ### Future Direction
 
-The project is also being used to evaluate alternatives to traditional cron-based scheduling for automated feed ingestion and update workflows. Future iterations may leverage event-driven workflows, GitHub Actions, or other automation mechanisms depending on operational requirements.
+The project is currently evaluating alternatives to traditional cron-based scheduling for automated feed ingestion workflows.
+
+Areas under investigation include:
+
+- GitHub Actions automation
+- Event-driven workflows
+- Scheduled ingestion pipelines
+- Lightweight orchestration mechanisms
+- Alternative automation platforms
+
+The goal is to reduce operational overhead while maintaining reliable feed updates.
 
 ---
 
@@ -168,11 +310,14 @@ The project is also being used to evaluate alternatives to traditional cron-base
 
 ## Project Structure
 
-- `/docs/` - Task overviews, research, and usage guides.
-- `/diagrams/` - Mermaid charts and system architecture visuals.
-- `/src/` - Source code, bot files, and AI tools.
-- `/ideas/` - Brainstorming and future feature requests.
-- `/shawn/` - Personal scratchpads and task lists.
+- `/app/` - Next.js application pages, dashboard UI, and API routes.
+- `/components/` - Reusable React components and UI elements.
+- `/src/` - Feed ingesters, database layer, and backend utilities.
+- `/docs/` - Research, planning, feed definitions, and documentation.
+- `/diagrams/` - Architecture diagrams and workflow visualizations.
+- `/ideas/` - Brainstorming, experiments, and proposals.
+- `/intern-logs/` - Contributor workspaces and task tracking.
+- `/data/` - Local SQLite database storage (generated locally).
 
 ---
 
@@ -180,12 +325,23 @@ The project is also being used to evaluate alternatives to traditional cron-base
 
 ### Gemini CLI
 
-- Designed for **management, planning, summaries, and coordination tasks**.
-- Features include model auto-selection and per-user rate limit awareness.
+- Designed for management, planning, summaries, and coordination tasks.
+- Features model auto-selection and rate-limit awareness.
 
-### opencode CLI
+### OpenCode CLI
 
-- Engineered for **structured agent execution** with manual model selection.
+- Engineered for structured agent execution and software development workflows.
+
+### Installed Skills
+
+The team currently uses OpenCode-compatible skills to accelerate engineering work:
+
+- planning-and-task-breakdown
+- ui-ux-pro-max
+- github-deep-research
+- caveman
+
+These skills assist with architecture planning, dashboard design, repository research, and concise technical reasoning.
 
 For more details, see [Tooling Documentation](./docs/vibe-coding-vs-legacy.md).
 
@@ -201,9 +357,9 @@ Explore detailed pricing analysis models, benchmarks, and strategies in the [Pri
 
 The AI ecosystem leverages distinct roles that include:
 
-1. **Sisyphus (Orchestrator)**
-2. **Oracle (Architect)**
-3. **Librarian (Researcher)**
+1. Sisyphus (Orchestrator)
+2. Oracle (Architect)
+3. Librarian (Researcher)
 
 For a complete breakdown, refer to the [Role Definitions](./docs/oh-my-opencode-models.md).
 
@@ -219,21 +375,39 @@ The ecosystem fosters a research-driven workflow. Access benchmarks, live leader
 
 ### Getting Started
 
-1. Read the [Role Definitions](./docs/oh-my-opencode-models.md) to understand available agents.
-2. Explore the `/src` folder for predefined templates and implementation examples.
-3. Create your first agent using the provided scaffold.
+1. Read the Role Definitions documentation.
+2. Complete the onboarding guide.
+3. Install required tooling and AI agents.
+4. Initialize the dashboard database.
+5. Run feed ingestion.
+6. Launch the dashboard locally.
+7. Begin development.
 
 ---
 
 ## Contributing
 
-We welcome contributions! Check out our [Contributing Guide](./ideas/to-discuss.md) for more information.
+We welcome contributions.
+
+Recommended workflow:
+
+1. Create a feature branch.
+2. Implement changes.
+3. Verify ingestion and dashboard functionality.
+4. Submit a Pull Request.
+5. Request review from the engineering team.
+
+For additional discussions and proposals, see:
+
+`ideas/to-discuss.md`
 
 ---
 
 ## FAQs and Support
 
-Frequently asked questions and step-by-step troubleshooting guidelines are available [here](./docs/WARP.md).
+Frequently asked questions and troubleshooting guidelines are available in:
+
+`docs/WARP.md`
 
 ---
 
@@ -241,14 +415,21 @@ Frequently asked questions and step-by-step troubleshooting guidelines are avail
 
 ### Engineering Goals
 
-- Automate repetitive tasks like Jira updates.
+- Automate repetitive engineering workflows.
+- Expand feed coverage.
+- Improve developer intelligence capabilities.
+- Evaluate automation alternatives to cron scheduling.
 
 ### Quality Improvements
 
 - Enhance architecture reviews.
+- Improve dashboard usability.
+- Strengthen feed quality and relevance.
 
-For complete targets, check out the [Strategic Plans](./docs/reference-prompts.md).
+For complete targets, refer to:
+
+`docs/reference-prompts.md`
 
 ---
 
-This repo evolves continuously thanks to the contributions of the engineering team.
+This repository evolves continuously through the contributions of the engineering team, interns, and AI-assisted development workflows.
