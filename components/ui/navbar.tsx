@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Sun, Moon, PanelTop } from "lucide-react";
+import { Sun, Moon, PanelTop, Wrench } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 
 const NAV_ITEMS = [
   { href: "/", label: "Briefing" },
   { href: "/feed", label: "Feed" },
+  { href: "/watchlist", label: "Stack", icon: Wrench },
 ];
 
 export function Navbar() {
