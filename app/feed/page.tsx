@@ -83,7 +83,7 @@ export const dynamic = "force-dynamic";
 
 export default function FeedPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-background"><div className="mx-auto max-w-5xl px-4 py-8 space-y-2"><CardSkeleton /><CardSkeleton /><CardSkeleton /></div></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-background"><div className="mx-auto max-w-7xl px-6 py-8 space-y-2"><CardSkeleton /><CardSkeleton /><CardSkeleton /></div></div>}>
       <FeedContent />
     </Suspense>
   );
@@ -349,7 +349,7 @@ function FeedContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="animate-fade-in flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Feed</h1>
@@ -484,7 +484,7 @@ function FeedContent() {
                             {item.category}
                           </Badge>
                           <span className="text-[11px] text-muted-foreground">
-                            {timeAgo(item.fetched_at)}
+                            {formatDate(item.published_at)}
                           </span>
                           {item.score !== null && (
                             <span className="text-[11px] text-muted-foreground ml-auto">

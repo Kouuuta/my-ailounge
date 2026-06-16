@@ -5,6 +5,7 @@
 
 ## June 2026
 
+- [We’re strengthening our presence in Alabama through new investments and community support.](https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/alabama-investment-june-2026/) | 2026-06-15 | ai
 - [Our new community investments in Virginia support local jobs and expand energy affordability.](https://blog.google/innovation-and-ai/infrastructure-and-cloud/global-network/virginia-community-investments/) | 2026-06-11 | ai
 - [Claude Fable 5 and Mythos 5 Launched — Mythos-Class Models Now Available](https://www.anthropic.com/news/claude-fable-5-mythos-5) | 2026-06-09 | ai, model, release, benchmark
 - [OpenAI Launches Economic Research Exchange for External AI Impact Studies](https://openai.com/index/economic-research-exchange/) | 2026-06-08 | ai, research

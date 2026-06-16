@@ -5,6 +5,7 @@
 
 ## June 2026
 
+- [Django security releases issued: 6.0.6 and 5.2.15](https://www.djangoproject.com/weblog/2026/jun/03/security-releases/) | 2026-06-03 | django
 - [DSF 2026 Fundraising Goals](https://www.djangoproject.com/weblog/2026/jun/10/dsf-2026-fundraising-goals/) | 2026-06-10 | django
 - [Python 3.14.6 and 3.13.14 are now available!](https://blog.python.org/2026/06/python-3146-31314/) | 2026-06-10 | django
 - [Django Security Releases Issued: 6.0.6 and 5.2.15](https://www.djangoproject.com/weblog/2026/jun/03/security-releases/) | 2026-06-03 | django, python, release, security, cve
@@ -13,6 +14,9 @@
 
 ## May 2026
 
+- [Announcing the Google Summer of Code 2026 contributors for Django](https://www.djangoproject.com/weblog/2026/may/05/gsoc-2026-django-contributors/) | 2026-05-06 | django
+- [2026 Django Developers Survey](https://www.djangoproject.com/weblog/2026/may/12/2026-django-developers-survey/) | 2026-05-12 | django
+- [Django 6.1 alpha 1 released](https://www.djangoproject.com/weblog/2026/may/20/django-61-alpha-1-released/) | 2026-05-20 | django
 - [Django 6.1 alpha 1 Released](https://www.djangoproject.com/weblog/2026/may/20/django-61-alpha-1-released/) | 2026-05-20 | django, python, release
 - [2026 Django Developers Survey Launched](https://www.djangoproject.com/weblog/2026/may/12/2026-django-developers-survey/) | 2026-05-12 | django, python
 - [DSF member of the month -  Bhuvnesh Sharma](https://www.djangoproject.com/weblog/2026/may/11/dsf-member-of-the-month-bhuvnesh-sharma/) | 2026-05-11 | django
@@ -25,6 +29,7 @@
 
 ## April 2026
 
+- [It's time to redesign djangoproject.com](https://www.djangoproject.com/weblog/2026/apr/27/its-time-to-redesign-djangoprojectcom/) | 2026-04-27 | django
 - [Renew Your PyCharm License and Support Django](https://www.djangoproject.com/weblog/2026/apr/28/renew-your-pycharm-license-and-support-django/) | 2026-04-28 | django
 - [It's Time to Redesign djangoproject.com](https://www.djangoproject.com/weblog/2026/apr/27/its-time-to-redesign-djangoprojectcom/) | 2026-04-27 | django, python
 - [DSF member of the month - Rob Hudson](https://www.djangoproject.com/weblog/2026/apr/19/dsf-member-of-the-month-rob-hudson/) | 2026-04-19 | django

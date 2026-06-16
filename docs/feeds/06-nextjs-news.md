@@ -5,6 +5,8 @@
 
 ## June 2026
 
+- [Auth0 joins the Vercel Marketplace](https://vercel.com/changelog/auth0-joins-the-vercel-marketplace) | 2026-06-15 | nextjs
+- [Vercel Functions can now run up to 30 minutes](https://vercel.com/changelog/vercel-functions-can-now-run-up-to-30-minutes) | 2026-06-15 | nextjs
 - [Increased Blob store limit for Hobby users](https://vercel.com/changelog/increased-blob-store-limit-for-hobby-users) | 2026-06-15 | nextjs
 - [Workflow SDK now runs natively in Nitro v3](https://vercel.com/changelog/workflow-sdk-now-runs-natively-in-nitro-v3) | 2026-06-13 | nextjs
 - [Introducing Vercel Drop](https://vercel.com/changelog/vercel-drop) | 2026-06-12 | nextjs

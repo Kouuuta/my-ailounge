@@ -5,6 +5,26 @@
 
 ## June 2026
 
+- [The Talk Show: Live from WWDC 2026 [video]](https://www.youtube.com/watch?v=OtRgxqMuUY8) | 2026-06-16 | hn, discussion
+- [Woodrow Wilson: America's worst president for free speech](https://expression.fire.org/p/woodrow-wilson-americas-worst-president) | 2026-06-16 | hn, discussion
+- [Vance: Iran can have access to $300B reconstruction fund](https://thehill.com/homenews/administration/5924963-vance-iran-300b-reconstruction-fund/) | 2026-06-16 | hn, discussion
+- [Microsoft Teams introduces office attendance tracking via Wi-Fi](https://www.pcworld.com/article/3165894/from-this-month-onwards-this-microsoft-programme-will-be-reporting-you-to-your-boss.html) | 2026-06-16 | hn, discussion
+- [San Andreas fault reaches highest stress level in 1k years](https://mauinow.com/2026/06/15/san-andreas-fault-reaches-highest-stress-level-in-1000-years/) | 2026-06-16 | hn, discussion
+- [Library](https://benbrown.com/library/) | 2026-06-16 | hn, discussion
+- [Australia to probe assault claims by Gaza flotilla activists against Israeli[..]](https://www.bbc.com/news/articles/clyx4eny41zo) | 2026-06-16 | hn, discussion
+- [6th Finger Project (2022) [video]](https://www.youtube.com/watch?v=232jn-Vu6Rk) | 2026-06-16 | hn, discussion
+- [Anthropic Sued over Alleged False Advertising on Claude Max Subscription Limits](https://www.cnet.com/tech/services-and-software/anthropic-sued-alleged-false-advertising-claude-max-subscription-usage-limits/) | 2026-06-16 | hn, discussion
+- [Microsoft turns to AWS as GitHub faces AI capacity crunch](https://runtimewire.com/article/microsoft-github-aws-ai-capacity-crunch) | 2026-06-16 | hn, discussion
+- [A weekly read on the US hay market](https://haywireag.com/) | 2026-06-16 | hn, discussion
+- [Leaked from Russia: 18 Videos of the Fuel Crisis Growing Fast [video]](https://www.youtube.com/watch?v=yIj3CLqsOXs) | 2026-06-16 | hn, discussion
+- [Hardest IT roles to fill in 2026 and what's changed](https://www.cio.com/article/4184685/the-11-hardest-it-roles-to-fill-in-2026-and-whats-changed.html) | 2026-06-16 | hn, discussion
+- [How Many Elementary Particles Are There, Really?](https://www.quantamagazine.org/how-many-elementary-particles-are-there-really-20260615/) | 2026-06-16 | hn, discussion
+- [Frederic Tudor](https://en.wikipedia.org/wiki/Frederic_Tudor) | 2026-06-16 | hn, discussion
+- [Predictive Data Debugging: Reveal and Shape What Models Learn Before You Train](https://www.goodfire.ai/research/predictive-data-debugging) | 2026-06-16 | hn, discussion
+- [AI efficiency gains come at a high energy cost](https://www.ft.com/content/7f1c81ac-775b-4f52-a650-7804e4734d5b) | 2026-06-16 | hn, discussion
+- [Safety Ideas, and a Testable Path](https://news.ycombinator.com/item?id=48550002) | 2026-06-16 | hn, discussion
+- [Age Verification in Monolith OS](https://monolith-project.org/blog/age-verification/) | 2026-06-16 | hn, discussion
+- [Distro Fighter game: Find your Linux distro and desktop](https://distrofighter.com/) | 2026-06-16 | hn, discussion
 - [Long-Form Video Understanding: Bottlenecks and Design Choices – Part 1](https://yinghonglan.substack.com/p/long-form-video-understanding-bottlenecks) | 2026-06-15 | hn, discussion
 - [Using OSINT to find the real One Piece ocean drop location [video]](https://www.youtube.com/watch?v=eY-W9gmwxhg) | 2026-06-15 | hn, discussion
 - [WWDC26: Rediscover the HTML select element [video]](https://www.youtube.com/watch?v=ACsHgWwP9Io) | 2026-06-15 | hn, discussion

@@ -37,6 +37,13 @@ interface FeedItem {
   is_read: number;
 }
 
+function formatDate(dateStr: string | null): string {
+  if (!dateStr) return "N/A";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "N/A";
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -115,7 +122,7 @@ function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
                   </span>
                 )}
                 <span className="text-[10px] text-muted-foreground ml-auto">
-                  {timeAgo(item.fetched_at)}
+                  {formatDate(item.published_at)}
                 </span>
               </div>
             </div>
@@ -229,13 +236,15 @@ export default function HomePage() {
     db.prepare("SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0").get() as { count: number }
   ).count;
 
-  const todayTask = INTERN_TASKS[Math.floor(Date.now() / 86400000) % INTERN_TASKS.length];
+  const dayOffset = Math.floor(Date.now() / 86400000);
+  const task1 = INTERN_TASKS[dayOffset % INTERN_TASKS.length];
+  const task2 = INTERN_TASKS[(dayOffset + 1) % INTERN_TASKS.length];
 
   const statValues = [aiItems.length, frameworkItems.length, securityItems.length, totalItems];
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-5xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="animate-fade-in flex items-center justify-between mb-8">
           <div>
             <div className="flex items-center gap-2">
@@ -337,24 +346,31 @@ export default function HomePage() {
                 <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-vibrant/10">
                   <BookOpen className="h-4 w-4 text-accent-vibrant" />
                 </div>
-                <CardTitle className="text-lg">Intern Task</CardTitle>
+                <CardTitle className="text-lg">Intern Tasks</CardTitle>
               </div>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm font-medium">{todayTask.title}</p>
-              <p className="text-xs text-muted-foreground mt-1">{todayTask.description}</p>
-              <Badge
-                variant={
-                  todayTask.difficulty === "beginner"
-                    ? "secondary"
-                    : todayTask.difficulty === "intermediate"
-                      ? "default"
-                      : "destructive"
-                }
-                className="mt-2 text-[10px]"
-              >
-                {todayTask.difficulty}
-              </Badge>
+            <CardContent className="space-y-0">
+              <div>
+                <p className="text-sm font-medium">{task1.title}</p>
+                <p className="text-xs text-muted-foreground mt-1">{task1.description}</p>
+                <Badge
+                  variant={task1.difficulty === "beginner" ? "secondary" : task1.difficulty === "intermediate" ? "default" : "destructive"}
+                  className="mt-2 text-[10px]"
+                >
+                  {task1.difficulty}
+                </Badge>
+              </div>
+              <Separator className="my-4" />
+              <div>
+                <p className="text-sm font-medium">{task2.title}</p>
+                <p className="text-xs text-muted-foreground mt-1">{task2.description}</p>
+                <Badge
+                  variant={task2.difficulty === "beginner" ? "secondary" : task2.difficulty === "intermediate" ? "default" : "destructive"}
+                  className="mt-2 text-[10px]"
+                >
+                  {task2.difficulty}
+                </Badge>
+              </div>
             </CardContent>
           </Card>
         </div>

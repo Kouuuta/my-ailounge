@@ -18,7 +18,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-14 max-w-5xl items-center gap-6 px-4">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-4">
         <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight">
           <PanelTop className="h-5 w-5 text-accent-vibrant" />
           <span>Dashboard</span>
@@ -32,7 +32,7 @@ export function Navbar() {
               className={cn(
                 "relative px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
                 pathname === item.href
-                  ? "text-accent-vibrant-foreground bg-accent-vibrant/10"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
               )}
             >
