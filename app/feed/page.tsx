@@ -484,7 +484,7 @@ function FeedContent() {
                             {item.category}
                           </Badge>
                           <span className="text-[11px] text-muted-foreground">
-                            {timeAgo(item.fetched_at)}
+                            {formatDate(item.published_at)}
                           </span>
                           {item.score !== null && (
                             <span className="text-[11px] text-muted-foreground ml-auto">

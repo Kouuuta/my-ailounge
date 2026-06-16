@@ -37,6 +37,13 @@ interface FeedItem {
   is_read: number;
 }
 
+function formatDate(dateStr: string | null): string {
+  if (!dateStr) return "N/A";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "N/A";
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -115,7 +122,7 @@ function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
                   </span>
                 )}
                 <span className="text-[10px] text-muted-foreground ml-auto">
-                  {timeAgo(item.fetched_at)}
+                  {formatDate(item.published_at)}
                 </span>
               </div>
             </div>
