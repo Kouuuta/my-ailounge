@@ -39,7 +39,7 @@ export function TimeWindowStat({ window, delay = 0 }: TimeWindowStatProps) {
           >
             <Icon className="h-4 w-4 text-white" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs text-muted-foreground">{config.label}</p>
             <p className="text-2xl font-bold tabular-nums tracking-tight">
               {value}

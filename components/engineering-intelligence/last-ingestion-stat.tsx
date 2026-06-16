@@ -35,7 +35,7 @@ export function LastIngestionStat({ delay = 0 }: LastIngestionStatProps) {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-slate-500 to-gray-500 shadow-sm">
             <RotateCcw className="h-4 w-4 text-white" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs text-muted-foreground">Last Ingestion</p>
             <p className="text-2xl font-bold tabular-nums tracking-tight">
               {lastRun ? timeAgo(lastRun) : "Never"}

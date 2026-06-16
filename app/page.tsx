@@ -1,4 +1,5 @@
 import { getDb } from "@/src/db/client";
+import { getItemsBySource, getItemsByCategory } from "@/src/lib/analytics";
 import { INTERN_TASKS } from "@/src/config/intern-tasks";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +17,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { LastIngestionStat } from "@/components/engineering-intelligence/last-ingestion-stat";
+import { TimeWindowStat } from "@/components/engineering-intelligence/time-window-stat";
+import { BreakdownCard } from "@/components/engineering-intelligence/breakdown-card";
+import type { BreakdownItem } from "@/components/engineering-intelligence/breakdown-card";
+import { AutomationStatus } from "@/components/engineering-intelligence/automation-status";
 
 interface FeedItem {
   id: number;
@@ -58,17 +64,6 @@ function timeAgo(dateStr: string): string {
 }
 
 const STAT_ICONS = [
-  { icon: Brain, label: "AI Updates", gradient: "from-sky-500 to-cyan-500" },
-  {
-    icon: Code,
-    label: "Framework Updates",
-    gradient: "from-violet-500 to-purple-500",
-  },
-  {
-    icon: Shield,
-    label: "Security Alerts",
-    gradient: "from-rose-500 to-pink-500",
-  },
   {
     icon: BookOpen,
     label: "Total Items",
@@ -102,7 +97,7 @@ function StatCard({
           >
             <Icon className="h-4 w-4 text-white" />
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs text-muted-foreground">{label}</p>
             <p className="text-2xl font-bold tabular-nums tracking-tight">
               {value}
@@ -123,19 +118,19 @@ function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
       className="block group"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <Card className="transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-vibrant/30 hover:shadow-md">
+      <Card className="w-full min-w-0 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-vibrant/30 hover:shadow-md">
         <CardContent className="py-3 px-4">
-          <div className="flex items-start justify-between gap-2">
+          <div className="flex min-w-0 items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium group-hover:text-accent-vibrant transition-colors truncate">
+              <p className="min-w-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium group-hover:text-accent-vibrant transition-colors">
                 {item.title}
               </p>
-              <div className="flex items-center gap-2 mt-1">
+              <div className="flex flex-wrap items-center gap-2 mt-1 min-w-0">
                 <Badge variant="secondary" className="text-[10px] px-1 py-0">
                   {item.source.replace("_", " ")}
                 </Badge>
                 {item.tags && (
-                  <span className="text-[10px] text-muted-foreground">
+                  <span className="text-[10px] text-muted-foreground truncate min-w-0">
                     {item.tags
                       .split(",")
                       .slice(0, 3)
@@ -175,7 +170,7 @@ function SectionCard({
       style={{ animationDelay: `${delay}ms` }}
     >
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-vibrant/10">
               <Icon className="h-4 w-4 text-accent-vibrant" />
@@ -183,7 +178,12 @@ function SectionCard({
             <CardTitle className="text-lg">{title}</CardTitle>
           </div>
           {viewAllHref && (
-            <Button variant="ghost" size="sm" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              asChild
+              className="hidden md:inline-flex"
+            >
               <Link href={viewAllHref}>
                 View all
                 <ChevronRight className="h-4 w-4 ml-1" />
@@ -274,20 +274,24 @@ export default function HomePage() {
   const todayTask = INTERN_TASKS[taskIndex % INTERN_TASKS.length];
   const tomorrowTask = INTERN_TASKS[(taskIndex + 1) % INTERN_TASKS.length];
 
-  const statValues = [
-    aiItems.length,
-    frameworkItems.length,
-    securityItems.length,
-    totalItems,
-  ];
+  const statValues = [totalItems];
+
+  const sources: BreakdownItem[] = getItemsBySource().map((s) => ({
+    name: s.source,
+    count: s.count,
+  }));
+  const categories: BreakdownItem[] = getItemsByCategory().map((c) => ({
+    name: c.category,
+    count: c.count,
+  }));
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="animate-fade-in flex items-center justify-between mb-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-6 md:py-8">
+        <div className="animate-fade-in flex items-center justify-between gap-3 flex-wrap mb-8">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight">
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
                 Engineering Briefing
               </h1>
               <Sparkles className="h-5 w-5 text-accent-vibrant" />
@@ -306,7 +310,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="animate-fade-in grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div className="animate-fade-in grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {STAT_ICONS.map((s, i) => (
             <StatCard
               key={s.label}
@@ -315,6 +319,9 @@ export default function HomePage() {
               delay={i * 100}
             />
           ))}
+          <LastIngestionStat delay={400} />
+          <TimeWindowStat window="today" delay={500} />
+          <TimeWindowStat window="week" delay={600} />
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
@@ -323,14 +330,14 @@ export default function HomePage() {
             style={{ animationDelay: "200ms" }}
           >
             <SectionCard
-              title="AI Changes"
+              title={`AI Changes (${aiItems.length})`}
               icon={Brain}
               items={aiItems}
               viewAllHref="/feed?category=ai"
               delay={0}
             />
             <SectionCard
-              title="Trending Repos"
+              title={`Trending Repos (${trendingItems.length})`}
               icon={TrendingUp}
               items={trendingItems}
               viewAllHref="/feed?source=github_trending"
@@ -342,14 +349,14 @@ export default function HomePage() {
             style={{ animationDelay: "300ms" }}
           >
             <SectionCard
-              title="Framework Updates"
+              title={`Framework Updates (${frameworkItems.length})`}
               icon={Code}
               items={frameworkItems}
               viewAllHref="/feed?category=nextjs"
               delay={0}
             />
             <SectionCard
-              title="Security"
+              title={`Security (${securityItems.length})`}
               icon={Shield}
               items={securityItems}
               viewAllHref="/feed?category=security"
@@ -359,6 +366,14 @@ export default function HomePage() {
         </div>
 
         <Separator className="my-8" />
+
+        <div className="hidden md:block animate-fade-in mb-8">
+          <BreakdownCard
+            sources={sources}
+            categories={categories}
+            total={totalItems}
+          />
+        </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           <Card
@@ -379,7 +394,7 @@ export default function HomePage() {
                   href={recommendedItem[0].url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block group"
+                  className="block w-full min-w-0 group"
                 >
                   <p className="text-sm font-medium group-hover:text-accent-vibrant transition-colors">
                     {recommendedItem[0].title}
@@ -447,6 +462,10 @@ export default function HomePage() {
               </Badge>
             </CardContent>
           </Card>
+        </div>
+
+        <div className="animate-fade-in mt-8">
+          <AutomationStatus />
         </div>
       </div>
     </div>

@@ -22,7 +22,6 @@ export function AutomationStatus() {
   const statuses = getIngestionStatus();
   const globalStatus = getGlobalIngestionStatus();
   const errors = statuses.filter((s) => s.status === "error").length;
-  const ok = statuses.filter((s) => s.status === "ok").length;
 
   return (
     <Card className="transition-all duration-300 hover:shadow-md">
