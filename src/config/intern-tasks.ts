@@ -19,7 +19,7 @@ export const INTERN_TASKS: InternTask[] = [
     title: "Add a new RSS feed source",
     description: "Research a relevant blog/RSS feed, add it to the ingester config, and run `npm run ingest` to verify.",
     difficulty: "intermediate",
-  },
+  }, 
   {
     title: "Build a chart for feed volume",
     description: "Create a simple bar chart showing how many items per source were ingested in the last 7 days.",
