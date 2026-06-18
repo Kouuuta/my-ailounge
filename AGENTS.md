@@ -61,4 +61,4 @@ components/README.md — UI components and widgets
 
 ## Available Skills
 
-ui-ux-pro-max, caveman
+ui-ux-pro-max, caveman, impeccable
