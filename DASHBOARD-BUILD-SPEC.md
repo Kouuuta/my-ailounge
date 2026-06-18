@@ -2,7 +2,7 @@
 
 > Feed this document to your AI coding agent (opencode, Claude, etc.) as the primary
 > instruction set for building the **Mind You Developer Dashboard**. It follows the module
-> order and acceptance criteria defined in [`docs/developer-dashboard.md`](./docs/developer-dashboard.md),
+> order and acceptance criteria defined in [`docs/guides/developer-dashboard.md`](./docs/guides/developer-dashboard.md),
 > and reflects the codebase that already exists in this repo.
 
 ---
@@ -11,28 +11,28 @@
 
 Do not rebuild these. Extend them.
 
-| Already in repo | Path | Status |
-|---|---|---|---|
-| SQLite schema (3 tables: `feed_items`, `kv_store`, `watchlist_items`) | `src/db/schema.ts` | ✅ Done |
-| DB client (`getDb()` singleton, WAL mode) | `src/db/client.ts` | ✅ Done |
-| Migration entry point | `src/db/migrate.ts` | ✅ Done |
-| Manual feeds ingester (parses `docs/feeds/*.md`) | `src/ingesters/manual-feeds/index.ts` | ✅ Done |
-| Hacker News ingester (HN Algolia API, top 20 stories) | `src/ingesters/hacker-news/index.ts` | ✅ Done |
-| GitHub Trending ingester (parses `ideas/trending.md` → SQLite) | `src/ingesters/github-trending/index.ts` | ✅ Done |
-| RSS ingester (12 feeds across 6 categories, regex parser) | `src/ingesters/rss/index.ts` | ✅ Done |
-| Orchestrator (runs all 4 ingesters, kv_store tracking) | `src/ingesters/run-all.ts` | ✅ Done |
-| GitHub Trending scraper (legacy, writes to `ideas/trending.md` + Slack) | `src/scraper.py` | Working, but writes to markdown not SQLite |
-| Feed format/tagging rules | `docs/feeds/feeds-format-guide.md` | ✅ Done |
-| Intern task seed data (13 tasks) | `src/config/intern-tasks.ts` | ✅ Done |
-| Shared utilities (DB writes, markdown append, analytics queries) | `src/lib/` | ✅ Done |
-| Dashboard widgets (AutomationStatus, BreakdownCard, stat cards) | `components/engineering-intelligence/` | ✅ Done |
-| shadcn/ui primitives (11 components) | `components/ui/` | ✅ Done |
-| Dark/light theme provider | `components/theme-provider.tsx` | ✅ Done |
-| Navbar with active route + theme toggle | `components/ui/navbar.tsx` | ✅ Done |
-| Page README docs (app/, src/, components/) | `*/README.md` | ✅ Done |
-| Agent steerer files (OpenCode + Claude) | `AGENTS.md`, `CLAUDE.md` | ✅ Done |
-| Documentation hub | `docs/README.md` | ✅ Done |
-| GitHub Actions daily ingestion workflow | `.github/workflows/ingest.yml` | Exists, unused for now — ingestion is manual via `npm run ingest` (Section 6); cron automation deferred (Appendix A) |
+| Already in repo                                                         | Path                                     | Status                                                                                                               |
+| ----------------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| SQLite schema (3 tables: `feed_items`, `kv_store`, `watchlist_items`)   | `src/db/schema.ts`                       | ✅ Done                                                                                                              |
+| DB client (`getDb()` singleton, WAL mode)                               | `src/db/client.ts`                       | ✅ Done                                                                                                              |
+| Migration entry point                                                   | `src/db/migrate.ts`                      | ✅ Done                                                                                                              |
+| Manual feeds ingester (parses `docs/feeds/*.md`)                        | `src/ingesters/manual-feeds/index.ts`    | ✅ Done                                                                                                              |
+| Hacker News ingester (HN Algolia API, top 20 stories)                   | `src/ingesters/hacker-news/index.ts`     | ✅ Done                                                                                                              |
+| GitHub Trending ingester (parses `ideas/trending.md` → SQLite)          | `src/ingesters/github-trending/index.ts` | ✅ Done                                                                                                              |
+| RSS ingester (12 feeds across 6 categories, regex parser)               | `src/ingesters/rss/index.ts`             | ✅ Done                                                                                                              |
+| Orchestrator (runs all 4 ingesters, kv_store tracking)                  | `src/ingesters/run-all.ts`               | ✅ Done                                                                                                              |
+| GitHub Trending scraper (legacy, writes to `ideas/trending.md` + Slack) | `src/scraper.py`                         | Working, but writes to markdown not SQLite                                                                           |
+| Feed format/tagging rules                                               | `docs/feeds/feeds-format-guide.md`       | ✅ Done                                                                                                              |
+| Intern task seed data (13 tasks)                                        | `src/config/intern-tasks.ts`             | ✅ Done                                                                                                              |
+| Shared utilities (DB writes, markdown append, analytics queries)        | `src/lib/`                               | ✅ Done                                                                                                              |
+| Dashboard widgets (AutomationStatus, BreakdownCard, stat cards)         | `components/engineering-intelligence/`   | ✅ Done                                                                                                              |
+| shadcn/ui primitives (11 components)                                    | `components/ui/`                         | ✅ Done                                                                                                              |
+| Dark/light theme provider                                               | `components/theme-provider.tsx`          | ✅ Done                                                                                                              |
+| Navbar with active route + theme toggle                                 | `components/ui/navbar.tsx`               | ✅ Done                                                                                                              |
+| Page README docs (app/, src/, components/)                              | `*/README.md`                            | ✅ Done                                                                                                              |
+| Agent steerer files (OpenCode + Claude)                                 | `AGENTS.md`, `CLAUDE.md`                 | ✅ Done                                                                                                              |
+| Documentation hub                                                       | `docs/README.md`                         | ✅ Done                                                                                                              |
+| GitHub Actions daily ingestion workflow                                 | `.github/workflows/ingest.yml`           | Exists, unused for now — ingestion is manual via `npm run ingest` (Section 6); cron automation deferred (Appendix A) |
 
 **Stack:**
 
@@ -53,14 +53,14 @@ shipping Module 1.
 > ✅ **Modules 1, 3, 5, and 8 are already built.** See status badges below for what's
 > implemented vs planned. The remaining work is Modules 2 and 7.
 
-| Module | Status |
-|--------|--------|
-| **Module 1 — Developer Intelligence Feed** | ✅ Built |
-| **Module 5 — Engineering Briefing** | ✅ Built |
-| **Module 3 — Stack Watchlist** | ✅ Built |
-| **Module 8 — Intern Safe Task Board** | ✅ Built (seed data + UI on homepage) |
-| **Module 2 — Repo Radar** | ⬜ Planned — not started |
-| **Module 7 — Prompt Library** | ⬜ Planned — not started |
+| Module                                     | Status                                |
+| ------------------------------------------ | ------------------------------------- |
+| **Module 1 — Developer Intelligence Feed** | ✅ Built                              |
+| **Module 5 — Engineering Briefing**        | ✅ Built                              |
+| **Module 3 — Stack Watchlist**             | ✅ Built                              |
+| **Module 8 — Intern Safe Task Board**      | ✅ Built (seed data + UI on homepage) |
+| **Module 2 — Repo Radar**                  | ⬜ Planned — not started              |
+| **Module 7 — Prompt Library**              | ⬜ Planned — not started              |
 
 ---
 
@@ -101,12 +101,12 @@ Run `npx ts-node src/db/migrate.ts` to apply.
 
 ### 2.3 API routes (`app/api/feed/`) — ✅ All built
 
-| Route | Method | Status | Purpose |
-|---|---|---|---|
-| `app/api/feed/route.ts` | `GET` | ✅ Done | List feed items. Query params: `source`, `category`, `tag`, `q`, `is_read`, `is_pinned`, `limit`, `offset` — ordered by `is_pinned DESC, published_at DESC, fetched_at DESC` |
-| `app/api/feed/route.ts` | `POST` | ✅ Done | Manually add a custom entry (`source: 'manual'`) |
-| `app/api/feed/[id]/route.ts` | `PATCH` | ✅ Done | Update fields: `title`, `summary`, `tags`, `category`, `score`, `is_read`, `is_pinned` |
-| `app/api/feed/[id]/route.ts` | `DELETE` | ✅ Done | Remove an entry |
+| Route                        | Method   | Status  | Purpose                                                                                                                                                                      |
+| ---------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/api/feed/route.ts`      | `GET`    | ✅ Done | List feed items. Query params: `source`, `category`, `tag`, `q`, `is_read`, `is_pinned`, `limit`, `offset` — ordered by `is_pinned DESC, published_at DESC, fetched_at DESC` |
+| `app/api/feed/route.ts`      | `POST`   | ✅ Done | Manually add a custom entry (`source: 'manual'`)                                                                                                                             |
+| `app/api/feed/[id]/route.ts` | `PATCH`  | ✅ Done | Update fields: `title`, `summary`, `tags`, `category`, `score`, `is_read`, `is_pinned`                                                                                       |
+| `app/api/feed/[id]/route.ts` | `DELETE` | ✅ Done | Remove an entry                                                                                                                                                              |
 
 Full-text search uses `WHERE title LIKE @q` with `%` wildcards — meets <200ms on current data volume.
 
@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS watchlist_items (
 
 ### 4.2 Seed data
 
-Seed with the team's real stack (from `docs/developer-dashboard.md` Module 3): Next.js, Django,
+Seed with the team's real stack (from `docs/guides/developer-dashboard.md` Module 3): Next.js, Django,
 DRF, PostgreSQL, Docker, AWS, Celery, Redis, GitHub Actions, Sentry, OpenAI/Anthropic/DeepSeek SDKs.
 
 ### 4.3 UI
@@ -221,13 +221,13 @@ A single entry point that runs all 4 ingesters sequentially, with status trackin
 
 The orchestrator runs each ingester one at a time and records:
 
-| kv_store key namespace | Example | Purpose |
-|------------------------|---------|---------|
-| `ingest:last_run:<source>` | `ingest:last_run:hn` | ISO 8601 timestamp of last run |
-| `ingest:status:<source>` | `ingest:status:hn` | `'ok'` or `'error'` |
-| `ingest:count:<source>` | `ingest:count:hn` | Number of new items from last run |
-| `ingest:elapsed_ms:<source>` | `ingest:elapsed_ms:hn` | Execution time in ms |
-| `ingest:status:all` | `ingest:status:all` | `'ok'` or `'degraded'` |
+| kv_store key namespace       | Example                | Purpose                           |
+| ---------------------------- | ---------------------- | --------------------------------- |
+| `ingest:last_run:<source>`   | `ingest:last_run:hn`   | ISO 8601 timestamp of last run    |
+| `ingest:status:<source>`     | `ingest:status:hn`     | `'ok'` or `'error'`               |
+| `ingest:count:<source>`      | `ingest:count:hn`      | Number of new items from last run |
+| `ingest:elapsed_ms:<source>` | `ingest:elapsed_ms:hn` | Execution time in ms              |
+| `ingest:status:all`          | `ingest:status:all`    | `'ok'` or `'degraded'`            |
 
 After all ingesters finish, it prints a summary table showing each source's status, count, and duration. This `kv_store` data is consumed by the `AutomationStatus` and `LastIngestionStat` dashboard widgets.
 
@@ -294,18 +294,18 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 
 ### ✅ Already Built (MVP complete)
 
-| Step | What | Status |
-|------|------|--------|
-| 1 | Schema: `feed_items`, `kv_store`, `watchlist_items` | ✅ |
-| 2 | Feed API: GET (filters + pagination), POST, PATCH, DELETE | ✅ |
-| 3 | `/feed` page with filter bar, search, pin/read/delete/add | ✅ |
-| 4 | All 4 ingesters: manual-feeds, HN, GitHub Trending, RSS | ✅ |
-| 5 | `run-all.ts` orchestrator + `npm run ingest` script | ✅ |
-| 6 | Confirmed `/feed` shows data from all sources | ✅ |
-| 7 | Engineering Briefing homepage (5 sections + stats) | ✅ |
-| 8 | Stack Watchlist (/watchlist) with inline editing | ✅ |
-| 9 | Page READMEs for app/, src/, components/ | ✅ |
-| 10 | AGENTS.md + CLAUDE.md steerer files | ✅ |
+| Step | What                                                      | Status |
+| ---- | --------------------------------------------------------- | ------ |
+| 1    | Schema: `feed_items`, `kv_store`, `watchlist_items`       | ✅     |
+| 2    | Feed API: GET (filters + pagination), POST, PATCH, DELETE | ✅     |
+| 3    | `/feed` page with filter bar, search, pin/read/delete/add | ✅     |
+| 4    | All 4 ingesters: manual-feeds, HN, GitHub Trending, RSS   | ✅     |
+| 5    | `run-all.ts` orchestrator + `npm run ingest` script       | ✅     |
+| 6    | Confirmed `/feed` shows data from all sources             | ✅     |
+| 7    | Engineering Briefing homepage (5 sections + stats)        | ✅     |
+| 8    | Stack Watchlist (/watchlist) with inline editing          | ✅     |
+| 9    | Page READMEs for app/, src/, components/                  | ✅     |
+| 10   | AGENTS.md + CLAUDE.md steerer files                       | ✅     |
 
 ### ⬜ Remaining Work
 
@@ -376,7 +376,7 @@ For low-traffic internal tools, "daily" freshness is often good enough achieved 
   `fetch` to the cron route) and update `last_ingested_at` immediately to avoid duplicate
   triggers from concurrent requests.
 
-Trade-off: the *first* visitor of the day gets slightly stale data (and triggers the refresh
+Trade-off: the _first_ visitor of the day gets slightly stale data (and triggers the refresh
 for everyone after). Fine for an internal tool with a handful of users; not fine if you need
 guaranteed freshness regardless of traffic.
 
