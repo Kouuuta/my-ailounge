@@ -12,20 +12,31 @@
 Do not rebuild these. Extend them.
 
 | Already in repo | Path | Status |
-|---|---|---|
-| SQLite schema (`feed_items` table) | `src/db/schema.ts` | Done |
-| DB client (better-sqlite3 singleton) | `src/db/client.ts` | Done |
-| Manual feeds ingester (parses `docs/feeds/*.md`) | `src/ingesters/manual-feeds/index.ts` | Done |
-| Hacker News ingester | `src/ingesters/hacker-news/index.ts` | Stub (TODO) |
-| GitHub Trending ingester | `src/ingesters/github-trending/index.ts` | Stub (TODO) |
-| RSS ingester | `src/ingesters/rss/index.ts` | Stub (TODO) |
+|---|---|---|---|
+| SQLite schema (3 tables: `feed_items`, `kv_store`, `watchlist_items`) | `src/db/schema.ts` | ✅ Done |
+| DB client (`getDb()` singleton, WAL mode) | `src/db/client.ts` | ✅ Done |
+| Migration entry point | `src/db/migrate.ts` | ✅ Done |
+| Manual feeds ingester (parses `docs/feeds/*.md`) | `src/ingesters/manual-feeds/index.ts` | ✅ Done |
+| Hacker News ingester (HN Algolia API, top 20 stories) | `src/ingesters/hacker-news/index.ts` | ✅ Done |
+| GitHub Trending ingester (parses `ideas/trending.md` → SQLite) | `src/ingesters/github-trending/index.ts` | ✅ Done |
+| RSS ingester (12 feeds across 6 categories, regex parser) | `src/ingesters/rss/index.ts` | ✅ Done |
+| Orchestrator (runs all 4 ingesters, kv_store tracking) | `src/ingesters/run-all.ts` | ✅ Done |
 | GitHub Trending scraper (legacy, writes to `ideas/trending.md` + Slack) | `src/scraper.py` | Working, but writes to markdown not SQLite |
-| Feed format/tagging rules | `docs/feeds/feeds-format-guide.md` | Done |
+| Feed format/tagging rules | `docs/feeds/feeds-format-guide.md` | ✅ Done |
+| Intern task seed data (13 tasks) | `src/config/intern-tasks.ts` | ✅ Done |
+| Shared utilities (DB writes, markdown append, analytics queries) | `src/lib/` | ✅ Done |
+| Dashboard widgets (AutomationStatus, BreakdownCard, stat cards) | `components/engineering-intelligence/` | ✅ Done |
+| shadcn/ui primitives (11 components) | `components/ui/` | ✅ Done |
+| Dark/light theme provider | `components/theme-provider.tsx` | ✅ Done |
+| Navbar with active route + theme toggle | `components/ui/navbar.tsx` | ✅ Done |
+| Page README docs (app/, src/, components/) | `*/README.md` | ✅ Done |
+| Agent steerer files (OpenCode + Claude) | `AGENTS.md`, `CLAUDE.md` | ✅ Done |
+| Documentation hub | `docs/README.md` | ✅ Done |
 | GitHub Actions daily ingestion workflow | `.github/workflows/ingest.yml` | Exists, unused for now — ingestion is manual via `npm run ingest` (Section 6); cron automation deferred (Appendix A) |
 
 **Stack:**
 
-- Frontend: Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui
+- Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI
 - Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`)
 - Ingestion: TypeScript ingesters (`src/ingesters/*`) + one legacy Python scraper (`src/scraper.py`)
 - Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing SQLite directly —
@@ -39,25 +50,28 @@ Do not rebuild these. Extend them.
 Follow this order. Each module is shippable on its own — don't try to build everything before
 shipping Module 1.
 
-1. **Module 1 — Developer Intelligence Feed** (the data layer + first UI — build this first)
-2. **Module 5 — Engineering Briefing homepage** (a generated view on top of Module 1's data)
-3. **Module 3 — Stack Watchlist**
-4. **Module 2 — Repo Radar**
-5. **Module 7 — Prompt Library**
-6. **Module 8 — Intern Safe Task Board**
+> ✅ **Modules 1, 3, 5, and 8 are already built.** See status badges below for what's
+> implemented vs planned. The remaining work is Modules 2 and 7.
 
-> Note: `developer-dashboard.md` lists the Engineering Briefing (Module 5) first in its "Build
-> order" section, but Module 5 is *generated from* Module 1's data — so Module 1 must exist
-> first even though it's numbered higher. Build Module 1's data layer and at least a basic feed
-> list view before starting Module 5.
+| Module | Status |
+|--------|--------|
+| **Module 1 — Developer Intelligence Feed** | ✅ Built |
+| **Module 5 — Engineering Briefing** | ✅ Built |
+| **Module 3 — Stack Watchlist** | ✅ Built |
+| **Module 8 — Intern Safe Task Board** | ✅ Built (seed data + UI on homepage) |
+| **Module 2 — Repo Radar** | ⬜ Planned — not started |
+| **Module 7 — Prompt Library** | ⬜ Planned — not started |
 
 ---
 
 ## 2. Module 1 — Developer Intelligence Feed (Primary Target)
 
-### 2.1 What to build
+> ✅ **Already built.** Full feed page at `/feed` with filter/search/pin/read/delete/add and
+> pagination. See `app/feed/README.md` and `app/api/feed/README.md` for details.
 
-A single page (`/feed` or dashboard home) showing all `feed_items`, filterable by source/category/tag,
+### 2.1 What was built
+
+A single page (`/feed`) showing all `feed_items`, filterable by source/category/tag,
 with full-text search, manual curation (add/remove/pin), read tracking, and de-duplication.
 
 ### 2.2 Data layer
@@ -85,42 +99,43 @@ feed_items (
 
 Run `npx ts-node src/db/migrate.ts` to apply.
 
-### 2.3 API routes to build (`app/api/feed/`)
+### 2.3 API routes (`app/api/feed/`) — ✅ All built
 
-| Route | Method | Purpose |
-|---|---|---|
-| `app/api/feed/route.ts` | `GET` | List feed items. Query params: `source`, `category`, `tag`, `q` (full-text search on `title`), `is_read`, `is_pinned`, `limit`, `offset` |
-| `app/api/feed/route.ts` | `POST` | Manually add a custom entry (`source: 'manual'`) |
-| `app/api/feed/[id]/route.ts` | `PATCH` | Toggle `is_read` / `is_pinned`, or edit title/tags |
-| `app/api/feed/[id]/route.ts` | `DELETE` | Remove an entry |
+| Route | Method | Status | Purpose |
+|---|---|---|---|
+| `app/api/feed/route.ts` | `GET` | ✅ Done | List feed items. Query params: `source`, `category`, `tag`, `q`, `is_read`, `is_pinned`, `limit`, `offset` — ordered by `is_pinned DESC, published_at DESC, fetched_at DESC` |
+| `app/api/feed/route.ts` | `POST` | ✅ Done | Manually add a custom entry (`source: 'manual'`) |
+| `app/api/feed/[id]/route.ts` | `PATCH` | ✅ Done | Update fields: `title`, `summary`, `tags`, `category`, `score`, `is_read`, `is_pinned` |
+| `app/api/feed/[id]/route.ts` | `DELETE` | ✅ Done | Remove an entry |
 
-For full-text search, start with `WHERE title LIKE '%' || ? || '%'` — acceptance criteria
-requires <200ms which plain `LIKE` over a few thousand rows will satisfy. Only reach for
-SQLite FTS5 virtual tables if the dataset grows large enough that `LIKE` becomes slow.
+Full-text search uses `WHERE title LIKE @q` with `%` wildcards — meets <200ms on current data volume.
 
-### 2.4 UI components (shadcn/ui)
+### 2.4 UI components (shadcn/ui) — ✅ All built
 
-- **Filter bar**: source/category/tag pills (use `Badge` + `Toggle`), search input (`Input`),
-  read/unread toggle.
-- **Feed list**: `Card` per item — title (links out), source badge, tags, published date,
-  pin/read controls (`Button` with `lucide-react` icons: `Pin`, `Check`, `Trash2`).
-- **"New since last visit"** banner — compare `fetched_at` against a `last_visited_at` value
-  stored in `localStorage` (client-only, single-user MVP) or a `dashboard_meta` key-value table
-  (multi-user-ready). Recommend the table approach now since Module 6 (per-user state) is
-  planned later — adding a generic `kv_store(key TEXT PRIMARY KEY, value TEXT)` table now
-  avoids a migration later.
+- **Filter bar**: source/category/status/pinned selects, search input, clear + refresh buttons.
+- **Feed list**: `Card` per item — source badge (color-coded), category badge, published date,
+  score, tags, title (links out), pin/read/delete action buttons (lucide-react icons).
+- **"New since last visit"** banner — compares `fetched_at` against `localStorage` timestamp,
+  shows count of new items.
+- **Add Item form** — toggle-able form with title/URL/category/tags, posts to `POST /api/feed`.
+- **Pagination** — "Load more" button (50 items at a time).
+- **Loading states** — `CardSkeleton` placeholders during fetch.
+- **Empty/error states** — messages for no results, filter mismatch, or fetch failure.
 
-### 2.5 Acceptance criteria (from developer-dashboard.md — keep these as your Definition of Done)
+### 2.5 Acceptance criteria (from developer-dashboard.md) — ✅ All met
 
-- [ ] All sources (manual, HN, GitHub Trending, RSS) visible in one filterable view
-- [ ] Manual add / remove / pin persists across reloads
-- [ ] Ingestion runs on demand via `npm run ingest` (see Section 6)
-- [ ] No duplicate rows per `(source, url)` — enforced by the existing `UNIQUE` constraint
-- [ ] Full-text title search returns matches under 200ms on a typical day's volume
+- [x] All sources (manual, HN, GitHub Trending, RSS) visible in one filterable view
+- [x] Manual add / remove / pin persists across reloads
+- [x] Ingestion runs on demand via `npm run ingest` (see Section 6)
+- [x] No duplicate rows per `(source, url)` — enforced by the existing `UNIQUE` constraint
+- [x] Full-text title search returns matches under 200ms on a typical day's volume
 
 ---
 
 ## 3. Module 5 — Engineering Briefing (Homepage)
+
+> ✅ **Already built.** Server Component at `app/page.tsx` with 5 feed sections, stat cards,
+> breakdown chart, intern tasks, and automation status. See `app/README.md` for details.
 
 A generated daily summary, built as a query/aggregation over `feed_items` — not a separate data source.
 
@@ -145,6 +160,9 @@ A generated daily summary, built as a query/aggregation over `feed_items` — no
 ---
 
 ## 4. Module 3 — Stack Watchlist
+
+> ✅ **Already built.** Full page at `/watchlist` with sortable table, inline editing, risk
+> levels, and CRUD API. See `app/watchlist/README.md` for details.
 
 ### 4.1 Data model
 
@@ -183,37 +201,6 @@ fit naturally as a scheduled job (see Section 6).
 
 ---
 
-## 5. Module 2 — Repo Radar
-
-### 5.1 Data model
-
-```sql
-CREATE TABLE IF NOT EXISTS watched_repos (
-  id              INTEGER PRIMARY KEY AUTOINCREMENT,
-  owner           TEXT NOT NULL,
-  repo            TEXT NOT NULL,
-  latest_release  TEXT,
-  stars           INTEGER,
-  open_issues     INTEGER,
-  last_checked_at TEXT,
-  UNIQUE (owner, repo)
-);
-```
-
-Seed list from `developer-dashboard.md`: Next.js, Django, DRF, Celery, PostgreSQL, LangChain,
-OpenAI SDK, Anthropic SDK, shadcn/ui, Vercel AI SDK, Cal.com, Sentry, Supabase, OpenCode.
-
-### 5.2 Data source
-
-GitHub REST API (`GET /repos/{owner}/{repo}` and `/releases/latest`) — unauthenticated rate
-limit is 60 req/hour, which is enough for ~14 repos checked once or twice daily. If you add an
-auth token (`GITHUB_TOKEN`), the limit jumps to 5,000 req/hour.
-
-### 5.3 UI
-
-Card grid or table: repo name (linked), stars, latest release tag + date, open issue count,
-last-checked timestamp. Highlight repos with a release newer than 7 days.
-
 ---
 
 ## 6. Ingestion — Manual for Now (`npm run ingest`)
@@ -223,65 +210,32 @@ last-checked timestamp. Highlight repos with a release newer than 7 days.
 > **on-demand** via a single npm script. You run it whenever you want fresh data; the dashboard
 > just reads whatever is currently in `data/dashboard.db`.
 
-### 6.1 What to build
+### 6.1 What was built
 
-A single entry point that runs all ingesters sequentially, wired up as an npm script:
+A single entry point that runs all 4 ingesters sequentially, with status tracking in `kv_store`:
 
-```ts
-// src/ingesters/run-all.ts
-import { ingestHackerNews } from "./hacker-news";
-import { ingestGithubTrending } from "./github-trending";
-import { ingestRss } from "./rss";
-import { ingestManualFeeds } from "./manual-feeds";
+- **File:** `src/ingesters/run-all.ts`
+- **Script:** `npm run ingest` (maps to `npx tsx src/ingesters/run-all.ts`)
 
-async function runAll() {
-  console.log("Starting ingestion run...\n");
+**How it works:**
 
-  const results = await Promise.allSettled([
-    ingestManualFeeds(),
-    ingestHackerNews(),
-    ingestGithubTrending(),
-    ingestRss([/* feed configs — see 6.3 */]),
-  ]);
+The orchestrator runs each ingester one at a time and records:
 
-  results.forEach((result, i) => {
-    if (result.status === "rejected") {
-      console.error(`Ingester ${i} failed:`, result.reason);
-    }
-  });
+| kv_store key namespace | Example | Purpose |
+|------------------------|---------|---------|
+| `ingest:last_run:<source>` | `ingest:last_run:hn` | ISO 8601 timestamp of last run |
+| `ingest:status:<source>` | `ingest:status:hn` | `'ok'` or `'error'` |
+| `ingest:count:<source>` | `ingest:count:hn` | Number of new items from last run |
+| `ingest:elapsed_ms:<source>` | `ingest:elapsed_ms:hn` | Execution time in ms |
+| `ingest:status:all` | `ingest:status:all` | `'ok'` or `'degraded'` |
 
-  console.log("\nIngestion run complete.");
-}
+After all ingesters finish, it prints a summary table showing each source's status, count, and duration. This `kv_store` data is consumed by the `AutomationStatus` and `LastIngestionStat` dashboard widgets.
 
-runAll().catch((err) => {
-  console.error("Fatal error during ingestion:", err);
-  process.exit(1);
-});
-```
-
-Add to `package.json`:
-
-```json
-{
-  "scripts": {
-    "ingest": "ts-node src/ingesters/run-all.ts"
-  }
-}
-```
-
-Run it with:
-
-```bash
-npm run ingest
-```
-
-This fetches everything, writes/upserts into `feed_items` (the existing `UNIQUE (source, url)`
-constraint prevents duplicates on repeated runs), and the dashboard picks up the new rows on
-next page load/refresh — no restart needed since it's reading SQLite directly.
+Each ingester writes data to **both** SQLite (via `lib/db.upsertEntry`) and markdown (via `lib/markdown.appendToFeed`). The `UNIQUE (source, url)` constraint prevents duplicates on repeated runs.
 
 ### 6.2 Workflow while developing
 
-1. Make changes to an ingester (e.g. implement `src/ingesters/hacker-news/index.ts`).
+1. Make changes to an ingester (e.g. tweak `src/ingesters/hacker-news/index.ts`).
 2. Run `npm run ingest` to populate/update `data/dashboard.db`.
 3. Refresh the dashboard (`/feed`, `/`) to see the new data.
 4. Re-run `npm run ingest` any time you want to pull fresh data — safe to run repeatedly,
@@ -289,17 +243,17 @@ next page load/refresh — no restart needed since it's reading SQLite directly.
 
 ### 6.3 RSS feed config
 
-`ingestRss` takes a list of `{ url, category }`. Hardcode a starter list in
-`src/config/rss-feeds.ts` for now (e.g. a couple of Next.js/Django/AI blogs) — this can be
-moved to a DB table or admin UI later, but isn't needed for the manual-trigger MVP.
+RSS feed URLs are defined in `src/ingesters/rss/feeds.ts` — 12 feeds across 6 categories
+(AI, Next.js, Django, Security, Cloud, Python). Each entry specifies `url`, `category`, and
+the markdown feed file to append to. To add a new feed, add an entry to this array.
 
-### 6.4 Acceptance criteria (revised — no scheduling requirement for now)
+### 6.4 Acceptance criteria (all ✅ met)
 
-- [ ] `npm run ingest` runs all four ingesters (manual feeds, HN, GitHub Trending, RSS) and exits cleanly
-- [ ] Each ingester logs an inserted/skipped summary (the manual-feeds ingester already does this)
-- [ ] Re-running `npm run ingest` does not create duplicate rows (`UNIQUE (source, url)` enforced)
-- [ ] All sources visible in one filterable `/feed` view after running the script
-- [ ] Full-text title search returns matches under 200ms on a typical day's volume
+- [x] `npm run ingest` runs all four ingesters (manual feeds, HN, GitHub Trending, RSS) and exits cleanly
+- [x] Each ingester logs an inserted/skipped summary
+- [x] Re-running `npm run ingest` does not create duplicate rows (`UNIQUE (source, url)` enforced)
+- [x] All sources visible in one filterable `/feed` view after running the script
+- [x] Full-text title search returns matches under 200ms on a typical day's volume
 
 > Note: the original `developer-dashboard.md` acceptance criterion "Scheduled ingestion runs
 > without manual steps" is intentionally **not** in scope right now. Revisit once an automation
@@ -309,69 +263,76 @@ moved to a DB table or admin UI later, but isn't needed for the manual-trigger M
 
 The existing Python scraper writes GitHub Trending results to `ideas/trending.md` + Slack —
 keep this working as-is for now (it's a separate concern: a Slack notification, not the
-dashboard's data source). The new `src/ingesters/github-trending/index.ts` (TypeScript) should
-write to SQLite independently, and gets called by `npm run ingest`. Don't try to merge these
-into one script; let them run as two separate steps with different outputs (Slack notification
-vs. dashboard data).
+dashboard's data source). The TypeScript `src/ingesters/github-trending/index.ts` writes to
+SQLite independently and is called by `npm run ingest`. They run as two separate steps with
+different outputs (Slack notification vs. dashboard data).
 
 ---
 
-## 7. Suggested File Structure (additions only)
+## 7. Current File Structure (actual)
 
 ```
-app/
-├── page.tsx                      # Module 5: Engineering Briefing homepage
-├── feed/
-│   └── page.tsx                  # Module 1: Developer Intelligence Feed
-├── watchlist/
-│   └── page.tsx                  # Module 3: Stack Watchlist
-├── repos/
-│   └── page.tsx                  # Module 2: Repo Radar
-├── prompts/
-│   └── page.tsx                  # Module 7: Prompt Library
-├── tasks/
-│   └── page.tsx                  # Module 8: Intern Task Board
-└── api/
-    ├── feed/
-    │   ├── route.ts
-    │   └── [id]/route.ts
-    ├── watchlist/route.ts
-    └── repos/route.ts
-
-src/
-├── db/
-│   ├── client.ts                 # existing
-│   ├── schema.ts                 # existing — add watchlist_items, watched_repos, kv_store
-│   └── migrate.ts                # existing
-├── ingesters/
-│   ├── manual-feeds/index.ts     # existing
-│   ├── hacker-news/index.ts      # implement
-│   ├── github-trending/index.ts  # implement
-│   ├── rss/index.ts               # implement
-│   └── run-all.ts                # new — entry point for `npm run ingest`, see Section 6
-└── config/
-    ├── intern-tasks.ts            # new — Module 5 fallback content
-    └── rss-feeds.ts               # new — Section 6.3, RSS source list
+app/          → app/README.md        # 3 pages (/, /feed, /watchlist) + 4 API routes
+components/   → components/README.md # 11 shadcn/ui primitives + 4 dashboard widgets + theme
+src/          → src/README.md        # 4 ingesters (all ✅) + DB (3 tables) + analytics
+  ├── db/     → src/db/README.md
+  ├── ingesters/ → src/ingesters/README.md
+  ├── lib/    → src/lib/README.md
+  └── config/ → src/config/README.md
+lib/          → cn() utility (clsx + twMerge) — for UI only
+scripts/      → clean-feed-files.ts, _check-db.ts
+data/         → dashboard.db (gitignored)
+docs/         → docs/README.md       # Onboarding, plans, research, feeds, audits
 ```
 
 ---
 
-## 8. Suggested Build Sequence for Your AI Agent
+## 8. What's Left to Build
 
-When handing this to opencode/Claude, work in this order to keep each step independently testable:
+> Steps 1–8 below are **already complete**. The remaining work is Modules 2 (Repo Radar) and
+> 7 (Prompt Library).
 
-1. Confirm/extend `src/db/schema.ts` with `watchlist_items`, `watched_repos`, `kv_store`. Run migration.
-2. Implement `app/api/feed/route.ts` (GET + POST) and `[id]/route.ts` (PATCH + DELETE).
-3. Build `/feed` page with filter bar + list, wired to the API.
-4. Implement the three stub ingesters (`hacker-news`, `github-trending`, `rss`).
-5. Create `src/ingesters/run-all.ts` and add the `npm run ingest` script (Section 6).
-6. Run `npm run ingest` and confirm `/feed` shows data from all sources.
-7. Build `/` (Engineering Briefing) as a Server Component querying `feed_items`.
-8. Build `/watchlist` and `/repos` (Modules 3 & 2) — seed data, simple tables.
-9. Modules 7 & 8 (Prompt Library, Intern Task Board) — lower priority, build last.
+### ✅ Already Built (MVP complete)
 
-Ship after step 6 — that's a working Module 1 with manual ingestion via `npm run ingest`, which
-is the MVP. Automation (Appendix A) can be layered on later without changing this.
+| Step | What | Status |
+|------|------|--------|
+| 1 | Schema: `feed_items`, `kv_store`, `watchlist_items` | ✅ |
+| 2 | Feed API: GET (filters + pagination), POST, PATCH, DELETE | ✅ |
+| 3 | `/feed` page with filter bar, search, pin/read/delete/add | ✅ |
+| 4 | All 4 ingesters: manual-feeds, HN, GitHub Trending, RSS | ✅ |
+| 5 | `run-all.ts` orchestrator + `npm run ingest` script | ✅ |
+| 6 | Confirmed `/feed` shows data from all sources | ✅ |
+| 7 | Engineering Briefing homepage (5 sections + stats) | ✅ |
+| 8 | Stack Watchlist (/watchlist) with inline editing | ✅ |
+| 9 | Page READMEs for app/, src/, components/ | ✅ |
+| 10 | AGENTS.md + CLAUDE.md steerer files | ✅ |
+
+### ⬜ Remaining Work
+
+**Module 2 — Repo Radar** (higher priority)
+
+New page at `/repos` for tracking GitHub repos (stars, releases, issues). Requires:
+
+- `watched_repos` table in `src/db/schema.ts` + migration update
+- `app/api/repos/route.ts` — GET/POST/DELETE for watched repo list
+- `app/api/repos/[id]/route.ts` — PATCH for release check
+- `app/repos/page.tsx` — card grid or table view
+- GitHub REST API integration (`GET /repos/{owner}/{repo}`) for latest release data
+- Seed data: Next.js, Django, DRF, Celery, PostgreSQL, LangChain, etc.
+
+**Module 7 — Prompt Library** (lower priority)
+
+New page at `/prompts` for browsing/saving reusable AI prompts. Requires:
+
+- `prompts` table in schema
+- List + detail view with categories
+- Copy-to-clipboard functionality
+
+**Bonus — Scheduled Ingestion**
+
+- `ingest:rss` has an unused scoped `Scope` helper for pass-through `kv_store` tracking (line ~291)
+- Choose an automation option from Appendix A (GitHub Actions already exists at `.github/workflows/ingest.yml`)
+- Add auth protection to the cron endpoint if using Option A (app/api/cron/ingest route)
 
 ---
 
@@ -384,108 +345,13 @@ is the MVP. Automation (Appendix A) can be layered on later without changing thi
 
 ### A.1 Option A — Next.js API route + external cron pinger (lowest effort)
 
-Build one route that runs all ingesters:
+Create `app/api/cron/ingest/route.ts` that runs all ingesters via `Promise.allSettled(...)`,
+protected by a `Bearer ${process.env.CRON_SECRET}` auth check. Then have something call it
+daily. Free/cheap options:
 
-```ts
-// app/api/cron/ingest/route.ts
-import { ingestHackerNews } from "@/src/ingesters/hacker-news";
-import { ingestGithubTrending } from "@/src/ingesters/github-trending";
-import { ingestRss } from "@/src/ingesters/rss";
-import { ingestManualFeeds } from "@/src/ingesters/manual-feeds";
-
-export async function GET(req: Request) {
-  // Simple shared-secret check so this isn't a public "run my scraper" endpoint
-  const auth = req.headers.get("authorization");
-  if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new Response("Unauthorized", { status: 401 });
-  }
-
-  await Promise.allSettled([
-    ingestHackerNews(),
-    ingestGithubTrending(),
-    ingestRss([/* feed configs */]),
-    ingestManualFeeds(),
-  ]);
-
-  return Response.json({ ok: true, ranAt: new Date().toISOString() });
-}
-```
-
-Then have *something* call this URL once a day with the `Authorization` header. Pick one:
-
-- **cron-job.org** (free, no account needed for basic use) — schedule an HTTP GET to your
-  deployed URL.
-- **Vercel Cron Jobs** — if deploying to Vercel, add a `vercel.json`:
-  ```json
-  {
-    "crons": [{ "path": "/api/cron/ingest", "schedule": "0 0 * * *" }]
-  }
-  ```
-  Vercel calls this automatically; no external service needed. Add the `CRON_SECRET` check
-  above regardless, since Vercel cron requests aren't otherwise authenticated by default.
-- **Uptime monitoring tools repurposed as cron** (e.g. UptimeRobot, Healthchecks.io "pinger")
-  — many free uptime checkers let you set the check interval to 24h and will hit your URL on
-  schedule. Slightly hacky but works and gives you uptime monitoring for free too.
-
-### A.2 Render Cron Job
-
-**Note: not free** — Render's Cron Job service type is billed per execution (no permanent
-free tier for this service type, unlike GitHub Actions on a public repo). Useful as a future
-option but doesn't fit "deferred until we find something free" right now.
-
-Render has a dedicated **Cron Job** service type — separate from "Web Service" — built
-specifically for scheduled tasks, which makes it a good sandbox for testing whether your
-ingestion automation works end-to-end before picking a permanent platform.
-
-**Why it's a good test environment:**
-
-- Render's Cron Job service runs your command on a schedule using standard cron syntax (e.g.
-  `0 0 * * *`) and only bills for the actual execution time — it doesn't need to stay "awake"
-  like a free web service does (free web services on Render sleep after ~15 minutes of
-  inactivity and need a keep-alive ping; the Cron Job service type doesn't have this problem
-  since it's not a persistent server).
-- It deploys directly from your GitHub repo, same as the GitHub Actions workflow you already
-  have — so migrating the *trigger* without rewriting the *ingestion code* is straightforward.
-- You get real logs and execution history per run, which is useful for debugging "did it
-  actually run, and did it error?" while testing.
-
-**Setup steps:**
-
-1. Push this repo to GitHub (already done) and connect it to Render.
-2. In the Render dashboard, create a new **Cron Job** (not a Web Service).
-3. **Build command:**
-   ```bash
-   npm ci
-   ```
-4. **Command** (what runs on schedule):
-   ```bash
-   npx ts-node src/ingesters/run-all.ts
-   ```
-5. **Schedule:** standard cron syntax, e.g. `0 0 * * *` for daily at midnight UTC.
-6. **Environment variables:** add any keys your ingesters need (e.g. `GITHUB_TOKEN` for higher
-   rate limits, RSS feed URLs if not hardcoded).
-7. **Persistence caveat:** Render Cron Jobs run in an ephemeral container — the filesystem does
-   **not** persist between runs. Since `data/dashboard.db` (SQLite) needs to persist across
-   runs *and* be readable by your deployed dashboard, you have two options:
-   - **For testing the automation logic only** (i.e. "does the ingester run successfully on a
-     schedule, fetch data, and not crash?") — this is fine as-is. Point `DB_PATH` at a
-     throwaway location, check the logs/output to confirm each ingester ran and returned
-     expected counts, and treat the SQLite writes as disposable during this test phase.
-   - **For a working end-to-end deployment** — switch to **Render's managed PostgreSQL**
-     (free for 90 days, then ~$7/mo) so both the Cron Job and the Next.js Web Service connect
-     to the same persistent database over Render's private network. This means changing
-     `src/db/client.ts` from `better-sqlite3` to a Postgres client (e.g. `pg` or `postgres.js`)
-     — a bigger change, so don't do this until you've confirmed the scheduling itself works.
-
-**Recommended test sequence:**
-
-1. Deploy `run-all.ts` as a Render Cron Job with a *short* interval first (e.g. `*/15 * * * *`,
-   every 15 minutes) so you don't wait a full day to see results.
-2. Confirm in Render's logs that each ingester runs and logs its "inserted/skipped" summary
-   (the manual-feeds ingester already logs this — see `src/ingesters/manual-feeds/index.ts`).
-3. Once confirmed working, switch the schedule to your real cadence (`0 0 * * *` for daily)
-   and decide whether to keep SQLite (single-service, no Cron Job — see Option C below) or move to
-   Postgres for a true multi-service setup.
+- **cron-job.org** — schedule an HTTP GET to your deployed URL (free, no account needed)
+- **Vercel Cron Jobs** — add `vercel.json` with `"crons": [{ "path": "/api/cron/ingest", "schedule": "0 0 * * *" }]`
+- **Uptime monitoring** — UptimeRobot / Healthchecks.io repurposed as daily pingers
 
 ### A.3 Option B — Self-hosted: system cron + a small Python/Node script
 
@@ -494,12 +360,11 @@ HTTP entirely and run the ingesters as a scheduled OS process:
 
 ```bash
 # crontab -e
-0 0 * * * cd /path/to/dashboard && npx ts-node src/ingesters/run-all.ts >> /var/log/ingest.log 2>&1
+0 0 * * * cd /path/to/dashboard && npx tsx src/ingesters/run-all.ts >> /var/log/ingest.log 2>&1
 ```
 
-Create `src/ingesters/run-all.ts` that imports and calls all four ingesters sequentially (this
-is also the module the Option A route should import). This keeps "run everything" logic in one
-place regardless of how it's triggered.
+(`src/ingesters/run-all.ts` already exists and does this — see Section 6.1). This keeps "run
+everything" logic in one place regardless of how it's triggered.
 
 ### A.4 Option C — Database-triggered / on-demand (no schedule at all)
 
@@ -507,7 +372,7 @@ For low-traffic internal tools, "daily" freshness is often good enough achieved 
 
 - Store `last_ingested_at` in the `kv_store` table (see Section 2.4).
 - On each dashboard page load (Server Component), check if `last_ingested_at` is >24h old.
-- If so, kick off ingestion in the background (`after()` in Next.js 15, or a fire-and-forget
+- If so, kick off ingestion in the background (`after()` in Next.js, or a fire-and-forget
   `fetch` to the cron route) and update `last_ingested_at` immediately to avoid duplicate
   triggers from concurrent requests.
 
@@ -523,7 +388,6 @@ pinging a free-tier endpoint (A.1). Render's Cron Job (A.2) is a paid service ty
 mind if budget isn't a constraint later, but it's not the first thing to try given the "find a
 free way" goal.
 
-Likely best next step: keep `.github/workflows/ingest.yml` as-is (it already exists and is
-free), and simply point it at `npm run ingest` instead of the per-ingester steps it currently
-has. That gets scheduling back without inventing a new platform — revisit this once the manual
-workflow (Section 6) is solid and the ingesters are fully implemented.
+All 4 ingesters are implemented. Next step: keep `.github/workflows/ingest.yml` as-is and
+simply point it at `npm run ingest` instead of the per-ingester steps it currently has.
+That gets scheduling back without inventing a new platform.
