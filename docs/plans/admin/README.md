@@ -14,4 +14,4 @@ Handle the business plumbing. Own vendor contracts, software licenses, and non-c
 _None yet. Copy [`../_TEMPLATE.md`](../_TEMPLATE.md) to start._
 
 ## Key links
-- Tooling overview → [`../../vibe-coding-vs-legacy.md`](../../vibe-coding-vs-legacy.md)
+- Tooling overview → [`../../research/vibe-coding-vs-legacy.md`](../../research/vibe-coding-vs-legacy.md)

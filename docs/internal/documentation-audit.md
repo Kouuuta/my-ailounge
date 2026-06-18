@@ -4,8 +4,8 @@
 
 | Name | Location | Purpose | Documentation Status |
 |------|----------|---------|---------------------|
-| Engineering Briefing Dashboard | `app/page.tsx` | Homepage displaying stat cards, feed sections, AI recommendations, intern tasks, breakdown charts, and automation health | **Partial** — rendered UI has no doc beyond inline comments; `docs/developer-dashboard.md` covers layout specs |
-| Developer Intelligence Feed | `app/feed/page.tsx` | Full-featured feed viewer with search, filtering (source/category/read/pin), pagination, CRUD operations | **Partial** — `docs/developer-dashboard.md` mentions feed UI; `README.md` describes high-level architecture |
+| Engineering Briefing Dashboard | `app/page.tsx` | Homepage displaying stat cards, feed sections, AI recommendations, intern tasks, breakdown charts, and automation health | **Partial** — rendered UI has no doc beyond inline comments; `docs/guides/developer-dashboard.md` covers layout specs |
+| Developer Intelligence Feed | `app/feed/page.tsx` | Full-featured feed viewer with search, filtering (source/category/read/pin), pagination, CRUD operations | **Partial** — `docs/guides/developer-dashboard.md` mentions feed UI; `README.md` describes high-level architecture |
 | Stack Watchlist | `app/watchlist/page.tsx` | Tracked dependency table with version fields, risk-level selectors, sorting | **Undocumented** — no dedicated doc; only route file |
 | Feed Ingestion | `src/ingesters/*` | Four ingesters (Hacker News, GitHub Trending, RSS, Manual Feeds) orchestrated by `run-all.ts` | **Documented** — `README.md` has architecture diagram, data flow, and commands |
 | Schema Migration | `src/db/schema.ts` | Creates `feed_items`, `kv_store`, `watchlist_items` tables with indexes | **Documented** — `README.md` describes tables; `DASHBOARD-BUILD-SPEC.md` has schema details |
@@ -19,7 +19,7 @@
 
 | Route | File Location | Purpose | Documentation Status |
 |-------|--------------|---------|---------------------|
-| `/` (Home) | `app/page.tsx` | Engineering Briefing dashboard — stat cards, section cards, breakdown card, automation status, intern tasks, recommended tool | **Undocumented** — `docs/developer-dashboard.md` has layout notes but no component documentation |
+| `/` (Home) | `app/page.tsx` | Engineering Briefing dashboard — stat cards, section cards, breakdown card, automation status, intern tasks, recommended tool | **Undocumented** — `docs/guides/developer-dashboard.md` has layout notes but no component documentation |
 | `/feed` | `app/feed/page.tsx` | Developer Intelligence Feed — search, filter, paginate, create, edit, delete feed items | **Undocumented** — no dedicated page documentation |
 | `/watchlist` | `app/watchlist/page.tsx` | Stack Watchlist — tracked dependency table with version/risk management | **Undocumented** — no dedicated page documentation |
 

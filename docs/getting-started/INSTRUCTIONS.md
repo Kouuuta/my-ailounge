@@ -376,7 +376,7 @@ Our team uses Gemini CLI for:
 
 ## 7. Model Selection Guide
 
-Choosing the right model for the right task ensures better results and efficient resource usage. The table below reflects the team's **current model lineup** as of June 2026 — always cross-reference with [oh-my-opencode-models.md](./oh-my-opencode-models.md) for the latest updates.
+Choosing the right model for the right task ensures better results and efficient resource usage. The table below reflects the team's **current model lineup** as of June 2026 — always cross-reference with [oh-my-opencode-models.md](../tooling/oh-my-opencode-models.md) for the latest updates.
 
 ### Decision Tree for Model Selection
 
@@ -410,7 +410,7 @@ What are you doing?
 | **Claude Sonnet 4.6** | Fast      | Moderate | Code review, everyday coding     | Team default for most tasks          |
 | **Claude Opus 4.6**   | Slower    | Higher   | Complex features, architecture   | Use when Sonnet isn't enough         |
 
-> **Note:** For non-Claude models (GPT, Gemini), refer to [oh-my-opencode-models.md](./oh-my-opencode-models.md) for current model strings and alternatives per agent role.
+> **Note:** For non-Claude models (GPT, Gemini), refer to [oh-my-opencode-models.md](../tooling/oh-my-opencode-models.md) for current model strings and alternatives per agent role.
 
 ### Tips for Model Selection
 
@@ -772,7 +772,7 @@ opencode --model "claude-opus-4-6" "Generate a 2FA implementation using TOTP (Ti
 **Team Resources:**
 
 - Main README: [README.md](../README.md)
-- Model Strategy: [oh-my-opencode-models.md](./oh-my-opencode-models.md)
+- Model Strategy: [oh-my-opencode-models.md](../tooling/oh-my-opencode-models.md)
 - Quick Start: [AI-installation-tutorial.md](./AI-installation-tutorial.md)
 
 > **Note:** A `CONTRIBUTING.md` guide is coming soon. Until then, reach out to your team lead for contribution guidelines.
@@ -796,7 +796,7 @@ Read the main [README.md](../README.md) to understand the AI Council philosophy,
 ### 2. Explore the Repository
 
 - Scan the folder structure to understand where things live
-- Read [oh-my-opencode-models.md](./oh-my-opencode-models.md) to understand the agent roles
+- Read [oh-my-opencode-models.md](../tooling/oh-my-opencode-models.md) to understand the agent roles
 - Check out the `/diagrams/` folder for system architecture visuals
 
 ### 3. Start Small

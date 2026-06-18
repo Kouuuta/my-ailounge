@@ -120,7 +120,7 @@ These documents improve maintainability but are not blocking for new contributor
 
 | Filename | Location | Purpose | Estimated size | Dependencies |
 |----------|----------|---------|---------------|--------------|
-| `onboarding.md` | `docs/` | Consolidate scattered onboarding info from `README.md`, `docs/INSTRUCTIONS.md`, and `docs/warp.md` into a single sequential guide. Include: required tools, clone steps, environment setup, DB migration, ingestion test, dev server launch, first code change workflow. | Medium | All High Priority documents |
+| `onboarding.md` | `docs/getting-started/` | Consolidate scattered onboarding info from `README.md`, `docs/getting-started/INSTRUCTIONS.md`, and `docs/warp.md` into a single sequential guide. Include: required tools, clone steps, environment setup, DB migration, ingestion test, dev server launch, first code change workflow. | Medium | All High Priority documents |
 
 **Dependency value:** This is the capstone — after all high-priority docs exist, a single onboarding page ties them together. Until then, the `README.md` already covers basic setup steps.
 

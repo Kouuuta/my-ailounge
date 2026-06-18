@@ -14,5 +14,5 @@ Staff the org and ramp people fast. Own developer/intern onboarding into the AI 
 _None yet. Copy [`../_TEMPLATE.md`](../_TEMPLATE.md) to start._
 
 ## Key links
-- Developer onboarding → [`../../INSTRUCTIONS.md`](../../INSTRUCTIONS.md)
-- Role definitions → [`../../oh-my-opencode-models.md`](../../oh-my-opencode-models.md)
+- Developer onboarding → [`../../getting-started/INSTRUCTIONS.md`](../../getting-started/INSTRUCTIONS.md)
+- Role definitions → [`../../tooling/oh-my-opencode-models.md`](../../tooling/oh-my-opencode-models.md)

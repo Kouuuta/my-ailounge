@@ -14,6 +14,6 @@ Keep the company solvent and efficient. Own AI model spend — the AI Factory's 
 _None yet. Copy [`../_TEMPLATE.md`](../_TEMPLATE.md) to start._
 
 ## Key links
-- Pricing analysis → [`../../pricing.md`](../../pricing.md)
-- Model comparison → [`../../deepseek-gemini-claude-comparison.md`](../../deepseek-gemini-claude-comparison.md)
+- Pricing analysis → [`../../research/pricing.md`](../../research/pricing.md)
+- Model comparison → [`../../research/deepseek-gemini-claude-comparison.md`](../../research/deepseek-gemini-claude-comparison.md)
 - Cost tracking → track LLM spend per model/provider (wire to an opencode skill or script)

@@ -120,7 +120,7 @@ Re-evaluation of all documentation status after creation of 5 new README files:
 
 ## 5. Roadmap Document Re-evaluation
 
-The 12 documents proposed in `docs/documentation-roadmap.md` are re-evaluated against the new README files.
+The 12 documents proposed in `docs/internal/documentation-roadmap.md` are re-evaluated against the new README files.
 
 ### Fully Covered — Remove from Roadmap
 

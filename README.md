@@ -30,7 +30,7 @@ Welcome to the Mind You AI ecosystem, where you can supercharge your workflows w
 
 **Welcome to the team!** If you're a new employee or intern, start with our comprehensive onboarding guide:
 
-**→ [Developer Onboarding Guide](./docs/INSTRUCTIONS.md)**
+**→ [Developer Onboarding Guide](./docs/getting-started/INSTRUCTIONS.md)**
 
 This guide walks you through:
 
@@ -343,13 +343,13 @@ The team currently uses OpenCode-compatible skills to accelerate engineering wor
 
 These skills assist with architecture planning, dashboard design, repository research, and concise technical reasoning.
 
-For more details, see [Tooling Documentation](./docs/vibe-coding-vs-legacy.md).
+For more details, see [Tooling Documentation](./docs/research/vibe-coding-vs-legacy.md).
 
 ---
 
 ## Pricing
 
-Explore detailed pricing analysis models, benchmarks, and strategies in the [Pricing Documentation](./docs/pricing.md).
+Explore detailed pricing analysis models, benchmarks, and strategies in the [Pricing Documentation](./docs/research/pricing.md).
 
 ---
 
@@ -361,13 +361,13 @@ The AI ecosystem leverages distinct roles that include:
 2. Oracle (Architect)
 3. Librarian (Researcher)
 
-For a complete breakdown, refer to the [Role Definitions](./docs/oh-my-opencode-models.md).
+For a complete breakdown, refer to the [Role Definitions](./docs/tooling/oh-my-opencode-models.md).
 
 ---
 
 ## Research
 
-The ecosystem fosters a research-driven workflow. Access benchmarks, live leaderboards, and plugins via the [Research Resource](./docs/research.md).
+The ecosystem fosters a research-driven workflow. Access benchmarks, live leaderboards, and plugins via the [Research Resource](./docs/research/research.md).
 
 ---
 
@@ -407,7 +407,7 @@ For additional discussions and proposals, see:
 
 Frequently asked questions and troubleshooting guidelines are available in:
 
-`docs/WARP.md`
+`docs/tooling/WARP.md`
 
 ---
 
@@ -428,7 +428,7 @@ Frequently asked questions and troubleshooting guidelines are available in:
 
 For complete targets, refer to:
 
-`docs/reference-prompts.md`
+`docs/tooling/reference-prompts.md`
 
 ---
 

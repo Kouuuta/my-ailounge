@@ -31,7 +31,7 @@ Here is a selection of AI-powered coding agents and IDE tools to streamline your
 
 - [Oh-My-OpenCode Plugin](https://github.com/code-yeongyu/oh-my-opencode): Enhance your development experience with extensive plugins. Note: Avoid setting up authentication providers until updated beyond 12-2025.
 - Full list of OpenCode [plugins](https://opencode.ai/docs/ecosystem#plugins).
-- Explore the model [alternatives](./oh-my-opencode-models.md).
+- Explore the model [alternatives](../tooling/oh-my-opencode-models.md).
 
 #### Cursor
 
