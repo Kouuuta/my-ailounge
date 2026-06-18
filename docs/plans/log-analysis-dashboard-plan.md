@@ -19,6 +19,8 @@ The findings from this analysis will be used to refine the dashboard widgets, ex
 
 No implementation work has started.
 
+Analysis artifacts, exported log files, and executive summaries are maintained outside the repository due to data confidentiality requirements. This document only tracks the proposed dashboard feature and implementation plan.
+
 ## Problem Statement
 
 Engineering teams at Mind You spend time manually sifting through Acuity and Zoho logs to identify recurring errors, track down root causes, and understand system health. There is no centralized view that aggregates these logs, detects patterns, or highlights anomalies. Without this, incident response is reactive, error trends go unnoticed, and operational insights are buried in raw log files.
