@@ -221,7 +221,7 @@ export default function HomePage() {
   const aiItems = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE category = 'ai' ORDER BY score DESC, published_at DESC LIMIT 5",
+        "SELECT * FROM feed_items WHERE category = 'ai' AND source != 'manual' ORDER BY score DESC, published_at DESC LIMIT 5",
       )
       .all(),
   );
@@ -229,7 +229,7 @@ export default function HomePage() {
   const frameworkItems = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE category IN ('nextjs', 'django') ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
+        "SELECT * FROM feed_items WHERE category IN ('nextjs', 'django') AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
       )
       .all(),
   );
@@ -245,7 +245,7 @@ export default function HomePage() {
   const securityItems = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE category = 'security' OR tags LIKE '%cve%' ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
+        "SELECT * FROM feed_items WHERE (category = 'security' OR tags LIKE '%cve%') AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
       )
       .all(),
   );
@@ -253,20 +253,20 @@ export default function HomePage() {
   const recommendedItem = toItems(
     db
       .prepare(
-        "SELECT * FROM feed_items WHERE is_read = 0 AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1",
+        "SELECT * FROM feed_items WHERE is_read = 0 AND source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1",
       )
       .all(),
   );
 
   const totalItems = (
-    db.prepare("SELECT COUNT(*) as count FROM feed_items").get() as {
+    db.prepare("SELECT COUNT(*) as count FROM feed_items WHERE source != 'manual'").get() as {
       count: number;
     }
   ).count;
 
   const unreadItems = (
     db
-      .prepare("SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0")
+      .prepare("SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0 AND source != 'manual'")
       .get() as { count: number }
   ).count;
 

@@ -66,7 +66,7 @@ export function getItemsByCategory(): CategoryBreakdown[] {
 
 export function getIngestionStatus(): IngestionStatus[] {
   const db = getDb();
-  const sources = ["hn", "rss", "github_trending", "manual"];
+  const sources = ["hn", "rss", "github_trending"];
 
   return sources.map((source) => {
     const lastRun = db

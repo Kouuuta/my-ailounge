@@ -1,5 +1,4 @@
 "use client";
-
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
@@ -50,7 +49,7 @@ type FeedResponse = {
   offset: number;
 };
 
-const SOURCES = ["manual", "hn", "rss", "github_trending"];
+const SOURCES = ["hn", "rss", "github_trending"];
 const CATEGORIES = [
   "ai",
   "cloud",

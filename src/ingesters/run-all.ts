@@ -1,6 +1,5 @@
 import { migrate } from "../db/schema";
 import { getDb, closeDb } from "../db/client";
-import { ingestManualFeeds } from "./manual-feeds/index";
 import { ingestHackerNews } from "./hacker-news/index";
 import { ingestGithubTrending } from "./github-trending/index";
 import { ingestRss } from "./rss/index";
@@ -55,12 +54,11 @@ async function runAll(): Promise<void> {
 
   migrate();
 
-  await runTracked("manual", "manual", ingestManualFeeds);
   await runTracked("hn", "hn", ingestHackerNews);
   await runTracked("github_trending", "github_trending", ingestGithubTrending);
   await runTracked("rss", "rss", ingestRss);
 
-  const allOk = ["manual", "hn", "github_trending", "rss"].every(
+  const allOk = ["hn", "github_trending", "rss"].every(
     (src) => {
       const row = getDb()
         .prepare("SELECT value FROM kv_store WHERE key = ?")
@@ -78,7 +76,7 @@ async function runAll(): Promise<void> {
   console.log("📊 Ingestion Summary:");
   console.log("  Source           Status    Items  Last Run");
   console.log("  " + "─".repeat(55));
-  for (const src of ["manual", "hn", "github_trending", "rss"]) {
+  for (const src of ["hn", "github_trending", "rss"]) {
     const s = getDb()
       .prepare("SELECT value FROM kv_store WHERE key = ?")
       .get(`ingest:status:${src}`) as { value: string } | undefined;

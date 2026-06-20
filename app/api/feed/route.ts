@@ -14,10 +14,10 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 200);
   const offset = Math.max(parseInt(searchParams.get("offset") || "0"), 0);
 
-  const conditions: string[] = [];
+  const conditions: string[] = ["source != 'manual'"];
   const params: Record<string, string | number> = {};
 
-  if (source) {
+  if (source && source !== "manual") {
     conditions.push("source = @source");
     params.source = source;
   }
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const result = stmt.run({
-      source: source || "manual",
+      source: source || "feed",
       category: category || "general",
       title,
       url,
