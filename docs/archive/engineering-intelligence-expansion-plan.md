@@ -1,5 +1,7 @@
 # Engineering Intelligence Expansion Plan
 
+> **Note (2026-06-22):** The Startup/Y Combinator dedicated RSS source described below was later removed as redundant — Y Combinator content is already covered by the existing HN ingester (YC posts appear on Hacker News). The references to the `startup` category and `10-startup-news.md` in this archived document are preserved as historical context of the original proposal.
+
 ## Background
 
 The current my-ailounge dashboard ingests 4 categories of data (AI news, Cloud news, HN, GitHub Trending, etc.) via 4 ingesters. Sir Bo (COO) requested expanding the intelligence surface to cover DevOps/Security/AI infrastructure more deeply, plus adding Docker support for reproducible environments, and new intern tasks to onboard contributors.

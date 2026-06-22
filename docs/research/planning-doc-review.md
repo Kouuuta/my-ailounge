@@ -18,7 +18,7 @@
 |---------|-----------|-----------|-----------|-------|
 | RSS sources table (URLs, categories, feed files) | Phase 1 source table | Phase 1 sources | Files to Modify §1 | Doc A has wrong URLs; B and C are corrected |
 | FILE_CATEGORY_MAP additions | Phase 1 recommended additions | Phase 0 tasks | Files to Modify §3 | Identical code blocks in all three |
-| New feed file creation (09, 10, 11) | Phase 1 recommended additions | Phase 0 tasks | Files to Modify §2 | Same 3 files, same purpose |
+| New feed file creation (09, 11) | Phase 1 recommended additions | Phase 0 tasks | Files to Modify §2 | Same 2 files, same purpose. Startup feed (10) was later removed as redundant (covered by HN) |
 | Risk tables | Risks & Mitigations | Key Risks & Mitigations | Risks | Each has different focus and entries |
 
 ### Content Appearing in Two of Three Documents
@@ -53,14 +53,14 @@
 | Architecture summary (free-form strings) | C §12-17 | Codebase design constraint explanation |
 | Per-file analysis of what NOT to change | C §114-134 | schema.ts, api/feed/route.ts, analytics.ts |
 | UI impact analysis (table form) | C §160-181 | Per-element: filter dropdown, badges, sections |
-| Dashboard sections decision analysis | C §88-112 | Whether to add DevOps/Startup homepage sections |
+| Dashboard sections decision analysis | C §88-112 | Whether to add DevOps homepage section (startup was later removed as redundant) |
 | Trending Repos query impact | C §126-134 | New RSS items won't appear in existing section |
 | Source-to-file mapping cheat sheet | C §249-264 | Single table: source → URL → category → file → DB source |
 | Changes summary table (file → type → lines) | C §268-283 | Exact scope for implementation planning |
 
 ### Notable Gap
 
-The **CATEGORIES array update** in `app/feed/page.tsx` (adding `devops` and `startup`) appears **only in Doc C** (§67-86). Neither Doc A nor Doc B identifies this required change. This is a significant omission in A and B.
+The **CATEGORIES array update** in `app/feed/page.tsx` (adding `devops`) appears **only in Doc C** (§67-86). Neither Doc A nor Doc B identifies this required change. This is a significant omission in A and B. _(Note: the original Doc C also included `startup`, which was later removed as redundant — Y Combinator content is already covered by the HN ingester.)_
 
 ---
 

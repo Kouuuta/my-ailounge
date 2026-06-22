@@ -37,14 +37,12 @@ No code changes. Create 3 feed files and update the manual-feeds mapping table.
 | # | Task | Detail | File(s) |
 |---|------|--------|---------|
 | 0.1 | Create `09-devops-news.md` | Header comment for DevOps/Infra category | `docs/feeds/09-devops-news.md` |
-| 0.2 | Create `10-startup-news.md` | Header comment for Startup/Business category | `docs/feeds/10-startup-news.md` |
-| 0.3 | Create `11-github-news.md` | Header comment for GitHub platform news | `docs/feeds/11-github-news.md` |
-| 0.4 | Add 3 entries to `FILE_CATEGORY_MAP` | Wire new feed files to categories | `src/ingesters/manual-feeds/index.ts` |
+| 0.2 | Create `11-github-news.md` | Header comment for GitHub platform news | `docs/feeds/11-github-news.md` |
+| 0.3 | Add 2 entries to `FILE_CATEGORY_MAP` | Wire new feed files to categories | `src/ingesters/manual-feeds/index.ts` |
 
 **FILE_CATEGORY_MAP additions:**
 ```ts
 "09-devops-news.md":   "devops",
-"10-startup-news.md":  "startup",
 "11-github-news.md":   "github",
 ```
 
@@ -80,10 +78,9 @@ Add 8 RSS entries to `src/ingesters/rss/feeds.ts`. Zero code changes — pure da
 | 6 | `https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml` | github | `04-github-trending.md` | High | Automated daily trending (replaces manual) |
 | 7 | `https://mshibanami.github.io/GitHubTrendingRSS/weekly/all.xml` | github | `04-github-trending.md` | High | Weekly trending aggregate |
 | 8 | `https://mshibanami.github.io/GitHubTrendingRSS/monthly/all.xml` | github | `04-github-trending.md` | Medium | Monthly trending aggregate |
-| 9 | `https://www.ycombinator.com/blog/feed` | startup | `10-startup-news.md` | Medium | Startup ecosystem news |
-| 10 | `https://cvefeed.io/rss/` (temporary) | security | `08-security-alerts.md` | Medium | Interim CVE feed until NVD ingester is built |
+| 9 | `https://cvefeed.io/rss/` (temporary) | security | `08-security-alerts.md` | Medium | Interim CVE feed until NVD ingester is built |
 
-**Priority rationale:** Feeds 1–6 are high-priority because engineering-intelligence gaps were the original driver. Feeds 8–10 add breadth but shift the dashboard's focus toward business/security.
+**Priority rationale:** Feeds 1–6 are high-priority because engineering-intelligence gaps were the original driver. Feeds 8–9 add breadth but shift the dashboard's focus toward security.
 
 ### Corrected URLs vs. Original Plan
 
@@ -185,7 +182,7 @@ Follow `src/ingesters/hacker-news/index.ts` — it already demonstrates the JSON
 | 4.4 | Build an ingester health widget | intermediate |
 | 4.5 | Write an API endpoint test (`GET /api/feed`) | intermediate |
 | 4.6 | Optimize Docker image size | advanced |
-| 4.7 | Add a startup news category to the dashboard filter | intermediate |
+
 | 4.8 | Write a data integrity SQL query | beginner |
 
 **Complexity:** Low — pure data entry in `src/config/intern-tasks.ts`. Each is a structured object with `{ title, description, difficulty }`.
@@ -238,17 +235,15 @@ Original plan's Phase 4 recommended deferring feed rotation until files exceed ~
 
 | # | Title | Phase | Labels |
 |---|-------|-------|--------|
-| EI-1 | Create feed files for new categories (devops, startup, github) | 0 | `docs`, `ingestion` |
+| EI-1 | Create feed files for new categories (devops, github) | 0 | `docs`, `ingestion` |
 | EI-2 | Add WordPress, WooCommerce, Docker, DevOps.com RSS feeds | 1 | `ingestion`, `rss` |
 | EI-3 | Add GitHub Trending RSS feeds (daily/weekly/monthly) | 1 | `ingestion`, `github` |
-| EI-4 | Add Y Combinator and GitHub Blog RSS feeds | 1 | `ingestion`, `rss` |
+| EI-4 | Add GitHub Blog RSS feed | 1 | `ingestion`, `rss` |
 | EI-5 | Add temporary CVE feed from cvefeed.io RSS | 1 | `ingestion`, `security` |
 | EI-6 | Create Dockerfile and docker-compose for reproducible dev | 2 | `infra`, `docker` |
 | EI-7 | Build NVD API v2.0 ingester for official CVE data | 3 | `ingestion`, `security` |
 | EI-8 | Add intern tasks covering Docker, feeds, and data integrity | 4 | `docs`, `onboarding` |
 | EI-9 | Replace cvefeed.io RSS with official NVD ingester | 3 | `cleanup`, `security` |
-| EI-10 | Add category enum for `startup` in dashboard filter | 4 | `ui`, `engineering-intelligence` |
-
 ---
 
 ## Recommended Phase Labels
@@ -272,7 +267,6 @@ Original plan's Phase 4 recommended deferring feed rotation until files exceed ~
 | cvefeed.io goes offline before NVD ingester built | 1→3 | Medium | Low | Temporary; expedite Phase 3 if it happens |
 | NVD API key not obtained | 3 | Low | High | Key is free; register before Phase 3 starts |
 | Windows Docker Desktop volume path issues | 2 | Medium | Low | Document `//c/Users/...` pattern; add `.env` override |
-| New `startup` category not filterable in dashboard UI | 1 | Low | Low | Requires category enum update in filter component |
 | Feed files grow beyond 500 lines | 1 | Low | Low | Deferred rotation; DB is source of truth |
 
 ---

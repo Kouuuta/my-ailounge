@@ -33,11 +33,9 @@ export const RSS_FEEDS: RSSFeedConfig[] = [
   { url: "https://devops.com/feed/",                  category: "devops",  feedFile: "09-devops-news.md" },
 
   // GitHub
-  { url: "https://github.blog/feed/",                                          category: "github", feedFile: "11-github-news.md" },
+  { url: "https://github.blog/feed/",                                          category: "github", feedFile: "10-github-news.md" },
   { url: "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",       category: "github", feedFile: "04-github-trending.md" },
   { url: "https://mshibanami.github.io/GitHubTrendingRSS/weekly/all.xml",      category: "github", feedFile: "04-github-trending.md" },
   { url: "https://mshibanami.github.io/GitHubTrendingRSS/monthly/all.xml",     category: "github", feedFile: "04-github-trending.md" },
 
-  // Startup
-  { url: "https://www.ycombinator.com/blog/feed",     category: "startup", feedFile: "10-startup-news.md" },
 ];

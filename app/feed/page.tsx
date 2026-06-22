@@ -59,7 +59,6 @@ const CATEGORIES = [
   "hn",
   "github",
   "security",
-  "startup",
   "rumors",
   "general",
 ];
