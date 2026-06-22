@@ -7,23 +7,43 @@
 | Widget | Type | Data Source | Purpose |
 |--------|------|-------------|---------|
 | **AutomationStatus** | Server | `getIngestionStatus()`, `getGlobalIngestionStatus()` | Per-source status dots (green/red/gray), error count badge, "X ago" timestamps, item count |
-| **BreakdownCard** | Client | `getItemsBySource()`, `getItemsByCategory()` | Tabbed panel (By Source / By Category) with percentage bar chart |
-| **LastIngestionStat** | Server | `getLastGlobalIngestion()` | Stat card showing "X ago" or "Never" |
-| **TimeWindowStat** | Server | `getItemsToday()`, `getItemsThisWeek()` | Stat card for Today (amber/Clock) or This Week (blue/Calendar) |
+| **StatCard** | Server | Injected props | Unified stat card with gradient icon, accent bar, optional subtitle |
+| **BreakdownCard** | Client | `getItemsBySource()`, `getItemsByCategory()` | Tabbed panel (By Source / By Category) with Nivo horizontal bar chart |
+| **IngestButton** | Client | `POST /api/ingest` | Triggers on-demand ingestion with sonner toast feedback |
+
+## Deleted Components (replaced)
+
+| Component | Replaced By | Reason |
+|-----------|-------------|--------|
+| `LastIngestionStat` | `StatCard` | Unified into single configurable stat card |
+| `TimeWindowStat` | `StatCard` | Unified into single configurable stat card |
 
 ## Server vs Client
 
-3 widgets are **Server Components** — they query SQLite directly at request time:
+2 widgets are **Server Components** — they query SQLite directly or receive data via props:
 
 - `AutomationStatus` — calls `getIngestionStatus()` which reads from `kv_store`
-- `LastIngestionStat` — calls `getLastGlobalIngestion()` which reads from `kv_store`
-- `TimeWindowStat` — calls `getItemsToday()` / `getItemsThisWeek()` which use `COUNT(*)` queries
+- `StatCard` — pure presentational, receives `value`, `label`, `icon`, etc. as props
 
-1 widget is a **Client Component** (`"use client"`):
+2 widgets are **Client Components** (`"use client"`):
 
-- `BreakdownCard` — uses `Tabs` from Radix UI, which requires browser interactivity
+- `BreakdownCard` — uses `Tabs` from Radix UI + `ResponsiveBar` from `@nivo/bar`
+- `IngestButton` — calls `fetch("/api/ingest")` on click, uses `sonner` toast
 
 ## Props
+
+### StatCard
+```ts
+interface StatCardProps {
+  label: string;
+  value: string | number;
+  icon: React.ElementType;    // lucide-react icon
+  accentColor: string;        // Tailwind border color e.g. "bg-emerald-500"
+  gradient: string;           // Tailwind gradient e.g. "from-emerald-500 to-teal-500"
+  secondary?: string;         // Optional subtitle
+  delay?: number;             // Animation delay in ms
+}
+```
 
 ### BreakdownCard
 ```ts
@@ -31,24 +51,15 @@ interface BreakdownCardProps {
   sources: BreakdownItem[];    // [{ name: string, count: number }]
   categories: BreakdownItem[]; // [{ name: string, count: number }]
   total: number;
-  delay?: number;              // animation delay in ms
+  delay?: number;              // Animation delay in ms
 }
 ```
 
-### LastIngestionStat
-```ts
-interface LastIngestionStatProps {
-  delay?: number;
-}
-```
+- Uses Nivo `ResponsiveBar` with horizontal layout, per-name color hash
+- Palette: amber, red, violet, cyan, lime, pink, orange, teal
 
-### TimeWindowStat
-```ts
-interface TimeWindowStatProps {
-  window: "today" | "week";
-  delay?: number;
-}
-```
+### IngestButton
+No props — self-contained. Calls `POST /api/ingest`, shows spinner during request, displays sonner toast on success/failure.
 
 ### AutomationStatus
 No props — reads all data from `kv_store` internally.

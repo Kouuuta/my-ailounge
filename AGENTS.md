@@ -16,11 +16,11 @@ npm install → npm run db:migrate → npm run ingest → npm run dev
 npm run dev — Start development server
 npm run build — Production build
 npm run start — Start production server
-npm run ingest — Run all 4 ingesters
+npm run ingest — Run all 3 ingesters (hn, github_trending, rss)
 npm run ingest:hn — Hacker News only
 npm run ingest:rss — RSS feeds only
 npm run ingest:trending — GitHub Trending only
-npm run ingest:manual — Manual feed markdown only
+npm run ingest:manual — Manual feed markdown only (standalone, not in orchestrator)
 npm run db:migrate — Create/migrate SQLite DB (7 tables)
 
 ## ⚠️ Critical Constraints
@@ -58,6 +58,7 @@ npm run db:migrate — Create/migrate SQLite DB (7 tables)
 
 - `@nivo/bar`, `@nivo/pie`, `@nivo/core` — Nivo charting for error trend bar chart and source donut
 - `csv-parse` — CSV parsing in `src/lib/log-parser.ts`
+- `sonner` — Toast notifications for `IngestButton` and other client interactions
 - Log parser auto-detects columns by header name regex (timestamp, content, action, method, error_code, response)
 - Source detection: filename starting with `acuity` → Acuity, otherwise Zoho
 

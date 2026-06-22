@@ -25,6 +25,7 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `GET /api/logs/[id]/errors` | `api/logs/[id]/errors/route.ts` | Route Handler | Paginated error rows for an analysis |
 | `GET /api/logs/[id]/patterns` | `api/logs/[id]/patterns/route.ts` | Route Handler | Grouped error patterns |
 | `GET /api/logs/[id]/anomalies` | `api/logs/[id]/anomalies/route.ts` | Route Handler | Statistical anomaly spikes |
+| `POST /api/ingest` | `api/ingest/route.ts` | Route Handler | Trigger on-demand ingestion (calls `runAll()`) |
 
 ## Root Layout — `layout.tsx`
 
@@ -33,11 +34,13 @@ Wraps all pages with:
 - **Metadata** — title `Mind You Dashboard`, description `Developer Intelligence Dashboard`
 - **ThemeProvider** — dark/light mode toggle (from `components/theme-provider`)
 - **Navbar** — top navigation (from `components/ui/navbar`)
+- **Toaster** — toast notifications via `sonner` (used by `IngestButton` and future components)
 
 ```tsx
 <ThemeProvider>
   <Navbar />
   {children}
+  <Toaster position="top-right" richColors />
 </ThemeProvider>
 ```
 
@@ -66,12 +69,20 @@ A **server component** (`force-dynamic`) that queries SQLite directly and render
 
 ### Stat Cards
 
-4 top-level stats:
+4 `StatCard` components (unified, replaces the old `LastIngestionStat` and `TimeWindowStat`):
 
-1. **Total Items** — `COUNT(*)` from `feed_items`
-2. **Last Ingestion** — via `LastIngestionStat` component (from `components/engineering-intelligence/`)
-3. **Today** — via `TimeWindowStat` with `window="today"`
-4. **This Week** — via `TimeWindowStat` with `window="week"`
+1. **Total Items** — `COUNT(*)` from `feed_items` (with unread count subtitle)
+2. **Last Ingestion** — reads `ingest:last_run:all` from `kv_store`, displays as time ago
+3. **Items Today** — `COUNT(*) WHERE date(fetched_at) = date('now')`
+4. **Items This Week** — `COUNT(*) WHERE fetched_at >= datetime('now', '-7 days')`
+
+### Ingest Button
+
+An `IngestButton` in the page header triggers `POST /api/ingest` on click, showing a spinner during execution and a `sonner` toast on completion.
+
+### Data Filtering
+
+All homepage queries filter `source != 'manual'` to exclude manually added items from the automated briefing view.
 
 ### Intern Tasks
 
@@ -81,10 +92,11 @@ Day-based rotation from `src/config/intern-tasks.ts` (13 tasks). Shows today's t
 
 ```
 HomePage
+├── IngestButton (header — triggers POST /api/ingest)
 ├── StatCard × 4 (total items, last ingestion, today, week)
 ├── SectionCard × 4 (AI, Trending, Frameworks, Security)
 │   └── ItemCard × 5 per section
-├── BreakdownCard (sources + categories pie/donut)
+├── BreakdownCard (sources + categories Nivo bar chart, tabbed)
 ├── Recommended Tool card
 ├── Intern Tasks card (today + tomorrow)
 └── AutomationStatus
@@ -98,3 +110,4 @@ HomePage
 - [Feed API →](./api/feed/README.md)
 - [Watchlist API →](./api/watchlist/README.md)
 - [Log Analysis API →](./api/logs/README.md)
+- [Ingestion API →](./api/ingest/README.md)

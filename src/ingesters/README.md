@@ -5,17 +5,17 @@ Fetches, parses, and stores feed items from multiple sources. Every ingester wri
 ## Architecture
 
 ```
-                     ┌─────────────────────┐
-                     │   run-all.ts         │
-                     │  (orchestrator)      │
-                     └──────┬──────────┬────┘
-                            │          │
-              ┌─────────────┤          ├─────────────┐
-              ▼             ▼          ▼             ▼
-         manual-feeds     rss/      hacker-news   github-trending
-         (DONE)         (DONE)       (DONE)         (DONE)
-           │              │            │              │
-           └──────────────┴────────────┴──────────────┘
+                    ┌─────────────────────┐
+                    │   run-all.ts         │
+                    │  (orchestrator)      │
+                    └──────┬──────────┬────┘
+                           │          │
+                    ┌──────┤          ├──────┐
+                    ▼      ▼          ▼      ▼
+                  rss/  hacker-news  github-trending   manual-feeds
+                 (DONE)   (DONE)       (DONE)       (standalone only)
+                   │        │            │
+                   └────────┴────────────┘
                               │
                     ┌─────────┴─────────┐
                     ▼                   ▼
@@ -23,31 +23,9 @@ Fetches, parses, and stores feed items from multiple sources. Every ingester wri
            (SQLite upsert)      (append to .md)
 ```
 
+> `manual-feeds/` is **not** part of the `run-all` orchestrator. Run it separately via `npm run ingest:manual`.
+
 ## Ingesters
-
-### `manual-feeds/` ✅ Done
-
-Parses `docs/feeds/*.md` files and upserts entries into SQLite.
-
-**Format parsed:** `- [Title](URL) | YYYY-MM-DD | tag1, tag2`
-
-**Source:** `'manual'`
-
-**File mapping:**
-| File | Category |
-|------|----------|
-| `01-ai-news.md` | `ai` |
-| `02-cloud-news.md` | `cloud` |
-| `03-django-news.md` | `django` |
-| `04-github-trending.md` | `github` |
-| `05-hacker-news.md` | `hn` |
-| `06-nextjs-news.md` | `nextjs` |
-| `07-rumors.md` | `rumors` |
-| `08-security-alerts.md` | `security` |
-
-```bash
-npm run ingest:manual
-```
 
 ### `rss/` ✅ Done
 
@@ -100,11 +78,35 @@ Reads the Python scraper output (`ideas/trending.md`) and syncs entries to SQLit
 npm run ingest:trending
 ```
 
+### `manual-feeds/` ✅ Done (standalone)
+
+Parses `docs/feeds/*.md` files and upserts entries into SQLite.
+
+**Format parsed:** `- [Title](URL) | YYYY-MM-DD | tag1, tag2`
+
+**Source:** `'manual'`
+
+**File mapping:**
+| File | Category |
+|------|----------|
+| `01-ai-news.md` | `ai` |
+| `02-cloud-news.md` | `cloud` |
+| `03-django-news.md` | `django` |
+| `04-github-trending.md` | `github` |
+| `05-hacker-news.md` | `hn` |
+| `06-nextjs-news.md` | `nextjs` |
+| `07-rumors.md` | `rumors` |
+| `08-security-alerts.md` | `security` |
+
+```bash
+npm run ingest:manual
+```
+
 ## Orchestrator
 
 ### `run-all.ts`
 
-Runs all 4 ingesters sequentially, tracks status in `kv_store`:
+Runs 3 ingesters sequentially (hn, github_trending, rss), tracks status in `kv_store`:
 
 | Key | Value |
 |-----|-------|
@@ -116,11 +118,19 @@ Runs all 4 ingesters sequentially, tracks status in `kv_store`:
 
 Prints a summary table after execution.
 
+**Exports `runAll()`** — also called by `POST /api/ingest` for on-demand ingestion from the dashboard. Accepts `{ closeDb?: boolean }` option.
+
 ```bash
 npm run ingest
 ```
 
-## Adding a New Feed Source
+## Adding a New RSS Feed Source
 
 1. Add the URL to `rss/feeds.ts` with the correct `category` and `feedFile`
 2. The RSS ingester will pick it up automatically on next run
+
+## Adding a New Ingester Type
+
+1. Create `src/ingesters/<name>/index.ts` exporting an async function
+2. Import and add it to `runAll()` — insert a `runTracked(...)` call
+3. Add an npm script in `package.json`

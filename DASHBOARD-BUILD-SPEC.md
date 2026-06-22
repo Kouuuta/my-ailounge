@@ -16,16 +16,16 @@ Do not rebuild these. Extend them.
 | SQLite schema (7 tables: `feed_items`, `kv_store`, `watchlist_items`, `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies`) | `src/db/schema.ts` | ✅ Done |
 | DB client (`getDb()` singleton, WAL mode)                               | `src/db/client.ts`                       | ✅ Done                                                                                                              |
 | Migration entry point                                                   | `src/db/migrate.ts`                      | ✅ Done                                                                                                              |
-| Manual feeds ingester (parses `docs/feeds/*.md`)                        | `src/ingesters/manual-feeds/index.ts`    | ✅ Done                                                                                                              |
+| Manual feeds ingester (parses `docs/feeds/*.md`, standalone only)       | `src/ingesters/manual-feeds/index.ts`    | ✅ Done (not part of orchestrator — run via `npm run ingest:manual`)                                                 |
 | Hacker News ingester (HN Algolia API, top 20 stories)                   | `src/ingesters/hacker-news/index.ts`     | ✅ Done                                                                                                              |
 | GitHub Trending ingester (parses `ideas/trending.md` → SQLite)          | `src/ingesters/github-trending/index.ts` | ✅ Done                                                                                                              |
 | RSS ingester (12 feeds across 6 categories, regex parser)               | `src/ingesters/rss/index.ts`             | ✅ Done                                                                                                              |
-| Orchestrator (runs all 4 ingesters, kv_store tracking)                  | `src/ingesters/run-all.ts`               | ✅ Done                                                                                                              |
+| Orchestrator (runs 3 ingesters, kv_store tracking, exports `runAll()`)  | `src/ingesters/run-all.ts`               | ✅ Done                                                                                                              |
 | GitHub Trending scraper (legacy, writes to `ideas/trending.md` + Slack) | `src/scraper.py`                         | Working, but writes to markdown not SQLite                                                                           |
 | Feed format/tagging rules                                               | `docs/feeds/feeds-format-guide.md`       | ✅ Done                                                                                                              |
 | Intern task seed data (13 tasks)                                        | `src/config/intern-tasks.ts`             | ✅ Done                                                                                                              |
 | Shared utilities (DB writes, markdown append, analytics queries)        | `src/lib/`                               | ✅ Done                                                                                                              |
-| Dashboard widgets (AutomationStatus, BreakdownCard, stat cards)         | `components/engineering-intelligence/`   | ✅ Done                                                                                                              |
+| Dashboard widgets (AutomationStatus, BreakdownCard, IngestButton, StatCard) | `components/engineering-intelligence/` | ✅ Done                                                                                                              |
 | shadcn/ui primitives (11 components)                                    | `components/ui/`                         | ✅ Done                                                                                                              |
 | Dark/light theme provider                                               | `components/theme-provider.tsx`          | ✅ Done                                                                                                              |
 | Navbar with active route + theme toggle                                 | `components/ui/navbar.tsx`               | ✅ Done                                                                                                              |
@@ -38,11 +38,14 @@ Do not rebuild these. Extend them.
 | Log analysis DB tables (4: `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies`) | `src/db/schema.ts`            | ✅ Done                                                                                                              |
 | Log dashboard components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown) | `components/logs/`              | ✅ Done                                                                                                              |
 | Nivo charting packages (`@nivo/bar`, `@nivo/pie`, `@nivo/core`)         | `package.json`                           | ✅ Done                                                                                                              |
+| On-demand ingestion endpoint (`POST /api/ingest` calls `runAll()`)      | `app/api/ingest/route.ts`                | ✅ Done                                                                                                              |
+| Ingest button with sonner toast notifications                           | `components/engineering-intelligence/ingest-button.tsx` | ✅ Done                                                                                              |
+| Unified StatCard component (replaces LastIngestionStat + TimeWindowStat) | `components/engineering-intelligence/stat-card.tsx` | ✅ Done                                                                                                  |
 | GitHub Actions daily ingestion workflow                                 | `.github/workflows/ingest.yml`           | Exists, unused for now — ingestion is manual via `npm run ingest` (Section 6); cron automation deferred (Appendix A) |
 
 **Stack:**
 
-- Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI, Nivo (bar + pie charts)
+- Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI, Nivo (bar + pie charts), sonner (toast)
 - Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`)
 - Ingestion: TypeScript ingesters (`src/ingesters/*`) + one legacy Python scraper (`src/scraper.py`)
 - Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing SQLite directly —
@@ -114,6 +117,7 @@ Run `npx ts-node src/db/migrate.ts` to apply.
 | `app/api/feed/route.ts`      | `POST`   | ✅ Done | Manually add a custom entry (`source: 'manual'`)                                                                                                                             |
 | `app/api/feed/[id]/route.ts` | `PATCH`  | ✅ Done | Update fields: `title`, `summary`, `tags`, `category`, `score`, `is_read`, `is_pinned`                                                                                       |
 | `app/api/feed/[id]/route.ts` | `DELETE` | ✅ Done | Remove an entry                                                                                                                                                              |
+| `app/api/ingest/route.ts`    | `POST`   | ✅ Done | Trigger on-demand ingestion, calls `runAll({ closeDb: false })`, returns `{ results, allOk }` JSON                                                                           |
 
 Full-text search uses `WHERE title LIKE @q` with `%` wildcards — meets <200ms on current data volume.
 
@@ -219,10 +223,13 @@ fit naturally as a scheduled job (see Section 6).
 
 ### 6.1 What was built
 
-A single entry point that runs all 4 ingesters sequentially, with status tracking in `kv_store`:
+A single entry point that runs all 3 ingesters sequentially (hn, github_trending, rss), with status tracking in `kv_store`:
 
 - **File:** `src/ingesters/run-all.ts`
 - **Script:** `npm run ingest` (maps to `npx tsx src/ingesters/run-all.ts`)
+- **API:** `POST /api/ingest` calls `runAll()` remotely
+
+**Exports `runAll()`** — accepts `{ closeDb?: boolean }` option. Used by both the CLI and `POST /api/ingest`.
 
 **How it works:**
 
@@ -236,9 +243,11 @@ The orchestrator runs each ingester one at a time and records:
 | `ingest:elapsed_ms:<source>` | `ingest:elapsed_ms:hn` | Execution time in ms              |
 | `ingest:status:all`          | `ingest:status:all`    | `'ok'` or `'degraded'`            |
 
-After all ingesters finish, it prints a summary table showing each source's status, count, and duration. This `kv_store` data is consumed by the `AutomationStatus` and `LastIngestionStat` dashboard widgets.
+After all ingesters finish, it prints a summary table showing each source's status, count, and duration. This `kv_store` data is consumed by the `AutomationStatus` and `StatCard` dashboard widgets.
 
 Each ingester writes data to **both** SQLite (via `lib/db.upsertEntry`) and markdown (via `lib/markdown.appendToFeed`). The `UNIQUE (source, url)` constraint prevents duplicates on repeated runs.
+
+> Note: `manual-feeds/` ingester is no longer part of the orchestrator. Run it standalone via `npm run ingest:manual`.
 
 ### 6.2 Workflow while developing
 
@@ -256,7 +265,7 @@ the markdown feed file to append to. To add a new feed, add an entry to this arr
 
 ### 6.4 Acceptance criteria (all ✅ met)
 
-- [x] `npm run ingest` runs all four ingesters (manual feeds, HN, GitHub Trending, RSS) and exits cleanly
+- [x] `npm run ingest` runs all three ingesters (HN, GitHub Trending, RSS) and exits cleanly
 - [x] Each ingester logs an inserted/skipped summary
 - [x] Re-running `npm run ingest` does not create duplicate rows (`UNIQUE (source, url)` enforced)
 - [x] All sources visible in one filterable `/feed` view after running the script
@@ -279,9 +288,9 @@ different outputs (Slack notification vs. dashboard data).
 ## 7. Current File Structure (actual)
 
 ```
-app/          → app/README.md        # 4 pages (/, /feed, /watchlist, /logs) + 4 API route groups (feed, watchlist, logs)
+app/          → app/README.md        # 4 pages (/, /feed, /watchlist, /logs) + 5 API route groups (feed, watchlist, logs, ingest)
 components/   → components/README.md # 11 shadcn/ui primitives + 4 dashboard widgets + 4 log components + theme
-src/          → src/README.md        # 4 ingesters (all ✅) + DB (7 tables) + analytics + log-parser
+src/          → src/README.md        # 4 ingesters (3 in orchestrator) + DB (7 tables) + analytics + log-parser
   ├── db/     → src/db/README.md
   ├── ingesters/ → src/ingesters/README.md
   ├── lib/    → src/lib/README.md
@@ -306,8 +315,8 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 1    | Schema: `feed_items`, `kv_store`, `watchlist_items`       | ✅     |
 | 2    | Feed API: GET (filters + pagination), POST, PATCH, DELETE | ✅     |
 | 3    | `/feed` page with filter bar, search, pin/read/delete/add | ✅     |
-| 4    | All 4 ingesters: manual-feeds, HN, GitHub Trending, RSS   | ✅     |
-| 5    | `run-all.ts` orchestrator + `npm run ingest` script       | ✅     |
+| 4    | All 3 ingesters: HN, GitHub Trending, RSS (manual standalone) | ✅     |
+| 5    | `run-all.ts` orchestrator (exports `runAll()`) + `npm run ingest` | ✅     |
 | 6    | Confirmed `/feed` shows data from all sources             | ✅     |
 | 7    | Engineering Briefing homepage (5 sections + stats)        | ✅     |
 | 8    | Stack Watchlist (/watchlist) with inline editing          | ✅     |
@@ -319,6 +328,7 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 14   | Log DB tables: `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies` | ✅     |
 | 15   | Log dashboard components: CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown | ✅     |
 | 16   | Logs README docs: app/logs/, app/api/logs/, components/logs/ | ✅     |
+| 17   | On-demand ingestion button + API (`POST /api/ingest`)    | ✅     |
 
 ### ⬜ Remaining Work
 
