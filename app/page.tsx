@@ -17,6 +17,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { IngestButton } from "@/components/engineering-intelligence/ingest-button";
 import { LastIngestionStat } from "@/components/engineering-intelligence/last-ingestion-stat";
 import { TimeWindowStat } from "@/components/engineering-intelligence/time-window-stat";
 import { BreakdownCard } from "@/components/engineering-intelligence/breakdown-card";
@@ -307,6 +308,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="flex gap-2">
+            <IngestButton />
             <Button asChild>
               <Link href="/feed">
                 <BookOpen className="h-4 w-4" />

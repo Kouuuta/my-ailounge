@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/ui/navbar";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Mind You Dashboard",
@@ -17,6 +18,7 @@ export default function RootLayout({
         <ThemeProvider>
           <Navbar />
           {children}
+          <Toaster position="top-right" richColors />
         </ThemeProvider>
       </body>
     </html>
