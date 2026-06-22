@@ -19,7 +19,7 @@ npm run start — Start production server
 npm run ingest — Run all 3 ingesters (hn, github_trending, rss)
 npm run ingest:hn — Hacker News only
 npm run ingest:rss — RSS feeds only
-npm run ingest:trending — GitHub Trending only
+npm run ingest:trending — GitHub Trending only (fetches RSS daily/weekly/monthly)
 npm run ingest:manual — Manual feed markdown only (standalone, not in orchestrator)
 npm run db:migrate — Create/migrate SQLite DB (7 tables)
 
@@ -42,7 +42,7 @@ npm run db:migrate — Create/migrate SQLite DB (7 tables)
 | Add a page                      | app/<name>/page.tsx                            |
 | Add an API route                | app/api/<name>/route.ts                        |
 | Add/change a DB column or table | src/db/schema.ts                               |
-| Add an RSS feed source          | src/ingesters/rss/feeds.ts                     |
+| Add an RSS feed source          | src/ingesters/rss/feeds.ts (then add category to app/feed/page.tsx CATEGORIES) |
 | Add a new ingester              | src/ingesters/<name>/index.ts                  |
 | Add a dashboard widget          | components/engineering-intelligence/<Name>.tsx |
 | Add a UI primitive              | components/ui/<Name>.tsx                       |

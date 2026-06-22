@@ -45,9 +45,9 @@ npm run ingest:trending   # GitHub Trending (ideas/trending.md → SQLite)
 |--------|--------|
 | `db/` | ✅ Done — 7 tables, migration, seed data |
 | `ingesters/manual-feeds/` | ✅ Done — parses markdown → SQLite (standalone, not in orchestrator) |
-| `ingesters/rss/` | ✅ Done — 12 RSS feeds, regex parser |
+| `ingesters/rss/` | ✅ Done — 20 RSS feeds, regex parser |
 | `ingesters/hacker-news/` | ✅ Done — HN Algolia API, 20 stories |
-| `ingesters/github-trending/` | ✅ Done — parses ideas/trending.md → SQLite |
+| `ingesters/github-trending/` | ✅ Done — fetches RSS directly (3 feeds: daily/weekly/monthly) |
 | `ingesters/run-all` | ✅ Done — orchestrator with 3 ingesters, exports `runAll()`, kv_store tracking |
 | `lib/` | ✅ Done — DB, markdown, analytics, log-parser utilities |
 | `config/` | ✅ Done — intern task seed data |

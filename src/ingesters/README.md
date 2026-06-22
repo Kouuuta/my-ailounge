@@ -29,16 +29,20 @@ Fetches, parses, and stores feed items from multiple sources. Every ingester wri
 
 ### `rss/` ✅ Done
 
-Fetches 12 RSS/Atom feed URLs, parses with a regex-based parser (no external deps), writes to SQLite + markdown.
+Fetches 20 RSS/Atom feed URLs, parses with a regex-based parser (no external deps), writes to SQLite + markdown.
 
 **Source:** `'rss'`
 
-**Feed config:** `rss/feeds.ts` — 12 feeds mapped to categories and markdown files:
+**Feed config:** `rss/feeds.ts` — 20 feeds across 9 categories:
 - AI News (OpenAI, Anthropic, Google AI)
 - Next.js News (Next.js, Vercel)
 - Django News (Django blog, Python blog)
-- Security (GitHub Security Advisories)
+- Security (GitHub Security Advisories, CVE feed)
 - Cloud News (AWS, GCP)
+- WordPress (WordPress news, developer blog, WooCommerce)
+- Docker (Docker blog)
+- DevOps (DevOps.com, The New Stack)
+- GitHub (GitHub blog, GitHub Engineering)
 
 **Date filter:** Only writes to markdown if `published_at >= 2026-01-01`. Always writes to SQLite.
 
@@ -46,7 +50,7 @@ Fetches 12 RSS/Atom feed URLs, parses with a regex-based parser (no external dep
 npm run ingest:rss
 ```
 
-### `hacker-news/` ✅ Done
+### `hacker-news/` ✅ Done (`'hn'`)
 
 Fetches top 20 stories from the [HN Algolia API](https://hn.algolia.com/api) (`search_by_date?tags=story`).
 
@@ -62,23 +66,26 @@ Fetches top 20 stories from the [HN Algolia API](https://hn.algolia.com/api) (`s
 npm run ingest:hn
 ```
 
-### `github-trending/` ✅ Done
+### `github-trending/` ✅ Done (`'github_trending'`)
 
-Reads the Python scraper output (`ideas/trending.md`) and syncs entries to SQLite + markdown.
+Fetches GitHub Trending repos directly via RSS, no longer reads intermediate markdown files.
 
 **Source:** `'github_trending'`
 
 **How it works:**
-- Parses `ideas/trending.md` (format: `N. **[name](url)**: desc` under `### YYYY-MM-DD` headers)
-- Writes both to `04-github-trending.md` and SQLite
+- Fetches 3 RSS feeds from `mshibanami.github.io/GitHubTrendingRSS` (daily, weekly, monthly)
+- Parses with a regex-based RSS parser (same pattern as the RSS ingester)
+- Deduplicates results across the 3 feeds
+- Category set to `github` for all entries
+- Writes both to `04-github-trending.md` and SQLite (entries >= 2026-01-01 to markdown)
 
-**Note:** The Python scraper (`src/scraper.py`) generates `ideas/trending.md` via GitHub Actions. This ingester wraps that output — do not rebuild the fetcher.
+**Note:** The legacy Python scraper (`src/scraper.py`) still exists but is separate — this ingester no longer depends on it. The old `ideas/trending.md` file has been removed.
 
 ```bash
 npm run ingest:trending
 ```
 
-### `manual-feeds/` ✅ Done (standalone)
+### `manual-feeds/` ✅ Done (`'manual'`, standalone)
 
 Parses `docs/feeds/*.md` files and upserts entries into SQLite.
 
@@ -97,6 +104,8 @@ Parses `docs/feeds/*.md` files and upserts entries into SQLite.
 | `06-nextjs-news.md` | `nextjs` |
 | `07-rumors.md` | `rumors` |
 | `08-security-alerts.md` | `security` |
+| `09-devops-news.md` | `devops` |
+| `10-github-news.md` | `github` |
 
 ```bash
 npm run ingest:manual
@@ -127,7 +136,8 @@ npm run ingest
 ## Adding a New RSS Feed Source
 
 1. Add the URL to `rss/feeds.ts` with the correct `category` and `feedFile`
-2. The RSS ingester will pick it up automatically on next run
+2. If the `category` doesn't exist yet, add it to the `CATEGORIES` array in `app/feed/page.tsx`
+3. The RSS ingester will pick it up automatically on next run
 
 ## Adding a New Ingester Type
 

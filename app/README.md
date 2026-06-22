@@ -61,11 +61,11 @@ A **server component** (`force-dynamic`) that queries SQLite directly and render
 
 | Section | SQL | Source |
 |---------|-----|--------|
-| AI Changes | `category = 'ai' ORDER BY score DESC, published_at DESC LIMIT 5` | `feed_items` |
-| Framework Updates | `category IN ('nextjs', 'django') ORDER BY published_at DESC LIMIT 5` | `feed_items` |
+| AI Changes | `category = 'ai' AND source != 'manual' ORDER BY score DESC, published_at DESC LIMIT 5` | `feed_items` |
+| Framework Updates | `category IN ('nextjs', 'django') AND source != 'manual' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
 | Trending Repos | `source = 'github_trending' ORDER BY fetched_at DESC LIMIT 5` | `feed_items` |
-| Security | `category = 'security' OR tags LIKE '%cve%' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
-| Recommended Tool | `is_read = 0 AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC LIMIT 1` | `feed_items` |
+| Security | `(category = 'security' OR tags LIKE '%cve%') AND source != 'manual' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
+| Recommended Tool | `is_read = 0 AND source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC LIMIT 1` | `feed_items` |
 
 ### Stat Cards
 
@@ -95,7 +95,10 @@ HomePage
 ├── IngestButton (header — triggers POST /api/ingest)
 ├── StatCard × 4 (total items, last ingestion, today, week)
 ├── SectionCard × 4 (AI, Trending, Frameworks, Security)
+│   ├── accent bar per section (teal/purple/blue/red)
+│   ├── icon bg + count badge per theme
 │   └── ItemCard × 5 per section
+│       └── left accent bar colored by source (orange/blue/purple)
 ├── BreakdownCard (sources + categories Nivo bar chart, tabbed)
 ├── Recommended Tool card
 ├── Intern Tasks card (today + tomorrow)

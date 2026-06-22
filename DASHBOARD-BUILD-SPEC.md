@@ -18,10 +18,10 @@ Do not rebuild these. Extend them.
 | Migration entry point                                                   | `src/db/migrate.ts`                      | ✅ Done                                                                                                              |
 | Manual feeds ingester (parses `docs/feeds/*.md`, standalone only)       | `src/ingesters/manual-feeds/index.ts`    | ✅ Done (not part of orchestrator — run via `npm run ingest:manual`)                                                 |
 | Hacker News ingester (HN Algolia API, top 20 stories)                   | `src/ingesters/hacker-news/index.ts`     | ✅ Done                                                                                                              |
-| GitHub Trending ingester (parses `ideas/trending.md` → SQLite)          | `src/ingesters/github-trending/index.ts` | ✅ Done                                                                                                              |
-| RSS ingester (12 feeds across 6 categories, regex parser)               | `src/ingesters/rss/index.ts`             | ✅ Done                                                                                                              |
+| GitHub Trending ingester (fetches RSS directly, 3 feeds: daily/weekly/monthly) | `src/ingesters/github-trending/index.ts` | ✅ Done (no longer reads `ideas/trending.md`)                                                                  |
+| RSS ingester (20 feeds across 9 categories, regex parser)               | `src/ingesters/rss/index.ts`             | ✅ Done                                                                                                              |
 | Orchestrator (runs 3 ingesters, kv_store tracking, exports `runAll()`)  | `src/ingesters/run-all.ts`               | ✅ Done                                                                                                              |
-| GitHub Trending scraper (legacy, writes to `ideas/trending.md` + Slack) | `src/scraper.py`                         | Working, but writes to markdown not SQLite                                                                           |
+| GitHub Trending scraper (legacy, writes to Slack — `ideas/trending.md` removed) | `src/scraper.py`                 | Legacy — GitHub Trending ingester now fetches RSS directly, no longer reads `ideas/trending.md`                     |
 | Feed format/tagging rules                                               | `docs/feeds/feeds-format-guide.md`       | ✅ Done                                                                                                              |
 | Intern task seed data (13 tasks)                                        | `src/config/intern-tasks.ts`             | ✅ Done                                                                                                              |
 | Shared utilities (DB writes, markdown append, analytics queries)        | `src/lib/`                               | ✅ Done                                                                                                              |
@@ -259,8 +259,8 @@ Each ingester writes data to **both** SQLite (via `lib/db.upsertEntry`) and mark
 
 ### 6.3 RSS feed config
 
-RSS feed URLs are defined in `src/ingesters/rss/feeds.ts` — 12 feeds across 6 categories
-(AI, Next.js, Django, Security, Cloud, Python). Each entry specifies `url`, `category`, and
+RSS feed URLs are defined in `src/ingesters/rss/feeds.ts` — 20 feeds across 9 categories
+(AI, Next.js, Django, Security, Cloud, WordPress, Docker, DevOps, GitHub). Each entry specifies `url`, `category`, and
 the markdown feed file to append to. To add a new feed, add an entry to this array.
 
 ### 6.4 Acceptance criteria (all ✅ met)
@@ -275,13 +275,12 @@ the markdown feed file to append to. To add a new feed, add an entry to this arr
 > without manual steps" is intentionally **not** in scope right now. Revisit once an automation
 > option from Appendix A is chosen.
 
-### 6.5 Migrating `src/scraper.py`
+### 6.5 Legacy `src/scraper.py`
 
-The existing Python scraper writes GitHub Trending results to `ideas/trending.md` + Slack —
-keep this working as-is for now (it's a separate concern: a Slack notification, not the
-dashboard's data source). The TypeScript `src/ingesters/github-trending/index.ts` writes to
-SQLite independently and is called by `npm run ingest`. They run as two separate steps with
-different outputs (Slack notification vs. dashboard data).
+The Python scraper (`src/scraper.py`) previously wrote GitHub Trending results to `ideas/trending.md` + Slack.
+The `ideas/trending.md` file has been removed — the TypeScript GitHub Trending ingester now fetches
+RSS directly (3 feeds: daily, weekly, monthly) and no longer depends on the scraper output.
+The scraper still exists for Slack notifications but is separate from the dashboard data pipeline.
 
 ---
 

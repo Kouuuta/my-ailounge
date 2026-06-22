@@ -13,8 +13,8 @@ A **client component** wrapped in `<Suspense>` (needed for `useSearchParams`).
 | Filter | Type | URL Param | Values |
 |--------|------|-----------|--------|
 | Search title | `Input` | `q` | Free text |
-| Source | `Select` | `source` | `manual`, `hn`, `rss`, `github_trending` |
-| Category | `Select` | `category` | `ai`, `cloud`, `django`, `nextjs`, `hn`, `github`, `security`, `rumors`, `general` |
+| Source | `Select` | `source` | `hn`, `rss`, `github_trending` |
+| Category | `Select` | `category` | `ai`, `cloud`, `devops`, `django`, `nextjs`, `hn`, `github`, `security`, `rumors`, `general` |
 | Status | `Select` | `is_read` | `0` (unread), `1` (read) |
 | Pinned | `Select` | `is_pinned` | `1` (pinned), `0` (unpinned) |
 | Clear button | Button | — | Resets all filters |
