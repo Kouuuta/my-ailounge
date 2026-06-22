@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3 } from "lucide-react";
+import { ResponsiveBar } from "@nivo/bar";
 
 export interface BreakdownItem {
   name: string;
@@ -16,7 +17,33 @@ interface BreakdownCardProps {
   delay?: number;
 }
 
-function BreakdownList({
+const SOURCE_COLORS: Record<string, string> = {
+  hn: "#ff6600",
+  github_trending: "#6e40c9",
+  rss: "#3b82f6",
+};
+
+const PALETTE = [
+  "#f59e0b",
+  "#ef4444",
+  "#8b5cf6",
+  "#06b6d4",
+  "#84cc16",
+  "#ec4899",
+  "#f97316",
+  "#14b8a6",
+];
+
+function getColor(name: string): string {
+  if (SOURCE_COLORS[name]) return SOURCE_COLORS[name];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return PALETTE[Math.abs(hash) % PALETTE.length];
+}
+
+function Chart({
   items,
   total,
 }: {
@@ -30,28 +57,51 @@ function BreakdownList({
       </p>
     );
   }
+
+  const data = items.map((item) => ({
+    name: item.name,
+    count: item.count,
+    pct: total > 0 ? Math.round((item.count / total) * 100) : 0,
+    color: getColor(item.name),
+  }));
+
   return (
-    <div className="space-y-2">
-      {items.map((item) => {
-        const pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
-        return (
-          <div key={item.name} className="space-y-1">
-            <div className="flex items-center justify-between text-sm">
-              <span className="truncate font-medium">{item.name}</span>
-              <span className="tabular-nums text-muted-foreground">
-                {item.count}
-                <span className="text-xs ml-1">({pct}%)</span>
-              </span>
-            </div>
-            <div className="h-1.5 w-full rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-accent-vibrant/60 transition-all duration-500"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
+    <div className="h-64">
+      <ResponsiveBar
+        data={data}
+        keys={["count"]}
+        indexBy="name"
+        layout="horizontal"
+        margin={{ top: 0, right: 70, bottom: 0, left: 100 }}
+        padding={0.3}
+        valueScale={{ type: "linear" }}
+        colors={{ datum: "data.color" }}
+        borderRadius={4}
+        borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
+        axisLeft={{
+          tickSize: 0,
+          tickPadding: 8,
+        }}
+        axisBottom={null}
+        enableGridX={false}
+        enableGridY={false}
+        label={(d) => `${d.value}`}
+        labelSkipWidth={40}
+        labelTextColor="white"
+        tooltip={({ data: d }) => (
+          <div className="rounded-lg border bg-card px-3 py-2 text-sm shadow-md">
+            <span className="font-medium">{d.name}</span>: {d.count.toLocaleString()} ({d.pct}%)
           </div>
-        );
-      })}
+        )}
+        theme={{
+          axis: {
+            ticks: {
+              text: { fill: "var(--color-muted-foreground)", fontSize: 12 },
+            },
+          },
+        }}
+        motionConfig="gentle"
+      />
     </div>
   );
 }
@@ -86,10 +136,10 @@ export function BreakdownCard({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="sources" className="mt-4">
-            <BreakdownList items={sources} total={total} />
+            <Chart items={sources} total={total} />
           </TabsContent>
           <TabsContent value="categories" className="mt-4">
-            <BreakdownList items={categories} total={total} />
+            <Chart items={categories} total={total} />
           </TabsContent>
         </Tabs>
       </CardContent>
