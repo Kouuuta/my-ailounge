@@ -20,8 +20,24 @@ export const RSS_FEEDS: RSSFeedConfig[] = [
 
   // Security
   { url: "https://github-security-advisory-rss.vercel.app/rss", category: "security", feedFile: "08-security-alerts.md" },
+  { url: "https://cve.assurestart.co/api/feed.xml?term=microsoft,apache,linux,docker,nodejs,python,nginx,redis,postgresql,openssl&cvss_min=7", category: "security", feedFile: "08-security-alerts.md" },
 
   // Cloud
   { url: "https://aws.amazon.com/blogs/aws/feed/", category: "cloud", feedFile: "02-cloud-news.md" },
   { url: "https://cloud.google.com/blog/rss", category: "cloud", feedFile: "02-cloud-news.md" },
+
+  // DevOps
+  { url: "https://wordpress.org/news/feed/",          category: "devops",  feedFile: "09-devops-news.md" },
+  { url: "https://developer.woocommerce.com/feed/",   category: "devops",  feedFile: "09-devops-news.md" },
+  { url: "https://www.docker.com/feed/",              category: "devops",  feedFile: "09-devops-news.md" },
+  { url: "https://devops.com/feed/",                  category: "devops",  feedFile: "09-devops-news.md" },
+
+  // GitHub
+  { url: "https://github.blog/feed/",                                          category: "github", feedFile: "11-github-news.md" },
+  { url: "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",       category: "github", feedFile: "04-github-trending.md" },
+  { url: "https://mshibanami.github.io/GitHubTrendingRSS/weekly/all.xml",      category: "github", feedFile: "04-github-trending.md" },
+  { url: "https://mshibanami.github.io/GitHubTrendingRSS/monthly/all.xml",     category: "github", feedFile: "04-github-trending.md" },
+
+  // Startup
+  { url: "https://www.ycombinator.com/blog/feed",     category: "startup", feedFile: "10-startup-news.md" },
 ];

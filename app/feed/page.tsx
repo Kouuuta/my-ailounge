@@ -53,11 +53,13 @@ const SOURCES = ["hn", "rss", "github_trending"];
 const CATEGORIES = [
   "ai",
   "cloud",
+  "devops",
   "django",
   "nextjs",
   "hn",
   "github",
   "security",
+  "startup",
   "rumors",
   "general",
 ];

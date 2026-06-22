@@ -13,6 +13,9 @@ const FILE_CATEGORY_MAP: Record<string, string> = {
   "06-nextjs-news.md":     "nextjs",
   "07-rumors.md":          "rumors",
   "08-security-alerts.md": "security",
+  "09-devops-news.md":     "devops",
+  "10-startup-news.md":    "startup",
+  "11-github-news.md":     "github",
 };
 
 function parseEntry(line: string): Pick<IngestEntry, "title" | "url" | "published_at" | "tags"> | null {
