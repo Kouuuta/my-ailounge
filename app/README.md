@@ -9,6 +9,7 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `/` | `page.tsx` | Server | Engineering Briefing homepage |
 | `/feed` | `feed/page.tsx` | Client (Suspense) | Full Developer Intelligence Feed |
 | `/watchlist` | `watchlist/page.tsx` | Client | Stack Watchlist manager |
+| `/logs` | `logs/page.tsx` | Client | Log Analysis Dashboard (upload + explore Zoho/Acuity CSV logs) |
 | `GET /api/feed` | `api/feed/route.ts` | Route Handler | List feed items with filters |
 | `POST /api/feed` | `api/feed/route.ts` | Route Handler | Create a feed item |
 | `PATCH /api/feed/[id]` | `api/feed/[id]/route.ts` | Route Handler | Update a feed item |
@@ -17,6 +18,13 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `POST /api/watchlist` | `api/watchlist/route.ts` | Route Handler | Add a watchlist item |
 | `PATCH /api/watchlist/[id]` | `api/watchlist/[id]/route.ts` | Route Handler | Update a watchlist item |
 | `DELETE /api/watchlist/[id]` | `api/watchlist/[id]/route.ts` | Route Handler | Remove a watchlist item |
+| `POST /api/logs` | `api/logs/route.ts` | Route Handler | Upload & parse a Zoho/Acuity log CSV |
+| `GET /api/logs` | `api/logs/route.ts` | Route Handler | List all log analyses |
+| `GET /api/logs/[id]` | `api/logs/[id]/route.ts` | Route Handler | Single analysis with counts |
+| `DELETE /api/logs/[id]` | `api/logs/[id]/route.ts` | Route Handler | Remove an analysis (cascade) |
+| `GET /api/logs/[id]/errors` | `api/logs/[id]/errors/route.ts` | Route Handler | Paginated error rows for an analysis |
+| `GET /api/logs/[id]/patterns` | `api/logs/[id]/patterns/route.ts` | Route Handler | Grouped error patterns |
+| `GET /api/logs/[id]/anomalies` | `api/logs/[id]/anomalies/route.ts` | Route Handler | Statistical anomaly spikes |
 
 ## Root Layout — `layout.tsx`
 
@@ -86,5 +94,7 @@ HomePage
 
 - [Feed Page →](./feed/README.md)
 - [Watchlist Page →](./watchlist/README.md)
+- [Log Analysis Dashboard →](./logs/README.md)
 - [Feed API →](./api/feed/README.md)
 - [Watchlist API →](./api/watchlist/README.md)
+- [Log Analysis API →](./api/logs/README.md)

@@ -13,7 +13,7 @@ Do not rebuild these. Extend them.
 
 | Already in repo                                                         | Path                                     | Status                                                                                                               |
 | ----------------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| SQLite schema (3 tables: `feed_items`, `kv_store`, `watchlist_items`)   | `src/db/schema.ts`                       | ✅ Done                                                                                                              |
+| SQLite schema (7 tables: `feed_items`, `kv_store`, `watchlist_items`, `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies`) | `src/db/schema.ts` | ✅ Done |
 | DB client (`getDb()` singleton, WAL mode)                               | `src/db/client.ts`                       | ✅ Done                                                                                                              |
 | Migration entry point                                                   | `src/db/migrate.ts`                      | ✅ Done                                                                                                              |
 | Manual feeds ingester (parses `docs/feeds/*.md`)                        | `src/ingesters/manual-feeds/index.ts`    | ✅ Done                                                                                                              |
@@ -32,11 +32,17 @@ Do not rebuild these. Extend them.
 | Page README docs (app/, src/, components/)                              | `*/README.md`                            | ✅ Done                                                                                                              |
 | Agent steerer files (OpenCode + Claude)                                 | `AGENTS.md`, `CLAUDE.md`                 | ✅ Done                                                                                                              |
 | Documentation hub                                                       | `docs/README.md`                         | ✅ Done                                                                                                              |
+| Log Analysis Dashboard (upload + explore Zoho/Acuity CSV logs)          | `app/logs/page.tsx`                      | ✅ Done                                                                                                              |
+| Log Analysis API (5 routes: upload, list, detail, errors, patterns, anomalies) | `app/api/logs/`                    | ✅ Done                                                                                                              |
+| Log parser (column detection, error extraction, pattern grouping, anomaly detection) | `src/lib/log-parser.ts`          | ✅ Done                                                                                                              |
+| Log analysis DB tables (4: `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies`) | `src/db/schema.ts`            | ✅ Done                                                                                                              |
+| Log dashboard components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown) | `components/logs/`              | ✅ Done                                                                                                              |
+| Nivo charting packages (`@nivo/bar`, `@nivo/pie`, `@nivo/core`)         | `package.json`                           | ✅ Done                                                                                                              |
 | GitHub Actions daily ingestion workflow                                 | `.github/workflows/ingest.yml`           | Exists, unused for now — ingestion is manual via `npm run ingest` (Section 6); cron automation deferred (Appendix A) |
 
 **Stack:**
 
-- Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI
+- Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI, Nivo (bar + pie charts)
 - Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`)
 - Ingestion: TypeScript ingesters (`src/ingesters/*`) + one legacy Python scraper (`src/scraper.py`)
 - Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing SQLite directly —
@@ -59,6 +65,7 @@ shipping Module 1.
 | **Module 5 — Engineering Briefing**        | ✅ Built                              |
 | **Module 3 — Stack Watchlist**             | ✅ Built                              |
 | **Module 8 — Intern Safe Task Board**      | ✅ Built (seed data + UI on homepage) |
+| **Log Analysis Dashboard**                 | ✅ Built (upload + parse + chart Zoho/Acuity CSV logs) |
 | **Module 2 — Repo Radar**                  | ⬜ Planned — not started              |
 | **Module 7 — Prompt Library**              | ⬜ Planned — not started              |
 
@@ -272,9 +279,9 @@ different outputs (Slack notification vs. dashboard data).
 ## 7. Current File Structure (actual)
 
 ```
-app/          → app/README.md        # 3 pages (/, /feed, /watchlist) + 4 API routes
-components/   → components/README.md # 11 shadcn/ui primitives + 4 dashboard widgets + theme
-src/          → src/README.md        # 4 ingesters (all ✅) + DB (3 tables) + analytics
+app/          → app/README.md        # 4 pages (/, /feed, /watchlist, /logs) + 4 API route groups (feed, watchlist, logs)
+components/   → components/README.md # 11 shadcn/ui primitives + 4 dashboard widgets + 4 log components + theme
+src/          → src/README.md        # 4 ingesters (all ✅) + DB (7 tables) + analytics + log-parser
   ├── db/     → src/db/README.md
   ├── ingesters/ → src/ingesters/README.md
   ├── lib/    → src/lib/README.md
@@ -306,6 +313,12 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 8    | Stack Watchlist (/watchlist) with inline editing          | ✅     |
 | 9    | Page READMEs for app/, src/, components/                  | ✅     |
 | 10   | AGENTS.md + CLAUDE.md steerer files                       | ✅     |
+| 11   | Log Analysis Dashboard: upload, parse, chart CSV logs     | ✅     |
+| 12   | Log Analysis API: 5 routes (upload, list, detail, errors, patterns, anomalies) | ✅     |
+| 13   | Log parser: column detection, pattern grouping, anomaly detection | ✅     |
+| 14   | Log DB tables: `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies` | ✅     |
+| 15   | Log dashboard components: CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown | ✅     |
+| 16   | Logs README docs: app/logs/, app/api/logs/, components/logs/ | ✅     |
 
 ### ⬜ Remaining Work
 

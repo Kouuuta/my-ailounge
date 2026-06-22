@@ -15,7 +15,7 @@ const db = getDb(); // Returns the singleton instance
 
 ### `schema.ts`
 
-Defines and migrates 3 tables + indexes. Also seeds initial data.
+Defines and migrates 7 tables + indexes. Also seeds initial data.
 
 #### Tables
 
@@ -70,6 +70,80 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `updated_at` | TEXT | ISO 8601, defaults to `datetime('now')` |
 
 **Seed data:** 14 items on first migration (Next.js, React, Django, DRF, PostgreSQL, Redis, Docker, AWS, Celery, GitHub Actions, Sentry, OpenAI SDK, Anthropic SDK, DeepSeek SDK).
+
+---
+
+**`log_analyses`** — Per-upload metadata for the Log Analysis Dashboard.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | INTEGER | Primary key, autoincrement |
+| `filename` | TEXT | Uploaded CSV filename |
+| `source` | TEXT | `'acuity'` or `'zoho'` |
+| `uploaded_at` | TEXT | ISO 8601, defaults to `datetime('now')` |
+| `total_rows` | INTEGER | Total parsed CSV rows |
+| `error_count` | INTEGER | Rows classified as errors |
+| `unique_errors` | INTEGER | Distinct error patterns |
+| `time_range_start` | TEXT | Earliest timestamp in CSV |
+| `time_range_end` | TEXT | Latest timestamp in CSV |
+| `methods` | TEXT | JSON array of `{ method, count }` |
+| `executive_summary` | TEXT | Human-readable analysis summary |
+
+---
+
+**`log_errors`** — Individual parsed rows from uploaded CSV.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | INTEGER | Primary key, autoincrement |
+| `analysis_id` | INTEGER | FK → `log_analyses(id) ON DELETE CASCADE` |
+| `source` | TEXT | `'acuity'` or `'zoho'` |
+| `method` | TEXT | Detected method/endpoint column |
+| `action` | TEXT | Detected action/type column |
+| `content` | TEXT | Detected content/message column |
+| `error_type` | TEXT | Extracted error type/summary (max 500 chars) |
+| `error_code` | TEXT | Detected status/error code column |
+| `raw_message` | TEXT | Full raw error message (max 1000 chars) |
+| `timestamp` | TEXT | Detected timestamp column |
+| `is_error` | INTEGER | `1` for error rows, `0` for success rows |
+
+**Index:** `analysis_id`
+
+---
+
+**`log_patterns`** — Grouped error patterns aggregated at parse time.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | INTEGER | Primary key, autoincrement |
+| `analysis_id` | INTEGER | FK → `log_analyses(id) ON DELETE CASCADE` |
+| `source` | TEXT | `'acuity'` or `'zoho'` |
+| `pattern_key` | TEXT | Normalized error type (variables replaced with `{var}`) |
+| `sample_message` | TEXT | First example message (max 500 chars) |
+| `count` | INTEGER | How many times this pattern appeared |
+| `first_seen` | TEXT | Earliest occurrence |
+| `last_seen` | TEXT | Latest occurrence |
+| `severity` | TEXT | `'high'`, `'medium'`, or `'low'` |
+
+**Index:** `analysis_id`
+
+---
+
+**`log_anomalies`** — Statistical anomaly spikes detected at parse time.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | INTEGER | Primary key, autoincrement |
+| `analysis_id` | INTEGER | FK → `log_analyses(id) ON DELETE CASCADE` |
+| `source` | TEXT | `'acuity'` or `'zoho'` |
+| `description` | TEXT | Human-readable spike description |
+| `severity` | TEXT | `'high'` (>3σ) or `'medium'` (>2σ) |
+| `detected_at` | TEXT | Date of the spike |
+| `error_count` | INTEGER | Actual error count on that day |
+| `expected_count` | REAL | Mean daily error count for baseline |
+| `deviation` | REAL | Number of standard deviations above mean |
+
+**Index:** `analysis_id`
 
 ### `migrate.ts`
 

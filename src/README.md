@@ -43,11 +43,12 @@ npm run ingest:trending   # GitHub Trending (ideas/trending.md → SQLite)
 
 | Module | Status |
 |--------|--------|
-| `db/` | ✅ Done — 3 tables, migration, seed data |
+| `db/` | ✅ Done — 7 tables, migration, seed data |
 | `ingesters/manual-feeds/` | ✅ Done — parses markdown → SQLite |
 | `ingesters/rss/` | ✅ Done — 12 RSS feeds, regex parser |
 | `ingesters/hacker-news/` | ✅ Done — HN Algolia API, 20 stories |
 | `ingesters/github-trending/` | ✅ Done — parses ideas/trending.md → SQLite |
 | `ingesters/run-all` | ✅ Done — orchestrator with kv_store tracking |
+| `lib/log-parser.ts` | ✅ Done — CSV log parsing, column detection, error grouping, anomaly detection |
 | `lib/` | ✅ Done — DB, markdown, analytics utilities |
 | `config/` | ✅ Done — intern task seed data |

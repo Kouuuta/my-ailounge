@@ -8,6 +8,7 @@ Reusable React components used by the Developer Dashboard pages.
 |-----------|----------|
 | `ui/` | shadcn/ui-style primitives — 11 components (Button, Card, Badge, Input, Select, Tabs, Toggle, Separator, Table, Skeleton, Navbar) |
 | `engineering-intelligence/` | Dashboard-specific widgets — 4 components (AutomationStatus, BreakdownCard, LastIngestionStat, TimeWindowStat) |
+| `logs/` | Log Analysis Dashboard — 4 components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown) |
 | `theme-provider.tsx` | Dark/light mode React Context (used by Navbar and layout) |
 
 ## Shared Utility
@@ -20,10 +21,11 @@ There is a second `cn()` at `src/lib/utils.ts` (simple string join) — that one
 
 - `ui/` components are standard shadcn/ui — minimal customization from defaults
 - `engineering-intelligence/` are custom-built for this project
-- `"use client"` is used where needed: Radix primitives, Navbar, ThemeProvider, BreakdownCard
+- `"use client"` is used where needed: Radix primitives, Navbar, ThemeProvider, BreakdownCard, CsvUpload, ErrorTrendChart, SourceBreakdown
 - Server components (AutomationStatus, LastIngestionStat, TimeWindowStat) call `getDb()` at request time — no `"use client"` needed
 
 ## Sub-READMEs
 
 - [UI Primitives →](./ui/README.md)
 - [Dashboard Widgets →](./engineering-intelligence/README.md)
+- [Log Analysis Components →](./logs/README.md)
