@@ -1,5 +1,5 @@
 import { getDb } from "@/src/db/client";
-import { getItemsBySource, getItemsByCategory } from "@/src/lib/analytics";
+import { getItemsBySource, getItemsByCategory, getItemsToday, getItemsThisWeek, getLastGlobalIngestion } from "@/src/lib/analytics";
 import { INTERN_TASKS } from "@/src/config/intern-tasks";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,11 +15,11 @@ import {
   ExternalLink,
   ChevronRight,
   Sparkles,
+  Clock,
 } from "lucide-react";
 import Link from "next/link";
 import { IngestButton } from "@/components/engineering-intelligence/ingest-button";
-import { LastIngestionStat } from "@/components/engineering-intelligence/last-ingestion-stat";
-import { TimeWindowStat } from "@/components/engineering-intelligence/time-window-stat";
+import { StatCard } from "@/components/engineering-intelligence/stat-card";
 import { BreakdownCard } from "@/components/engineering-intelligence/breakdown-card";
 import type { BreakdownItem } from "@/components/engineering-intelligence/breakdown-card";
 import { AutomationStatus } from "@/components/engineering-intelligence/automation-status";
@@ -62,52 +62,6 @@ function timeAgo(dateStr: string): string {
     month: "short",
     day: "numeric",
   });
-}
-
-const STAT_ICONS = [
-  {
-    icon: BookOpen,
-    label: "Total Items",
-    gradient: "from-emerald-500 to-teal-500",
-  },
-];
-
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-  gradient,
-  delay,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: number;
-  gradient: string;
-  delay: number;
-}) {
-  return (
-    <Card
-      className="group relative overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent-vibrant/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      <CardContent className="relative z-10 py-4">
-        <div className="flex items-center gap-3">
-          <div
-            className={`flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br ${gradient} shadow-sm`}
-          >
-            <Icon className="h-4 w-4 text-white" />
-          </div>
-          <div className="min-w-0">
-            <p className="text-xs text-muted-foreground">{label}</p>
-            <p className="text-2xl font-bold tabular-nums tracking-tight">
-              {value}
-            </p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 }
 
 function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
@@ -281,7 +235,9 @@ export default function HomePage() {
   const todayTask = INTERN_TASKS[taskIndex % INTERN_TASKS.length];
   const tomorrowTask = INTERN_TASKS[(taskIndex + 1) % INTERN_TASKS.length];
 
-  const statValues = [totalItems];
+  const itemsToday = getItemsToday();
+  const itemsThisWeek = getItemsThisWeek();
+  const lastIngestion = getLastGlobalIngestion();
 
   const sources: BreakdownItem[] = getItemsBySource().map((s) => ({
     name: s.source,
@@ -319,17 +275,39 @@ export default function HomePage() {
         </div>
 
         <div className="animate-fade-in grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {STAT_ICONS.map((s, i) => (
-            <StatCard
-              key={s.label}
-              {...s}
-              value={statValues[i]}
-              delay={i * 100}
-            />
-          ))}
-          <LastIngestionStat delay={400} />
-          <TimeWindowStat window="today" delay={500} />
-          <TimeWindowStat window="week" delay={600} />
+          <StatCard
+            label="Total Items"
+            value={totalItems}
+            icon={BookOpen}
+            accentColor="bg-emerald-500"
+            gradient="from-emerald-500 to-teal-500"
+            secondary={`${unreadItems} unread`}
+            delay={0}
+          />
+          <StatCard
+            label="Last Ingestion"
+            value={lastIngestion ? timeAgo(lastIngestion) : "Never"}
+            icon={Sparkles}
+            accentColor="bg-slate-500"
+            gradient="from-slate-500 to-gray-500"
+            delay={100}
+          />
+          <StatCard
+            label="Items Today"
+            value={itemsToday}
+            icon={TrendingUp}
+            accentColor="bg-amber-500"
+            gradient="from-amber-500 to-orange-500"
+            delay={200}
+          />
+          <StatCard
+            label="Items This Week"
+            value={itemsThisWeek}
+            icon={Clock}
+            accentColor="bg-indigo-500"
+            gradient="from-blue-500 to-indigo-500"
+            delay={300}
+          />
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
