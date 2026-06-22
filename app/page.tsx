@@ -64,7 +64,55 @@ function timeAgo(dateStr: string): string {
   });
 }
 
+const SOURCE_BADGE: Record<string, string> = {
+  hn: "bg-orange-100 text-orange-700 dark:bg-orange-900/60 dark:text-orange-300",
+  rss: "bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300",
+  github_trending:
+    "bg-purple-100 text-purple-700 dark:bg-purple-900/60 dark:text-purple-300",
+};
+
+const SOURCE_ACCENT: Record<string, string> = {
+  hn: "bg-orange-500",
+  rss: "bg-blue-500",
+  github_trending: "bg-purple-500",
+};
+
+const SECTION_THEME = {
+  ai: {
+    border: "border-t-teal-500",
+    iconBg: "bg-teal-500/10 dark:bg-teal-500/15",
+    iconColor: "text-teal-600 dark:text-teal-400",
+    badgeBg: "bg-teal-500/10 text-teal-600 dark:bg-teal-500/15 dark:text-teal-400",
+    buttonText: "text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300",
+  },
+  trending: {
+    border: "border-t-purple-500",
+    iconBg: "bg-purple-500/10 dark:bg-purple-500/15",
+    iconColor: "text-purple-600 dark:text-purple-400",
+    badgeBg: "bg-purple-500/10 text-purple-600 dark:bg-purple-500/15 dark:text-purple-400",
+    buttonText: "text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300",
+  },
+  framework: {
+    border: "border-t-blue-500",
+    iconBg: "bg-blue-500/10 dark:bg-blue-500/15",
+    iconColor: "text-blue-600 dark:text-blue-400",
+    badgeBg: "bg-blue-500/10 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400",
+    buttonText: "text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300",
+  },
+  security: {
+    border: "border-t-red-500",
+    iconBg: "bg-red-500/10 dark:bg-red-500/15",
+    iconColor: "text-red-600 dark:text-red-400",
+    badgeBg: "bg-red-500/10 text-red-600 dark:bg-red-500/15 dark:text-red-400",
+    buttonText: "text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300",
+  },
+};
+
 function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
+  const source = item.source;
+  const accentColor = SOURCE_ACCENT[source] ?? "bg-blue-500";
+  const badgeColor = SOURCE_BADGE[source] ?? SOURCE_BADGE.rss;
+
   return (
     <a
       href={item.url}
@@ -73,35 +121,34 @@ function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
       className="block group"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <Card className="w-full min-w-0 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-vibrant/30 hover:shadow-md">
-        <CardContent className="py-3 px-4">
-          <div className="flex min-w-0 items-start justify-between gap-2">
-            <div className="min-w-0 flex-1">
-              <p className="min-w-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium group-hover:text-accent-vibrant transition-colors">
-                {item.title}
-              </p>
-              <div className="flex flex-wrap items-center gap-2 mt-1 min-w-0">
-                <Badge variant="secondary" className="text-[10px] px-1 py-0">
-                  {item.source.replace("_", " ")}
-                </Badge>
-                {item.tags && (
-                  <span className="text-[10px] text-muted-foreground truncate min-w-0">
-                    {item.tags
-                      .split(",")
-                      .slice(0, 3)
-                      .map((t) => t.trim())
-                      .join(", ")}
-                  </span>
-                )}
-                <span className="text-[10px] text-muted-foreground ml-auto">
-                  {formatDate(item.published_at)}
+      <div className="relative flex items-stretch rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md overflow-hidden">
+        <div className={`w-[3px] shrink-0 transition-all duration-200 group-hover:w-[5px] ${accentColor}`} />
+        <div className="flex min-w-0 flex-1 items-start justify-between gap-2 p-2.5 pl-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium leading-snug group-hover:text-accent-vibrant transition-colors line-clamp-2">
+              {item.title}
+            </p>
+            <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+              <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${badgeColor}`}>
+                {source.replace("_", " ")}
+              </span>
+              {item.tags && (
+                <span className="text-[10px] text-muted-foreground truncate max-w-[180px]">
+                  {item.tags
+                    .split(",")
+                    .slice(0, 2)
+                    .map((t) => t.trim())
+                    .join(", ")}
                 </span>
-              </div>
+              )}
+              <span className="text-[10px] text-muted-foreground ml-auto shrink-0">
+                {formatDate(item.published_at)}
+              </span>
             </div>
-            <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all mt-1 group-hover:translate-x-0.5" />
           </div>
-        </CardContent>
-      </Card>
+          <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all mt-1 group-hover:translate-x-0.5" />
+        </div>
+      </div>
     </a>
   );
 }
@@ -112,50 +159,60 @@ function SectionCard({
   items,
   viewAllHref,
   delay,
+  theme,
 }: {
   title: string;
   icon: React.ElementType;
   items: FeedItem[];
   viewAllHref?: string;
   delay: number;
+  theme: keyof typeof SECTION_THEME;
 }) {
+  const t = SECTION_THEME[theme];
+
   return (
     <Card
-      className="transition-all duration-300 hover:shadow-md"
+      className={`animate-slide-up transition-all duration-300 hover:shadow-md border-t-2 ${t.border}`}
       style={{ animationDelay: `${delay}ms` }}
     >
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-vibrant/10">
-              <Icon className="h-4 w-4 text-accent-vibrant" />
+            <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${t.iconBg}`}>
+              <Icon className={`h-4 w-4 ${t.iconColor}`} />
             </div>
-            <CardTitle className="text-lg">{title}</CardTitle>
+            <CardTitle className="text-base tracking-tight">{title}</CardTitle>
+            <span className={`inline-flex items-center justify-center rounded-full text-[10px] font-semibold h-5 min-w-5 px-1.5 ${t.badgeBg}`}>
+              {items.length}
+            </span>
           </div>
           {viewAllHref && (
             <Button
               variant="ghost"
               size="sm"
               asChild
-              className="hidden md:inline-flex"
+              className={`hidden md:inline-flex h-7 ${t.buttonText}`}
             >
               <Link href={viewAllHref}>
                 View all
-                <ChevronRight className="h-4 w-4 ml-1" />
+                <ChevronRight className="h-3.5 w-3.5 ml-1" />
               </Link>
             </Button>
           )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-1">
+      <CardContent className="space-y-0.5 pt-1">
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-4 text-center">
-            No items yet. Run{" "}
-            <code className="text-xs bg-muted px-1 rounded">
-              npm run ingest
-            </code>{" "}
-            to fetch data.
-          </p>
+          <div className="flex flex-col items-center gap-1 py-8 text-muted-foreground">
+            <Icon className="h-8 w-8 opacity-20" />
+            <p className="text-sm">No items yet</p>
+            <p className="text-xs">
+              Run{" "}
+              <code className="text-xs bg-muted px-1 rounded">
+                npm run ingest
+              </code>
+            </p>
+          </div>
         ) : (
           items.map((item, i) => (
             <ItemCard key={item.id} item={item} delay={i * 60 + delay + 200} />
@@ -311,44 +368,38 @@ export default function HomePage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <div
-            className="space-y-4 animate-slide-up"
-            style={{ animationDelay: "200ms" }}
-          >
-            <SectionCard
-              title={`AI Changes (${aiItems.length})`}
-              icon={Brain}
-              items={aiItems}
-              viewAllHref="/feed?category=ai"
-              delay={0}
-            />
-            <SectionCard
-              title={`Trending Repos (${trendingItems.length})`}
-              icon={TrendingUp}
-              items={trendingItems}
-              viewAllHref="/feed?source=github_trending"
-              delay={100}
-            />
-          </div>
-          <div
-            className="space-y-4 animate-slide-up"
-            style={{ animationDelay: "300ms" }}
-          >
-            <SectionCard
-              title={`Framework Updates (${frameworkItems.length})`}
-              icon={Code}
-              items={frameworkItems}
-              viewAllHref="/feed?category=nextjs"
-              delay={0}
-            />
-            <SectionCard
-              title={`Security (${securityItems.length})`}
-              icon={Shield}
-              items={securityItems}
-              viewAllHref="/feed?category=security"
-              delay={100}
-            />
-          </div>
+          <SectionCard
+            title="AI Changes"
+            icon={Brain}
+            items={aiItems}
+            viewAllHref="/feed?category=ai"
+            delay={0}
+            theme="ai"
+          />
+          <SectionCard
+            title="Trending Repos"
+            icon={TrendingUp}
+            items={trendingItems}
+            viewAllHref="/feed?source=github_trending"
+            delay={100}
+            theme="trending"
+          />
+          <SectionCard
+            title="Framework Updates"
+            icon={Code}
+            items={frameworkItems}
+            viewAllHref="/feed?category=nextjs"
+            delay={200}
+            theme="framework"
+          />
+          <SectionCard
+            title="Security"
+            icon={Shield}
+            items={securityItems}
+            viewAllHref="/feed?category=security"
+            delay={300}
+            theme="security"
+          />
         </div>
 
         <Separator className="my-8" />

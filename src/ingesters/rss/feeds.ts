@@ -26,16 +26,20 @@ export const RSS_FEEDS: RSSFeedConfig[] = [
   { url: "https://aws.amazon.com/blogs/aws/feed/", category: "cloud", feedFile: "02-cloud-news.md" },
   { url: "https://cloud.google.com/blog/rss", category: "cloud", feedFile: "02-cloud-news.md" },
 
+  // WordPress
+  { url: "https://wordpress.org/news/feed/",              category: "wordpress", feedFile: "09-wordpress-news.md" },
+  { url: "https://developer.wordpress.org/news/feed/",    category: "wordpress", feedFile: "09-wordpress-news.md" },
+  { url: "https://developer.woocommerce.com/feed/",       category: "wordpress", feedFile: "09-wordpress-news.md" },
+
+  // Docker
+  { url: "https://www.docker.com/blog/feed/",              category: "docker",   feedFile: "10-docker-news.md" },
+
   // DevOps
-  { url: "https://wordpress.org/news/feed/",          category: "devops",  feedFile: "09-devops-news.md" },
-  { url: "https://developer.woocommerce.com/feed/",   category: "devops",  feedFile: "09-devops-news.md" },
-  { url: "https://www.docker.com/feed/",              category: "devops",  feedFile: "09-devops-news.md" },
-  { url: "https://devops.com/feed/",                  category: "devops",  feedFile: "09-devops-news.md" },
+  { url: "https://devops.com/feed/",                       category: "devops",   feedFile: "11-devops-news.md" },
+  { url: "https://thenewstack.io/feed/",                   category: "devops",   feedFile: "11-devops-news.md" },
 
   // GitHub
-  { url: "https://github.blog/feed/",                                          category: "github", feedFile: "10-github-news.md" },
-  { url: "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",       category: "github", feedFile: "04-github-trending.md" },
-  { url: "https://mshibanami.github.io/GitHubTrendingRSS/weekly/all.xml",      category: "github", feedFile: "04-github-trending.md" },
-  { url: "https://mshibanami.github.io/GitHubTrendingRSS/monthly/all.xml",     category: "github", feedFile: "04-github-trending.md" },
+  { url: "https://github.blog/feed/",                      category: "github",   feedFile: "12-github-news.md" },
+  { url: "https://github.blog/engineering/feed/",          category: "github",   feedFile: "12-github-news.md" },
 
 ];

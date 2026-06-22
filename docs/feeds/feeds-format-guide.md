@@ -44,6 +44,10 @@ Every news entry must follow this exact pattern:
 | `06-nextjs-news.md` | `nextjs`, `vercel`, `release`, `rfc`, `security`, `cve`, `canary` |
 | `07-rumors.md` | `rumor`, `leak`, `unverified` — **always add `unverified` tag** |
 | `08-security-alerts.md` | `security`, `cve`, `patch`, `critical`, `high`, `medium` |
+| `09-wordpress-news.md` | `wordpress`, `woocommerce`, `release`, `plugin`, `theme`, `community` |
+| `10-docker-news.md` | `docker`, `container`, `release`, `security`, `cve`, `compose` |
+| `11-devops-news.md` | `devops`, `ci/cd`, `kubernetes`, `infra`, `automation`, `platform` |
+| `12-github-news.md` | `github`, `copilot`, `release`, `changelog`, `engineering`, `security` |
 
 ---
 
@@ -97,7 +101,7 @@ The ingester ignores these headers — they're just for humans reading the file.
 
 # Individual Feed Files
 
-Below is the content for each of the 8 feed files with starter entries.
+Below is the content for each of the 12 feed files with starter entries.
 Save each section as its own file in `docs/feeds/`.
 
 ---
@@ -233,4 +237,61 @@ Save each section as its own file in `docs/feeds/`.
 - [CVE-2026-23870 — React Server Components DoS — HIGH](https://github.com/advisories/GHSA-rsc-dos) | 2026-05-30 | security, cve, high, nextjs
 - [npm: lodash prototype pollution patch](https://www.npmjs.com/advisories/lodash-fix) | 2026-05-22 | security, patch, npm, medium
 - [PyPI: requests library MITM vulnerability](https://pypi.org/security/requests-mitm) | 2026-05-18 | security, cve, high, python
+```
+
+---
+
+# FILE: docs/feeds/09-wordpress-news.md
+
+```md
+# WordPress News
+> WordPress core releases, plugin/theme ecosystem, WooCommerce updates, and community events.
+> Format: - [Title](URL) | YYYY-MM-DD | tag1, tag2
+
+## June 2026
+
+- [WordPress 7.0 "Armstrong"](https://wordpress.org/news/2026/05/armstrong/) | 2026-05-20 | wordpress, release
+- [Introducing the WooCommerce dual API](https://developer.woocommerce.com/2026/06/04/introducing-the-woocommerce-dual-api/) | 2026-06-04 | wordpress, woocommerce, api
+```
+
+---
+
+# FILE: docs/feeds/10-docker-news.md
+
+```md
+# Docker News
+> Docker releases, security advisories, container ecosystem updates, and best practices.
+> Format: - [Title](URL) | YYYY-MM-DD | tag1, tag2
+
+## June 2026
+
+- [Docker Hardened Images enhanced vulnerability scanning](https://www.docker.com/blog/docker-hardened-images-enhanced-vulnerability-scanning-with-docker-and-aikido/) | 2026-06-11 | docker, security
+```
+
+---
+
+# FILE: docs/feeds/11-devops-news.md
+
+```md
+# DevOps News
+> DevOps practices, CI/CD, platform engineering, infrastructure-as-code, and automation.
+> Format: - [Title](URL) | YYYY-MM-DD | tag1, tag2
+
+## June 2026
+
+- [IaC Isn't Dying. AI Makes it More Important](https://devops.com/iac-isnt-dying-ai-makes-it-more-important/) | 2026-06-18 | devops, iac, ai
+```
+
+---
+
+# FILE: docs/feeds/12-github-news.md
+
+```md
+# GitHub News
+> GitHub platform announcements, changelogs, product updates, Copilot features, and engineering blog.
+> Format: - [Title](URL) | YYYY-MM-DD | tag1, tag2
+
+## June 2026
+
+- [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/) | 2026-06-19 | github, copilot, ai
 ```
