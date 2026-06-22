@@ -39,6 +39,62 @@ CREATE TABLE IF NOT EXISTS watchlist_items (
   migration_link    TEXT,
   updated_at        TEXT DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS log_analyses (
+  id                INTEGER PRIMARY KEY AUTOINCREMENT,
+  filename          TEXT NOT NULL,
+  source            TEXT NOT NULL,
+  uploaded_at       TEXT DEFAULT (datetime('now')),
+  total_rows        INTEGER DEFAULT 0,
+  error_count       INTEGER DEFAULT 0,
+  unique_errors     INTEGER DEFAULT 0,
+  time_range_start  TEXT,
+  time_range_end    TEXT,
+  methods           TEXT,
+  executive_summary TEXT
+);
+
+CREATE TABLE IF NOT EXISTS log_errors (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  analysis_id INTEGER NOT NULL REFERENCES log_analyses(id) ON DELETE CASCADE,
+  source      TEXT NOT NULL,
+  method      TEXT,
+  action      TEXT,
+  content     TEXT,
+  error_type  TEXT,
+  error_code  TEXT,
+  raw_message TEXT,
+  timestamp   TEXT,
+  is_error    INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS log_patterns (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  analysis_id     INTEGER NOT NULL REFERENCES log_analyses(id) ON DELETE CASCADE,
+  source          TEXT NOT NULL,
+  pattern_key     TEXT NOT NULL,
+  sample_message  TEXT,
+  count           INTEGER DEFAULT 0,
+  first_seen      TEXT,
+  last_seen       TEXT,
+  severity        TEXT DEFAULT 'medium'
+);
+
+CREATE TABLE IF NOT EXISTS log_anomalies (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  analysis_id     INTEGER NOT NULL REFERENCES log_analyses(id) ON DELETE CASCADE,
+  source          TEXT NOT NULL,
+  description     TEXT,
+  severity        TEXT DEFAULT 'medium',
+  detected_at     TEXT,
+  error_count     INTEGER,
+  expected_count  REAL,
+  deviation       REAL
+);
+
+CREATE INDEX IF NOT EXISTS idx_log_errors_analysis ON log_errors(analysis_id);
+CREATE INDEX IF NOT EXISTS idx_log_patterns_analysis ON log_patterns(analysis_id);
+CREATE INDEX IF NOT EXISTS idx_log_anomalies_analysis ON log_anomalies(analysis_id);
 `;
 
 const SEED_WATCHLIST = [

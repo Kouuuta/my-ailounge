@@ -259,14 +259,20 @@ export default function HomePage() {
   );
 
   const totalItems = (
-    db.prepare("SELECT COUNT(*) as count FROM feed_items WHERE source != 'manual'").get() as {
+    db
+      .prepare(
+        "SELECT COUNT(*) as count FROM feed_items WHERE source != 'manual'",
+      )
+      .get() as {
       count: number;
     }
   ).count;
 
   const unreadItems = (
     db
-      .prepare("SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0 AND source != 'manual'")
+      .prepare(
+        "SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0 AND source != 'manual'",
+      )
       .get() as { count: number }
   ).count;
 
