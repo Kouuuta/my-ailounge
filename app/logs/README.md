@@ -29,9 +29,18 @@ Client-side page (`"use client"`) for uploading, analyzing, and exploring Zoho /
 - **OverviewCards** — Total Rows, Errors, Error Rate
 - **ErrorTrendChart** — Nivo bar chart of errors per day
 - **SourceBreakdown** — Nivo donut chart of Acuity vs Zoho errors
-- **Patterns table** — grouped error patterns sorted by frequency, with severity badges (high/medium/low)
+- **Patterns table** — grouped error patterns sorted by frequency, with severity badges (high/medium/low) and a color legend explaining the thresholds
 - **Anomalies table** — statistical spikes (deviation > 2σ) with severity badges
 - **Executive Summary** — generated text summary of the analysis
+- **Pattern drill-down** — click any pattern row to open a slide-in panel (`?pattern=`) showing:
+  - Timeline bar chart of when that pattern occurred
+  - Method call breakdown (bars)
+  - Sample error message
+  - Paginated error rows table
+- **Export** — dropdown menu in the header with 3 formats:
+  - **JSON** — full analysis payload (metadata, patterns, anomalies) as a `.json` file (client-side)
+  - **CSV** — flattened patterns + anomalies as a `.csv` file (client-side)
+  - **PDF** — professional report with header, executive summary, metrics, pattern table, anomaly table, and methods — generated server-side via `GET /api/logs/[id]/export/pdf`
 
 ### 4. Loading / Empty / Error States
 
@@ -60,4 +69,7 @@ User clicks row → GET /api/logs/[id] → detail + GET /api/logs/[id]/errors �
 | `DELETE /api/logs/[id]` | Remove an analysis |
 | `GET /api/logs/[id]/errors` | Paginated error rows for an analysis |
 | `GET /api/logs/[id]/patterns` | Grouped error patterns |
+| `GET /api/logs/[id]/patterns/[pid]` | Pattern drill-down detail (timeline, methods, sample) |
+| `GET /api/logs/[id]/patterns/[pid]/errors` | Pattern-specific paginated error rows |
 | `GET /api/logs/[id]/anomalies` | Detected anomaly spikes |
+| `GET /api/logs/[id]/export/pdf` | Downloadable PDF report |

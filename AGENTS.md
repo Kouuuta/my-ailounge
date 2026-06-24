@@ -16,12 +16,12 @@ npm install → npm run db:migrate → npm run ingest → npm run dev
 npm run dev — Start development server
 npm run build — Production build
 npm run start — Start production server
-npm run ingest — Run all 3 ingesters (hn, github_trending, rss)
+npm run ingest — Run all 4 ingesters (hn, github_trending, rss, repo_radar)
 npm run ingest:hn — Hacker News only
 npm run ingest:rss — RSS feeds only
 npm run ingest:trending — GitHub Trending only (fetches RSS daily/weekly/monthly)
 npm run ingest:manual — Manual feed markdown only (standalone, not in orchestrator)
-npm run db:migrate — Create/migrate SQLite DB (7 tables)
+npm run db:migrate — Create/migrate SQLite DB (8 tables)
 
 ## ⚠️ Critical Constraints
 
@@ -37,22 +37,28 @@ npm run db:migrate — Create/migrate SQLite DB (7 tables)
 
 ## Navigation Map
 
-| Task                            | Go to                                          |
-| ------------------------------- | ---------------------------------------------- |
-| Add a page                      | app/<name>/page.tsx                            |
-| Add an API route                | app/api/<name>/route.ts                        |
-| Add/change a DB column or table | src/db/schema.ts                               |
-| Add an RSS feed source          | src/ingesters/rss/feeds.ts (then add category to app/feed/page.tsx CATEGORIES) |
-| Add a new ingester              | src/ingesters/<name>/index.ts                  |
-| Add a dashboard widget          | components/engineering-intelligence/<Name>.tsx |
-| Add a UI primitive              | components/ui/<Name>.tsx                       |
-| Add an intern task              | src/config/intern-tasks.ts                     |
-| Modify an analytics query       | src/lib/analytics.ts                           |
-| Add a log analysis component    | components/logs/<Name>.tsx                     |
-| Add a log analysis API route    | app/api/logs/<name>/route.ts                   |
-| Modify log parser               | src/lib/log-parser.ts                          |
-| Add a diagram                   | diagrams/<name>.md                             |
-| Find the documentation index    | docs/README.md                                 |
+| Task                            | Go to                                                                                           |
+| ------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Add a page                      | app/<name>/page.tsx                                                                             |
+| Add an API route                | app/api/<name>/route.ts                                                                         |
+| Add/change a DB column or table | src/db/schema.ts                                                                                |
+| Add an RSS feed source          | src/ingesters/rss/feeds.ts (then add category to app/feed/page.tsx CATEGORIES)                  |
+| Add a new ingester              | src/ingesters/<name>/index.ts                                                                   |
+| Add a dashboard widget          | components/engineering-intelligence/<Name>.tsx (legacy) or components/briefing/<Name>.tsx (new) |
+| Add a UI primitive              | components/ui/<Name>.tsx                                                                        |
+| Add an intern task              | src/config/intern-tasks.ts                                                                      |
+| Modify an analytics query       | src/lib/analytics.ts                                                                            |
+| Add a log analysis component    | components/logs/<Name>.tsx                                                                      |
+| Add a log analysis API route    | app/api/logs/<name>/route.ts                                                                    |
+| Modify log parser               | src/lib/log-parser.ts                                                                           |
+| Add a diagram                   | diagrams/<name>.md                                                                              |
+| Find the documentation index    | docs/README.md                                                                                  |
+| Add/change a repo radar entry   | app/repo-radar/page.tsx (UI), app/api/repo-radar/ (API), src/lib/repo-radar.ts (GitHub logic)   |
+| Modify repo radar GitHub client | src/lib/repo-radar.ts                                                                           |
+| Add repo radar seed data        | src/config/repo-radar-seed.ts                                                                   |
+| Modify sidebar nav items        | components/sidebar/sidebar.tsx (NAV_ITEMS constant)                                             |
+| Add a stats API endpoint        | app/api/stats/route.ts                                                                          |
+| Modify theme colors / fonts     | app/globals.css @theme block                                                                    |
 
 ## New Packages (Log Analysis Dashboard)
 

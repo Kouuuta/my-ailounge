@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS log_errors (
   action      TEXT,
   content     TEXT,
   error_type  TEXT,
+  pattern_key TEXT,
   error_code  TEXT,
   raw_message TEXT,
   timestamp   TEXT,
@@ -117,6 +118,8 @@ const SEED_WATCHLIST = [
 export function migrate(): void {
   const db = getDb();
   db.exec(SCHEMA_SQL);
+
+  try { db.exec("ALTER TABLE log_errors ADD COLUMN pattern_key TEXT"); } catch {}
 
   const existing = db.prepare("SELECT COUNT(*) as count FROM watchlist_items").get() as { count: number };
   if (existing.count === 0) {

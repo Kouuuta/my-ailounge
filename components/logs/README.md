@@ -1,6 +1,6 @@
 # `components/logs/` — Log Analysis Dashboard Components
 
-4 components used by the Log Analysis Dashboard at `app/logs/page.tsx`.
+6 components used by the Log Analysis Dashboard at `app/logs/page.tsx`.
 
 All are `"use client"` — they interact with the `/api/logs` endpoints.
 
@@ -43,6 +43,30 @@ Donut chart splitting error counts between Acuity and Zoho sources using `@nivo/
 - Arc labels show percentage, tooltip shows raw counts and exact percentage
 - Empty state: "No source data" placeholder
 
+### `SeverityLegend`
+
+Compact color legend for error pattern severity levels.
+
+- Renders 3 colored dots with labels: High (red), Medium (amber), Low (green)
+- Uses the same color tokens as `severityBadge()` in `page.tsx` (`bg-red-500`, `bg-amber-500`, `bg-emerald-500`)
+- No `"use client"` directive — pure presentational component
+- **Props**: `className?: string` — for margin/spacing control
+- Placed inside the Top Error Patterns card, above the pattern list
+
+### `PatternDrillDown`
+
+Slide-in panel that shows detailed information about a specific error pattern.
+
+- Activated by clicking a pattern card in the analysis detail view
+- Slide-in panel from the right side with overlay
+- **Props**: `analysisId: number`, no `open`/`onClose` — uses URL search params (`?pattern=`)
+- **Tabs**: Overview (timeline bar chart + methods), Error Rows (paginated with pagination controls)
+- **Overview tab**: Timeline bar chart (inline divs), method call breakdown (colored bars), sample error message
+- **Error Rows tab**: Table with timestamp, method, action, content, error code, severity badge, source badge
+- **Loading state**: Skeleton placeholders during API fetch
+- **Empty state**: Fallback when no detail data
+- **Dependencies**: `lucide-react` (X, ChevronLeft, ChevronRight), `@/lib/utils` (cn)
+
 ### Imports / Dependencies
 
 | Component | Imports |
@@ -51,3 +75,5 @@ Donut chart splitting error counts between Acuity and Zoho sources using `@nivo/
 | `OverviewCards` | `@/components/ui/card` |
 | `ErrorTrendChart` | `@nivo/bar` |
 | `SourceBreakdown` | `@nivo/pie` |
+| `PatternDrillDown` | `@/lib/utils` (cn), `lucide-react` |
+| `SeverityLegend` | `@/lib/utils` (cn) |

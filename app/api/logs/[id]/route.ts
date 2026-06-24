@@ -34,7 +34,13 @@ export async function GET(
       .get(id) as { count: number }
   ).count;
 
-  return NextResponse.json({ ...analysis, errorCount, patternCount, anomalyCount });
+  const dailyCounts = db
+    .prepare(
+      "SELECT substr(timestamp,1,10) as day, COUNT(*) as count FROM log_errors WHERE analysis_id = ? AND is_error = 1 GROUP BY day ORDER BY day",
+    )
+    .all(id) as { day: string; count: number }[];
+
+  return NextResponse.json({ ...analysis, errorCount, patternCount, anomalyCount, dailyCounts });
 }
 
 export async function DELETE(

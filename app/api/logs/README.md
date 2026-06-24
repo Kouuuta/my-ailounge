@@ -42,6 +42,22 @@ REST API for uploading CSV log files and retrieving parsed analysis results. Sup
 - Each pattern: `pattern_key`, `sample_message`, `count`, `first_seen`, `last_seen`, `severity`
 - **Response**: `{ patterns: [...] }`
 
+### `GET /api/logs/[id]/patterns/[pid]` — Pattern drill-down detail
+
+- Returns per-pattern overview: timeline, method breakdown, and a sample error message
+- `pid` is the URL-encoded `pattern_key` (contains `{var}` placeholders)
+- **Matching strategy**: tries exact `pattern_key` match first, then falls back to `error_type LIKE` with `{var}` → `%`
+- **Response**: `{ timeline: [...], methods: [...], sampleError: { ... } }`
+- **Timeline**: error counts grouped by day for this pattern
+- **Methods**: method name + count for errors matching this pattern
+
+### `GET /api/logs/[id]/patterns/[pid]/errors` — Pattern-specific error rows (paginated)
+
+- **Query params**: `limit` (default 50, max 200), `offset` (default 0)
+- Returns error rows matching the pattern, ordered by `timestamp DESC`
+- Uses same two-step matching strategy (exact `pattern_key`, fallback `error_type LIKE`)
+- **Response**: `{ items: [...], total, limit, offset }`
+
 ### `GET /api/logs/[id]/anomalies` — Statistical spikes
 
 - Returns anomalies ordered by deviation descending

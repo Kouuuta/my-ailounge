@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS log_errors (
   action      TEXT,
   content     TEXT,
   error_type  TEXT,
+  pattern_key TEXT,
   error_code  TEXT,
   raw_message TEXT,
   timestamp   TEXT,

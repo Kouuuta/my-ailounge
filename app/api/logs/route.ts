@@ -44,9 +44,9 @@ export async function POST(req: NextRequest) {
 
   const insertError = db.prepare(`
     INSERT INTO log_errors
-      (analysis_id, source, method, action, content, error_type, error_code, raw_message, timestamp, is_error)
+      (analysis_id, source, method, action, content, error_type, pattern_key, error_code, raw_message, timestamp, is_error)
     VALUES
-      (@analysis_id, @source, @method, @action, @content, @error_type, @error_code, @raw_message, @timestamp, @is_error)
+      (@analysis_id, @source, @method, @action, @content, @error_type, @pattern_key, @error_code, @raw_message, @timestamp, @is_error)
   `);
 
   const insertPattern = db.prepare(`
@@ -85,6 +85,7 @@ export async function POST(req: NextRequest) {
       action: err.action,
       content: err.content,
       error_type: err.error_type.substring(0, 500),
+      pattern_key: err.pattern_key,
       error_code: err.error_code,
       raw_message: err.raw_message.substring(0, 1000),
       timestamp: err.timestamp,

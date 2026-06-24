@@ -10,6 +10,7 @@ import {
   AlertTriangle,
   Loader2,
   BarChart3,
+  Download,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,14 @@ import { OverviewCards } from "@/components/logs/overview-cards";
 import { ErrorTrendChart } from "@/components/logs/error-trend-chart";
 import { SourceBreakdown } from "@/components/logs/source-breakdown";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PatternDrillDown } from "@/components/logs/pattern-drilldown";
+import { SeverityLegend } from "@/components/logs/severity-legend";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 interface Analysis {
   id: number;
@@ -36,6 +45,7 @@ interface Analysis {
   errorCount?: number;
   patternCount?: number;
   anomalyCount?: number;
+  dailyCounts?: { day: string; count: number }[];
 }
 
 interface Pattern {
@@ -48,6 +58,13 @@ interface Pattern {
   severity: string;
 }
 
+interface AnomalyPattern {
+  pattern_key: string;
+  raw_sample: string;
+  count: number;
+  percentage: number;
+}
+
 interface Anomaly {
   id: number;
   description: string;
@@ -56,6 +73,7 @@ interface Anomaly {
   error_count: number;
   expected_count: number;
   deviation: number;
+  top_patterns?: AnomalyPattern[];
 }
 
 function severityBadge(severity: string) {
@@ -119,7 +137,7 @@ function LogsContent() {
       const [detailRes, patternsRes, anomaliesRes] = await Promise.all([
         fetch(`/api/logs/${id}`),
         fetch(`/api/logs/${id}/patterns`),
-        fetch(`/api/logs/${id}/anomalies`),
+        fetch(`/api/logs/${id}/anomalies?include_patterns=true`),
       ]);
       if (detailRes.ok) {
         const detail = await detailRes.json();
@@ -152,6 +170,57 @@ function LogsContent() {
     }
   }, [analysisId, fetchDetail]);
 
+  const buildExportPayload = () => ({
+    id: detail?.id,
+    filename: detail?.filename,
+    source: detail?.source,
+    uploaded_at: detail?.uploaded_at,
+    total_rows: detail?.total_rows,
+    error_count: detail?.error_count,
+    unique_errors: detail?.unique_errors,
+    time_range_start: detail?.time_range_start,
+    time_range_end: detail?.time_range_end,
+    methods: detail?.methods,
+    executive_summary: detail?.executive_summary,
+    patterns,
+    anomalies,
+  });
+
+  const handleExportJSON = () => {
+    const payload = buildExportPayload();
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `analysis-${detail?.id}-report.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportCSV = () => {
+    const rows: string[][] = [["pattern_key", "sample_message", "count", "first_seen", "last_seen", "severity"]];
+    for (const p of patterns) {
+      rows.push([p.pattern_key, p.sample_message, String(p.count), p.first_seen, p.last_seen, p.severity]);
+    }
+    rows.push([]);
+    rows.push(["anomaly_day", "description", "severity", "error_count", "expected_count", "deviation"]);
+    for (const a of anomalies) {
+      rows.push([a.detected_at, a.description, a.severity, String(a.error_count), String(a.expected_count), String(a.deviation)]);
+    }
+    const csv = rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `analysis-${detail?.id}-report.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportPDF = () => {
+    window.open(`/api/logs/${detail?.id}/export/pdf`, "_blank");
+  };
+
   const handleDelete = async (id: number) => {
     if (
       !confirm(
@@ -175,21 +244,10 @@ function LogsContent() {
       methodsList = JSON.parse(detail.methods || "[]");
     } catch {}
 
-    const trendData: { date: string; errors: number }[] = [];
-    if (detail.time_range_start && detail.time_range_end) {
-      const start = new Date(detail.time_range_start.substring(0, 10));
-      const end = new Date(detail.time_range_end.substring(0, 10));
-      const days = Math.ceil((end.getTime() - start.getTime()) / 86400000);
-      const perDay =
-        days > 0 ? Math.round(detail.error_count / days) : detail.error_count;
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        const dateStr = d.toISOString().substring(0, 10);
-        trendData.push({
-          date: dateStr,
-          errors: perDay + Math.round((Math.random() - 0.5) * perDay * 0.5),
-        });
-      }
-    }
+    const trendData = (detail.dailyCounts || []).map((d) => ({
+      date: d.day,
+      errors: d.count,
+    }));
 
     return (
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-6 md:py-8">
@@ -213,19 +271,40 @@ function LogsContent() {
               </p>
             </div>
           </div>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => handleDelete(detail.id)}
-            disabled={deleting === detail.id}
-          >
-            {deleting === detail.id ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Trash2 className="h-4 w-4" />
-            )}
-            Delete
-          </Button>
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4" />
+                  Export
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleExportJSON}>
+                  Export as JSON
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportCSV}>
+                  Export as CSV
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportPDF}>
+                  Export as PDF
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => handleDelete(detail.id)}
+              disabled={deleting === detail.id}
+            >
+              {deleting === detail.id ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Trash2 className="h-4 w-4" />
+              )}
+              Delete
+            </Button>
+          </div>
         </div>
 
         <OverviewCards
@@ -275,9 +354,19 @@ function LogsContent() {
                   No patterns detected
                 </p>
               ) : (
-                <div className="space-y-2">
-                  {patterns.slice(0, 10).map((p) => (
-                    <div key={p.id} className="rounded-lg border px-3 py-2">
+                <>
+                  <SeverityLegend className="mb-3" />
+                  <div className="space-y-2">
+                    {patterns.slice(0, 10).map((p) => (
+                    <button
+                      key={p.id}
+                      className="w-full rounded-lg border px-3 py-2 text-left transition-colors hover:border-accent-vibrant/30"
+                      onClick={() => {
+                        const params = new URLSearchParams(searchParams.toString());
+                        params.set("pattern", p.pattern_key);
+                        router.push(`/logs?id=${analysisId}&${params.toString()}`);
+                      }}
+                    >
                       <div className="flex items-start justify-between gap-2">
                         <p className="min-w-0 flex-1 truncate text-sm font-medium">
                           {p.sample_message}
@@ -292,9 +381,10 @@ function LogsContent() {
                         {p.first_seen.substring(0, 10)} —{" "}
                         {p.last_seen.substring(0, 10)}
                       </p>
-                    </div>
+                    </button>
                   ))}
                 </div>
+                </>
               )}
             </CardContent>
           </Card>
@@ -314,23 +404,50 @@ function LogsContent() {
                   {anomalies.map((a, i) => (
                     <div
                       key={i}
-                      className="flex items-start gap-3 rounded-lg border px-3 py-2"
+                      className="rounded-lg border px-3 py-2"
                     >
-                      <AlertTriangle
-                        className={`mt-0.5 h-4 w-4 shrink-0 ${a.severity === "high" ? "text-red-500" : "text-amber-500"}`}
-                      />
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium">{a.description}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          {a.error_count} errors vs{" "}
-                          {Math.round(a.expected_count)} expected
-                        </p>
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle
+                          className={`mt-0.5 h-4 w-4 shrink-0 ${a.severity === "high" ? "text-red-500" : "text-amber-500"}`}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-medium">{a.description}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {a.error_count} errors vs{" "}
+                            {Math.round(a.expected_count)} expected
+                          </p>
+                        </div>
+                        <Badge
+                          className={`shrink-0 text-[10px] ${severityBadge(a.severity)}`}
+                        >
+                          {a.severity}
+                        </Badge>
                       </div>
-                      <Badge
-                        className={`shrink-0 text-[10px] ${severityBadge(a.severity)}`}
-                      >
-                        {a.severity}
-                      </Badge>
+                      {a.top_patterns && a.top_patterns.length > 0 && (
+                        <>
+                          <Separator className="my-1.5" />
+                          <div className="space-y-0.5">
+                            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                              Top Patterns
+                            </p>
+                            {a.top_patterns.map((p, j) => (
+                              <div key={j} className="space-y-0.5">
+                                <div className="flex items-center justify-between text-[11px]">
+                                  <span className="min-w-0 flex-1 truncate mr-2" title={p.pattern_key}>
+                                    {p.pattern_key}
+                                  </span>
+                                  <span className="shrink-0 tabular-nums text-muted-foreground">
+                                    {p.count} ({p.percentage}%)
+                                  </span>
+                                </div>
+                                <p className="truncate text-[10px] text-muted-foreground/60 italic pl-1" title={p.raw_sample}>
+                                  {p.raw_sample}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -378,6 +495,8 @@ function LogsContent() {
             </CardContent>
           </Card>
         )}
+
+        <PatternDrillDown analysisId={analysisId} />
       </div>
     );
   }
