@@ -2,8 +2,16 @@
 
 import { useEffect, useState, useCallback } from "react";
 import {
-  Plus, X, Trash2, ShieldCheck, ShieldAlert, ShieldX,
-  Wrench, ExternalLink, ChevronDown, ChevronUp,
+  Plus,
+  X,
+  Trash2,
+  ShieldCheck,
+  ShieldAlert,
+  ShieldX,
+  Wrench,
+  ExternalLink,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,7 +25,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
@@ -34,12 +47,37 @@ type WatchItem = {
   updated_at: string;
 };
 
-const CATEGORIES = ["framework", "database", "infra", "cloud", "ai-sdk", "tool"];
+const CATEGORIES = [
+  "framework",
+  "database",
+  "infra",
+  "cloud",
+  "ai-sdk",
+  "tool",
+];
 
-const RISK_CONFIG: Record<string, { icon: React.ElementType; label: string; bg: string; text: string }> = {
-  low:    { icon: ShieldCheck, label: "Low",    bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400" },
-  medium: { icon: ShieldAlert, label: "Medium", bg: "bg-amber-500/10",  text: "text-amber-600 dark:text-amber-400" },
-  high:   { icon: ShieldX,     label: "High",   bg: "bg-rose-500/10",   text: "text-rose-600 dark:text-rose-400" },
+const RISK_CONFIG: Record<
+  string,
+  { icon: React.ElementType; label: string; bg: string; text: string }
+> = {
+  low: {
+    icon: ShieldCheck,
+    label: "Low",
+    bg: "bg-emerald-500/10",
+    text: "text-emerald-600 dark:text-emerald-400",
+  },
+  medium: {
+    icon: ShieldAlert,
+    label: "Medium",
+    bg: "bg-amber-500/10",
+    text: "text-amber-600 dark:text-amber-400",
+  },
+  high: {
+    icon: ShieldX,
+    label: "High",
+    bg: "bg-rose-500/10",
+    text: "text-rose-600 dark:text-rose-400",
+  },
 };
 
 function formatDate(dateStr: string | null): string {
@@ -79,9 +117,15 @@ export default function WatchlistPage() {
     }
   }, []);
 
-  useEffect(() => { fetchItems(); }, [fetchItems]);
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
 
-  const updateField = async (id: number, field: string, value: string | number) => {
+  const updateField = async (
+    id: number,
+    field: string,
+    value: string | number,
+  ) => {
     const res = await fetch(`/api/watchlist/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -150,7 +194,11 @@ export default function WatchlistPage() {
 
   const SortIcon = ({ field }: { field: string }) => {
     if (sortField !== field) return null;
-    return sortDir === "asc" ? <ChevronUp className="h-3 w-3 ml-0.5 inline" /> : <ChevronDown className="h-3 w-3 ml-0.5 inline" />;
+    return sortDir === "asc" ? (
+      <ChevronUp className="h-3 w-3 ml-0.5 inline" />
+    ) : (
+      <ChevronDown className="h-3 w-3 ml-0.5 inline" />
+    );
   };
 
   return (
@@ -159,15 +207,21 @@ export default function WatchlistPage() {
         <div className="animate-fade-in flex items-center justify-between mb-4">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight">Stack Watchlist</h1>
               <Wrench className="h-5 w-5 text-accent-vibrant" />
+              <h1 className="text-3xl font-bold tracking-tight">
+                Stack Watchlist
+              </h1>
             </div>
             <p className="text-muted-foreground text-sm mt-1">
               Track versions and risks across your real stack
             </p>
           </div>
           <Button size="sm" onClick={() => setShowAddForm(!showAddForm)}>
-            {showAddForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {showAddForm ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Plus className="h-4 w-4" />
+            )}
             {showAddForm ? "Cancel" : "Add Item"}
           </Button>
         </div>
@@ -177,7 +231,9 @@ export default function WatchlistPage() {
             <CardContent className="pt-6">
               <div className="grid gap-3 sm:grid-cols-4">
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1 block">Name</label>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Name
+                  </label>
                   <Input
                     placeholder="e.g. Tailwind CSS"
                     value={addName}
@@ -185,20 +241,26 @@ export default function WatchlistPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1 block">Category</label>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Category
+                  </label>
                   <Select value={addCategory} onValueChange={setAddCategory}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {CATEGORIES.map((c) => (
-                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-muted-foreground mb-1 block">Risk Level</label>
+                  <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                    Risk Level
+                  </label>
                   <Select value={addRisk} onValueChange={setAddRisk}>
                     <SelectTrigger>
                       <SelectValue />
@@ -211,7 +273,9 @@ export default function WatchlistPage() {
                   </Select>
                 </div>
                 <div className="flex items-end">
-                  <Button onClick={addItem} className="w-full">Add</Button>
+                  <Button onClick={addItem} className="w-full">
+                    Add
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -229,14 +293,23 @@ export default function WatchlistPage() {
             {loading ? (
               <div className="p-4 space-y-3">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="h-10 bg-muted rounded animate-pulse" style={{ animationDelay: `${i * 50}ms` }} />
+                  <div
+                    key={i}
+                    className="h-10 bg-muted rounded animate-pulse"
+                    style={{ animationDelay: `${i * 50}ms` }}
+                  />
                 ))}
               </div>
             ) : sorted.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 <Wrench className="h-8 w-8 mx-auto mb-2 opacity-40" />
                 <p>No items tracked yet.</p>
-                <Button size="sm" variant="outline" className="mt-3" onClick={() => setShowAddForm(true)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="mt-3"
+                  onClick={() => setShowAddForm(true)}
+                >
                   <Plus className="h-4 w-4" />
                   Add your first item
                 </Button>
@@ -245,23 +318,41 @@ export default function WatchlistPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="cursor-pointer select-none w-[180px]" onClick={() => toggleSort("name")}>
+                    <TableHead
+                      className="cursor-pointer select-none w-[180px]"
+                      onClick={() => toggleSort("name")}
+                    >
                       Name <SortIcon field="name" />
                     </TableHead>
-                    <TableHead className="cursor-pointer select-none w-[100px]" onClick={() => toggleSort("category")}>
+                    <TableHead
+                      className="cursor-pointer select-none w-[100px]"
+                      onClick={() => toggleSort("category")}
+                    >
                       Category <SortIcon field="category" />
                     </TableHead>
-                    <TableHead className="cursor-pointer select-none w-[110px]" onClick={() => toggleSort("installed_version")}>
+                    <TableHead
+                      className="cursor-pointer select-none w-[110px]"
+                      onClick={() => toggleSort("installed_version")}
+                    >
                       Installed <SortIcon field="installed_version" />
                     </TableHead>
-                    <TableHead className="cursor-pointer select-none w-[110px]" onClick={() => toggleSort("latest_version")}>
+                    <TableHead
+                      className="cursor-pointer select-none w-[110px]"
+                      onClick={() => toggleSort("latest_version")}
+                    >
                       Latest <SortIcon field="latest_version" />
                     </TableHead>
-                    <TableHead className="cursor-pointer select-none w-[90px]" onClick={() => toggleSort("risk_level")}>
+                    <TableHead
+                      className="cursor-pointer select-none w-[90px]"
+                      onClick={() => toggleSort("risk_level")}
+                    >
                       Risk <SortIcon field="risk_level" />
                     </TableHead>
                     <TableHead>Notes</TableHead>
-                    <TableHead className="cursor-pointer select-none w-[80px]" onClick={() => toggleSort("updated_at")}>
+                    <TableHead
+                      className="cursor-pointer select-none w-[80px]"
+                      onClick={() => toggleSort("updated_at")}
+                    >
                       Updated <SortIcon field="updated_at" />
                     </TableHead>
                     <TableHead className="w-[40px]" />
@@ -269,39 +360,52 @@ export default function WatchlistPage() {
                 </TableHeader>
                 <TableBody>
                   {sorted.map((item, index) => {
-                    const risk = RISK_CONFIG[item.risk_level] || RISK_CONFIG.low;
+                    const risk =
+                      RISK_CONFIG[item.risk_level] || RISK_CONFIG.low;
                     const RiskIcon = risk.icon;
                     return (
                       <TableRow
                         key={item.id}
                         className={cn(
                           "animate-slide-up",
-                          deletingId === item.id && "opacity-0 transition-opacity duration-200",
+                          deletingId === item.id &&
+                            "opacity-0 transition-opacity duration-200",
                         )}
                         style={{ animationDelay: `${index * 30}ms` }}
                       >
-                        <TableCell className="font-medium">{item.name}</TableCell>
+                        <TableCell className="font-medium">
+                          {item.name}
+                        </TableCell>
                         <TableCell>
-                          <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                          <Badge
+                            variant="secondary"
+                            className="text-[10px] px-1.5 py-0"
+                          >
                             {item.category}
                           </Badge>
                         </TableCell>
                         <TableCell>
                           <EditableCell
                             value={item.installed_version}
-                            onSave={(v) => updateField(item.id, "installed_version", v)}
+                            onSave={(v) =>
+                              updateField(item.id, "installed_version", v)
+                            }
                           />
                         </TableCell>
                         <TableCell>
                           <EditableCell
                             value={item.latest_version}
-                            onSave={(v) => updateField(item.id, "latest_version", v)}
+                            onSave={(v) =>
+                              updateField(item.id, "latest_version", v)
+                            }
                           />
                         </TableCell>
                         <TableCell>
                           <Select
                             value={item.risk_level}
-                            onValueChange={(v) => updateField(item.id, "risk_level", v)}
+                            onValueChange={(v) =>
+                              updateField(item.id, "risk_level", v)
+                            }
                           >
                             <SelectTrigger
                               className={cn(
@@ -316,17 +420,20 @@ export default function WatchlistPage() {
                             <SelectContent>
                               <SelectItem value="low" className="text-xs">
                                 <span className="flex items-center gap-1">
-                                  <ShieldCheck className="h-3 w-3 text-emerald-500" /> Low
+                                  <ShieldCheck className="h-3 w-3 text-emerald-500" />{" "}
+                                  Low
                                 </span>
                               </SelectItem>
                               <SelectItem value="medium" className="text-xs">
                                 <span className="flex items-center gap-1">
-                                  <ShieldAlert className="h-3 w-3 text-amber-500" /> Medium
+                                  <ShieldAlert className="h-3 w-3 text-amber-500" />{" "}
+                                  Medium
                                 </span>
                               </SelectItem>
                               <SelectItem value="high" className="text-xs">
                                 <span className="flex items-center gap-1">
-                                  <ShieldX className="h-3 w-3 text-rose-500" /> High
+                                  <ShieldX className="h-3 w-3 text-rose-500" />{" "}
+                                  High
                                 </span>
                               </SelectItem>
                             </SelectContent>
@@ -335,7 +442,9 @@ export default function WatchlistPage() {
                         <TableCell>
                           <EditableCell
                             value={item.upgrade_notes}
-                            onSave={(v) => updateField(item.id, "upgrade_notes", v)}
+                            onSave={(v) =>
+                              updateField(item.id, "upgrade_notes", v)
+                            }
                             placeholder="Add note..."
                           />
                         </TableCell>
@@ -348,7 +457,11 @@ export default function WatchlistPage() {
                             size="icon"
                             className="h-7 w-7 text-destructive hover:text-destructive"
                             onClick={() => {
-                              if (window.confirm(`Remove "${item.name}" from watchlist?`)) {
+                              if (
+                                window.confirm(
+                                  `Remove "${item.name}" from watchlist?`,
+                                )
+                              ) {
                                 deleteItem(item.id);
                               }
                             }}
@@ -434,7 +547,11 @@ function EditableCell({
       }}
       title={value ?? placeholder ?? "Click to edit"}
     >
-      {value || <span className="text-muted-foreground/50 italic">{placeholder || "—"}</span>}
+      {value || (
+        <span className="text-muted-foreground/50 italic">
+          {placeholder || "—"}
+        </span>
+      )}
     </button>
   );
 }

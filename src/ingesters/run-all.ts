@@ -3,6 +3,7 @@ import { getDb, closeDb } from "../db/client";
 import { ingestHackerNews } from "./hacker-news/index";
 import { ingestGithubTrending } from "./github-trending/index";
 import { ingestRss } from "./rss/index";
+import { ingestRepoRadar } from "./repo-radar/index";
 
 function setKv(key: string, value: string): void {
   const db = getDb();
@@ -63,6 +64,7 @@ export async function runAll(opts?: { closeDb?: boolean }): Promise<IngestResult
   results.hn = await runTracked("hn", "hn", ingestHackerNews);
   results.github_trending = await runTracked("github_trending", "github_trending", ingestGithubTrending);
   results.rss = await runTracked("rss", "rss", ingestRss);
+  results.repo_radar = await runTracked("repo_radar", "repo_radar", ingestRepoRadar);
 
   const allOk = Object.values(results).every((r) => r.ok);
 
@@ -75,7 +77,7 @@ export async function runAll(opts?: { closeDb?: boolean }): Promise<IngestResult
   console.log("📊 Ingestion Summary:");
   console.log("  Source           Status    Items  Last Run");
   console.log("  " + "─".repeat(55));
-  for (const src of ["hn", "github_trending", "rss"]) {
+  for (const src of ["hn", "github_trending", "rss", "repo_radar"]) {
     const r = results[src];
     const count = r.ok ? String(r.inserted) : "ERR";
     const time = new Date().toLocaleTimeString();

@@ -15,7 +15,7 @@ const db = getDb(); // Returns the singleton instance
 
 ### `schema.ts`
 
-Defines and migrates 7 tables + indexes. Also seeds initial data.
+Defines and migrates 8 tables + indexes. Also seeds initial data.
 
 #### Tables
 
@@ -144,6 +144,42 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `deviation` | REAL | Number of standard deviations above mean |
 
 **Index:** `analysis_id`
+
+---
+
+**`repo_radar_items`** — Repo Radar (Module 2): tracked GitHub repositories.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | INTEGER | Primary key, autoincrement |
+| `owner` | TEXT | GitHub owner/org |
+| `repo` | TEXT | Repository name |
+| `full_name` | TEXT | `owner/repo`, unique |
+| `description` | TEXT | GitHub repo description |
+| `url` | TEXT | `https://github.com/{full_name}` |
+| `language` | TEXT | Primary language (e.g. TypeScript, Python) |
+| `stars` | INTEGER | Current star count |
+| `stars_gained` | INTEGER | Stars since last refresh |
+| `latest_release` | TEXT | Latest release tag name |
+| `latest_release_url` | TEXT | URL to the release on GitHub |
+| `latest_release_date` | TEXT | ISO 8601 release date |
+| `latest_release_body` | TEXT | Full release body text |
+| `breaking_changes` | TEXT | Detected breaking change description |
+| `security_advisory` | TEXT | Detected security advisory description |
+| `open_issues` | INTEGER | Total open issues |
+| `open_prs` | INTEGER | Total open PRs |
+| `prs_opened_7d` | INTEGER | PRs opened in last 7 days |
+| `prs_merged_7d` | INTEGER | PRs merged in last 7 days |
+| `issues_opened_7d` | INTEGER | Issues opened in last 7 days |
+| `issue_spike` | INTEGER | `1` if issues >1.5x previous count |
+| `last_activity_at` | TEXT | GitHub `pushed_at` timestamp |
+| `notes` | TEXT | User notes |
+| `is_active` | INTEGER | `1` active, `0` archived (default 1) |
+| `last_refreshed_at` | TEXT | Last GitHub API refresh |
+| `created_at` | TEXT | Defaults to `datetime('now')` |
+| `updated_at` | TEXT | Defaults to `datetime('now')` |
+
+**Seed data:** 14 repos on first migration (Next.js, Django, DRF, Celery, PostgreSQL, LangChain, OpenAI Python SDK, Anthropic SDK, shadcn/ui, Vercel AI SDK, Cal.com, Sentry, Supabase, OpenCode).
 
 ### `migrate.ts`
 

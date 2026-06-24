@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Sun, Moon, PanelTop, Wrench, ScrollText } from "lucide-react";
+import { Sun, Moon, PanelTop, Wrench, ScrollText, RadioTower } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: "/feed", label: "Feed" },
   { href: "/watchlist", label: "Stack", icon: Wrench },
   { href: "/logs", label: "Logs", icon: ScrollText },
+  { href: "/repo-radar", label: "Radar", icon: RadioTower },
 ];
 
 export function Navbar() {
