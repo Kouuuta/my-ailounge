@@ -44,7 +44,7 @@ npm run db:migrate — Create/migrate SQLite DB (8 tables)
 | Add/change a DB column or table | src/db/schema.ts                               |
 | Add an RSS feed source          | src/ingesters/rss/feeds.ts (then add category to app/feed/page.tsx CATEGORIES) |
 | Add a new ingester              | src/ingesters/<name>/index.ts                  |
-| Add a dashboard widget          | components/engineering-intelligence/<Name>.tsx |
+| Add a dashboard widget          | components/engineering-intelligence/<Name>.tsx (legacy) or components/briefing/<Name>.tsx (new) |
 | Add a UI primitive              | components/ui/<Name>.tsx                       |
 | Add an intern task              | src/config/intern-tasks.ts                     |
 | Modify an analytics query       | src/lib/analytics.ts                           |
@@ -56,6 +56,9 @@ npm run db:migrate — Create/migrate SQLite DB (8 tables)
 | Add/change a repo radar entry   | app/repo-radar/page.tsx (UI), app/api/repo-radar/ (API), src/lib/repo-radar.ts (GitHub logic) |
 | Modify repo radar GitHub client | src/lib/repo-radar.ts                          |
 | Add repo radar seed data        | src/config/repo-radar-seed.ts                  |
+| Modify sidebar nav items        | components/sidebar/sidebar.tsx (NAV_ITEMS constant) |
+| Add a stats API endpoint        | app/api/stats/route.ts                        |
+| Modify theme colors / fonts     | app/globals.css @theme block                  |
 
 ## New Packages (Log Analysis Dashboard)
 

@@ -293,8 +293,8 @@ The scraper still exists for Slack notifications but is separate from the dashbo
 ## 7. Current File Structure (actual)
 
 ```
-app/          → app/README.md        # 5 pages (/, /feed, /watchlist, /logs, /repo-radar) + 6 API route groups (feed, watchlist, logs, ingest, repo-radar)
-components/   → components/README.md # 11 shadcn/ui primitives + 4 dashboard widgets + 4 log components + theme
+app/          → app/README.md        # 5 pages (/, /feed, /watchlist, /logs, /repo-radar) + 7 API route groups (feed, watchlist, logs, ingest, repo-radar, stats)
+components/   → components/README.md # 10 shadcn/ui primitives + 6 briefing components + 4 dashboard widgets + 4 log components + sidebar + theme
 src/          → src/README.md        # 5 ingesters (4 in orchestrator) + DB (8 tables) + analytics + log-parser + repo-radar
   ├── db/     → src/db/README.md
   ├── ingesters/ → src/ingesters/README.md
@@ -335,6 +335,11 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 17   | On-demand ingestion button + API (`POST /api/ingest`)    | ✅     |
 | 18   | Repo Radar: page + API + GitHub client + ingester + seed data | ✅     |
 | 19   | Repo Radar README docs: app/repo-radar/, app/api/repo-radar/ | ✅     |
+| 20   | Sidebar with branding, nav, quick stats, theme toggle    | ✅     |
+| 21   | Briefing components (6): StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, AutomationStatus | ✅     |
+| 22   | Stats API (`GET /api/stats`) consumed by sidebar         | ✅     |
+| 23   | Theme revamp: dark palette, accent colors, dot grid bg, 3 font variables | ✅     |
+| 24   | Briefing/Sidebar/Stats README docs                       | ✅     |
 
 ### ⬜ Remaining Work
 
