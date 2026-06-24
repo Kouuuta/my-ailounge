@@ -16,12 +16,12 @@ npm install → npm run db:migrate → npm run ingest → npm run dev
 npm run dev — Start development server
 npm run build — Production build
 npm run start — Start production server
-npm run ingest — Run all 3 ingesters (hn, github_trending, rss)
+npm run ingest — Run all 4 ingesters (hn, github_trending, rss, repo_radar)
 npm run ingest:hn — Hacker News only
 npm run ingest:rss — RSS feeds only
 npm run ingest:trending — GitHub Trending only (fetches RSS daily/weekly/monthly)
 npm run ingest:manual — Manual feed markdown only (standalone, not in orchestrator)
-npm run db:migrate — Create/migrate SQLite DB (7 tables)
+npm run db:migrate — Create/migrate SQLite DB (8 tables)
 
 ## ⚠️ Critical Constraints
 
@@ -53,6 +53,9 @@ npm run db:migrate — Create/migrate SQLite DB (7 tables)
 | Modify log parser               | src/lib/log-parser.ts                          |
 | Add a diagram                   | diagrams/<name>.md                             |
 | Find the documentation index    | docs/README.md                                 |
+| Add/change a repo radar entry   | app/repo-radar/page.tsx (UI), app/api/repo-radar/ (API), src/lib/repo-radar.ts (GitHub logic) |
+| Modify repo radar GitHub client | src/lib/repo-radar.ts                          |
+| Add repo radar seed data        | src/config/repo-radar-seed.ts                  |
 
 ## New Packages (Log Analysis Dashboard)
 

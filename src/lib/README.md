@@ -78,3 +78,31 @@ Dashboard analytics queries against SQLite. Each function opens its own connecti
 Used by:
 - `app/page.tsx` — stat cards, breakdown sections, automation status
 - `components/engineering-intelligence/` — dashboard widgets
+
+---
+
+### `repo-radar.ts`
+
+GitHub REST API client and repo refresh logic for the Repo Radar dashboard.
+
+**`fetchRepoInfo(owner, repo)`** — Fetches repo metadata from `GET /repos/{owner}/{repo}`. Returns description, language, stars, open issues, pushed_at.
+
+**`fetchLatestRelease(owner, repo)`** — Fetches latest release from `GET /repos/{owner}/{repo}/releases/latest`. Returns tag name, url, body, published_at. Returns `null` if no release exists.
+
+**`fetchRecentPRs(owner, repo, days=7)`** — Fetches recent PRs from `GET /repos/{owner}/{repo}/pulls`. Returns `{ opened, merged }` counts within the time window.
+
+**`fetchRecentIssues(owner, repo, days=7)`** — Fetches recent issues from `GET /repos/{owner}/{repo}/issues`. Returns count of non-PR issues created within the time window.
+
+**`detectBreakingChanges(body)`** — Scans release body for breaking change keywords (`"BREAKING CHANGE"`, `"migration required"`, `"deprecated"`, etc.). Returns the first matching sentence or `null`.
+
+**`detectSecurityAdvisory(body)`** — Scans release body for security keywords (`"CVE"`, `"vulnerability"`, `"security advisory"`, etc.). Returns the first matching sentence or `null`.
+
+**`refreshSingleRepo(item)`** — Full refresh pipeline for one repo: fetches info + release + PRs + issues, detects breaking/security, updates SQLite row.
+
+**`refreshAll()`** — Iterates all active repos, calls `refreshSingleRepo()` on each, records summary in `kv_store`. Returns `{ updated, errors, results }`.
+
+**Error handling:** All GitHub API calls share `githubFetch()` which throws on 403 (rate limit) and non-ok statuses.
+
+Used by:
+- `app/api/repo-radar/` — add and refresh endpoints
+- `src/ingesters/repo-radar/` — scheduled refresh via orchestrator

@@ -111,11 +111,32 @@ Parses `docs/feeds/*.md` files and upserts entries into SQLite.
 npm run ingest:manual
 ```
 
+### `repo-radar/` ✅ Done (`'repo_radar'`, in orchestrator)
+
+Refreshes all tracked repos by fetching the latest GitHub API data.
+
+**Source:** `'repo_radar'`
+
+**How it works:**
+- Reads all active repos from `repo_radar_items` where `is_active = 1`
+- Calls `refreshSingleRepo()` on each (from `src/lib/repo-radar.ts`)
+- Records status in `kv_store` (`ingest:last_run:repo_radar`, `ingest:status:repo_radar`, `ingest:count:repo_radar`)
+
+**Note:** This ingester refreshes existing repos — new repos are added via the `POST /api/repo-radar` endpoint.
+
+```bash
+# Run as part of orchestrator
+npm run ingest
+
+# Or standalone
+npx tsx src/ingesters/repo-radar/index.ts
+```
+
 ## Orchestrator
 
 ### `run-all.ts`
 
-Runs 3 ingesters sequentially (hn, github_trending, rss), tracks status in `kv_store`:
+Runs 4 ingesters sequentially (hn, github_trending, rss, repo_radar), tracks status in `kv_store`:
 
 | Key | Value |
 |-----|-------|
@@ -142,5 +163,5 @@ npm run ingest
 ## Adding a New Ingester Type
 
 1. Create `src/ingesters/<name>/index.ts` exporting an async function
-2. Import and add it to `runAll()` — insert a `runTracked(...)` call
-3. Add an npm script in `package.json`
+2. If part of orchestrator: import and add it to `runAll()` — insert a `runTracked(...)` call and add to summary loop
+3. If standalone: add an npm script in `package.json`

@@ -6,7 +6,7 @@ Reusable React components used by the Developer Dashboard pages.
 
 | Directory | Contents |
 |-----------|----------|
-| `ui/` | shadcn/ui-style primitives — 11 components (Button, Card, Badge, Input, Select, Tabs, Toggle, Separator, Table, Skeleton, Navbar) |
+| `ui/` | shadcn/ui-style primitives — 11 components (Button, Card, Badge, Input, Select, Tabs, Toggle, Separator, Table, Skeleton, Navbar) — Navbar now includes "Radar" link |
 | `engineering-intelligence/` | Dashboard-specific widgets — 4 components (AutomationStatus, BreakdownCard, IngestButton, StatCard) |
 | `logs/` | Log Analysis Dashboard — 4 components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown) |
 | `theme-provider.tsx` | Dark/light mode React Context (used by Navbar and layout) |

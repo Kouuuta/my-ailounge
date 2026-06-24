@@ -13,14 +13,14 @@ Do not rebuild these. Extend them.
 
 | Already in repo                                                         | Path                                     | Status                                                                                                               |
 | ----------------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| SQLite schema (7 tables: `feed_items`, `kv_store`, `watchlist_items`, `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies`) | `src/db/schema.ts` | ✅ Done |
+| SQLite schema (8 tables: `feed_items`, `kv_store`, `watchlist_items`, `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies`, `repo_radar_items`) | `src/db/schema.ts` | ✅ Done |
 | DB client (`getDb()` singleton, WAL mode)                               | `src/db/client.ts`                       | ✅ Done                                                                                                              |
 | Migration entry point                                                   | `src/db/migrate.ts`                      | ✅ Done                                                                                                              |
 | Manual feeds ingester (parses `docs/feeds/*.md`, standalone only)       | `src/ingesters/manual-feeds/index.ts`    | ✅ Done (not part of orchestrator — run via `npm run ingest:manual`)                                                 |
 | Hacker News ingester (HN Algolia API, top 20 stories)                   | `src/ingesters/hacker-news/index.ts`     | ✅ Done                                                                                                              |
 | GitHub Trending ingester (fetches RSS directly, 3 feeds: daily/weekly/monthly) | `src/ingesters/github-trending/index.ts` | ✅ Done (no longer reads `ideas/trending.md`)                                                                  |
 | RSS ingester (20 feeds across 9 categories, regex parser)               | `src/ingesters/rss/index.ts`             | ✅ Done                                                                                                              |
-| Orchestrator (runs 3 ingesters, kv_store tracking, exports `runAll()`)  | `src/ingesters/run-all.ts`               | ✅ Done                                                                                                              |
+| Orchestrator (runs 4 ingesters, kv_store tracking, exports `runAll()`)  | `src/ingesters/run-all.ts`               | ✅ Done                                                                                                              |
 | GitHub Trending scraper (legacy, writes to Slack — `ideas/trending.md` removed) | `src/scraper.py`                 | Legacy — GitHub Trending ingester now fetches RSS directly, no longer reads `ideas/trending.md`                     |
 | Feed format/tagging rules                                               | `docs/feeds/feeds-format-guide.md`       | ✅ Done                                                                                                              |
 | Intern task seed data (13 tasks)                                        | `src/config/intern-tasks.ts`             | ✅ Done                                                                                                              |
@@ -41,12 +41,18 @@ Do not rebuild these. Extend them.
 | On-demand ingestion endpoint (`POST /api/ingest` calls `runAll()`)      | `app/api/ingest/route.ts`                | ✅ Done                                                                                                              |
 | Ingest button with sonner toast notifications                           | `components/engineering-intelligence/ingest-button.tsx` | ✅ Done                                                                                              |
 | Unified StatCard component (replaces LastIngestionStat + TimeWindowStat) | `components/engineering-intelligence/stat-card.tsx` | ✅ Done                                                                                                  |
+| Repo Radar page (card grid, add/delete/refresh, notes, confirm dialog)   | `app/repo-radar/page.tsx`                | ✅ Done                                                                                                              |
+| Repo Radar API (3 routes: GET/POST list+add, PATCH/DELETE by id, POST refresh) | `app/api/repo-radar/`             | ✅ Done                                                                                                              |
+| Repo Radar GitHub API client & refresh logic                             | `src/lib/repo-radar.ts`                  | ✅ Done                                                                                                              |
+| Repo Radar ingester (scheduled refresh via orchestrator)                 | `src/ingesters/repo-radar/index.ts`      | ✅ Done                                                                                                              |
+| Repo Radar seed data (14 repos)                                          | `src/config/repo-radar-seed.ts`          | ✅ Done                                                                                                              |
+| `repo_radar_items` table (27 columns) + Navbar "Radar" link              | `src/db/schema.ts`, `components/ui/navbar.tsx` | ✅ Done                                                                                                         |
 | GitHub Actions daily ingestion workflow                                 | `.github/workflows/ingest.yml`           | Exists, unused for now — ingestion is manual via `npm run ingest` (Section 6); cron automation deferred (Appendix A) |
 
 **Stack:**
 
 - Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI, Nivo (bar + pie charts), sonner (toast)
-- Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`)
+- Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`) — 8 tables
 - Ingestion: TypeScript ingesters (`src/ingesters/*`) + one legacy Python scraper (`src/scraper.py`)
 - Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing SQLite directly —
   no separate server process required for MVP. Python is used for ingestion scripts only
@@ -59,8 +65,8 @@ Do not rebuild these. Extend them.
 Follow this order. Each module is shippable on its own — don't try to build everything before
 shipping Module 1.
 
-> ✅ **Modules 1, 3, 5, and 8 are already built.** See status badges below for what's
-> implemented vs planned. The remaining work is Modules 2 and 7.
+> ✅ **Modules 1, 2, 3, 5, and 8 are already built.** See status badges below for what's
+> implemented vs planned. The remaining work is Module 7.
 
 | Module                                     | Status                                |
 | ------------------------------------------ | ------------------------------------- |
@@ -69,7 +75,7 @@ shipping Module 1.
 | **Module 3 — Stack Watchlist**             | ✅ Built                              |
 | **Module 8 — Intern Safe Task Board**      | ✅ Built (seed data + UI on homepage) |
 | **Log Analysis Dashboard**                 | ✅ Built (upload + parse + chart Zoho/Acuity CSV logs) |
-| **Module 2 — Repo Radar**                  | ⬜ Planned — not started              |
+| **Module 2 — Repo Radar**                  | ✅ Built (card grid, GitHub API, release/PR/issue tracking, breaking/security detection) |
 | **Module 7 — Prompt Library**              | ⬜ Planned — not started              |
 
 ---
@@ -287,9 +293,9 @@ The scraper still exists for Slack notifications but is separate from the dashbo
 ## 7. Current File Structure (actual)
 
 ```
-app/          → app/README.md        # 4 pages (/, /feed, /watchlist, /logs) + 5 API route groups (feed, watchlist, logs, ingest)
+app/          → app/README.md        # 5 pages (/, /feed, /watchlist, /logs, /repo-radar) + 6 API route groups (feed, watchlist, logs, ingest, repo-radar)
 components/   → components/README.md # 11 shadcn/ui primitives + 4 dashboard widgets + 4 log components + theme
-src/          → src/README.md        # 4 ingesters (3 in orchestrator) + DB (7 tables) + analytics + log-parser
+src/          → src/README.md        # 5 ingesters (4 in orchestrator) + DB (8 tables) + analytics + log-parser + repo-radar
   ├── db/     → src/db/README.md
   ├── ingesters/ → src/ingesters/README.md
   ├── lib/    → src/lib/README.md
@@ -304,8 +310,7 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 
 ## 8. What's Left to Build
 
-> Steps 1–8 below are **already complete**. The remaining work is Modules 2 (Repo Radar) and
-> 7 (Prompt Library).
+> Steps 1–18 below are **already complete**. The remaining work is Module 7 (Prompt Library).
 
 ### ✅ Already Built (MVP complete)
 
@@ -328,19 +333,10 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 15   | Log dashboard components: CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown | ✅     |
 | 16   | Logs README docs: app/logs/, app/api/logs/, components/logs/ | ✅     |
 | 17   | On-demand ingestion button + API (`POST /api/ingest`)    | ✅     |
+| 18   | Repo Radar: page + API + GitHub client + ingester + seed data | ✅     |
+| 19   | Repo Radar README docs: app/repo-radar/, app/api/repo-radar/ | ✅     |
 
 ### ⬜ Remaining Work
-
-**Module 2 — Repo Radar** (higher priority)
-
-New page at `/repos` for tracking GitHub repos (stars, releases, issues). Requires:
-
-- `watched_repos` table in `src/db/schema.ts` + migration update
-- `app/api/repos/route.ts` — GET/POST/DELETE for watched repo list
-- `app/api/repos/[id]/route.ts` — PATCH for release check
-- `app/repos/page.tsx` — card grid or table view
-- GitHub REST API integration (`GET /repos/{owner}/{repo}`) for latest release data
-- Seed data: Next.js, Django, DRF, Celery, PostgreSQL, LangChain, etc.
 
 **Module 7 — Prompt Library** (lower priority)
 

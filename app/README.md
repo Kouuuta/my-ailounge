@@ -10,6 +10,7 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `/feed` | `feed/page.tsx` | Client (Suspense) | Full Developer Intelligence Feed |
 | `/watchlist` | `watchlist/page.tsx` | Client | Stack Watchlist manager |
 | `/logs` | `logs/page.tsx` | Client | Log Analysis Dashboard (upload + explore Zoho/Acuity CSV logs) |
+| `/repo-radar` | `repo-radar/page.tsx` | Client | Repo Radar — track GitHub repos (stars, releases, PRs, issues) |
 | `GET /api/feed` | `api/feed/route.ts` | Route Handler | List feed items with filters |
 | `POST /api/feed` | `api/feed/route.ts` | Route Handler | Create a feed item |
 | `PATCH /api/feed/[id]` | `api/feed/[id]/route.ts` | Route Handler | Update a feed item |
@@ -26,6 +27,11 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `GET /api/logs/[id]/patterns` | `api/logs/[id]/patterns/route.ts` | Route Handler | Grouped error patterns |
 | `GET /api/logs/[id]/anomalies` | `api/logs/[id]/anomalies/route.ts` | Route Handler | Statistical anomaly spikes |
 | `POST /api/ingest` | `api/ingest/route.ts` | Route Handler | Trigger on-demand ingestion (calls `runAll()`) |
+| `GET /api/repo-radar` | `api/repo-radar/route.ts` | Route Handler | List tracked repos |
+| `POST /api/repo-radar` | `api/repo-radar/route.ts` | Route Handler | Add a repo to track (fetches GitHub API) |
+| `PATCH /api/repo-radar/[id]` | `api/repo-radar/[id]/route.ts` | Route Handler | Update repo notes or is_active |
+| `DELETE /api/repo-radar/[id]` | `api/repo-radar/[id]/route.ts` | Route Handler | Remove a tracked repo |
+| `POST /api/repo-radar/refresh` | `api/repo-radar/refresh/route.ts` | Route Handler | Refresh all tracked repos from GitHub API |
 
 ## Root Layout — `layout.tsx`
 
@@ -114,3 +120,5 @@ HomePage
 - [Watchlist API →](./api/watchlist/README.md)
 - [Log Analysis API →](./api/logs/README.md)
 - [Ingestion API →](./api/ingest/README.md)
+- [Repo Radar →](./repo-radar/README.md)
+- [Repo Radar API →](./api/repo-radar/README.md)
