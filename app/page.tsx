@@ -1,5 +1,11 @@
 import { getDb } from "@/src/db/client";
-import { getItemsBySource, getItemsByCategory, getItemsToday, getItemsThisWeek, getLastGlobalIngestion } from "@/src/lib/analytics";
+import {
+  getItemsBySource,
+  getItemsByCategory,
+  getItemsToday,
+  getItemsThisWeek,
+  getLastGlobalIngestion,
+} from "@/src/lib/analytics";
 import { INTERN_TASKS } from "@/src/config/intern-tasks";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -82,29 +88,36 @@ const SECTION_THEME = {
     border: "border-t-teal-500",
     iconBg: "bg-teal-500/10 dark:bg-teal-500/15",
     iconColor: "text-teal-600 dark:text-teal-400",
-    badgeBg: "bg-teal-500/10 text-teal-600 dark:bg-teal-500/15 dark:text-teal-400",
-    buttonText: "text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300",
+    badgeBg:
+      "bg-teal-500/10 text-teal-600 dark:bg-teal-500/15 dark:text-teal-400",
+    buttonText:
+      "text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300",
   },
   trending: {
     border: "border-t-purple-500",
     iconBg: "bg-purple-500/10 dark:bg-purple-500/15",
     iconColor: "text-purple-600 dark:text-purple-400",
-    badgeBg: "bg-purple-500/10 text-purple-600 dark:bg-purple-500/15 dark:text-purple-400",
-    buttonText: "text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300",
+    badgeBg:
+      "bg-purple-500/10 text-purple-600 dark:bg-purple-500/15 dark:text-purple-400",
+    buttonText:
+      "text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300",
   },
   framework: {
     border: "border-t-blue-500",
     iconBg: "bg-blue-500/10 dark:bg-blue-500/15",
     iconColor: "text-blue-600 dark:text-blue-400",
-    badgeBg: "bg-blue-500/10 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400",
-    buttonText: "text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300",
+    badgeBg:
+      "bg-blue-500/10 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400",
+    buttonText:
+      "text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300",
   },
   security: {
     border: "border-t-red-500",
     iconBg: "bg-red-500/10 dark:bg-red-500/15",
     iconColor: "text-red-600 dark:text-red-400",
     badgeBg: "bg-red-500/10 text-red-600 dark:bg-red-500/15 dark:text-red-400",
-    buttonText: "text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300",
+    buttonText:
+      "text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300",
   },
 };
 
@@ -122,14 +135,18 @@ function ItemCard({ item, delay }: { item: FeedItem; delay: number }) {
       style={{ animationDelay: `${delay}ms` }}
     >
       <div className="relative flex items-stretch rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md overflow-hidden">
-        <div className={`w-[3px] shrink-0 transition-all duration-200 group-hover:w-[5px] ${accentColor}`} />
+        <div
+          className={`w-[3px] shrink-0 transition-all duration-200 group-hover:w-[5px] ${accentColor}`}
+        />
         <div className="flex min-w-0 flex-1 items-start justify-between gap-2 p-2.5 pl-3">
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium leading-snug group-hover:text-accent-vibrant transition-colors line-clamp-2">
               {item.title}
             </p>
             <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-              <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${badgeColor}`}>
+              <span
+                className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium ${badgeColor}`}
+              >
                 {source.replace("_", " ")}
               </span>
               {item.tags && (
@@ -178,11 +195,15 @@ function SectionCard({
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2">
-            <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${t.iconBg}`}>
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-lg ${t.iconBg}`}
+            >
               <Icon className={`h-4 w-4 ${t.iconColor}`} />
             </div>
             <CardTitle className="text-base tracking-tight">{title}</CardTitle>
-            <span className={`inline-flex items-center justify-center rounded-full text-[10px] font-semibold h-5 min-w-5 px-1.5 ${t.badgeBg}`}>
+            <span
+              className={`inline-flex items-center justify-center rounded-full text-[10px] font-semibold h-5 min-w-5 px-1.5 ${t.badgeBg}`}
+            >
               {items.length}
             </span>
           </div>
@@ -311,10 +332,10 @@ export default function HomePage() {
         <div className="animate-fade-in flex items-center justify-between gap-3 flex-wrap mb-8">
           <div>
             <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-accent-vibrant" />
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
                 Engineering Briefing
               </h1>
-              <Sparkles className="h-5 w-5 text-accent-vibrant" />
             </div>
             <p className="text-muted-foreground text-sm mt-1">
               {totalItems} items ingested &middot; {unreadItems} unread

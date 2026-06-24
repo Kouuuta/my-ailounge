@@ -95,6 +95,36 @@ CREATE TABLE IF NOT EXISTS log_anomalies (
 CREATE INDEX IF NOT EXISTS idx_log_errors_analysis ON log_errors(analysis_id);
 CREATE INDEX IF NOT EXISTS idx_log_patterns_analysis ON log_patterns(analysis_id);
 CREATE INDEX IF NOT EXISTS idx_log_anomalies_analysis ON log_anomalies(analysis_id);
+
+CREATE TABLE IF NOT EXISTS repo_radar_items (
+  id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+  owner               TEXT NOT NULL,
+  repo                TEXT NOT NULL,
+  full_name           TEXT NOT NULL UNIQUE,
+  description         TEXT,
+  url                 TEXT NOT NULL,
+  language            TEXT,
+  stars               INTEGER DEFAULT 0,
+  stars_gained        INTEGER DEFAULT 0,
+  latest_release      TEXT,
+  latest_release_url  TEXT,
+  latest_release_date TEXT,
+  latest_release_body TEXT,
+  breaking_changes    TEXT,
+  security_advisory   TEXT,
+  open_issues         INTEGER DEFAULT 0,
+  open_prs            INTEGER DEFAULT 0,
+  prs_opened_7d       INTEGER DEFAULT 0,
+  prs_merged_7d       INTEGER DEFAULT 0,
+  issues_opened_7d    INTEGER DEFAULT 0,
+  issue_spike         INTEGER DEFAULT 0,
+  last_activity_at    TEXT,
+  notes               TEXT,
+  is_active           INTEGER NOT NULL DEFAULT 1,
+  last_refreshed_at   TEXT,
+  created_at          TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at          TEXT NOT NULL DEFAULT (datetime('now'))
+);
 `;
 
 const SEED_WATCHLIST = [
@@ -129,6 +159,37 @@ export function migrate(): void {
       }
     }
     console.log(`Seeded ${SEED_WATCHLIST.length} watchlist items.`);
+  }
+
+  const radarExisting = db.prepare("SELECT COUNT(*) as count FROM repo_radar_items").get() as { count: number };
+  if (radarExisting.count === 0) {
+    const insert = db.prepare(
+      "INSERT INTO repo_radar_items (owner, repo, full_name, url) VALUES (@owner, @repo, @full_name, @url)",
+    );
+    const seed = [
+      { owner: "vercel", repo: "next.js", full_name: "vercel/next.js", url: "https://github.com/vercel/next.js" },
+      { owner: "django", repo: "django", full_name: "django/django", url: "https://github.com/django/django" },
+      { owner: "encode", repo: "django-rest-framework", full_name: "encode/django-rest-framework", url: "https://github.com/encode/django-rest-framework" },
+      { owner: "celery", repo: "celery", full_name: "celery/celery", url: "https://github.com/celery/celery" },
+      { owner: "postgres", repo: "postgres", full_name: "postgres/postgres", url: "https://github.com/postgres/postgres" },
+      { owner: "langchain-ai", repo: "langchain", full_name: "langchain-ai/langchain", url: "https://github.com/langchain-ai/langchain" },
+      { owner: "openai", repo: "openai-python", full_name: "openai/openai-python", url: "https://github.com/openai/openai-python" },
+      { owner: "anthropics", repo: "anthropic-sdk-python", full_name: "anthropics/anthropic-sdk-python", url: "https://github.com/anthropics/anthropic-sdk-python" },
+      { owner: "shadcn-ui", repo: "ui", full_name: "shadcn-ui/ui", url: "https://github.com/shadcn-ui/ui" },
+      { owner: "vercel", repo: "ai", full_name: "vercel/ai", url: "https://github.com/vercel/ai" },
+      { owner: "calcom", repo: "cal.com", full_name: "calcom/cal.com", url: "https://github.com/calcom/cal.com" },
+      { owner: "getsentry", repo: "sentry", full_name: "getsentry/sentry", url: "https://github.com/getsentry/sentry" },
+      { owner: "supabase", repo: "supabase", full_name: "supabase/supabase", url: "https://github.com/supabase/supabase" },
+      { owner: "anomalyco", repo: "opencode", full_name: "anomalyco/opencode", url: "https://github.com/anomalyco/opencode" },
+    ];
+    for (const item of seed) {
+      try {
+        insert.run(item);
+      } catch {
+        // ignore duplicates
+      }
+    }
+    console.log(`Seeded ${seed.length} repo radar items.`);
   }
 
   console.log("Database migrated successfully.");
