@@ -10,6 +10,7 @@ import {
   Layers,
   ScrollText,
   Radio,
+  MessageSquare,
   Sun,
   Moon,
 } from "lucide-react";
@@ -21,6 +22,7 @@ const NAV_ITEMS = [
   { href: "/watchlist", label: "Stack", icon: Layers },
   { href: "/logs", label: "Logs", icon: ScrollText },
   { href: "/repo-radar", label: "Radar", icon: Radio },
+  { href: "/prompts", label: "Prompts", icon: MessageSquare },
 ];
 
 function SidebarStats() {

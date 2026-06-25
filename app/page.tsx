@@ -25,6 +25,17 @@ import type { BreakdownItem } from "@/components/briefing/feed-breakdown";
 import { FeaturedNews } from "@/components/briefing/featured-news";
 import { InternTasks } from "@/components/briefing/intern-tasks";
 import { AutomationStatus } from "@/components/briefing/automation-status";
+import { FeaturedPrompt } from "@/components/briefing/featured-prompt";
+
+interface PromptItem {
+  id: number;
+  title: string;
+  content: string;
+  category: string;
+  description: string | null;
+  usage_count: number;
+  is_featured: number;
+}
 
 interface FeedItem {
   id: number;
@@ -94,13 +105,12 @@ export default function HomePage() {
       .all(),
   );
 
-  const recommendedItem = (
-    db
+  const recommendedItem =
+    (db
       .prepare(
         "SELECT id, title, url, summary, tags FROM feed_items WHERE is_read = 0 AND source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1",
       )
-      .get() as FeedItem | undefined
-  ) ?? null;
+      .get() as FeedItem | undefined) ?? null;
 
   const featuredItems = toItems(
     db
@@ -145,6 +155,13 @@ export default function HomePage() {
     count: c.count,
   }));
 
+  const featuredPrompt =
+    (db
+      .prepare(
+        "SELECT * FROM prompts WHERE is_featured = 1 AND source = 'curated' ORDER BY id LIMIT 1",
+      )
+      .get() as PromptItem | undefined) ?? null;
+
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-6 md:py-8">
@@ -152,14 +169,12 @@ export default function HomePage() {
         <div className="animate-fade-in flex items-center justify-between gap-3 flex-wrap mb-8">
           <div>
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-purple-600">
-                <Sparkles className="h-4 w-4 text-white" />
-              </div>
-              <h1 className="text-2xl md:text-3xl font-bold text-white font-display tracking-tight">
+              <Sparkles className="h-5 w-5 text-accent-vibrant" />
+              <h1 className="text-3xl font-bold tracking-tight">
                 Engineering Briefing
               </h1>
             </div>
-            <p className="text-gray-500 text-sm mt-1 font-mono">
+            <p className="text-muted-foreground text-sm mt-1">
               {totalItems} items &middot; {unreadItems} unread
             </p>
           </div>
@@ -255,8 +270,8 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Bottom row: Breakdown + Tasks + Automation */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
+        {/* Bottom row: Breakdown + Tasks + Automation + Featured Prompt */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
           <div className="md:col-span-1 lg:col-span-1">
             <div className="hidden md:block">
               <FeedBreakdown
@@ -274,6 +289,9 @@ export default function HomePage() {
               tomorrowTask={tomorrowTask}
               delay={500}
             />
+          </div>
+          <div className="md:col-span-1 lg:col-span-1">
+            <FeaturedPrompt item={featuredPrompt} delay={600} />
           </div>
           <div className="md:col-span-1 lg:col-span-1">
             <AutomationStatus />
