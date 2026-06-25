@@ -45,9 +45,15 @@ function SidebarStats() {
       </p>
       <div className="space-y-2">
         <StatRow label="Total Items" value={String(stats.totalItems || "—")} />
-        <StatRow label="Last Ingest" value={stats.lastIngest ? timeAgo(stats.lastIngest) : "—"} />
+        <StatRow
+          label="Last Ingest"
+          value={stats.lastIngest ? timeAgo(stats.lastIngest) : "—"}
+        />
         <StatRow label="Today" value={`${stats.itemsToday || "—"} items`} />
-        <StatRow label="This Week" value={`${stats.itemsThisWeek || "—"} items`} />
+        <StatRow
+          label="This Week"
+          value={`${stats.itemsThisWeek || "—"} items`}
+        />
       </div>
     </div>
   );
@@ -62,14 +68,19 @@ function timeAgo(dateStr: string): string {
   if (hrs < 24) return `${hrs}h ago`;
   const days = Math.floor(hrs / 24);
   if (days < 30) return `${days}d ago`;
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 function StatRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-[11px] text-muted-foreground">{label}</span>
-      <span className="text-[11px] font-mono text-foreground/80 font-medium">{value}</span>
+      <span className="text-[11px] font-mono text-foreground/80 font-medium">
+        {value}
+      </span>
     </div>
   );
 }
