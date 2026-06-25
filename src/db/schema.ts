@@ -150,6 +150,7 @@ export function migrate(): void {
   db.exec(SCHEMA_SQL);
 
   try { db.exec("ALTER TABLE log_errors ADD COLUMN pattern_key TEXT"); } catch {}
+  try { db.exec("ALTER TABLE log_patterns ADD COLUMN pattern_key TEXT"); } catch {}
 
   const existing = db.prepare("SELECT COUNT(*) as count FROM watchlist_items").get() as { count: number };
   if (existing.count === 0) {
