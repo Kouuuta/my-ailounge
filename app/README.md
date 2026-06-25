@@ -11,6 +11,7 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `/watchlist` | `watchlist/page.tsx` | Client | Stack Watchlist manager |
 | `/logs` | `logs/page.tsx` | Client | Log Analysis Dashboard (upload + explore Zoho/Acuity CSV logs) |
 | `/repo-radar` | `repo-radar/page.tsx` | Client | Repo Radar — track GitHub repos (stars, releases, PRs, issues) |
+| `/prompts` | `prompts/page.tsx` | Client | Prompt Library — browse, search, add, copy, expand prompts |
 | `GET /api/feed` | `api/feed/route.ts` | Route Handler | List feed items with filters |
 | `POST /api/feed` | `api/feed/route.ts` | Route Handler | Create a feed item |
 | `PATCH /api/feed/[id]` | `api/feed/[id]/route.ts` | Route Handler | Update a feed item |
@@ -33,6 +34,13 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `DELETE /api/repo-radar/[id]` | `api/repo-radar/[id]/route.ts` | Route Handler | Remove a tracked repo |
 | `POST /api/repo-radar/refresh` | `api/repo-radar/refresh/route.ts` | Route Handler | Refresh all tracked repos from GitHub API |
 | `GET /api/stats` | `api/stats/route.ts` | Route Handler | Aggregate counts + last ingest (consumed by sidebar Quick Stats) |
+| `GET /api/prompts` | `api/prompts/route.ts` | Route Handler | List prompts (filters: category, source, search) |
+| `POST /api/prompts` | `api/prompts/route.ts` | Route Handler | Create a prompt |
+| `GET /api/prompts/featured` | `api/prompts/featured/route.ts` | Route Handler | Daily rotating featured prompt |
+| `GET /api/prompts/[id]` | `api/prompts/[id]/route.ts` | Route Handler | Get single prompt |
+| `PATCH /api/prompts/[id]` | `api/prompts/[id]/route.ts` | Route Handler | Update prompt fields |
+| `DELETE /api/prompts/[id]` | `api/prompts/[id]/route.ts` | Route Handler | Delete a prompt |
+| `POST /api/prompts/[id]/use` | `api/prompts/[id]/use/route.ts` | Route Handler | Increment usage_count |
 
 ## Root Layout — `layout.tsx`
 
@@ -83,6 +91,7 @@ A **server component** (`force-dynamic`) that queries SQLite directly and render
 | Security | `(category = 'security' OR tags LIKE '%cve%') AND source != 'manual' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
 | Recommended Tool | `is_read = 0 AND source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC LIMIT 1` | `feed_items` |
 | Featured (pinned) | `is_pinned = 1 AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 4` | `feed_items` |
+| Featured Prompt | `is_featured = 1 AND source = 'curated' ORDER BY id LIMIT 1` | `prompts` |
 
 ### Stat Cards
 
@@ -118,6 +127,7 @@ HomePage
 │   └── ItemCard × 5 per section
 ├── FeedBreakdown (sources + categories Nivo bar chart, tabbed)
 ├── InternTasks (recommended tool + today/tomorrow)
+├── FeaturedPrompt (daily rotating prompt card, links to /prompts)
 └── AutomationStatus (per-ingester health with ping dots)
 ```
 
@@ -133,3 +143,5 @@ HomePage
 - [Repo Radar →](./repo-radar/README.md)
 - [Repo Radar API →](./api/repo-radar/README.md)
 - [Stats API →](./api/stats/README.md)
+- [Prompt Library →](./prompts/README.md)
+- [Prompt Library API →](./api/prompts/README.md)

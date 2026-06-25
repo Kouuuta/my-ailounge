@@ -21,7 +21,8 @@ npm run ingest:hn — Hacker News only
 npm run ingest:rss — RSS feeds only
 npm run ingest:trending — GitHub Trending only (fetches RSS daily/weekly/monthly)
 npm run ingest:manual — Manual feed markdown only (standalone, not in orchestrator)
-npm run db:migrate — Create/migrate SQLite DB (8 tables)
+npm run ingest:prompts — Prompt Library (curated extras + UI design + community from GitHub)
+npm run db:migrate — Create/migrate SQLite DB (9 tables)
 
 ## ⚠️ Critical Constraints
 
@@ -59,6 +60,9 @@ npm run db:migrate — Create/migrate SQLite DB (8 tables)
 | Modify sidebar nav items        | components/sidebar/sidebar.tsx (NAV_ITEMS constant) |
 | Add a stats API endpoint        | app/api/stats/route.ts                        |
 | Modify theme colors / fonts     | app/globals.css @theme block                  |
+| Add a prompt page or feature    | app/prompts/page.tsx (UI), app/api/prompts/ (API) |
+| Add a prompt component          | components/prompts/<Name>.tsx                 |
+| Add a prompt ingester source    | src/ingesters/prompts/index.ts (add function + call in main) |
 
 ## New Packages (Log Analysis Dashboard)
 

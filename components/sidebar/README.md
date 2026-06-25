@@ -9,12 +9,13 @@ Replaces the old top `Navbar` component. Renders a fixed 240px sidebar with bran
 │  Logo + Brand (my-ailounge) │  px-6 py-5, border-b
 │  Developer Intelligence     │
 ├─────────────────────────────┤
-│  Nav Items (5)              │  px-3 py-4, space-y-1
+│  Nav Items (6)              │  px-3 py-4, space-y-1
 │  ● Briefing  (/)            │
 │  ● Feed      (/feed)        │
 │  ● Stack     (/watchlist)   │
 │  ● Logs      (/logs)        │
 │  ● Radar     (/repo-radar)  │
+│  ● Prompts   (/prompts)    │
 ├─────────────────────────────┤
 │  Theme Toggle (Light/Dark)  │  px-3 mb-2
 ├─────────────────────────────┤
@@ -32,7 +33,7 @@ Replaces the old top `Navbar` component. Renders a fixed 240px sidebar with bran
 
 ### Nav Items
 
-5 items defined in `NAV_ITEMS` constant:
+6 items defined in `NAV_ITEMS` constant:
 
 | Label | Icon | Path |
 |-------|------|------|
@@ -41,6 +42,7 @@ Replaces the old top `Navbar` component. Renders a fixed 240px sidebar with bran
 | Stack | `Layers` | `/watchlist` |
 | Logs | `ScrollText` | `/logs` |
 | Radar | `Radio` | `/repo-radar` |
+| Prompts | `MessageSquare` | `/prompts` |
 
 - Active item highlighted with `bg-accent border border-border shadow-sm`
 - Inactive items show `text-muted-foreground`, hover to `text-foreground`

@@ -52,7 +52,7 @@ Do not rebuild these. Extend them.
 **Stack:**
 
 - Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI, Nivo (bar + pie charts), sonner (toast)
-- Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`) — 8 tables
+- Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`) — 9 tables
 - Ingestion: TypeScript ingesters (`src/ingesters/*`) + one legacy Python scraper (`src/scraper.py`)
 - Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing SQLite directly —
   no separate server process required for MVP. Python is used for ingestion scripts only
@@ -76,7 +76,7 @@ shipping Module 1.
 | **Module 8 — Intern Safe Task Board**      | ✅ Built (seed data + UI on homepage) |
 | **Log Analysis Dashboard**                 | ✅ Built (upload + parse + chart Zoho/Acuity CSV logs) |
 | **Module 2 — Repo Radar**                  | ✅ Built (card grid, GitHub API, release/PR/issue tracking, breaking/security detection) |
-| **Module 7 — Prompt Library**              | ⬜ Planned — not started              |
+| **Module 7 — Prompt Library**              | ✅ Built (prompts table, page with search/filter/add/copy, 4 API routes, ingester with 3 sources, FeaturedPrompt widget) |
 
 ---
 
@@ -293,9 +293,9 @@ The scraper still exists for Slack notifications but is separate from the dashbo
 ## 7. Current File Structure (actual)
 
 ```
-app/          → app/README.md        # 5 pages (/, /feed, /watchlist, /logs, /repo-radar) + 7 API route groups (feed, watchlist, logs, ingest, repo-radar, stats)
-components/   → components/README.md # 10 shadcn/ui primitives + 6 briefing components + 4 dashboard widgets + 4 log components + sidebar + theme
-src/          → src/README.md        # 5 ingesters (4 in orchestrator) + DB (8 tables) + analytics + log-parser + repo-radar
+app/          → app/README.md        # 6 pages (/, /feed, /watchlist, /logs, /repo-radar, /prompts) + 10 API route groups (feed, watchlist, logs, ingest, repo-radar, stats, prompts)
+components/   → components/README.md # 10 shadcn/ui primitives + 7 briefing components + 2 prompt components + 4 dashboard widgets + 4 log components + sidebar + theme
+src/          → src/README.md        # 6 ingesters (4 in orchestrator + 1 standalone repo-radar + 1 standalone prompts) + DB (9 tables) + analytics + log-parser + repo-radar
   ├── db/     → src/db/README.md
   ├── ingesters/ → src/ingesters/README.md
   ├── lib/    → src/lib/README.md
@@ -340,26 +340,19 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 22   | Stats API (`GET /api/stats`) consumed by sidebar         | ✅     |
 | 23   | Theme revamp: dark palette, accent colors, dot grid bg, 3 font variables | ✅     |
 | 24   | Briefing/Sidebar/Stats README docs                       | ✅     |
+| 25   | Prompt Library: prompts table + seed data (13 prompts)   | ✅     |
+| 26   | Prompt Library page: search, filter, add, expand, copy   | ✅     |
+| 27   | Prompt Library API: 4 route groups (list+create, featured, CRUD, use count) | ✅     |
+| 28   | Prompt Library components: PromptCard + CategoryFilter (9 categories) | ✅     |
+| 29   | Prompt ingester: curated extras (14) + UI design (40) + community (up to 200) | ✅     |
+| 30   | FeaturedPrompt widget on homepage + sidebar "Prompts" nav link | ✅     |
+| 31   | Prompt Library README docs: page, API, components        | ✅     |
 
-### ⬜ Remaining Work
+### ✅ All Modules Complete
 
-**Module 7 — Prompt Library** (lower priority)
+**Modules 1, 2, 3, 5, 7, and 8 are all built.** The MVP is complete.
 
-New page at `/prompts` for browsing/saving reusable AI prompts. Requires:
-
-- `prompts` table in schema
-- List + detail view with categories
-- Copy-to-clipboard functionality
-
-**Bonus — Scheduled Ingestion**
-
-- `ingest:rss` has an unused scoped `Scope` helper for pass-through `kv_store` tracking (line ~291)
-- Choose an automation option from Appendix A (GitHub Actions already exists at `.github/workflows/ingest.yml`)
-- Add auth protection to the cron endpoint if using Option A (app/api/cron/ingest route)
-
----
-
-## Appendix A — Deferred: Cron Automation Options
+### Bonus — Scheduled Ingestion (not yet implemented)
 
 > **Status: deferred.** The dashboard currently uses manual ingestion (`npm run ingest`, see
 > Section 6). The notes below were explored for automating ingestion on a schedule, but are

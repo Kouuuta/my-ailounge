@@ -8,8 +8,9 @@ Reusable React components used by the Developer Dashboard pages.
 |-----------|----------|
 | `ui/` | shadcn/ui-style primitives — 10 components (Button, Card, Badge, Input, Select, Tabs, Toggle, Separator, Table, Skeleton) — Navbar removed, replaced by `sidebar/` |
 | `engineering-intelligence/` | Dashboard-specific widgets — 4 components (AutomationStatus, BreakdownCard, IngestButton, StatCard). Still exists but homepage now imports from `briefing/` |
-| `briefing/` | Engineering Briefing homepage components — 6 components (StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, AutomationStatus) |
+| `briefing/` | Engineering Briefing homepage components — 7 components (StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, AutomationStatus, FeaturedPrompt) |
 | `sidebar/` | Fixed left sidebar — 1 component (Sidebar) with inline Quick Stats panel |
+| `prompts/` | Prompt Library — 2 components (PromptCard, CategoryFilter + SourceFilter) |
 | `logs/` | Log Analysis Dashboard — 4 components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown) |
 | `theme-provider.tsx` | Dark/light mode React Context (used by Sidebar theme toggle) |
 
@@ -32,4 +33,5 @@ There is a second `cn()` at `src/lib/utils.ts` (simple string join) — that one
 - [Dashboard Widgets →](./engineering-intelligence/README.md)
 - [Briefing Components →](./briefing/README.md)
 - [Sidebar →](./sidebar/README.md)
+- [Prompt Library Components →](./prompts/README.md)
 - [Log Analysis Components →](./logs/README.md)

@@ -111,6 +111,26 @@ Parses `docs/feeds/*.md` files and upserts entries into SQLite.
 npm run ingest:manual
 ```
 
+### `prompts/` ✅ Done (`'prompts'`, standalone)
+
+Fetches and ingests prompt data from 3 sources. Standalone (not in orchestrator). Run via `npm run ingest:prompts`.
+
+**Source:** `'prompts'`
+
+**How it works:**
+
+3 sub-functions chained in `main()`:
+
+1. **`ingestCuratedExtras()`** — Inserts 14 curated engineering prompts (architecture, code review, debugging, incident analysis, etc.) with structured fields (input_fields, output_description, model_recommendation). Uses `INSERT OR IGNORE` with hash-based `external_id` for dedup.
+
+2. **`ingestUiDesignPrompts()`** — Inserts 40 UI/UX design prompts from sources like GenDesigns, TypeUI, and iToolVerse. Re-deletes and re-inserts on each run (no dedup needed). Each includes `source_url` pointing back to the original prompt source.
+
+3. **`ingestCommunityPrompts()`** — Fetches up to 200 entries from the [open-prompt-library](https://github.com/BELYAGOUBIABDELILAH/open-prompt-library) GitHub repo's `data/prompts.json`. Maps folder names → internal categories via `FOLDER_CATEGORY_MAP`. Deduplicates by content hash. Uses `sha256` content hashing for external_id.
+
+```bash
+npm run ingest:prompts
+```
+
 ### `repo-radar/` ✅ Done (`'repo_radar'`, in orchestrator)
 
 Refreshes all tracked repos by fetching the latest GitHub API data.
@@ -136,7 +156,7 @@ npx tsx src/ingesters/repo-radar/index.ts
 
 ### `run-all.ts`
 
-Runs 4 ingesters sequentially (hn, github_trending, rss, repo_radar), tracks status in `kv_store`:
+Runs 4 ingesters sequentially (hn, github_trending, rss, repo_radar). The prompts ingester is standalone — not included here because it manages its own data (prompts table) separate from the feed. Tracks status in `kv_store`:
 
 | Key | Value |
 |-----|-------|
@@ -164,4 +184,5 @@ npm run ingest
 
 1. Create `src/ingesters/<name>/index.ts` exporting an async function
 2. If part of orchestrator: import and add it to `runAll()` — insert a `runTracked(...)` call and add to summary loop
-3. If standalone: add an npm script in `package.json`
+3. If standalone: add an npm script in `package.json` (e.g. `"ingest:prompts": "npx tsx src/ingesters/prompts/index.ts"`)
+4. For standalone ingesters, call `migrate()` at the start of `main()` to ensure schema is up-to-date (see prompts ingester for example pattern)

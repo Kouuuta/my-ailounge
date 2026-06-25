@@ -15,7 +15,7 @@ const db = getDb(); // Returns the singleton instance
 
 ### `schema.ts`
 
-Defines and migrates 8 tables + indexes. Also seeds initial data.
+Defines and migrates 9 tables + indexes. Also seeds initial data.
 
 #### Tables
 
@@ -181,6 +181,36 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `updated_at` | TEXT | Defaults to `datetime('now')` |
 
 **Seed data:** 14 repos on first migration (Next.js, Django, DRF, Celery, PostgreSQL, LangChain, OpenAI Python SDK, Anthropic SDK, shadcn/ui, Vercel AI SDK, Cal.com, Sentry, Supabase, OpenCode).
+
+---
+
+**`prompts`** — Prompt Library (Module 7): reusable AI/engineering prompts.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `id` | INTEGER | Primary key, autoincrement |
+| `title` | TEXT | Prompt title (max 200 chars for community) |
+| `content` | TEXT | Full prompt text (max 5000 chars for community) |
+| `category` | TEXT | Category code: `code_review`, `debugging`, `architecture`, `incident_analysis`, `refactoring`, `security_audit`, `documentation`, `intern_mentoring`, `stakeholder_emails` |
+| `description` | TEXT | Brief use-case description |
+| `input_fields` | TEXT | JSON array of expected input field names |
+| `output_description` | TEXT | Description of expected output |
+| `model_recommendation` | TEXT | Recommended model(s), e.g. `Claude Sonnet 4, GPT-4o` |
+| `usage_count` | INTEGER | Auto-incremented on copy (default 0) |
+| `is_featured` | INTEGER | `1` if eligible for daily featured rotation |
+| `source` | TEXT | `'curated'`, `'community'`, or `'ui_design'` (added via migration) |
+| `external_id` | TEXT | SHA-256 hash of content for dedup (unique per source) |
+| `source_url` | TEXT | Original source URL (for community/ui_design) |
+| `created_at` | TEXT | Defaults to `datetime('now')` |
+| `updated_at` | TEXT | Defaults to `datetime('now')` |
+
+**Index:** `category`
+
+**Unique constraint:** `(source, external_id)` via partial index `WHERE external_id IS NOT NULL`
+
+**Seed data:** 13 prompts on first migration (1 featured: "Architecture Sanity Check"; 12 non-featured covering code review, security, debugging, documentation, incident analysis, refactoring, intern mentoring, stakeholder emails).
+
+**Migration columns:** `source`, `external_id`, `source_url` are added via `ALTER TABLE` to support the 3-source system (curated, community, ui_design) without recreating the table.
 
 ### `migrate.ts`
 
