@@ -62,8 +62,20 @@ REST API for uploading CSV log files and retrieving parsed analysis results. Sup
 
 - Returns anomalies ordered by deviation descending
 - Each anomaly: `description`, `severity`, `detected_at`, `error_count`, `expected_count`, `deviation`
-- Detection method: daily error counts > 2σ above mean
+- Detection method: daily error counts > 2σ above mean; >3σ flagged as `"high"`, 2-3σ as `"medium"`
 - **Response**: `{ anomalies: [...] }`
+
+### `GET /api/logs/[id]/export/pdf` — Download PDF report
+
+- Generates a professional multi-page PDF report server-side using `pdf-lib`
+- **No query params** — always generates the full report
+- **Report structure** (3 pages per analysis):
+  - **Page 1** — Executive Brief: report header (filename, source, date range, generated timestamp), file information lines, executive summary (bullet points), key metrics grid (6 metrics: total rows, error count, error rate, unique patterns, anomaly spikes, avg errors/day), top findings table (#, severity label, finding title, count, first seen), recommendations (bullet points)
+  - **Page 2** — Patterns & Anomalies: full top findings table (all patterns), anomaly spikes table (date, description, errors, baseline, × fold)
+  - **Page 3** — Methods & Statistics: methods table (method name + count), supporting statistics table (11 metrics), end-of-report marker
+- **Response** `200`: `Content-Type: application/pdf` with `Content-Disposition: attachment`
+- **Error** `404`: analysis not found
+- **Dependencies**: `pdf-lib` (StandardFonts Helvetica + Helvetica-Bold)
 
 ## Schema Notes
 

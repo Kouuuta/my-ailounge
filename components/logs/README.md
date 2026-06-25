@@ -2,7 +2,9 @@
 
 6 components used by the Log Analysis Dashboard at `app/logs/page.tsx`.
 
-All are `"use client"` — they interact with the `/api/logs` endpoints.
+Supports two log sources: **Acuity** (filename prefixed `acuity_`) and **Zoho** (any other `.csv`).
+
+**Client vs Server:** `CsvUpload`, `ErrorTrendChart`, `SourceBreakdown`, and `PatternDrillDown` use `"use client"` for event handlers, state, or Nivo charts. `OverviewCards` and `SeverityLegend` are pure presentational components with no client directive.
 
 ## Components
 

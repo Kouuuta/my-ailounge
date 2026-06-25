@@ -101,6 +101,7 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `method` | TEXT | Detected method/endpoint column |
 | `action` | TEXT | Detected action/type column |
 | `content` | TEXT | Detected content/message column |
+| `pattern_key` | TEXT | Normalized error pattern (variables replaced with `{var}`) — populated by parser, used for drill-down matching |
 | `error_type` | TEXT | Extracted error type/summary (max 500 chars) |
 | `error_code` | TEXT | Detected status/error code column |
 | `raw_message` | TEXT | Full raw error message (max 1000 chars) |
