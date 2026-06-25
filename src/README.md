@@ -36,7 +36,7 @@ npm run db:migrate
 npm run ingest
 
 # Run a single ingester
-npm run ingest:manual     # docs/feeds/*.md → SQLite
+npm run ingest:manual     # docs/feeds/*.md → Supabase PostgreSQL
 npm run ingest:rss        # RSS/Atom feeds
 npm run ingest:hn         # Hacker News (HN Algolia API)
 npm run ingest:trending   # GitHub Trending (RSS feeds)

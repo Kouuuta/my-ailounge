@@ -48,33 +48,15 @@ export async function getItemsThisWeek(): Promise<number> {
 }
 
 export async function getItemsBySource(): Promise<SourceBreakdown[]> {
-  const { data } = await supabase
-    .from("feed_items")
-    .select("source")
-    .order("source");
+  const { data } = await supabase.rpc("get_source_counts");
   if (!data) return [];
-  const map = new Map<string, number>();
-  for (const item of data) {
-    map.set(item.source, (map.get(item.source) ?? 0) + 1);
-  }
-  return Array.from(map.entries())
-    .map(([source, count]) => ({ source, count }))
-    .sort((a, b) => b.count - a.count);
+  return data as SourceBreakdown[];
 }
 
 export async function getItemsByCategory(): Promise<CategoryBreakdown[]> {
-  const { data } = await supabase
-    .from("feed_items")
-    .select("category")
-    .order("category");
+  const { data } = await supabase.rpc("get_category_counts");
   if (!data) return [];
-  const map = new Map<string, number>();
-  for (const item of data) {
-    map.set(item.category, (map.get(item.category) ?? 0) + 1);
-  }
-  return Array.from(map.entries())
-    .map(([category, count]) => ({ category, count }))
-    .sort((a, b) => b.count - a.count);
+  return data as CategoryBreakdown[];
 }
 
 export async function getIngestionStatus(): Promise<IngestionStatus[]> {

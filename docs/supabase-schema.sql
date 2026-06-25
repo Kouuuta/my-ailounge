@@ -154,6 +154,32 @@ CREATE TABLE IF NOT EXISTS repo_radar_items (
   notes               TEXT,
   is_active           INTEGER NOT NULL DEFAULT 1,
   last_refreshed_at   TIMESTAMPTZ,
+  notes               TEXT,
+  is_active           INTEGER NOT NULL DEFAULT 1,
+  last_refreshed_at   TIMESTAMPTZ,
   created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- 10. Helper functions for feed breakdown stats (used by homepage chart)
+CREATE OR REPLACE FUNCTION get_category_counts()
+RETURNS TABLE(category text, count bigint)
+LANGUAGE sql
+AS $$
+  SELECT f.category::text, COUNT(*)::bigint
+  FROM feed_items f
+  WHERE f.category IS NOT NULL
+  GROUP BY f.category
+  ORDER BY COUNT(*) DESC;
+$$;
+
+CREATE OR REPLACE FUNCTION get_source_counts()
+RETURNS TABLE(source text, count bigint)
+LANGUAGE sql
+AS $$
+  SELECT f.source::text, COUNT(*)::bigint
+  FROM feed_items f
+  WHERE f.source IS NOT NULL
+  GROUP BY f.source
+  ORDER BY COUNT(*) DESC;
+$$;
