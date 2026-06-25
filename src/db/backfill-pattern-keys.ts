@@ -1,5 +1,5 @@
 import { supabase } from "./supabase-client";
-import { normalizeMessage } from "@/src/lib/log-parser";
+import { normalizeMessage } from "../lib/log-parser";
 
 const { data: nullRows } = await supabase
   .from("log_errors")
