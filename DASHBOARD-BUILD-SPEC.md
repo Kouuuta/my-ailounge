@@ -13,8 +13,8 @@ Do not rebuild these. Extend them.
 
 | Already in repo                                                         | Path                                     | Status                                                                                                               |
 | ----------------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| SQLite schema (8 tables: `feed_items`, `kv_store`, `watchlist_items`, `log_analyses`, `log_errors`, `log_patterns`, `log_anomalies`, `repo_radar_items`) | `src/db/schema.ts` | ✅ Done |
-| DB client (`getDb()` singleton, WAL mode)                               | `src/db/client.ts`                       | ✅ Done                                                                                                              |
+| Supabase PostgreSQL schema (9 tables — migrated from SQLite in June 2026. DDL at `docs/supabase-schema.sql`) | `docs/supabase-schema.sql` (run in Supabase SQL editor), `src/db/schema.ts` (seed only) | ✅ Done |
+| DB client (`supabase` singleton via `@supabase/supabase-js`, was `getDb()` for `better-sqlite3`) | `src/db/client.ts` (re-exports `supabase`) | ✅ Done                                                                                                              |
 | Migration entry point                                                   | `src/db/migrate.ts`                      | ✅ Done                                                                                                              |
 | Manual feeds ingester (parses `docs/feeds/*.md`, standalone only)       | `src/ingesters/manual-feeds/index.ts`    | ✅ Done (not part of orchestrator — run via `npm run ingest:manual`)                                                 |
 | Hacker News ingester (HN Algolia API, top 20 stories)                   | `src/ingesters/hacker-news/index.ts`     | ✅ Done                                                                                                              |
@@ -52,9 +52,9 @@ Do not rebuild these. Extend them.
 **Stack:**
 
 - Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI, Nivo (bar + pie charts), sonner (toast)
-- Data: SQLite via `better-sqlite3` (file at `data/dashboard.db`) — 9 tables
+- Data: **Supabase PostgreSQL** via `@supabase/supabase-js` — 9 tables. Originally SQLite via `better-sqlite3` (file at `data/dashboard.db`); migrated June 2026.
 - Ingestion: TypeScript ingesters (`src/ingesters/*`) + one legacy Python scraper (`src/scraper.py`)
-- Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing SQLite directly —
+- Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing Supabase directly via `supabase.from()` —
   no separate server process required for MVP. Python is used for ingestion scripts only
   (scraping, RSS parsing, HN API calls), invoked via scheduled jobs, not as a running web server.
 
@@ -92,7 +92,9 @@ with full-text search, manual curation (add/remove/pin), read tracking, and de-d
 
 ### 2.2 Data layer
 
-The schema already exists (`src/db/schema.ts`). Confirm it matches:
+The schema is defined in `docs/supabase-schema.sql` (PostgreSQL DDL — run once in Supabase SQL editor). Seed data is inserted via `npm run db:migrate` (`src/db/migrate.ts`). The original SQLite DDL and `src/db/schema.ts` migration were replaced during the June 2026 Supabase migration.
+
+Original SQLite schema for reference (now in PostgreSQL):
 
 ```sql
 feed_items (
@@ -112,8 +114,6 @@ feed_items (
   UNIQUE (source, url)
 )
 ```
-
-Run `npx ts-node src/db/migrate.ts` to apply.
 
 ### 2.3 API routes (`app/api/feed/`) — ✅ All built
 
@@ -167,9 +167,9 @@ A generated daily summary, built as a query/aggregation over `feed_items` — no
 
 ### 3.2 Implementation notes
 
-- Build as a Server Component (`app/page.tsx`) that queries SQLite directly at request time —
-  no need for a separate "generation" job. "Daily generated" just means the data refreshes
-  whenever the ingesters run (Section 6); the page itself can render live on each request.
+- Build as a Server Component (`app/page.tsx`) that queries Supabase PostgreSQL directly at request time
+  (migrated from SQLite in June 2026) — no need for a separate "generation" job. "Daily generated" just means
+  the data refreshes whenever the ingesters run (Section 6); the page itself can render live on each request.
 - If page load becomes slow as `feed_items` grows, add a `dashboard_summary` cache table
   refreshed by the ingestion job — but don't pre-build this; only add it if you measure a
   real slowdown.
@@ -225,7 +225,7 @@ fit naturally as a scheduled job (see Section 6).
 > Cron/scheduled automation is **deferred** — see [Appendix A](#appendix-a-deferred-cron-automation-options)
 > for the options that were explored (Render, Vercel Cron, etc.). For now, ingestion runs
 > **on-demand** via a single npm script. You run it whenever you want fresh data; the dashboard
-> just reads whatever is currently in `data/dashboard.db`.
+> reads from Supabase PostgreSQL (migrated from local SQLite `data/dashboard.db` in June 2026).
 
 ### 6.1 What was built
 
@@ -258,7 +258,7 @@ Each ingester writes data to **both** SQLite (via `lib/db.upsertEntry`) and mark
 ### 6.2 Workflow while developing
 
 1. Make changes to an ingester (e.g. tweak `src/ingesters/hacker-news/index.ts`).
-2. Run `npm run ingest` to populate/update `data/dashboard.db`.
+2. Run `npm run ingest` to populate/update Supabase PostgreSQL (was `data/dashboard.db` before the June 2026 migration).
 3. Refresh the dashboard (`/feed`, `/`) to see the new data.
 4. Re-run `npm run ingest` any time you want to pull fresh data — safe to run repeatedly,
    duplicates are skipped via the `UNIQUE (source, url)` constraint.
@@ -302,7 +302,7 @@ src/          → src/README.md        # 6 ingesters (4 in orchestrator + 1 stan
   └── config/ → src/config/README.md
 lib/          → cn() utility (clsx + twMerge) — for UI only
 scripts/      → clean-feed-files.ts, _check-db.ts
-data/         → dashboard.db (gitignored)
+data/         → dashboard.db (gitignored — legacy SQLite file, no longer used)
 docs/         → docs/README.md       # Onboarding, plans, research, feeds, audits
 ```
 

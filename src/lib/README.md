@@ -60,30 +60,34 @@ Used by: `ingesters/rss` (and future auto-ingesters).
 
 ### `analytics.ts`
 
-Dashboard analytics queries against SQLite. Each function opens its own connection via `getDb()`.
+Dashboard analytics queries against **Supabase PostgreSQL** (migrated from SQLite in June 2026). All functions are now `async` and use `supabase.from().select()` instead of `db.prepare("SQL").all()`.
 
-| Function | Returns | SQL |
-|----------|---------|-----|
-| `getTotalItems()` | `number` | `COUNT(*) FROM feed_items` |
-| `getItemsToday()` | `number` | `COUNT(*) WHERE date(fetched_at) = date('now')` |
-| `getItemsThisWeek()` | `number` | `COUNT(*) WHERE fetched_at >= datetime('now', '-7 days')` |
-| `getItemsBySource()` | `SourceBreakdown[]` | `GROUP BY source ORDER BY count DESC` |
-| `getItemsByCategory()` | `CategoryBreakdown[]` | `GROUP BY category ORDER BY count DESC` |
-| `getIngestionStatus()` | `IngestionStatus[]` | Reads from `kv_store` for each source |
-| `getLastGlobalIngestion()` | `string \| null` | `ingest:last_run:all` from `kv_store` |
-| `getGlobalIngestionStatus()` | `string \| null` | `ingest:status:all` from `kv_store` |
+**Migration:** Originally synchronous SQLite queries via `getDb()`. Now each function returns a `Promise<number>` or `Promise<Row[]>` from Supabase.
+
+| Function | Returns | SQL (Supabase pattern) | Was (SQLite) |
+|----------|---------|------------------------|--------------|
+| `getTotalItems()` | `Promise<number>` | `supabase.from("feed_items").select("*", { count: "exact", head: true })` | `COUNT(*) FROM feed_items` |
+| `getItemsToday()` | `Promise<number>` | `.gte("fetched_at", todayISO)` with `.lte(...)` date filter | `WHERE date(fetched_at) = date('now')` |
+| `getItemsThisWeek()` | `Promise<number>` | `.gte("fetched_at", weekAgoISO)` | `WHERE fetched_at >= datetime('now', '-7 days')` |
+| `getItemsBySource()` | `Promise<SourceBreakdown[]>` | `supabase.from("feed_items").select("source, count:source.count()")` | `GROUP BY source ORDER BY count DESC` |
+| `getItemsByCategory()` | `Promise<CategoryBreakdown[]>` | `supabase.from("feed_items").select("category, count:category.count()")` | `GROUP BY category ORDER BY count DESC` |
+| `getIngestionStatus()` | `Promise<IngestionStatus[]>` | Reads all `ingest:*` keys from `kv_store` via `.in()` filter | Same logic, sync SQLite |
+| `getLastGlobalIngestion()` | `Promise<string \| null>` | `.select("value").eq("key", "ingest:last_run:all").single()` | Same logic, sync SQLite |
+| `getGlobalIngestionStatus()` | `Promise<string \| null>` | `.select("value").eq("key", "ingest:status:all").single()` | Same logic, sync SQLite |
 
 **IngestionStatus fields:** `source`, `lastRun`, `status`, `count`, `elapsedMs`
 
+Consumed by API routes at `app/api/stats/route.ts` (which return JSON for the sidebar and homepage).
+
 Used by:
-- `app/page.tsx` — stat cards, breakdown sections, automation status
+- `app/api/stats/route.ts` — wraps analytics calls for client consumption
 - `components/engineering-intelligence/` — dashboard widgets
 
 ---
 
 ### `repo-radar.ts`
 
-GitHub REST API client and repo refresh logic for the Repo Radar dashboard.
+GitHub REST API client and repo refresh logic for the Repo Radar dashboard. Uses `supabase.from()` for all DB operations (migrated from SQLite `db.prepare()` in June 2026).
 
 **`fetchRepoInfo(owner, repo)`** — Fetches repo metadata from `GET /repos/{owner}/{repo}`. Returns description, language, stars, open issues, pushed_at.
 
@@ -97,9 +101,9 @@ GitHub REST API client and repo refresh logic for the Repo Radar dashboard.
 
 **`detectSecurityAdvisory(body)`** — Scans release body for security keywords (`"CVE"`, `"vulnerability"`, `"security advisory"`, etc.). Returns the first matching sentence or `null`.
 
-**`refreshSingleRepo(item)`** — Full refresh pipeline for one repo: fetches info + release + PRs + issues, detects breaking/security, updates SQLite row.
+**`refreshSingleRepo(item)`** — Full refresh pipeline for one repo: fetches info + release + PRs + issues, detects breaking/security, updates Supabase row via `supabase.from("repo_radar_items").update()`.
 
-**`refreshAll()`** — Iterates all active repos, calls `refreshSingleRepo()` on each, records summary in `kv_store`. Returns `{ updated, errors, results }`.
+**`refreshAll()`** — Iterates all active repos, calls `refreshSingleRepo()` on each, records summary in `kv_store` (via Supabase upsert). Returns `{ updated, errors, results }`.
 
 **Error handling:** All GitHub API calls share `githubFetch()` which throws on 403 (rate limit) and non-ok statuses.
 

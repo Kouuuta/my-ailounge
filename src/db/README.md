@@ -1,23 +1,51 @@
-# `src/db/` — SQLite Database Layer
+# `src/db/` — Database Layer
 
-Local SQLite store for the Developer Dashboard. Uses `better-sqlite3` with WAL mode. Database file lives at `data/dashboard.db` (gitignored).
+**Migration note:** Originally built with local SQLite (`better-sqlite3`, WAL mode, file at `data/dashboard.db`). Migrated to **Supabase PostgreSQL** in June 2026. The table schemas below are kept for reference; the actual DDL now lives in `docs/supabase-schema.sql` (run in Supabase SQL editor). Seed data is inserted via `npm run db:migrate`.
 
 ## Files
 
-### `client.ts`
+### `supabase-client.ts`
 
-Singleton database client. Creates and reuses a single `better-sqlite3` connection with WAL journal mode and foreign keys enabled.
+Creates and exports a singleton Supabase client using `@supabase/supabase-js`. Client initialized once from environment variables.
 
 ```ts
+import { supabase } from "@/src/db/supabase-client";
+
+const { data, error } = await supabase
+  .from("feed_items")
+  .select("*")
+  .limit(10);
+```
+
+Requires `.env.local` with:
+- `NEXT_PUBLIC_SUPABASE_URL` — your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — your Supabase anon/public key
+
+### `client.ts`
+
+Re-exports `supabase` from `supabase-client.ts` for convenience. Was previously a `getDb()` singleton for `better-sqlite3` — kept as the same import path so consuming code didn't need import changes.
+
+```ts
+// Old (SQLite):
 import { getDb } from "@/src/db/client";
-const db = getDb(); // Returns the singleton instance
+const db = getDb();
+
+// New (Supabase):
+import { supabase } from "@/src/db/client";
+// All queries are async now
 ```
 
 ### `schema.ts`
 
-Defines and migrates 9 tables + indexes. Also seeds initial data.
+Previously defined all 9 table schemas + indexes + seed data (~421 lines). Now drastically simplified (~85 lines):
 
-#### Tables
+- **Table DDL** moved to `docs/supabase-schema.sql` — run manually in Supabase SQL editor once
+- `migrate()` only handles **seed data** (initial rows for `watchlist_items`, `repo_radar_items`, `prompts`)
+- All inserts use `supabase.from().insert()` with `upsert` behavior
+
+#### Tables (historical reference)
+
+Same 9 tables, now served by PostgreSQL via Supabase. Column types below are the original SQLite types; PostgreSQL equivalents are in `docs/supabase-schema.sql`.
 
 **`feed_items`** — Core ingestion store for the Developer Intelligence Feed.
 
@@ -214,7 +242,7 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 
 ### `migrate.ts`
 
-Entry point. Runs `schema.ts` migration.
+Entry point for seeding. Calls `schema.migrate()` which inserts seed data via Supabase API (no local SQLite file involved).
 
 ```bash
 npm run db:migrate
@@ -222,11 +250,45 @@ npm run db:migrate
 npx tsx src/db/migrate.ts
 ```
 
+> ⚠️ Tables must already exist in Supabase. First run `docs/supabase-schema.sql` in your Supabase SQL editor, then run `npm run db:migrate` to seed.
+
+## Environment Variables
+
+Create `.env.local` in the project root:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
 ## Usage
 
 ```ts
-import { getDb } from "@/src/db/client";
+import { supabase } from "@/src/db/client";
 
-const db = getDb();
-const items = db.prepare("SELECT * FROM feed_items LIMIT 10").all();
+// Read (async)
+const { data: items, error } = await supabase
+  .from("feed_items")
+  .select("*")
+  .limit(10)
+  .order("published_at", { ascending: false });
+
+// Write
+const { error } = await supabase
+  .from("feed_items")
+  .insert({ source: "manual", title: "...", url: "..." });
+
+// Upsert
+const { error } = await supabase
+  .from("kv_store")
+  .upsert(
+    { key: "ingest:last_run:hn", value: new Date().toISOString() },
+    { onConflict: "key" }
+  );
+
+// Delete
+const { error } = await supabase
+  .from("feed_items")
+  .delete()
+  .eq("id", 42);
 ```

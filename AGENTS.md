@@ -4,7 +4,7 @@
 
 Primary reference for AI coding agents (OpenCode, Claude Code, Gemini CLI).
 Mind You AI Council and AI Factory — engineering intelligence dashboard, data pipelines, and automation infrastructure.
-Tech: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, Radix UI, SQLite
+Tech: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, Radix UI, Supabase PostgreSQL (migrated from SQLite)
 Path alias: @/\* → project root, NOT src/
 
 ## Quick Start
@@ -22,7 +22,7 @@ npm run ingest:rss — RSS feeds only
 npm run ingest:trending — GitHub Trending only (fetches RSS daily/weekly/monthly)
 npm run ingest:manual — Manual feed markdown only (standalone, not in orchestrator)
 npm run ingest:prompts — Prompt Library (curated extras + UI design + community from GitHub)
-npm run db:migrate — Create/migrate SQLite DB (9 tables)
+npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at docs/supabase-schema.sql
 
 ## ⚠️ Critical Constraints
 
@@ -32,9 +32,10 @@ npm run db:migrate — Create/migrate SQLite DB (9 tables)
 | One cn() utility                | ❌ Two exist: @/lib/utils (shadcn/clsx+twMerge) for UI, @/src/lib/utils (string join) for ingesters |
 | TW config in tailwind.config.ts | ❌ TW v4 uses app/globals.css @theme — the .ts file is vestigial                                    |
 | PostCSS uses tailwindcss        | ❌ Uses @tailwindcss/postcss only                                                                   |
-| data/dashboard.db is committed  | ❌ Gitignored — create locally via npm run db:migrate                                               |
+| data/dashboard.db is committed  | ❌ Gitignored — legacy SQLite file, no longer used. Now using remote Supabase PostgreSQL             |
 | 'use client' on every component | ❌ Server-first. Only add 'use client' for Radix primitives, event handlers, state, ThemeProvider   |
-| Server components use fetch()   | ❌ Server: getDb() directly. Client: fetch(/api/...)                                                |
+| Server components use fetch()   | ❌ Server: supabase.from() directly. Client: fetch(/api/...)                                        |
+| .env.local is optional          | ❌ Required — must set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY                   |
 
 ## Navigation Map
 
@@ -42,7 +43,7 @@ npm run db:migrate — Create/migrate SQLite DB (9 tables)
 | ------------------------------- | ---------------------------------------------- |
 | Add a page                      | app/<name>/page.tsx                            |
 | Add an API route                | app/api/<name>/route.ts                        |
-| Add/change a DB column or table | src/db/schema.ts                               |
+| Add/change a DB column or table | src/db/schema.ts (then update docs/supabase-schema.sql) |
 | Add an RSS feed source          | src/ingesters/rss/feeds.ts (then add category to app/feed/page.tsx CATEGORIES) |
 | Add a new ingester              | src/ingesters/<name>/index.ts                  |
 | Add a dashboard widget          | components/engineering-intelligence/<Name>.tsx (legacy) or components/briefing/<Name>.tsx (new) |
@@ -64,11 +65,13 @@ npm run db:migrate — Create/migrate SQLite DB (9 tables)
 | Add a prompt component          | components/prompts/<Name>.tsx                 |
 | Add a prompt ingester source    | src/ingesters/prompts/index.ts (add function + call in main) |
 
-## New Packages (Log Analysis Dashboard)
+## New Packages (Log Analysis Dashboard + Supabase Migration)
 
 - `@nivo/bar`, `@nivo/pie`, `@nivo/core` — Nivo charting for error trend bar chart and source donut
 - `csv-parse` — CSV parsing in `src/lib/log-parser.ts`
 - `sonner` — Toast notifications for `IngestButton` and other client interactions
+- `@supabase/supabase-js` — Supabase PostgreSQL client (replaced `better-sqlite3`)
+- `dotenv` — Env variable loading for ingesters and scripts
 - Log parser auto-detects columns by header name regex (timestamp, content, action, method, error_code, response)
 - Source detection: filename starting with `acuity` → Acuity, otherwise Zoho
 

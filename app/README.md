@@ -79,7 +79,7 @@ Tailwind v4 with `@theme inline` custom tokens:
 
 ## Homepage — `page.tsx` (Engineering Briefing)
 
-A **server component** (`force-dynamic`) that queries SQLite directly and renders:
+A **server component** (`force-dynamic`) that queries Supabase PostgreSQL (migrated from SQLite in June 2026) and renders:
 
 ### Data Queries (5 feed sections + featured)
 
@@ -97,10 +97,12 @@ A **server component** (`force-dynamic`) that queries SQLite directly and render
 
 4 `StatCard` components from `components/briefing/stat-card.tsx`:
 
-1. **Total Items** — `COUNT(*)` from `feed_items` (with unread count subtitle)
+1. **Total Items** — `supabase.from("feed_items").select("*", { count: "exact", head: true })` (with unread count subtitle)
 2. **Last Ingestion** — reads `ingest:last_run:all` from `kv_store`, displays as time ago
-3. **Items Today** — `COUNT(*) WHERE date(fetched_at) = date('now')`
-4. **Items This Week** — `COUNT(*) WHERE fetched_at >= datetime('now', '-7 days')`
+3. **Items Today** — `.gte("fetched_at", todayISO).lt("fetched_at", tomorrowISO)` date range filter
+4. **Items This Week** — `.gte("fetched_at", weekAgoISO)` date comparison
+
+> **Migration note:** These were originally raw SQLite queries (`COUNT(*)`, `date('now')`, `datetime('now', '-7 days')`). Now all use Supabase async filters.
 
 ### Ingest Button
 

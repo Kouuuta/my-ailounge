@@ -7,11 +7,11 @@ The data ingestion and storage layer for the Developer Dashboard.
 ```
 config/        — Seed data (intern tasks)
   ↓
-ingesters/    — Fetch/parse feed sources → SQLite + markdown
+ingesters/    — Fetch/parse feed sources → Supabase PostgreSQL + markdown (migrated from SQLite June 2026)
   ↓
 lib/          — Shared utilities (DB write, markdown write, analytics queries)
   ↓
-db/           — SQLite client, schema, migration
+db/           — Supabase client, schema, seed data
 ```
 
 ## Relationship to Other Directories
@@ -26,7 +26,10 @@ db/           — SQLite client, schema, migration
 ## Quickstart
 
 ```bash
-# Run DB migration (creates tables + seeds data)
+# Prerequisites: create .env.local with NEXT_PUBLIC_SUPABASE_URL and
+# NEXT_PUBLIC_SUPABASE_ANON_KEY. Run docs/supabase-schema.sql in Supabase SQL editor first.
+
+# Seed data (tables must already exist in Supabase)
 npm run db:migrate
 
 # Run all ingesters

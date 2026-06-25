@@ -11,7 +11,7 @@ This folder contains onboarding guides, architecture references, research materi
 1. **`getting-started/INSTRUCTIONS.md`** — Set up your dev environment (GitHub Copilot, opencode CLI, Gemini CLI).
 2. **`../README.md`** (root) — Understand the project purpose and high-level structure.
 3. **`../src/README.md`** — Learn the data pipeline flow (config → ingesters → lib → db).
-4. **`../src/db/README.md`** — Understand the SQLite schema (3 tables, columns, indexes, seed data).
+4. **`../src/db/README.md`** — Understand the DB schema (originally SQLite, now Supabase PostgreSQL — 9 tables, columns, indexes, seed data, migration history).
 5. **`../src/ingesters/README.md`** — See how feed data is fetched and stored (4 ingesters, orchestrator).
 6. **`../src/lib/README.md`** — Review shared utilities (DB writes, markdown append, analytics queries).
 7. **`guides/developer-dashboard.md`** — Read the dashboard spec (modules, audiences, requirements).
@@ -44,7 +44,8 @@ This folder contains onboarding guides, architecture references, research materi
 
 | Doc | Description |
 |-----|-------------|
-| `../src/db/README.md` | SQLite layer: `better-sqlite3` with WAL mode, `getDb()` singleton, all 3 table schemas (`feed_items`, `kv_store`, `watchlist_items`) with columns, indexes, unique constraints, seed data (14 watchlist items), migration entry point |
+| `../src/db/README.md` | Database layer: originally SQLite (`better-sqlite3`, WAL mode, `getDb()` singleton), now **Supabase PostgreSQL** (`@supabase/supabase-js`, `supabase.from()`, async queries). 9 tables with full column/index docs, migration history, seed data, env var setup |
+| `supabase-schema.sql` | PostgreSQL DDL for all 9 tables — run this in Supabase SQL editor before seeding. Source of truth for table definitions |
 
 ---
 
