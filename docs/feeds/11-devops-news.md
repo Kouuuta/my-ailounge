@@ -4,6 +4,31 @@
 
 ## June 2026
 
+- [Sakana Fugu is more than a router. But it’s not the blueprint for AI sovereignty, either.](https://thenewstack.io/sakana-fugu-ai-sovereignty/) | 2026-06-24 | devops
+- [Agentic infrastructure operations begin with accurate, reliable infrastructure data](https://thenewstack.io/netbox-infrastructure-ai-agents/) | 2026-06-24 | devops
+- [Chainguard targets Java&#8217;s unpatched vulnerability backlog with drop-in remediated libraries](https://thenewstack.io/chainguard-java-libraries-spring-boot-cves/) | 2026-06-24 | devops
+- [Will it Mythos? One coder&#8217;s verdict on Anthropic&#8217;s blend of debugging](https://thenewstack.io/will-it-mythos-benchmark/) | 2026-06-24 | devops
+- [Azul wants to find your unpatched JVMs before AI does](https://thenewstack.io/azul-java-security-jvm-mythos/) | 2026-06-24 | devops
+- [OpenAI wants to claim more of the AI stack with Jalapeño, its first custom chip](https://thenewstack.io/openai-jalapeno-custom-chip/) | 2026-06-24 | devops
+- [Undo Enables AI Agents to Diagnose Root Cause of Application Issues](https://devops.com/undo-enables-ai-agents-to-diagnose-root-cause-of-application-issues/) | 2026-06-24 | devops
+- [HeroDevs Allies with Commonhaus Foundation to Support Open Source Software](https://devops.com/herodevs-allies-with-commonhaus-foundation-to-support-open-source-software/) | 2026-06-24 | devops
+- [Can DNS become the basis for AI agent identity?](https://thenewstack.io/can-dns-become-the-basis-for-ai-agent-identity/) | 2026-06-23 | devops
+- [GitLab just surveyed 1,500 developers. Here&#8217;s why it matters for your codebase.](https://thenewstack.io/agentic-infrastructure-ai-governance/) | 2026-06-23 | devops
+- [AI can write the code. Your team still owns the debt.](https://thenewstack.io/ai-technical-debt-verification/) | 2026-06-23 | devops
+- [Nx debuts Polygraph, taking aim at what&#8217;s stalling AI coding agents](https://thenewstack.io/nx-polygraph-synthetic-monorepo-agents/) | 2026-06-23 | devops
+- [Developers are now validating code they didn&#8217;t write — and may not understand](https://thenewstack.io/gitlab-ai-code-governance/) | 2026-06-23 | devops
+- [OpenClaw and Hermes agree on what an agent is. They disagree on what controls it.](https://thenewstack.io/openclaw-hermes-agent-harness/) | 2026-06-23 | devops
+- [Anthropic gives @Claude a permanent seat in your Slack channels](https://thenewstack.io/anthropic-claude-tag-slack/) | 2026-06-23 | devops
+- [Kubernetes teams trust automation to ship code but not to touch CPU, and AI is raising the stakes](https://thenewstack.io/kubernetes-teams-trust-automation/) | 2026-06-23 | devops
+- [CData Gives Developers Free Access to the Data Layer That IT Already Trusts](https://devops.com/cdata-gives-developers-free-access-to-the-data-layer-that-it-already-trusts/) | 2026-06-23 | devops
+- [Newly Appointed CloudBees CEO Charts Agentic AI Engineering Course](https://devops.com/newly-appointed-cloudbees-ceo-charts-agentic-ai-engineering-course/) | 2026-06-23 | devops
+- [Salesforce vs Dynamics 365 CE DevOps: A Practical Comparison for Enterprise Teams](https://devops.com/salesforce-vs-dynamics-365-ce-devops-a-practical-comparison-for-enterprise-teams/) | 2026-06-23 | devops
+- [Microsoft Brings the Azure SDK for Rust to General Availability](https://devops.com/microsoft-brings-the-azure-sdk-for-rust-to-general-availability/) | 2026-06-23 | devops
+- [Qodo just shipped cross-repo review. Here&#8217;s why it matters for AI-flooded teams.](https://thenewstack.io/qodo-cross-repo-code-review/) | 2026-06-22 | devops
+- [Cursor quietly acquires Continue, an open-source alternative to GitHub Copilot](https://thenewstack.io/cursor-acquires-continue-coding/) | 2026-06-22 | devops
+- [Ten Great DevOps Job Opportunities](https://devops.com/ten-great-devops-job-opportunities-11/) | 2026-06-22 | devops
+- [Homebrew to Packages: No ID, No Service](https://devops.com/homebrew-to-packages-no-id-no-service/) | 2026-06-22 | devops
+- [GitHub Code Quality Moves to General Availability, Bringing New Costs and Capabilities](https://devops.com/github-code-quality-moves-to-general-availability-bringing-new-costs-and-capabilities/) | 2026-06-22 | devops
 - [Your AI isn&#8217;t broken. Your data is.](https://thenewstack.io/clario-data-enterprise-ai-rot/) | 2026-06-17 | devops
 - [Google, Microsoft, and OpenAI join forces to help create AI&#8217;s missing trust layer](https://thenewstack.io/google-microsoft-and-openai-join-forces-to-help-create-ais-missing-trust-layer/) | 2026-06-17 | devops
 - [“Agents need boring infrastructure around them”: Why we need to take an interest in &#8216;invisible&#8217; AI](https://thenewstack.io/tailscale-aperture-ai-agent-infrastructure/) | 2026-06-17 | devops

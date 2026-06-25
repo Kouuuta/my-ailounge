@@ -14,9 +14,9 @@ function timeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export function AutomationStatus() {
-  const statuses = getIngestionStatus();
-  const globalStatus = getGlobalIngestionStatus();
+export async function AutomationStatus() {
+  const statuses = await getIngestionStatus();
+  const globalStatus = await getGlobalIngestionStatus();
   const errors = statuses.filter((s) => s.status === "error").length;
 
   return (

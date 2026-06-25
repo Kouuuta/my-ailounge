@@ -4,6 +4,211 @@
 
 ## June 2026
 
+- [CVE-2026-53541 [MEDIUM] [reviewed] OliveTin has Unvalidated `ot_`-prefixed Arguments that Bypass Input Filtering](https://github.com/advisories/GHSA-prj9-97mp-mwh2) | 2026-06-24 | security
+- [CVE-2026-48709 [LOW] [reviewed] OliveTin: ValidateArgumentType API Endpoint's Missing Authentication Allows Action and Argument Enumeration](https://github.com/advisories/GHSA-f637-w7p2-m7fx) | 2026-06-24 | security
+- [CVE-2026-48708 [HIGH] [reviewed] OliveTin has a Concurrent Template Parsing Race Condition which Leads to Cross-Request Command Contamination](https://github.com/advisories/GHSA-7fq5-7wr8-rjwj) | 2026-06-24 | security
+- [CVE-2026-45052 [CRITICAL] [reviewed] OpenAM Pre-auth User Profile Tampering via Anonymous SOAP Authn in Liberty IDPP/Discovery Endpoints](https://github.com/advisories/GHSA-p462-xxwx-pqf4) | 2026-06-24 | security
+- [CVE-2026-45051 [CRITICAL] [reviewed] OpenAM: Pre-auth RCE via Java Deserialization in WebAuthn Authenticator Storage](https://github.com/advisories/GHSA-6c99-87fr-6q7r) | 2026-06-24 | security
+- [CVE-2026-54329 [HIGH] [reviewed] Snipe-IT API Vulnerable to Cross-Tenant Accessory Injection](https://github.com/advisories/GHSA-pwpj-p52h-q484) | 2026-06-23 | security
+- [CVE-2026-55542 [LOW] [reviewed] Snipe-IT's S3 signature image retrieval lacks authorization before temporary URL](https://github.com/advisories/GHSA-6mmj-jhqj-6c6q) | 2026-06-23 | security
+- [CVE-2026-55519 [LOW] [reviewed] Snipe-IT has Improper Authorization in File Deletion (IDOR)](https://github.com/advisories/GHSA-x667-r589-43m7) | 2026-06-23 | security
+- [CVE-2026-55483 [MEDIUM] [reviewed] Snipe-IT Vulnerable to Privilege Escalation via Missing admin Permission Check in User Creation](https://github.com/advisories/GHSA-hf68-g98v-wp9g) | 2026-06-23 | security
+- [CVE-2026-55482 [MEDIUM] [reviewed] Snipe-IT has Multi-Tenancy Bypass via Bulk Asset Update](https://github.com/advisories/GHSA-33g4-646g-qwmm) | 2026-06-23 | security
+- [CVE-2026-50550 [MEDIUM] [reviewed] Snipe-IT has a 2FA reset privilege bypass](https://github.com/advisories/GHSA-6x4j-8954-5hxm) | 2026-06-23 | security
+- [CVE-2026-49976 [MEDIUM] [reviewed] Snipe-IT Vulnerable to User Account Escalation via CSV Import](https://github.com/advisories/GHSA-p68w-rgmg-3c2v) | 2026-06-23 | security
+- [[MEDIUM] [reviewed] Flask-Security has an Open Redirect issue](https://github.com/advisories/GHSA-w2j7-f3c6-g8cw) | 2026-06-23 | security
+- [CVE-2026-49870 [MEDIUM] [reviewed] Snipe-IT's TOTP is Brute-Forceable Due to Missing Rate Limiting on `POST /two-factor`](https://github.com/advisories/GHSA-mr8g-2mj4-pcq2) | 2026-06-23 | security
+- [CVE-2026-49205 [MEDIUM] [reviewed] phpMyFAQ: Missing userHasPermission() in 4 API write endpoints (CVE-2026-24421 Incomplete Fix)](https://github.com/advisories/GHSA-8c6h-7g6x-m5x4) | 2026-06-23 | security
+- [CVE-2026-48507 [HIGH] [reviewed] Snipe-IT: Bulk editing users allowed `ldap_import` and `activated_in` bulk editing users](https://github.com/advisories/GHSA-6f75-x745-xcpr) | 2026-06-23 | security
+- [[MEDIUM] [reviewed] OpenTofu: Provider cache installation follows root-module-controlled package directory symlink and writes outside the working tree](https://github.com/advisories/GHSA-wcmj-x466-56mm) | 2026-06-23 | security
+- [CVE-2026-48500 [MEDIUM] [reviewed] Filament: Unauthenticated temporary file upload on auth pages](https://github.com/advisories/GHSA-44wp-g8f4-f4v5) | 2026-06-23 | security
+- [CVE-2026-48496 [MEDIUM] [reviewed] opentelemetry-ebpf-profiler: Unprivileged process can trigger a denial of service on the ebpf-profiler agent](https://github.com/advisories/GHSA-f2r5-5m7w-p5cx) | 2026-06-23 | security
+- [CVE-2026-48493 [MEDIUM] [reviewed] Snipe-IT Vulnerable to Privilege Escalation for self via API Permissions Assignment](https://github.com/advisories/GHSA-52fw-7fw2-fmv5) | 2026-06-23 | security
+- [CVE-2026-48492 [MEDIUM] [reviewed] Snipe-IT's selectlist visibility is too permissive](https://github.com/advisories/GHSA-f3c5-6cw8-fg57) | 2026-06-23 | security
+- [CVE-2026-48488 [LOW] [reviewed] phpMyFAQ has Weak Cryptography - SHA1 for Password Hashing](https://github.com/advisories/GHSA-58fg-62fg-3fcj) | 2026-06-23 | security
+- [CVE-2026-48480 [MEDIUM] [reviewed] OHttpVersionChunkDraft: Missing Final-Chunk Enforcement Leads to Undetected Stream Truncation](https://github.com/advisories/GHSA-r6fj-869h-4f6q) | 2026-06-23 | security
+- [CVE-2026-48167 [MEDIUM] [reviewed] Filament: Unvalidated ImageColumn and ImageEntry values can be used for XSS](https://github.com/advisories/GHSA-3fc8-8hp6-6jr4) | 2026-06-23 | security
+- [CVE-2026-48166 [MEDIUM] [reviewed] Filament: Timing-based user enumeration on login page](https://github.com/advisories/GHSA-5w46-g9pq-wh6f) | 2026-06-23 | security
+- [CVE-2026-48157 [MEDIUM] [reviewed] Slim has Reflected XSS in the HtmlErrorRenderer](https://github.com/advisories/GHSA-53h4-8rc4-f539) | 2026-06-23 | security
+- [CVE-2026-48126 [HIGH] [reviewed] Algernon: Host header path traversal in --domain mode reads files and runs Lua from parent dir](https://github.com/advisories/GHSA-jc3j-x6pg-4hmv) | 2026-06-23 | security
+- [CVE-2026-54517 [MEDIUM] [reviewed] jackson-databind has @JsonView bypass for setterless creator properties](https://github.com/advisories/GHSA-5hh8-q8hv-fr38) | 2026-06-23 | security
+- [CVE-2026-54516 [MEDIUM] [reviewed] jackson-databind's renamed @JsonIgnore'd setters can deserialize via private fields](https://github.com/advisories/GHSA-9fxm-vc8v-hj55) | 2026-06-23 | security
+- [CVE-2026-54515 [MEDIUM] [reviewed] jackson-databind has case-insensitive deserialization bypasses per-property @JsonIgnoreProperties](https://github.com/advisories/GHSA-5jmj-h7xm-6q6v) | 2026-06-23 | security
+- [CVE-2026-54514 [MEDIUM] [reviewed] jackson-databind: InetSocketAddress deserialization triggers eager DNS resolution (SSRF)](https://github.com/advisories/GHSA-hgj6-7826-r7m5) | 2026-06-23 | security
+- [CVE-2026-54513 [HIGH] [reviewed] jackson-databind has an array subtype allowlist bypass in BasicPolymorphicTypeValidator (allowIfSubTypeIsArray)](https://github.com/advisories/GHSA-rmj7-2vxq-3g9f) | 2026-06-23 | security
+- [CVE-2026-54512 [HIGH] [reviewed] jackson-databind has a PolymorphicTypeValidator bypass via generic type parameters that allows arbitrary class instantiation](https://github.com/advisories/GHSA-j3rv-43j4-c7qm) | 2026-06-23 | security
+- [CVE-2026-50193 [MEDIUM] [reviewed] jackson-databind: Deeply nested JsonNode throws StackOverflowError for toString()](https://github.com/advisories/GHSA-3wrr-7qpf-2prh) | 2026-06-23 | security
+- [CVE-2026-54518 [MEDIUM] [reviewed] jackson-databind has a @JsonView bypass for unwrapped creator parameters](https://github.com/advisories/GHSA-rcqc-6cw3-h962) | 2026-06-23 | security
+- [CVE-2026-52801 [HIGH] [reviewed] Gogs has the ability to import local repositories via Mirror Settings](https://github.com/advisories/GHSA-wv27-2vqp-j7g5) | 2026-06-23 | security
+- [CVE-2026-52800 [HIGH] [reviewed] Gogs Vulnerable to CSRF Leading to Organization Owner Takeover](https://github.com/advisories/GHSA-pwx3-qcgw-vh7h) | 2026-06-23 | security
+- [CVE-2026-52799 [HIGH] [reviewed] Gogs Missing Authorization in Attachment Download](https://github.com/advisories/GHSA-p9f5-h3rx-j5qw) | 2026-06-22 | security
+- [CVE-2026-52798 [HIGH] [reviewed] Gogs has Stored XSS in `.ipynb` Preview](https://github.com/advisories/GHSA-jq8v-rmf6-65jw) | 2026-06-22 | security
+- [CVE-2026-52796 [LOW] [reviewed] Gogs has DoS in rendering issue index pattern](https://github.com/advisories/GHSA-4j89-2c4f-44c6) | 2026-06-22 | security
+- [CVE-2026-50179 [MEDIUM] [reviewed] @actual-app/web has CSV Formula Injection in Transaction Export via Imported Payee/Notes Fields](https://github.com/advisories/GHSA-xqjm-27pc-rvwm) | 2026-06-22 | security
+- [CVE-2026-54353 [HIGH] [reviewed] @budibase/backend-core has potential SSRF DNS rebinding bypass in outbound fetch validation](https://github.com/advisories/GHSA-gfq7-5x4g-3xhf) | 2026-06-22 | security
+- [CVE-2026-54352 [CRITICAL] [reviewed] Budibase has arbitrary file read by workspace-builder via PWA-zip symlink upload](https://github.com/advisories/GHSA-w7mq-r738-x278) | 2026-06-22 | security
+- [CVE-2026-54351 [HIGH] [reviewed] Budibase: Mass Assignment in Webhook Trigger Allows Cross-Workspace Automation Execution via appId Override](https://github.com/advisories/GHSA-rgvg-3wpc-h44p) | 2026-06-22 | security
+- [CVE-2026-49229 [HIGH] [reviewed] @actual-app/sync-server: Disabled OpenID users keep access through existing session tokens](https://github.com/advisories/GHSA-cq9c-6w48-qmfg) | 2026-06-22 | security
+- [CVE-2026-50137 [HIGH] [reviewed] Budibase: POST /api/attachments/:datasourceId/url is unauthenticated and lets anonymous callers mint S3 PUT pre-signed URLs using stored datasource IAM credentials](https://github.com/advisories/GHSA-35c4-rvc8-frhm) | 2026-06-22 | security
+- [CVE-2026-50136 [HIGH] [reviewed] Budibase: Unauthenticated S3 signed upload URL generation allows arbitrary writes with stored datasource credentials](https://github.com/advisories/GHSA-jj36-r9w3-3pfh) | 2026-06-22 | security
+- [CVE-2026-50132 [HIGH] [reviewed] Budibase has an Account Impersonation Issue — Chat Identity Link Hijacking via Missing Consent & CSRF](https://github.com/advisories/GHSA-v7j5-vc4m-723w) | 2026-06-22 | security
+- [CVE-2026-48487 [MEDIUM] [reviewed] zeroconf: Unvalidated rdlength in record payload readers allows LAN-local cache corruption via crafted mDNS packet](https://github.com/advisories/GHSA-qc2x-6f54-m6h9) | 2026-06-22 | security
+- [[MEDIUM] [reviewed] devbridge-autocomplete has XSS in its default formatters: formatGroup and formatResult fail to escape HTML in untrusted inputs](https://github.com/advisories/GHSA-hvqh-jw65-wcpq) | 2026-06-22 | security
+- [CVE-2026-48170 [CRITICAL] [reviewed] scimPatch vulnerable to prototype pollution via unfiltered keys in patch](https://github.com/advisories/GHSA-9m6g-wc8r-q59c) | 2026-06-22 | security
+- [[MEDIUM] [reviewed] nebula-mesh's stores enrollment tokens unhashed in SQLite](https://github.com/advisories/GHSA-ghmh-jhmj-wcmf) | 2026-06-22 | security
+- [CVE-2026-48153 [HIGH] [reviewed] Budibase: SSRF via OAuth2 token endpoint URL reaches internal hosts and cloud metadata](https://github.com/advisories/GHSA-4q6h-8p4v-67vq) | 2026-06-22 | security
+- [[HIGH] [reviewed] skillctl: argument injection, path traversal in --dest, FIFO/device DoS, hardlink exfiltration, and commit-trailer forgery](https://github.com/advisories/GHSA-74p7-6h78-gw8p) | 2026-06-22 | security
+- [CVE-2026-47267 [MEDIUM] [reviewed] Gogs has SSRF in webhook deliveries](https://github.com/advisories/GHSA-c4v7-xg93-qf8g) | 2026-06-22 | security
+- [CVE-2026-46700 [MEDIUM] [reviewed] @actual-app/sync-server's missing authorization on GET /secret/:name allows non-admin OpenID users to enumerate admin-configured bank-sync secrets](https://github.com/advisories/GHSA-3f62-qv96-4p78) | 2026-06-22 | security
+- [CVE-2026-46672 [MEDIUM] [reviewed] @actual-app/cli `--format csv` Output Vulnerable to CSV Formula Injection via Custom `escapeCsv` Helper](https://github.com/advisories/GHSA-7gh7-258j-4mpq) | 2026-06-22 | security
+- [CVE-2026-46611 [MEDIUM] [reviewed] Glances: XML-RPC Server Missing Host Header Validation Enables DNS Rebinding Attack](https://github.com/advisories/GHSA-w856-8p3r-p338) | 2026-06-22 | security
+- [CVE-2026-46608 [HIGH] [reviewed] Glances: XML-RPC Multi-Origin CORS Configuration Silently Falls Back to Wildcard (Incomplete Fix for CVE-2026-33533)](https://github.com/advisories/GHSA-87qc-fj39-wccr) | 2026-06-22 | security
+- [CVE-2026-46607 [HIGH] [reviewed] Glances has Insecure Pickle Deserialization in its Version Cache that Leads to Arbitrary Code Execution](https://github.com/advisories/GHSA-9837-48hr-q32j) | 2026-06-22 | security
+- [CVE-2026-46606 [HIGH] [reviewed] Glances is Vulnerable to Command Injection via KVM/QEMU VM Domain Names in glances/plugins/vms/engines/virsh.py](https://github.com/advisories/GHSA-v5r2-qh84-fjx5) | 2026-06-22 | security
+- [CVE-2026-46495 [CRITICAL] [reviewed] OpenDJ Pre-Auth RCE via Java Deserialization in JMX RMI](https://github.com/advisories/GHSA-43x2-g84q-fmqx) | 2026-06-22 | security
+- [CVE-2026-46488 [CRITICAL] [reviewed] motionEye: Authentication possible via password hash](https://github.com/advisories/GHSA-r3cw-c95m-wfh9) | 2026-06-22 | security
+- [CVE-2026-44795 [HIGH] [reviewed] Spinnaker has uon-safe yaml deserialization, allowing RCE when using specific types](https://github.com/advisories/GHSA-c8q4-9h32-2ww8) | 2026-06-22 | security
+- [CVE-2026-44793 [LOW] [reviewed] OpenAM SAML2 Cluster Cookie-Hash-Redirect Path has Pre-authentication Reflected XSS via `FSUtils.postToTarget`](https://github.com/advisories/GHSA-fhrq-3gmx-p879) | 2026-06-22 | security
+- [[HIGH 8.8] CVE-2026-34040](https://nvd.nist.gov/vuln/detail/CVE-2026-34040) | 2026-06-16 | security
+- [[HIGH 8.8] CVE-2026-46056](https://nvd.nist.gov/vuln/detail/CVE-2026-46056) | 2026-06-16 | security
+- [[HIGH 7.1] CVE-2026-46055](https://nvd.nist.gov/vuln/detail/CVE-2026-46055) | 2026-06-16 | security
+- [[HIGH 7.1] CVE-2026-46054](https://nvd.nist.gov/vuln/detail/CVE-2026-46054) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46053](https://nvd.nist.gov/vuln/detail/CVE-2026-46053) | 2026-06-16 | security
+- [[HIGH 7.5] CVE-2026-46052](https://nvd.nist.gov/vuln/detail/CVE-2026-46052) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46047](https://nvd.nist.gov/vuln/detail/CVE-2026-46047) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46045](https://nvd.nist.gov/vuln/detail/CVE-2026-46045) | 2026-06-16 | security
+- [[CRITICAL 9.1] CVE-2026-46043](https://nvd.nist.gov/vuln/detail/CVE-2026-46043) | 2026-06-16 | security
+- [[CRITICAL 9.8] CVE-2026-46039](https://nvd.nist.gov/vuln/detail/CVE-2026-46039) | 2026-06-16 | security
+- [[HIGH 8.2] CVE-2026-46037](https://nvd.nist.gov/vuln/detail/CVE-2026-46037) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46036](https://nvd.nist.gov/vuln/detail/CVE-2026-46036) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46015](https://nvd.nist.gov/vuln/detail/CVE-2026-46015) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46011](https://nvd.nist.gov/vuln/detail/CVE-2026-46011) | 2026-06-16 | security
+- [[HIGH 8.1] CVE-2026-46010](https://nvd.nist.gov/vuln/detail/CVE-2026-46010) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46006](https://nvd.nist.gov/vuln/detail/CVE-2026-46006) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46004](https://nvd.nist.gov/vuln/detail/CVE-2026-46004) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-46001](https://nvd.nist.gov/vuln/detail/CVE-2026-46001) | 2026-06-16 | security
+- [[HIGH 7.0] CVE-2026-46029](https://nvd.nist.gov/vuln/detail/CVE-2026-46029) | 2026-06-16 | security
+- [[HIGH 7.5] CVE-2026-46027](https://nvd.nist.gov/vuln/detail/CVE-2026-46027) | 2026-06-16 | security
+- [[HIGH 7.5] CVE-2026-46024](https://nvd.nist.gov/vuln/detail/CVE-2026-46024) | 2026-06-16 | security
+- [[HIGH 7.1] CVE-2026-46022](https://nvd.nist.gov/vuln/detail/CVE-2026-46022) | 2026-06-16 | security
+- [[HIGH 7.1] CVE-2026-46020](https://nvd.nist.gov/vuln/detail/CVE-2026-46020) | 2026-06-16 | security
+- [[HIGH 7.8] CVE-2026-50656](https://nvd.nist.gov/vuln/detail/CVE-2026-50656) | 2026-06-16 | security
+- [[HIGH 7.0] CVE-2026-47293](https://nvd.nist.gov/vuln/detail/CVE-2026-47293) | 2026-06-17 | security
+- [[CRITICAL 9.8] CVE-2026-47643](https://nvd.nist.gov/vuln/detail/CVE-2026-47643) | 2026-06-17 | security
+- [[HIGH 7.8] CVE-2026-44823](https://nvd.nist.gov/vuln/detail/CVE-2026-44823) | 2026-06-17 | security
+- [[HIGH 7.8] CVE-2026-44812](https://nvd.nist.gov/vuln/detail/CVE-2026-44812) | 2026-06-17 | security
+- [[HIGH 7.8] CVE-2026-44803](https://nvd.nist.gov/vuln/detail/CVE-2026-44803) | 2026-06-17 | security
+- [[HIGH 7.5] CVE-2026-42913](https://nvd.nist.gov/vuln/detail/CVE-2026-42913) | 2026-06-17 | security
+- [[HIGH 7.5] CVE-2026-42908](https://nvd.nist.gov/vuln/detail/CVE-2026-42908) | 2026-06-17 | security
+- [[HIGH 8.4] CVE-2026-41098](https://nvd.nist.gov/vuln/detail/CVE-2026-41098) | 2026-06-17 | security
+- [[HIGH 8.8] CVE-2026-40371](https://nvd.nist.gov/vuln/detail/CVE-2026-40371) | 2026-06-17 | security
+- [[HIGH 8.3] CVE-2026-12465](https://nvd.nist.gov/vuln/detail/CVE-2026-12465) | 2026-06-17 | security
+- [[HIGH 7.5] CVE-2026-12455](https://nvd.nist.gov/vuln/detail/CVE-2026-12455) | 2026-06-17 | security
+- [[HIGH 8.3] CVE-2026-12467](https://nvd.nist.gov/vuln/detail/CVE-2026-12467) | 2026-06-17 | security
+- [[HIGH 8.3] CVE-2026-12451](https://nvd.nist.gov/vuln/detail/CVE-2026-12451) | 2026-06-17 | security
+- [[HIGH 8.3] CVE-2026-12464](https://nvd.nist.gov/vuln/detail/CVE-2026-12464) | 2026-06-17 | security
+- [[HIGH 7.5] CVE-2026-12462](https://nvd.nist.gov/vuln/detail/CVE-2026-12462) | 2026-06-17 | security
+- [[CRITICAL 9.1] CVE-2026-32967](https://nvd.nist.gov/vuln/detail/CVE-2026-32967) | 2026-06-17 | security
+- [[CRITICAL 9.8] CVE-2026-32966](https://nvd.nist.gov/vuln/detail/CVE-2026-32966) | 2026-06-17 | security
+- [[HIGH 7.5] CVE-2026-47633](https://nvd.nist.gov/vuln/detail/CVE-2026-47633) | 2026-06-18 | security
+- [[HIGH 7.7] CVE-2026-32174](https://nvd.nist.gov/vuln/detail/CVE-2026-32174) | 2026-06-18 | security
+- [[CRITICAL 9.8] CVE-2026-54130](https://nvd.nist.gov/vuln/detail/CVE-2026-54130) | 2026-06-18 | security
+- [[CRITICAL 9.9] CVE-2026-47647](https://nvd.nist.gov/vuln/detail/CVE-2026-47647) | 2026-06-18 | security
+- [[HIGH 8.8] CVE-2026-32208](https://nvd.nist.gov/vuln/detail/CVE-2026-32208) | 2026-06-19 | security
+- [[CRITICAL 10.0] CVE-2026-45480](https://nvd.nist.gov/vuln/detail/CVE-2026-45480) | 2026-06-19 | security
+- [[CRITICAL 9.9] CVE-2026-48584](https://nvd.nist.gov/vuln/detail/CVE-2026-48584) | 2026-06-19 | security
+- [[CRITICAL 9.6] CVE-2026-48582](https://nvd.nist.gov/vuln/detail/CVE-2026-48582) | 2026-06-19 | security
+- [[HIGH 8.8] CVE-2026-47645](https://nvd.nist.gov/vuln/detail/CVE-2026-47645) | 2026-06-19 | security
+- [[HIGH] [reviewed] Anki's local HTTP server does not sufficiently validate requests](https://github.com/advisories/GHSA-869j-r97x-hx2g) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] SurrealDB: Denial of Service via deep operator chains](https://github.com/advisories/GHSA-jv2j-mqmw-xvv5) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] SurrealDB: Field-level SELECT permissions bypassed via graph and reference traversals](https://github.com/advisories/GHSA-hv6h-hc26-q48p) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] SurrealDB: Indexed ORDER BY leaks the value ordering of a SELECT-restricted field](https://github.com/advisories/GHSA-h4h3-3rfj-x6fq) | 2026-06-19 | security
+- [[HIGH] [reviewed] SurrealDB: Arbitrary file read via DEFINE ANALYZER mapper() filter](https://github.com/advisories/GHSA-cc8f-fcx3-gpjr) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] SurrealDB: SSRF via JWKS URL — Redirect Following in JWT Key Fetch](https://github.com/advisories/GHSA-h5rg-8p7f-47g2) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] pydantic-settings: NestedSecretsSettingsSource follows symlinks outside secrets_dir, enabling local file read and bypassing secrets_dir_max_size](https://github.com/advisories/GHSA-4xgf-cpjx-pc3j) | 2026-06-19 | security
+- [[HIGH] [reviewed] Lokka: Azure Resource Manager URL path validation issue](https://github.com/advisories/GHSA-g2gw-q38m-vjfc) | 2026-06-19 | security
+- [[HIGH] [reviewed] @jhb.software/payload-cloudinary-plugin: Arbitrary Cloudinary API Parameter Signing](https://github.com/advisories/GHSA-h5x8-xp6m-x6q4) | 2026-06-19 | security
+- [[HIGH] [reviewed] LangSmith SDK TracingMiddleware: Arbitrary server-side file read](https://github.com/advisories/GHSA-f4xh-w4cj-qxq8) | 2026-06-19 | security
+- [[HIGH] [reviewed] githubtoplanguages: Command Injection via Issue Title in Discord Notification Workflow](https://github.com/advisories/GHSA-c3xh-98xp-6qhf) | 2026-06-19 | security
+- [CVE-2026-11941 [MEDIUM] [reviewed] Cloudflare Quiche: Use-after-free in connection ID iterator FFI functions](https://github.com/advisories/GHSA-mh64-ph39-mrc9) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] Zeep: Server-Side Request Forgery (SSRF)](https://github.com/advisories/GHSA-4cc2-g9w2-fhf6) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] Anki: User scripts in iframes have access to the internal Anki API](https://github.com/advisories/GHSA-cw6h-ffmh-x6vh) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] ChatterBot: Symlink-Following Arbitrary Write via UbuntuCorpusTrainer](https://github.com/advisories/GHSA-wvrh-2f4m-924v) | 2026-06-19 | security
+- [[CRITICAL] [reviewed] OpenRemote Manager: removeAlarms cross-realm IDOR (bulk delete)](https://github.com/advisories/GHSA-h3m5-97jq-qjrf) | 2026-06-19 | security
+- [[HIGH] [reviewed] appium-mcp: Unescaped Locator Data XSS in MCP-UI Resource (createLocatorGeneratorUI)](https://github.com/advisories/GHSA-x975-rgx4-5fh4) | 2026-06-19 | security
+- [[HIGH] [reviewed] EverOS: Path traversal in EverOS /api/v1/memory/add via unvalidated sender_id](https://github.com/advisories/GHSA-c795-2g9c-j48m) | 2026-06-19 | security
+- [[HIGH] [reviewed] Uni-CLI: Legacy HTTP MCP transport accepted browser-originated localhost requests](https://github.com/advisories/GHSA-v3f4-w7r7-v3hm) | 2026-06-19 | security
+- [[HIGH] [reviewed] stigmem-node: decay sweep expires and counts facts across all tenants (cross-tenant BOLA)](https://github.com/advisories/GHSA-6gqw-jqv7-v88m) | 2026-06-19 | security
+- [[HIGH] [reviewed] stistigmem-node: quarantine review surface exposes and mutates other tenants' quarantined facts (cross-tenant BOLA)](https://github.com/advisories/GHSA-xhv3-q4xx-349r) | 2026-06-19 | security
+- [[HIGH] [reviewed] stigmem-node: RTBF tombstones are mis-attributed and suppress reads tenant-blind (cross-tenant BOLA)](https://github.com/advisories/GHSA-x26h-xmv8-gxf7) | 2026-06-19 | security
+- [[HIGH] [reviewed] MessagePack for Python: Out-of-bounds read / crash on Unpacker reuse after a caught error](https://github.com/advisories/GHSA-6v7p-g79w-8964) | 2026-06-19 | security
+- [[HIGH] [reviewed] Gogs: XSS in .ipynb files renderer due to outdated notebookjs](https://github.com/advisories/GHSA-6vxv-wg6j-5qwp) | 2026-06-19 | security
+- [[LOW] [reviewed] parse-server: LiveQuery discloses object data to a subscriber across an ACL read-access change](https://github.com/advisories/GHSA-97pr-9hgg-3p8r) | 2026-06-19 | security
+- [[HIGH] [reviewed]  SearXNG MCP Server: DNS-resolved Private Hostname SSRF in `web_url_read`](https://github.com/advisories/GHSA-mrvx-jmjw-vggc) | 2026-06-19 | security
+- [[HIGH] [reviewed]  SearXNG MCP Server: Unbounded Response Body Read Bypasses URL Size Limit in `web_url_read`](https://github.com/advisories/GHSA-xcqx-9jf5-w339) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] Network-AI: EnvironmentManager.restore() backup ID path traversal copies arbitrary directories into environment data](https://github.com/advisories/GHSA-48x2-6pr9-2jjf) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] Network-AI: EnvironmentManager.backup() follows symlinked directories and copies files outside the environment root into backups](https://github.com/advisories/GHSA-6x2m-p4xp-wg22) | 2026-06-19 | security
+- [[MEDIUM] [reviewed] Network-AI: ApprovalInbox HTTP server has no authentication — anyone can approve pending agent actions](https://github.com/advisories/GHSA-mxjx-28vx-xjjj) | 2026-06-19 | security
+- [CVE-2026-55590 [MEDIUM] [reviewed] CakePHP Authentication: Open redirect weakness via backslash bypass](https://github.com/advisories/GHSA-hhpq-7wg4-36jm) | 2026-06-17 | security
+- [CVE-2026-55518 [CRITICAL] [reviewed] Avo: Missing Authorization in Avo Association Attach Endpoint Allows Unauthorized Relationship Manipulation and Privilege Escalation](https://github.com/advisories/GHSA-8fq9-273g-6mrg) | 2026-06-17 | security
+- [CVE-2026-55517 [MEDIUM] [reviewed] Deno: Denial of service via non-ASCII bytes in WebSocket response headers](https://github.com/advisories/GHSA-x2qc-cmh9-f4hf) | 2026-06-17 | security
+- [CVE-2026-55471 [CRITICAL] [reviewed] HAPI FHIR: XXE in XsltUtilities.saxonTransform via unhardened Saxon TransformerFactory](https://github.com/advisories/GHSA-2f55-g35j-5jmf) | 2026-06-17 | security
+- [CVE-2026-55470 [HIGH] [reviewed] HAPI FHIR: Incomplete fix for CVE-2026-45367: DSTU2 FHIRPathEngine.matches() missing RegexTimeout protection allows ReDoS](https://github.com/advisories/GHSA-fxj4-p9xp-37v5) | 2026-06-17 | security
+- [CVE-2026-55450 [CRITICAL] [reviewed] Langflow: Unauthenticated file upload leads to DoS (space exhaustion) and information leak](https://github.com/advisories/GHSA-x223-p2gf-v735) | 2026-06-17 | security
+- [CVE-2026-55760 [HIGH] [reviewed] handlebars.java FileTemplateLoader Path Traversal](https://github.com/advisories/GHSA-r4gv-qr8j-p3pg) | 2026-06-17 | security
+- [CVE-2026-55409 [HIGH] [reviewed] Filament: Disabled RichEditor field state can be used for XSS](https://github.com/advisories/GHSA-m9cv-24rx-8mv7) | 2026-06-17 | security
+- [CVE-2026-55405 [HIGH] [reviewed] LangChain4j: SQL injection via metadata filters in langchain4j-mariadb and langchain4j-pgvector](https://github.com/advisories/GHSA-2mfg-cc43-9pcj) | 2026-06-17 | security
+- [CVE-2026-55636 [MEDIUM] [reviewed] Capsule: Incomplete fix of CVE-2026-30963: singular/plural typo leaves namespaces/finalize unprotected](https://github.com/advisories/GHSA-gwxr-7h77-7777) | 2026-06-17 | security
+- [CVE-2026-9595 [MEDIUM] [reviewed] webpack-dev-server vulnerable to HMR WebSocket interception via permissive user proxies](https://github.com/advisories/GHSA-mx8g-39q3-5c79) | 2026-06-17 | security
+- [CVE-2026-5079 [HIGH] [reviewed] Multer vulnerable to Denial of Service via deeply nested field names](https://github.com/advisories/GHSA-72gw-mp4g-v24j) | 2026-06-17 | security
+- [CVE-2026-5038 [MEDIUM] [reviewed] Multer vulnerable to Denial of Service via incomplete cleanup of aborted uploads](https://github.com/advisories/GHSA-3p4h-7m6x-2hcm) | 2026-06-17 | security
+- [CVE-2026-25779 [MEDIUM] [reviewed] Gitea: Open Redirect via redirect_to](https://github.com/advisories/GHSA-j5r2-4c8j-xc3m) | 2026-06-17 | security
+- [CVE-2026-28737 [HIGH] [reviewed] Gitea: Stored XSS via glTF `extensionsRequired` in Gitea 3D File Viewer](https://github.com/advisories/GHSA-9cpj-qc93-vw8v) | 2026-06-17 | security
+- [CVE-2026-24791 [HIGH] [reviewed] Gitea: Public-only tokens bypass private-resource restrictions on `/api/v1/user` self routes](https://github.com/advisories/GHSA-wrr5-99h5-gq57) | 2026-06-17 | security
+- [CVE-2026-22555 [HIGH] [reviewed] Gitea: API Fork Missing CanCreateOrgRepo Check Allows Org Secret Exfiltration](https://github.com/advisories/GHSA-fhx7-m96w-mv29) | 2026-06-17 | security
+- [CVE-2026-54324 [MEDIUM] [reviewed] Daytona: Cross-tenant data leak in notification WebSocket gateway via unverified organizationId join](https://github.com/advisories/GHSA-qwxf-2m7m-2m3x) | 2026-06-17 | security
+- [CVE-2026-54316 [MEDIUM] [reviewed] Claude Code: Out-of-Band Data Exfiltration via Pre-Approved HuggingFace Domain in WebFetch](https://github.com/advisories/GHSA-fg94-h982-f3mm) | 2026-06-17 | security
+- [CVE-2026-54022 [MEDIUM] [reviewed] Open WebUI: Any authenticated user can read other users' private notes via Socket.IO](https://github.com/advisories/GHSA-8788-j68r-3cgh) | 2026-06-17 | security
+- [CVE-2026-54021 [MEDIUM] [reviewed] Open WebUI: Authenticated users can target arbitrary configured Ollama backends via unguarded url_idx path parameter](https://github.com/advisories/GHSA-9rpj-v7hf-vv2w) | 2026-06-17 | security
+- [CVE-2026-54019 [MEDIUM] [reviewed] Open WebUI: RAG ACL Bypass in Milvus Multitenancy Mode](https://github.com/advisories/GHSA-p5cp-r7rg-qpxc) | 2026-06-17 | security
+- [CVE-2026-54018 [HIGH] [reviewed] Open WebUI: SSRF Protection Bypass in Playwright Web Loader via HTTP Redirects](https://github.com/advisories/GHSA-jrfp-m64g-pcwv) | 2026-06-17 | security
+- [CVE-2026-54017 [HIGH] [reviewed] Open WebUI: Path traversal / SSRF in terminal server proxy via encoded path traversal](https://github.com/advisories/GHSA-r2wg-2mcr-66rv) | 2026-06-17 | security
+- [CVE-2026-53840 [HIGH] [reviewed] OpenClaw: MCP Streamable HTTP redirects could forward configured custom headers to another origin](https://github.com/advisories/GHSA-rjxq-qqhf-8hwh) | 2026-06-17 | security
+- [CVE-2026-54016 [MEDIUM] [reviewed] Open WebUI BOLA: `search_knowledge_files` Allows Unauthorized Knowledge Base File Enumeration](https://github.com/advisories/GHSA-cx9v-4qj2-jrw6) | 2026-06-17 | security
+- [CVE-2026-54015 [MEDIUM] [reviewed] Open WebUI Prompt history IDOR: unbound history_id allows cross-prompt read and deletion](https://github.com/advisories/GHSA-4r4w-2wgp-w7cj) | 2026-06-17 | security
+- [CVE-2026-54014 [MEDIUM] [reviewed] Open WebUI: Sibling-Prefix Path Traversal via /cache/{path}](https://github.com/advisories/GHSA-j2c8-v969-8r5c) | 2026-06-17 | security
+- [CVE-2026-54013 [HIGH] [reviewed] Open WebUI: Stored XSS to Account Takeover via Model Profile Images](https://github.com/advisories/GHSA-v2qm-5wxj-qhj7) | 2026-06-17 | security
+- [CVE-2026-54012 [HIGH] [reviewed] Open WebUI: Forged model meta.knowledge allows cross-user file read and deletion](https://github.com/advisories/GHSA-vjqm-6gcc-62cr) | 2026-06-17 | security
+- [[LOW] [reviewed] Nuxt: Dev server discloses project absolute path and persistent workspace UUID via `/.well-known/appspecific/com.chrome.devtools.json`](https://github.com/advisories/GHSA-rq7w-g337-39qq) | 2026-06-15 | security
+- [CVE-2026-11417 [HIGH] [reviewed] aws-cdk-lib: OS Command Injection in NodejsFunction Bundling](https://github.com/advisories/GHSA-999r-qq7v-r334) | 2026-06-15 | security
+- [CVE-2026-50560 [MEDIUM] [reviewed] Netty susceptible to HTTP/2 Reset Attack with different on-the-wire signature](https://github.com/advisories/GHSA-563q-j3cm-6jxm) | 2026-06-15 | security
+- [CVE-2026-50020 [MEDIUM] [reviewed] Netty: HttpObjectDecoder skips arbitrary initial control characters when only initial CRLF characters are permitted](https://github.com/advisories/GHSA-hvcg-qmg6-jm4c) | 2026-06-15 | security
+- [CVE-2026-50011 [HIGH] [reviewed] Netty: Unbounded pre-allocation in RedisArrayAggregator from RESP array length](https://github.com/advisories/GHSA-5w86-c3rq-vjj7) | 2026-06-15 | security
+- [CVE-2026-50010 [HIGH] [reviewed] Netty: Wrapping plain trust manager silently disables hostname verification](https://github.com/advisories/GHSA-c653-97m9-rcg9) | 2026-06-15 | security
+- [CVE-2026-50009 [MEDIUM] [reviewed] Netty: QUIC stateless reset token material exposed through header-visible connection IDs](https://github.com/advisories/GHSA-cq4q-cv5g-r8q5) | 2026-06-15 | security
+- [CVE-2026-48748 [HIGH] [reviewed] Netty HTTP/3 QPACK Blocked Streams Memory Exhaustion](https://github.com/advisories/GHSA-4grm-h2qv-h6w6) | 2026-06-15 | security
+- [CVE-2026-48988 [MEDIUM] [reviewed] markdown-it: Quadratic complexity DoS in smartquotes rule via replaceAt string operations](https://github.com/advisories/GHSA-6v5v-wf23-fmfq) | 2026-06-15 | security
+- [CVE-2026-54283 [HIGH] [reviewed] Starlette: request.form() limits silently ignored for application/x-www-form-urlencoded enable DoS](https://github.com/advisories/GHSA-82w8-qh3p-5jfq) | 2026-06-15 | security
+- [CVE-2026-54285 [MEDIUM] [reviewed] OpenTelemetry Core: Unbounded memory allocation in W3C Baggage propagation](https://github.com/advisories/GHSA-8988-4f7v-96qf) | 2026-06-15 | security
+- [CVE-2026-54282 [LOW] [reviewed] Starlette: Unvalidated request path concatenated into authority poisons request.url.hostname](https://github.com/advisories/GHSA-jp82-jpqv-5vv3) | 2026-06-15 | security
+- [[MEDIUM] [reviewed] Tornado: CurlAsyncHTTPClient leaks per-request credentials on handle reuse](https://github.com/advisories/GHSA-pw6j-qg29-8w7f) | 2026-06-15 | security
+- [CVE-2026-54281 [HIGH] [reviewed] Nest: Middleware Bypass on Fastify via Trailing Slash](https://github.com/advisories/GHSA-6v32-fjc9-9qf6) | 2026-06-15 | security
+- [CVE-2026-53539 [HIGH] [reviewed] python-multipart: Quadratic-time querystring parsing with semicolon separators causes CPU denial of service](https://github.com/advisories/GHSA-5rvq-cxj2-64vf) | 2026-06-15 | security
+- [CVE-2026-53540 [LOW] [reviewed] python-multipart: Negative Content-Length in parse_form buffers the entire body in memory](https://github.com/advisories/GHSA-v9pg-7xvm-68hf) | 2026-06-15 | security
+- [CVE-2026-53538 [LOW] [reviewed] python-multipart: Semicolon treated as querystring field separator enables parameter smuggling](https://github.com/advisories/GHSA-6jv3-5f52-599m) | 2026-06-15 | security
+- [CVE-2026-53537 [LOW] [reviewed] python-multipart: Content-Disposition parameter smuggling via RFC 2231/5987 extended parameters](https://github.com/advisories/GHSA-vffw-93wf-4j4q) | 2026-06-15 | security
+- [CVE-2026-54257 [CRITICAL] [reviewed] Electron: Buffer performs incorrect byte length calculations resulting in heap buffer under/overflow](https://github.com/advisories/GHSA-q6m5-f73j-m9mc) | 2026-06-15 | security
+- [CVE-2026-49853 [HIGH] [reviewed] Tornado: Authorization header forwarded across cross-origin redirects in SimpleAsyncHTTPClient](https://github.com/advisories/GHSA-3x9g-8vmp-wqvf) | 2026-06-15 | security
+- [CVE-2026-49855 [HIGH] [reviewed] tornado AsyncHTTPClient accumulates decompressed chunks without size limit (gzip bomb)](https://github.com/advisories/GHSA-mgf9-4vpg-hj56) | 2026-06-15 | security
+- [CVE-2026-48818 [HIGH] [reviewed] Starlette: SSRF and NTLM credential theft via UNC paths in StaticFiles on Windows](https://github.com/advisories/GHSA-wqp7-x3pw-xc5r) | 2026-06-15 | security
+- [CVE-2026-48817 [MEDIUM] [reviewed] Starlette: Arbitrary HTTP method dispatched to `HTTPEndpoint` attributes via `getattr`](https://github.com/advisories/GHSA-x746-7m8f-x49c) | 2026-06-15 | security
+- [CVE-2026-48125 [MEDIUM] [reviewed] UAParser.js: Unbounded `Sec-CH-UA-Model` parsing can trigger ReDoS in `withClientHints()`](https://github.com/advisories/GHSA-9h5v-pfqq-x599) | 2026-06-15 | security
+- [CVE-2026-54271 [HIGH] [reviewed] protobufjs-cli: Code injection in pbjs static output from crafted JSON descriptor names](https://github.com/advisories/GHSA-pr59-h9ph-3fr8) | 2026-06-15 | security
+- [CVE-2026-54270 [MEDIUM] [reviewed] protobufjs: Memory amplification from preserved unknown fields in binary decode](https://github.com/advisories/GHSA-94rc-8x27-4472) | 2026-06-15 | security
+- [[LOW] [reviewed] DOMPurify: Trusted Types policy survives `clearConfig()` and can poison later `RETURN_TRUSTED_TYPE` output](https://github.com/advisories/GHSA-vxr8-fq34-vvx9) | 2026-06-15 | security
+- [[HIGH] [reviewed] Vulnerable OpenSSL included in cryptography wheels](https://github.com/advisories/GHSA-537c-gmf6-5ccf) | 2026-06-15 | security
+- [CVE-2026-45591 [HIGH] [reviewed] Microsoft Security Advisory CVE-2026-45591 – ASP.NET Core Denial of Service Vulnerability](https://github.com/advisories/GHSA-f8h2-vmm9-qhj6) | 2026-06-15 | security
+- [CVE-2026-54274 [MEDIUM] [reviewed] aiohttp: Incomplete websocket frame payloads bypass memory limits](https://github.com/advisories/GHSA-xcgm-r5h9-7989) | 2026-06-15 | security
 - [Nottingham University data breach affects over 450,000 students](https://www.bleepingcomputer.com/news/security/nottingham-university-data-breach-affects-over-450-000-students/) | 2026-06-11 | security
 - [Max severity Ivanti Sentry vulnerability now exploited in attacks](https://www.bleepingcomputer.com/news/security/max-severity-ivanti-sentry-vulnerability-now-exploited-in-attacks/) | 2026-06-11 | security, cve, critical
 - [Microsoft Defender RoguePlanet Zero-Day Grants SYSTEM Access on Updated Windows](https://thehackernews.com/2026/06/microsoft-defender-rogueplanet-zero-day.html) | 2026-06-11 | security, cve, critical

@@ -1,23 +1,24 @@
-import { getDb } from "@/src/db/client";
+import { supabase } from "@/src/db/supabase-client";
 import { getItemsToday, getItemsThisWeek, getLastGlobalIngestion, getIngestionStatus } from "@/src/lib/analytics";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const db = getDb();
+  const { count: totalItems } = await supabase
+    .from("feed_items")
+    .select("*", { count: "exact", head: true })
+    .neq("source", "manual");
 
-  const totalItems = (
-    db.prepare("SELECT COUNT(*) as count FROM feed_items WHERE source != 'manual'").get() as { count: number }
-  ).count;
-
-  const lastIngest = getLastGlobalIngestion();
-  const itemsToday = getItemsToday();
-  const itemsThisWeek = getItemsThisWeek();
-  const statuses = getIngestionStatus();
+  const [lastIngest, itemsToday, itemsThisWeek, statuses] = await Promise.all([
+    getLastGlobalIngestion(),
+    getItemsToday(),
+    getItemsThisWeek(),
+    getIngestionStatus(),
+  ]);
   const errors = statuses.filter((s) => s.status === "error").length;
 
   return Response.json({
-    totalItems,
+    totalItems: totalItems ?? 0,
     lastIngest,
     itemsToday,
     itemsThisWeek,

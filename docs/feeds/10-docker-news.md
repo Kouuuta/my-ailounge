@@ -4,6 +4,7 @@
 
 ## June 2026
 
+- [What is an SBOM (and Why Can&#8217;t You Ship Without One)?](https://www.docker.com/blog/what-is-an-sbom/) | 2026-06-23 | docker
 - [Coding Agent Horror Stories: The 13-Hour AWS Outage](https://www.docker.com/blog/coding-agent-horror-stories-the-13-hour-aws-outage/) | 2026-06-18 | docker
 - [Coding Agent Horror Stories: The rm -rf ~/ Incident](https://www.docker.com/blog/coding-agent-horror-stories-the-rm-rf-incident/) | 2026-06-01 | docker
 - [What is Software Supply Chain Security?](https://www.docker.com/blog/what-is-software-supply-chain-security/) | 2026-06-03 | docker

@@ -4,6 +4,10 @@
 
 ## June 2026
 
+- [WooCommerce 10.9.1 Release Notes](https://developer.woocommerce.com/2026/06/24/woocommerce-10-9-1/) | 2026-06-24 | wordpress
+- [PayPal Standard is Sunsetting: What WooCommerce merchants need to know](https://developer.woocommerce.com/2026/06/24/sunsetting-paypal-standard/) | 2026-06-24 | wordpress
+- [WooCommerce 10.9.0 Release Notes](https://developer.woocommerce.com/2026/06/23/woocommerce-10-9/) | 2026-06-23 | wordpress
+- [Browse the New Mercantile Swag Store](https://wordpress.org/news/2026/06/open-web-merch/) | 2026-06-22 | wordpress
 - [Expanding Abilities across WooCommerce Extensions](https://developer.woocommerce.com/2026/06/01/expanding-abilities-across-woocommerce-extensions/) | 2026-06-01 | wordpress
 - [Woo is at WordCamp Europe 2026](https://developer.woocommerce.com/2026/06/01/wordcamp-eu-2026/) | 2026-06-01 | wordpress
 - [The product editor beta is being retired in WooCommerce 11.0](https://developer.woocommerce.com/2026/06/02/product-editor-beta-retiring/) | 2026-06-02 | wordpress

@@ -1,23 +1,20 @@
 import { migrate } from "../db/schema";
-import { getDb, closeDb } from "../db/client";
+import { supabase, closeDb } from "../db/client";
 import { ingestHackerNews } from "./hacker-news/index";
 import { ingestGithubTrending } from "./github-trending/index";
 import { ingestRss } from "./rss/index";
 import { ingestRepoRadar } from "./repo-radar/index";
 
-function setKv(key: string, value: string): void {
-  const db = getDb();
-  db.prepare(
-    "INSERT OR REPLACE INTO kv_store (key, value) VALUES (?, ?)",
-  ).run(key, value);
+async function setKv(key: string, value: string): Promise<void> {
+  await supabase.from("kv_store").upsert({ key, value }, { onConflict: "key" });
 }
 
-function countBySource(source: string): number {
-  const db = getDb();
-  const row = db
-    .prepare("SELECT COUNT(*) as count FROM feed_items WHERE source = ?")
-    .get(source) as { count: number };
-  return row.count;
+async function countBySource(source: string): Promise<number> {
+  const { count } = await supabase
+    .from("feed_items")
+    .select("*", { count: "exact", head: true })
+    .eq("source", source);
+  return count ?? 0;
 }
 
 async function runTracked(
@@ -25,24 +22,24 @@ async function runTracked(
   source: string,
   fn: () => Promise<void>,
 ): Promise<{ ok: boolean; inserted: number; elapsed: number }> {
-  const before = countBySource(source);
+  const before = await countBySource(source);
   const start = Date.now();
   try {
     await fn();
-    const inserted = countBySource(source) - before;
+    const inserted = (await countBySource(source)) - before;
     const elapsed = Date.now() - start;
-    setKv(`ingest:last_run:${label}`, new Date().toISOString());
-    setKv(`ingest:status:${label}`, "ok");
-    setKv(`ingest:count:${label}`, String(inserted));
-    setKv(`ingest:elapsed_ms:${label}`, String(elapsed));
+    await setKv(`ingest:last_run:${label}`, new Date().toISOString());
+    await setKv(`ingest:status:${label}`, "ok");
+    await setKv(`ingest:count:${label}`, String(inserted));
+    await setKv(`ingest:elapsed_ms:${label}`, String(elapsed));
     console.log(`  ⏱  ${label} took ${elapsed}ms, inserted ${inserted} new items`);
     return { ok: true, inserted, elapsed };
   } catch (err) {
     const elapsed = Date.now() - start;
-    setKv(`ingest:last_run:${label}`, new Date().toISOString());
-    setKv(`ingest:status:${label}`, "error");
-    setKv(`ingest:count:${label}`, "0");
-    setKv(`ingest:elapsed_ms:${label}`, "0");
+    await setKv(`ingest:last_run:${label}`, new Date().toISOString());
+    await setKv(`ingest:status:${label}`, "error");
+    await setKv(`ingest:count:${label}`, "0");
+    await setKv(`ingest:elapsed_ms:${label}`, "0");
     console.error(`  ❌ ${label} failed:`, err);
     return { ok: false, inserted: 0, elapsed };
   }
@@ -68,8 +65,8 @@ export async function runAll(opts?: { closeDb?: boolean }): Promise<IngestResult
 
   const allOk = Object.values(results).every((r) => r.ok);
 
-  setKv("ingest:last_run:all", new Date().toISOString());
-  setKv("ingest:status:all", allOk ? "ok" : "degraded");
+  await setKv("ingest:last_run:all", new Date().toISOString());
+  await setKv("ingest:status:all", allOk ? "ok" : "degraded");
 
   console.log("=".repeat(60));
 

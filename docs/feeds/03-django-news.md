@@ -5,6 +5,10 @@
 
 ## June 2026
 
+- [Django 6.1 beta 1 released](https://www.djangoproject.com/weblog/2026/jun/24/django-61-beta-1-released/) | 2026-06-24 | django
+- [Python 3.15.0 beta 3 is here!](https://blog.python.org/2026/06/python-3150-beta-3/) | 2026-06-23 | django
+- [Mitigated API authentication bypass for python.org download metadata](https://blog.python.org/2026/06/mitigated-api-bypass-for-download-metadata-python-dot-org/) | 2026-06-23 | django
+- [Announcing the Search for a DSF Executive Director](https://www.djangoproject.com/weblog/2026/jun/17/announcing-the-search-for-a-dsf-executive-director/) | 2026-06-17 | django
 - [Django security releases issued: 6.0.6 and 5.2.15](https://www.djangoproject.com/weblog/2026/jun/03/security-releases/) | 2026-06-03 | django
 - [DSF 2026 Fundraising Goals](https://www.djangoproject.com/weblog/2026/jun/10/dsf-2026-fundraising-goals/) | 2026-06-10 | django
 - [Python 3.14.6 and 3.13.14 are now available!](https://blog.python.org/2026/06/python-3146-31314/) | 2026-06-10 | django

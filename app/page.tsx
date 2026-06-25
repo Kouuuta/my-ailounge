@@ -1,4 +1,4 @@
-import { getDb } from "@/src/db/client";
+import { supabase } from "@/src/db/supabase-client";
 import {
   getItemsBySource,
   getItemsByCategory,
@@ -68,99 +68,61 @@ function timeAgo(dateStr: string): string {
 
 export const dynamic = "force-dynamic";
 
-export default function HomePage() {
-  const db = getDb();
+export default async function HomePage() {
+  const [
+    { data: aiData },
+    { data: frameworkData },
+    { data: trendingData },
+    { data: securityData },
+    { data: recommendedData },
+    { data: featuredData },
+    { count: totalCount },
+    { count: unreadCount },
+    { data: featuredPromptData },
+  ] = await Promise.all([
+    supabase.from("feed_items").select("*").eq("category", "ai").neq("source", "manual").order("score", { ascending: false }).order("published_at", { ascending: false }).limit(5),
+    supabase.from("feed_items").select("*").in("category", ["nextjs", "django"]).neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(5),
+    supabase.from("feed_items").select("*").eq("source", "github_trending").order("fetched_at", { ascending: false }).limit(5),
+    supabase.from("feed_items").select("*").or("category.eq.security,tags.ilike.%cve%").neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(5),
+    supabase.from("feed_items").select("id, title, url, summary, tags").eq("is_read", 0).neq("source", "manual").or("tags.ilike.%ai%,tags.ilike.%tool%").order("score", { ascending: false }).order("fetched_at", { ascending: false }).limit(1).maybeSingle(),
+    supabase.from("feed_items").select("*").eq("is_pinned", 1).neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(4),
+    supabase.from("feed_items").select("*", { count: "exact", head: true }).neq("source", "manual"),
+    supabase.from("feed_items").select("*", { count: "exact", head: true }).eq("is_read", 0).neq("source", "manual"),
+    supabase.from("prompts").select("*").eq("is_featured", 1).eq("source", "curated").order("id").limit(1).maybeSingle(),
+  ]);
 
-  const toItems = (rows: unknown): FeedItem[] => rows as FeedItem[];
-
-  const aiItems = toItems(
-    db
-      .prepare(
-        "SELECT * FROM feed_items WHERE category = 'ai' AND source != 'manual' ORDER BY score DESC, published_at DESC LIMIT 5",
-      )
-      .all(),
-  );
-
-  const frameworkItems = toItems(
-    db
-      .prepare(
-        "SELECT * FROM feed_items WHERE category IN ('nextjs', 'django') AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
-      )
-      .all(),
-  );
-
-  const trendingItems = toItems(
-    db
-      .prepare(
-        "SELECT * FROM feed_items WHERE source = 'github_trending' ORDER BY fetched_at DESC LIMIT 5",
-      )
-      .all(),
-  );
-
-  const securityItems = toItems(
-    db
-      .prepare(
-        "SELECT * FROM feed_items WHERE (category = 'security' OR tags LIKE '%cve%') AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 5",
-      )
-      .all(),
-  );
-
-  const recommendedItem =
-    (db
-      .prepare(
-        "SELECT id, title, url, summary, tags FROM feed_items WHERE is_read = 0 AND source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1",
-      )
-      .get() as FeedItem | undefined) ?? null;
-
-  const featuredItems = toItems(
-    db
-      .prepare(
-        "SELECT * FROM feed_items WHERE is_pinned = 1 AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 4",
-      )
-      .all(),
-  );
-
-  const totalItems = (
-    db
-      .prepare(
-        "SELECT COUNT(*) as count FROM feed_items WHERE source != 'manual'",
-      )
-      .get() as {
-      count: number;
-    }
-  ).count;
-
-  const unreadItems = (
-    db
-      .prepare(
-        "SELECT COUNT(*) as count FROM feed_items WHERE is_read = 0 AND source != 'manual'",
-      )
-      .get() as { count: number }
-  ).count;
+  const aiItems = (aiData ?? []) as FeedItem[];
+  const frameworkItems = (frameworkData ?? []) as FeedItem[];
+  const trendingItems = (trendingData ?? []) as FeedItem[];
+  const securityItems = (securityData ?? []) as FeedItem[];
+  const recommendedItem = (recommendedData as FeedItem | null) ?? null;
+  const featuredItems = (featuredData ?? []) as FeedItem[];
+  const totalItems = totalCount ?? 0;
+  const unreadItems = unreadCount ?? 0;
+  const featuredPrompt = (featuredPromptData as PromptItem | null) ?? null;
 
   const taskIndex = Math.floor(Date.now() / 86400000);
   const todayTask = INTERN_TASKS[taskIndex % INTERN_TASKS.length];
   const tomorrowTask = INTERN_TASKS[(taskIndex + 1) % INTERN_TASKS.length];
 
-  const itemsToday = getItemsToday();
-  const itemsThisWeek = getItemsThisWeek();
-  const lastIngestion = getLastGlobalIngestion();
+  const [itemsToday, itemsThisWeek, lastIngestion] = await Promise.all([
+    getItemsToday(),
+    getItemsThisWeek(),
+    getLastGlobalIngestion(),
+  ]);
 
-  const sources: BreakdownItem[] = getItemsBySource().map((s) => ({
+  const [sourcesData, categoriesData] = await Promise.all([
+    getItemsBySource(),
+    getItemsByCategory(),
+  ]);
+  const sources: BreakdownItem[] = sourcesData.map((s) => ({
     name: s.source,
     count: s.count,
   }));
-  const categories: BreakdownItem[] = getItemsByCategory().map((c) => ({
+  const categories: BreakdownItem[] = categoriesData.map((c) => ({
     name: c.category,
     count: c.count,
   }));
-
-  const featuredPrompt =
-    (db
-      .prepare(
-        "SELECT * FROM prompts WHERE is_featured = 1 AND source = 'curated' ORDER BY id LIMIT 1",
-      )
-      .get() as PromptItem | undefined) ?? null;
 
   return (
     <div className="min-h-screen">

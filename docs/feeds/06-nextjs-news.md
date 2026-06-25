@@ -5,6 +5,37 @@
 
 ## June 2026
 
+- [Workflow SDK now compresses run and step payloads](https://vercel.com/changelog/workflow-sdk-now-compresses-run-and-step-payloads) | 2026-06-22 | nextjs
+- [Chat SDK adds Linq support](https://vercel.com/changelog/chat-sdk-adds-linq-support) | 2026-06-22 | nextjs
+- [Chat SDK adds Sendblue support](https://vercel.com/changelog/chat-sdk-adds-sendblue-support) | 2026-06-22 | nextjs
+- [Chat SDK adds Novu support](https://vercel.com/changelog/chat-sdk-adds-novu-support) | 2026-06-22 | nextjs
+- [Chat SDK adds Kapso support](https://vercel.com/changelog/chat-sdk-adds-kapso-support) | 2026-06-22 | nextjs
+- [GLM 5.2 Fast via Wafer now available on AI Gateway](https://vercel.com/changelog/glm-5-2-fast-via-wafer-now-available-on-ai-gateway) | 2026-06-24 | nextjs
+- [Redesigned trace viewer for Vercel Workflows](https://vercel.com/changelog/redesigned-trace-viewer-for-vercel-workflows) | 2026-06-23 | nextjs
+- [Custom OIDC Token Audiences](https://vercel.com/changelog/custom-oidc-token-audiences) | 2026-06-23 | nextjs
+- [Deploy Node servers with zero configuration](https://vercel.com/changelog/deploy-node-servers-with-zero-configuration) | 2026-06-23 | nextjs
+- [WebSocket support is now in Public Beta](https://vercel.com/changelog/websocket-support-is-now-in-public-beta) | 2026-06-22 | nextjs
+- [Increased limit for projects per Git repo](https://vercel.com/changelog/increased-limit-for-projects-per-git-repo) | 2026-06-22 | nextjs
+- [Vercel CLI now supports signing blob URLs](https://vercel.com/changelog/vercel-cli-now-supports-signing-blob-urls) | 2026-06-22 | nextjs
+- [Vercel Flags: Platform-native feature flags](https://vercel.com/blog/vercel-flags-platform-native-feature-flags) | 2026-06-22 | nextjs
+- [Deploy from Claude Design to Vercel](https://vercel.com/changelog/claude-design-and-vercel) | 2026-06-23 | nextjs
+- [Sakana Fugu Ultra now available on AI Gateway](https://vercel.com/changelog/sakana-fugu-ultra-now-available-on-ai-gateway) | 2026-06-22 | nextjs
+- [How Fern runs multi-tenant docs for Webflow and ElevenLabs on Vercel](https://vercel.com/blog/how-fern-runs-multi-tenant-docs-for-webflow-and-elevenlabs-on-vercel) | 2026-06-09 | nextjs
+- [How Code and Theory cut time-to-prototype 75% with v0](https://vercel.com/blog/how-code-and-theory-cut-time-to-prototype-75-with-v0) | 2026-06-09 | nextjs
+- [How the Weather Company serves real-time forecasts to 350 million daily active users on Vercel](https://vercel.com/blog/how-the-weather-company-serves-real-time-forecasts-to-350-million-daily-active-users-on-vercel) | 2026-06-09 | nextjs
+- [Workflow SDK now supports TanStack Start](https://vercel.com/changelog/workflow-sdk-now-supports-tanstack-start) | 2026-06-16 | nextjs
+- [Workflow SDK now supports inflight cancellation](https://vercel.com/changelog/workflow-sdk-now-supports-inflight-cancellation) | 2026-06-16 | nextjs
+- [GLM 5.2 now available on AI Gateway](https://vercel.com/changelog/glm-5-2-now-available-on-ai-gateway) | 2026-06-16 | nextjs
+- [Vercel Sandbox can now run for up to 24 hours](https://vercel.com/changelog/vercel-sandbox-can-now-run-for-up-to-24-hours) | 2026-06-16 | nextjs
+- [Vercel for Enterprise Apps and Agents](https://vercel.com/blog/vercel-for-enterprise-apps-and-agents) | 2026-06-16 | nextjs
+- [Introducing eve, an open-source agent framework](https://vercel.com/changelog/introducing-eve-an-open-source-agent-framework) | 2026-06-17 | nextjs
+- [Vercel Connect: Secure access to external services for your agents](https://vercel.com/changelog/vercel-connect-secure-access-to-external-services-for-your-agents) | 2026-06-17 | nextjs
+- [Vercel Passport is now in Public Beta](https://vercel.com/changelog/vercel-passport-is-now-in-public-beta) | 2026-06-17 | nextjs
+- [CLI deployment limits removed](https://vercel.com/changelog/cli-deployment-limits-removed) | 2026-06-17 | nextjs
+- [Introducing eve](https://vercel.com/blog/introducing-eve) | 2026-06-17 | nextjs
+- [Introducing Vercel Connect](https://vercel.com/blog/introducing-vercel-connect) | 2026-06-17 | nextjs
+- [The Agent Stack](https://vercel.com/blog/agent-stack) | 2026-06-17 | nextjs
+- [Vercel Ship 2026 recap](https://vercel.com/blog/vercel-ship-2026-recap) | 2026-06-17 | nextjs
 - [Auth0 joins the Vercel Marketplace](https://vercel.com/changelog/auth0-joins-the-vercel-marketplace) | 2026-06-15 | nextjs
 - [Vercel Functions can now run up to 30 minutes](https://vercel.com/changelog/vercel-functions-can-now-run-up-to-30-minutes) | 2026-06-15 | nextjs
 - [Increased Blob store limit for Hobby users](https://vercel.com/changelog/increased-blob-store-limit-for-hobby-users) | 2026-06-15 | nextjs
@@ -235,6 +266,7 @@
 
 ## February 2026
 
+- [How Ramp kept 100% uptime through 100x traffic surges on Vercel](https://vercel.com/blog/how-ramp-kept-100-uptime-through-100x-traffic-surges-on-vercel) | 2026-02-17 | nextjs
 - [Gamma builds design-first agents with Vercel](https://vercel.com/blog/gamma-builds-design-first-agents-with-vercel) | 2026-02-28 | nextjs
 - [How Avalara turns pipe dreams into patent-pending with v0](https://vercel.com/blog/How-avalara-turns-pipedreams-into-patent-pending-with-v0) | 2026-02-28 | nextjs
 - [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta) | 2026-02-27 | nextjs

@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/src/db/client";
+import { supabase } from "@/src/db/supabase-client";
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const db = getDb();
 
-  const rows = db
-    .prepare("SELECT * FROM log_patterns WHERE analysis_id = ? ORDER BY count DESC")
-    .all(id);
+  const { data: rows } = await supabase
+    .from("log_patterns")
+    .select("*")
+    .eq("analysis_id", Number(id))
+    .order("count", { ascending: false });
 
-  return NextResponse.json({ patterns: rows });
+  return NextResponse.json({ patterns: rows ?? [] });
 }
