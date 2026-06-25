@@ -363,8 +363,8 @@ function LogsContent() {
                       className="w-full rounded-lg border px-3 py-2 text-left transition-colors hover:border-accent-vibrant/30"
                       onClick={() => {
                         const params = new URLSearchParams(searchParams.toString());
-                        params.set("pattern", p.pattern_key);
-                        router.push(`/logs?id=${analysisId}&${params.toString()}`);
+                        params.set("pattern", String(p.id));
+                        router.push(`/logs?${params.toString()}`);
                       }}
                     >
                       <div className="flex items-start justify-between gap-2">

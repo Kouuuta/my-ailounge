@@ -7,16 +7,31 @@ function patternToLike(pid: string): string {
   return pid.replace(/[%_]/g, "\\$&").replace(/\{var\}/g, "%");
 }
 
-function queryPatternRows(
+function resolvePatternKey(
   db: ReturnType<typeof getDb>,
   analysisId: number,
   pid: string,
+): string {
+  const num = parseInt(pid, 10);
+  if (!isNaN(num)) {
+    const row = db
+      .prepare("SELECT pattern_key FROM log_patterns WHERE id = ? AND analysis_id = ?")
+      .get(num, analysisId) as { pattern_key: string } | undefined;
+    if (row && row.pattern_key) return row.pattern_key;
+  }
+  return pid;
+}
+
+function queryPatternRows(
+  db: ReturnType<typeof getDb>,
+  analysisId: number,
+  patternKey: string,
 ) {
   const byKey = db
     .prepare(
       "SELECT id, method, action, content, error_type, error_code, raw_message, timestamp, is_error FROM log_errors WHERE analysis_id = ? AND pattern_key = ? ORDER BY timestamp",
     )
-    .all(analysisId, pid) as Array<{
+    .all(analysisId, patternKey) as Array<{
     id: number;
     method: string;
     action: string;
@@ -29,7 +44,15 @@ function queryPatternRows(
   }>;
   if (byKey.length > 0) return byKey;
 
-  const like = patternToLike(pid);
+  const prefix = patternToLike(patternKey.substring(0, 400)) + "%";
+  const byPrefix = db
+    .prepare(
+      "SELECT id, method, action, content, error_type, error_code, raw_message, timestamp, is_error FROM log_errors WHERE analysis_id = ? AND pattern_key LIKE ? ESCAPE '\\' ORDER BY timestamp",
+    )
+    .all(analysisId, prefix) as typeof byKey;
+  if (byPrefix.length > 0) return byPrefix;
+
+  const like = patternToLike(patternKey);
   return db
     .prepare(
       "SELECT id, method, action, content, error_type, error_code, raw_message, timestamp, is_error FROM log_errors WHERE analysis_id = ? AND error_type LIKE ? ESCAPE '\\' ORDER BY timestamp",
@@ -57,7 +80,8 @@ export async function GET(
     return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
   }
 
-  const rows = queryPatternRows(db, Number(id), pid);
+  const patternKey = resolvePatternKey(db, Number(id), pid);
+  const rows = queryPatternRows(db, Number(id), patternKey);
   if (rows.length === 0) {
     return NextResponse.json({ error: "Pattern not found" }, { status: 404 });
   }
@@ -83,18 +107,11 @@ export async function GET(
   timeline.sort((a, b) => a.date.localeCompare(b.date));
 
   return NextResponse.json({
-    pattern_key: pid,
-    description: describePattern(pid),
+    pattern_key: patternKey,
+    description: describePattern(patternKey),
     total: rows.length,
     errors_only: rows.filter((r) => r.is_error).length,
     timeline,
     methods,
-    sample_error: rows.find((r) => r.is_error)
-      ? {
-          id: rows.find((r) => r.is_error)!.id,
-          raw_message: rows.find((r) => r.is_error)!.raw_message,
-          timestamp: rows.find((r) => r.is_error)!.timestamp,
-        }
-      : null,
   });
 }

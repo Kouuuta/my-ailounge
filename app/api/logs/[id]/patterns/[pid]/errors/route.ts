@@ -7,17 +7,40 @@ function patternToLike(pid: string): string {
   return pid.replace(/[%_]/g, "\\$&").replace(/\{var\}/g, "%");
 }
 
-function countMatchingRows(
+function resolvePatternKey(
   db: ReturnType<typeof getDb>,
   analysisId: number,
   pid: string,
+): string | null {
+  const num = parseInt(pid, 10);
+  if (!isNaN(num)) {
+    const row = db
+      .prepare("SELECT pattern_key FROM log_patterns WHERE id = ? AND analysis_id = ?")
+      .get(num, analysisId) as { pattern_key: string } | undefined;
+    if (row) return row.pattern_key;
+  }
+  return pid;
+}
+
+function countMatchingRows(
+  db: ReturnType<typeof getDb>,
+  analysisId: number,
+  patternKey: string,
 ): number {
   const byKey = db
     .prepare("SELECT COUNT(*) AS cnt FROM log_errors WHERE analysis_id = ? AND pattern_key = ?")
-    .get(analysisId, pid) as { cnt: number };
+    .get(analysisId, patternKey) as { cnt: number };
   if (byKey.cnt > 0) return byKey.cnt;
 
-  const like = patternToLike(pid);
+  const prefix = patternToLike(patternKey.substring(0, 400)) + "%";
+  const byPrefix = db
+    .prepare(
+      "SELECT COUNT(*) AS cnt FROM log_errors WHERE analysis_id = ? AND pattern_key LIKE ? ESCAPE '\\'",
+    )
+    .get(analysisId, prefix) as { cnt: number };
+  if (byPrefix.cnt > 0) return byPrefix.cnt;
+
+  const like = patternToLike(patternKey);
   const byLike = db
     .prepare(
       "SELECT COUNT(*) AS cnt FROM log_errors WHERE analysis_id = ? AND error_type LIKE ? ESCAPE '\\'",
@@ -29,7 +52,7 @@ function countMatchingRows(
 function queryErrorRows(
   db: ReturnType<typeof getDb>,
   analysisId: number,
-  pid: string,
+  patternKey: string,
   limit: number,
   offset: number,
 ) {
@@ -38,7 +61,7 @@ function queryErrorRows(
 
   const byKey = db
     .prepare(sql.replace("%s", "pattern_key = ?"))
-    .all(analysisId, pid, limit, offset) as Array<{
+    .all(analysisId, patternKey, limit, offset) as Array<{
     id: number;
     method: string;
     action: string;
@@ -51,7 +74,13 @@ function queryErrorRows(
   }>;
   if (byKey.length > 0) return byKey;
 
-  const like = patternToLike(pid);
+  const prefix = patternToLike(patternKey.substring(0, 400)) + "%";
+  const byPrefix = db
+    .prepare(sql.replace("%s", "pattern_key LIKE ? ESCAPE '\\'"))
+    .all(analysisId, prefix, limit, offset) as typeof byKey;
+  if (byPrefix.length > 0) return byPrefix;
+
+  const like = patternToLike(patternKey);
   return db
     .prepare(sql.replace("%s", "error_type LIKE ? ESCAPE '\\'"))
     .all(analysisId, like, limit, offset) as typeof byKey;
@@ -76,12 +105,13 @@ export async function GET(
     return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
   }
 
-  const total = countMatchingRows(db, Number(id), pid);
+  const patternKey = resolvePatternKey(db, Number(id), pid) ?? pid;
+  const total = countMatchingRows(db, Number(id), patternKey);
   if (total === 0) {
     return NextResponse.json({ error: "Pattern not found" }, { status: 404 });
   }
 
-  const rows = queryErrorRows(db, Number(id), pid, limit, offset);
+  const rows = queryErrorRows(db, Number(id), patternKey, limit, offset);
 
   return NextResponse.json({
     rows,

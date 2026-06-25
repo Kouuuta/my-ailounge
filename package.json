@@ -11,6 +11,7 @@
     "ingest:trending": "npx tsx src/ingesters/github-trending/index.ts",
     "ingest:rss": "npx tsx src/ingesters/rss/index.ts",
     "ingest:manual": "npx tsx src/ingesters/manual-feeds/index.ts",
+    "ingest:prompts": "npx tsx src/ingesters/prompts/index.ts",
     "db:migrate": "npx tsx src/db/migrate.ts"
   },
   "devDependencies": {
