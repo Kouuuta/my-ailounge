@@ -9,7 +9,7 @@ if (nullRows.length === 0) {
   process.exit(0);
 }
 
-console.log(`Backfilling ${nullRows.length} rows...`);
+  console.log(`Backfilling ${nullRows.length} rows...`);
 
 const update = db.prepare("UPDATE log_errors SET pattern_key = ? WHERE id = ?");
 let updated = 0;
