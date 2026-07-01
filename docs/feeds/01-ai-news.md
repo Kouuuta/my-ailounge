@@ -5,6 +5,7 @@
 
 ## June 2026
 
+- [How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work) | 2026-06-25 | ai
 - [OpenAI and Broadcom unveil LLM-optimized inference chip](https://openai.com/index/openai-broadcom-jalapeno-inference-chip) | 2026-06-24 | ai
 - [Introducing Claude Tag](https://www.anthropic.com/news/introducing-claude-tag) | 2026-06-23 | ai
 - [How Omio is building the future of conversational travel](https://openai.com/index/omio) | 2026-06-23 | ai

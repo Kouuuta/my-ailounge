@@ -5,6 +5,8 @@
 
 ## June 2026
 
+- [Chat SDK now supports rich text in Telegram](https://vercel.com/changelog/chat-sdk-now-supports-rich-text-in-telegram) | 2026-06-15 | nextjs
+- [Vercel Flags no longer requires SDK Keys for Vercel deployments](https://vercel.com/changelog/authenticate-vercel-flags-with-openid-connect-by-default) | 2026-06-24 | nextjs
 - [Workflow SDK now compresses run and step payloads](https://vercel.com/changelog/workflow-sdk-now-compresses-run-and-step-payloads) | 2026-06-22 | nextjs
 - [Chat SDK adds Linq support](https://vercel.com/changelog/chat-sdk-adds-linq-support) | 2026-06-22 | nextjs
 - [Chat SDK adds Sendblue support](https://vercel.com/changelog/chat-sdk-adds-sendblue-support) | 2026-06-22 | nextjs

@@ -5,6 +5,26 @@
 
 ## June 2026
 
+- [OVHCloud Managed Kubernetes Review](https://www.eucloudcost.com/blog/ovhcloud-cluster/) | 2026-06-25 | hn, discussion
+- [Open Source Maintainers Need a Spam Filter for AI Labor](https://www.vincentschmalbach.com/open-source-maintainers-need-a-spam-filter-for-ai-labor/) | 2026-06-25 | hn, discussion
+- [10x More Selective](https://yosefk.com/blog/10x-more-selective.html) | 2026-06-25 | hn, discussion
+- [The AI Coding Era Makes Boring Tests More Valuable](https://www.vincentschmalbach.com/the-ai-coding-era-makes-boring-tests-more-valuable/) | 2026-06-25 | hn, discussion
+- [Got access to Gemini's actual thinking](https://news.ycombinator.com/item?id=48670944) | 2026-06-25 | hn, discussion
+- [Will AI replace technical writers?](https://willaireplacetechnicalwriters.com/) | 2026-06-25 | hn, discussion
+- [Long distance Uber alternative (for passengers and drivers)](https://localsride.com/en) | 2026-06-25 | hn, discussion
+- [You are leaving tech, what's next?](https://www.seattletimes.com/business/local-business/older-tech-workers-are-tapping-out-early-heres-what-that-looks-like/) | 2026-06-25 | hn, discussion
+- [We Made Trading Signals Microsecond-Level Easy – 100 Factors in 40µs](https://medium.com/@DolphinDB_Inc/we-just-made-trading-signals-microsecond-level-easy-100-factors-in-40%C2%B5s-d13c78f41dac) | 2026-06-25 | hn, discussion
+- [Warrior Cats Name Generator](https://warriorcatsnamegenerator.net/) | 2026-06-25 | hn, discussion
+- [Calculate Real-Time Implied Volatility for Commodity Options](https://medium.com/@DolphinDB_Inc/how-we-built-a-real-time-implied-volatility-engine-for-commodity-options-da1b6ad73297) | 2026-06-25 | hn, discussion
+- [A Y2K bug surfaced 26 years late today](https://old.reddit.com/r/sysadmin/comments/1uetdyw/a_y2k_bug_surfaced_26_years_late_today/) | 2026-06-25 | hn, discussion
+- [Qualcomm Investor Day 2026 Data Center Announcements CPUs](https://www.servethehome.com/qualcomm-investor-day-2026-data-center-announcements-cpus-ai-accelerators-and-more/) | 2026-06-25 | hn, discussion
+- [US fighter pilot avoids British trial after raping a woman in England](https://www.theguardian.com/uk-news/ng-interactive/2026/jun/25/us-fighter-pilot-strangled-woman-england-why-military-trial) | 2026-06-25 | hn, discussion
+- [Claude Opus 4.5 vs. GLM-5.2](https://gopeekapp.blogspot.com/2026/06/glm-52-vs-claude-opus-45.html) | 2026-06-25 | hn, discussion
+- [Rcarmo/kata: Repetition makes perfect](https://github.com/rcarmo/kata) | 2026-06-25 | hn, discussion
+- [UMLBot: Converting natural language and code excerpts to editable UML diagrams](https://www.sciencedirect.com/science/article/pii/S2352711026002815) | 2026-06-25 | hn, discussion
+- [Monolith Rift, a brutalist corridor of light and impossible scale](https://sand-morph.up.railway.app/monolith-rift) | 2026-06-25 | hn, discussion
+- [Best Alternative for Zendesk, Intercom, and Freshdesk](https://news.ycombinator.com/item?id=48671083) | 2026-06-25 | hn, discussion
+- [How to Build 1-Minute OHLC Bars from Non-Uniform Market Snapshot Data](https://medium.com/@DolphinDB_Inc/how-to-build-1-minute-ohlc-bars-from-non-uniform-market-snapshot-data-00d218863ea4) | 2026-06-25 | hn, discussion
 - [LoveInvoice – a free invoice tool for freelancers and small businesses](https://loveinvoice.com) | 2026-06-25 | hn, discussion
 - [Half-Life 2 in a Browser](https://hl2.slqnt.dev/) | 2026-06-25 | hn, discussion
 - [AI-website-cloner-template: Clone any website using AI coding agents](https://github.com/JCodesMore/ai-website-cloner-template) | 2026-06-25 | hn, discussion
