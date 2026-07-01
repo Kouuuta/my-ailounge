@@ -11,6 +11,7 @@ import {
   ScrollText,
   Radio,
   MessageSquare,
+  BookOpen,
   Sun,
   Moon,
 } from "lucide-react";
@@ -21,6 +22,7 @@ const NAV_ITEMS = [
   { href: "/feed", label: "Feed", icon: Rss },
   { href: "/watchlist", label: "Stack", icon: Layers },
   { href: "/logs", label: "Logs", icon: ScrollText },
+  { href: "/intern-tasks", label: "Tasks", icon: BookOpen },
   { href: "/repo-radar", label: "Radar", icon: Radio },
   { href: "/prompts", label: "Prompts", icon: MessageSquare },
 ];

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { Sparkles, BookOpen, ExternalLink } from "lucide-react";
+import { INTERN_TASKS } from "@/src/config/intern-tasks";
+import { Sparkles, BookOpen, ExternalLink, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface FeedItem {
@@ -14,6 +15,7 @@ interface InternTaskData {
   title: string;
   description: string;
   difficulty: "beginner" | "intermediate" | "advanced";
+  category: "synthetic-data" | "mock-apis" | "local-db" | "code-review" | "docs-research" | "git-workflow";
 }
 
 interface InternTasksProps {
@@ -25,8 +27,26 @@ interface InternTasksProps {
 
 const DIFFICULTY_COLORS = {
   beginner: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-  intermediate: "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400",
+  intermediate: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   advanced: "bg-red-500/10 text-red-600 dark:text-red-400",
+};
+
+const CATEGORY_LABELS: Record<string, string> = {
+  "synthetic-data": "Synthetic Data",
+  "mock-apis": "Mock APIs",
+  "local-db": "Local DB",
+  "code-review": "Code Review",
+  "docs-research": "Docs & Research",
+  "git-workflow": "Git Workflow",
+};
+
+const CATEGORY_COLORS = {
+  "synthetic-data": "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+  "mock-apis": "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+  "local-db": "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  "code-review": "bg-orange-500/10 text-orange-600 dark:text-orange-400",
+  "docs-research": "bg-pink-500/10 text-pink-600 dark:text-pink-400",
+  "git-workflow": "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
 };
 
 export function InternTasks({
@@ -77,7 +97,7 @@ export function InternTasks({
         )}
       </div>
 
-      <div className="px-4 pt-3 pb-4">
+      <div className="px-4 pt-3 pb-2">
         <div className="flex items-center gap-2 mb-3">
           <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/20">
             <BookOpen className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
@@ -87,38 +107,86 @@ export function InternTasks({
           </h3>
         </div>
 
-        <div className="rounded-xl bg-accent/50 border border-border/50 px-3 py-2.5 mb-2">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">Today</span>
-            <span
-              className={cn(
-                "inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-medium font-mono",
-                DIFFICULTY_COLORS[todayTask.difficulty],
-              )}
-            >
-              {todayTask.difficulty}
-            </span>
-          </div>
-          <p className="text-sm font-medium text-foreground">{todayTask.title}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">{todayTask.description}</p>
-        </div>
-
-        <div className="rounded-xl bg-card/30 border border-border/30 px-3 py-2.5">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] text-muted-foreground/70 font-mono uppercase tracking-wider">Tomorrow</span>
-            <span
-              className={cn(
-                "inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-medium font-mono",
-                DIFFICULTY_COLORS[tomorrowTask.difficulty],
-              )}
-            >
-              {tomorrowTask.difficulty}
-            </span>
-          </div>
-          <p className="text-sm font-medium text-foreground/80">{tomorrowTask.title}</p>
-          <p className="text-xs text-muted-foreground/70 mt-0.5">{tomorrowTask.description}</p>
-        </div>
+        <TaskMiniCard
+          task={todayTask}
+          label="Today"
+          isPrimary
+        />
+        <TaskMiniCard
+          task={tomorrowTask}
+          label="Tomorrow"
+          isPrimary={false}
+        />
       </div>
+
+      {/* View all link */}
+      <div className="px-4 pb-4">
+        <Link
+          href="/intern-tasks"
+          className="group flex items-center justify-center gap-1.5 rounded-xl border border-border/40 bg-accent/30 px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground hover:border-border"
+        >
+          View all {">"} {INTERN_TASKS.length} tasks
+          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function TaskMiniCard({
+  task,
+  label,
+  isPrimary,
+}: {
+  task: InternTaskData;
+  label: string;
+  isPrimary: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-xl border px-3 py-2.5 mb-2 last:mb-0",
+        isPrimary
+          ? "bg-accent/50 border-border/50"
+          : "bg-card/30 border-border/30",
+      )}
+    >
+      <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center gap-1.5">
+          <span className={cn(
+            "text-[10px] font-mono uppercase tracking-wider",
+            isPrimary ? "text-muted-foreground" : "text-muted-foreground/70",
+          )}>
+            {label}
+          </span>
+          <span className={cn(
+            "inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-medium font-mono",
+            CATEGORY_COLORS[task.category],
+          )}>
+            {CATEGORY_LABELS[task.category]}
+          </span>
+        </div>
+        <span
+          className={cn(
+            "inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-medium font-mono",
+            DIFFICULTY_COLORS[task.difficulty],
+          )}
+        >
+          {task.difficulty}
+        </span>
+      </div>
+      <p className={cn(
+        "text-sm font-medium",
+        isPrimary ? "text-foreground" : "text-foreground/80",
+      )}>
+        {task.title}
+      </p>
+      <p className={cn(
+        "text-xs mt-0.5",
+        isPrimary ? "text-muted-foreground" : "text-muted-foreground/70",
+      )}>
+        {task.description}
+      </p>
     </div>
   );
 }

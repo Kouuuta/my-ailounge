@@ -47,7 +47,7 @@ function getMonthKey(dateStr: string): string {
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
   ];
-  return `${months[d.getMonth()]} ${d.getFullYear()}`;
+  return `${months[d.getMonth()]} ${d.getFullYear()}`;  
 }
 
 function pad(n: number): string {
