@@ -7,9 +7,12 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | Path | File | Type | Description |
 |------|------|------|-------------|
 | `/` | `page.tsx` | Server | Engineering Briefing homepage |
+| `/login` | `login/page.tsx` | Client (Suspense) | Sign in — email/password + GitHub OAuth |
+| `/signup` | `signup/page.tsx` | Client | Create account — email/password only |
 | `/feed` | `feed/page.tsx` | Client (Suspense) | Full Developer Intelligence Feed |
 | `/watchlist` | `watchlist/page.tsx` | Client | Stack Watchlist manager |
 | `/logs` | `logs/page.tsx` | Client | Log Analysis Dashboard (upload + explore Zoho/Acuity CSV logs) |
+| `/intern-tasks` | `intern-tasks/page.tsx` | Client | Intern Safe Task Board — read-only task catalog |
 | `/repo-radar` | `repo-radar/page.tsx` | Client | Repo Radar — track GitHub repos (stars, releases, PRs, issues) |
 | `/prompts` | `prompts/page.tsx` | Client | Prompt Library — browse, search, add, copy, expand prompts |
 | `GET /api/feed` | `api/feed/route.ts` | Route Handler | List feed items with filters |
@@ -27,6 +30,7 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `GET /api/logs/[id]/errors` | `api/logs/[id]/errors/route.ts` | Route Handler | Paginated error rows for an analysis |
 | `GET /api/logs/[id]/patterns` | `api/logs/[id]/patterns/route.ts` | Route Handler | Grouped error patterns |
 | `GET /api/logs/[id]/anomalies` | `api/logs/[id]/anomalies/route.ts` | Route Handler | Statistical anomaly spikes |
+| `GET /auth/callback` | `auth/callback/route.ts` | Route Handler | OAuth callback — exchanges code for session |
 | `POST /api/ingest` | `api/ingest/route.ts` | Route Handler | Trigger on-demand ingestion (calls `runAll()`) |
 | `GET /api/repo-radar` | `api/repo-radar/route.ts` | Route Handler | List tracked repos |
 | `POST /api/repo-radar` | `api/repo-radar/route.ts` | Route Handler | Add a repo to track (fetches GitHub API) |
@@ -49,18 +53,19 @@ Wraps all pages with:
 - **Metadata** — title `Mind You Dashboard`, description `Developer Intelligence Dashboard`
 - **Google Fonts** — Space Grotesk (display), Inter (sans), JetBrains Mono (mono) set as CSS variables
 - **ThemeProvider** — dark/light mode toggle (from `components/theme-provider`)
-- **Sidebar** — fixed left sidebar (240px) with nav, theme toggle, quick stats (from `components/sidebar/sidebar`)
+- **AuthProvider** — Supabase Auth context (from `components/auth-provider`), provides `useUser()` with `{ user, loading, signOut }`
+- **Shell** — layout wrapper (from `components/shell`) that hides `Sidebar` on `/login` and `/signup` routes
+- **Sidebar** — fixed left sidebar (240px) with nav, theme toggle, quick stats, user avatar + logout (from `components/sidebar/sidebar`)
 - **Toaster** — toast notifications via `sonner` (used by `IngestButton` and future components)
 
 ```tsx
 <ThemeProvider>
-  <div className="flex min-h-screen">
-    <Sidebar />
-    <main className="flex-1 ml-60 min-h-screen">
+  <AuthProvider>
+    <Shell>
       {children}
-    </main>
-  </div>
-  <Toaster position="top-right" richColors />
+      <Toaster position="top-right" richColors />
+    </Shell>
+  </AuthProvider>
 </ThemeProvider>
 ```
 
@@ -147,3 +152,7 @@ HomePage
 - [Stats API →](./api/stats/README.md)
 - [Prompt Library →](./prompts/README.md)
 - [Prompt Library API →](./api/prompts/README.md)
+- [Intern Tasks →](./intern-tasks/README.md)
+- [Login →](./login/README.md)
+- [Signup →](./signup/README.md)
+- [Auth Callback →](./auth/README.md)

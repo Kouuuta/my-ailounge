@@ -20,7 +20,7 @@ Every component uses shared tokens from `globals.css`:
 | **FeedSection** | Server (presentational) | Categorized feed list with accent header, count badge, empty state | `title`, `icon`, `items`, `viewAllHref?`, `delay?`, `theme` (ai/trending/framework/security) |
 | **FeaturedNews** | Server (presentational) | Hero section — large card + 3 secondary cards for pinned items | `items`, `delay?` |
 | **FeedBreakdown** | Client (`"use client"`) | Tabbed Nivo bar chart (By Source / By Category) | `sources`, `categories`, `total`, `delay?` |
-| **InternTasks** | Server (presentational) | Recommended tool + today/tomorrow intern task cards | `recommendedItem`, `todayTask`, `tomorrowTask`, `delay?` |
+| **InternTasks** | Server (presentational) | Recommended tool + today/tomorrow intern task cards with category badges + "View all →" link | `recommendedItem`, `todayTask`, `tomorrowTask`, `delay?` |
 | **AutomationStatus** | Server (reads db) | Per-ingester health with animated ping dots | none — reads `getIngestionStatus()` + `getGlobalIngestionStatus()` |
 
 ## Server vs Client
@@ -96,9 +96,11 @@ Used by `FeaturedNews` for source labels on cards:
 | Prop | Type | Description |
 |------|------|-------------|
 | `recommendedItem` | `FeedItem \| null` | Top recommended tool/news item |
-| `todayTask` | `InternTaskData` | `{ title, description, difficulty }` |
-| `tomorrowTask` | `InternTaskData` | `{ title, description, difficulty }` |
+| `todayTask` | `InternTaskData` | `{ title, description, difficulty, category }` |
+| `tomorrowTask` | `InternTaskData` | `{ title, description, difficulty, category }` |
 | `delay` | `number?` | Animation delay |
 
-- Difficulty badges: `beginner` (emerald), `intermediate` (yellow), `advanced` (red)
+- Difficulty badges: `beginner` (emerald), `intermediate` (amber), `advanced` (red)
+- Category badges: synthetic-data (purple), mock-apis (blue), local-db (emerald), code-review (orange), docs-research (pink), git-workflow (cyan)
 - Tasks rotate daily from `src/config/intern-tasks.ts`
+- Includes "View all →" link at bottom that routes to `/intern-tasks`

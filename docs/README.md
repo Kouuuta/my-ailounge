@@ -63,9 +63,27 @@ This folder contains onboarding guides, architecture references, research materi
 
 | Doc | Description |
 |-----|-------------|
-| `../src/lib/README.md` (analytics section) | 8 analytics functions (`getTotalItems`, `getItemsToday`, `getItemsThisWeek`, `getItemsBySource`, `getItemsByCategory`, `getIngestionStatus`, `getLastGlobalIngestion`, `getGlobalIngestionStatus`) with SQL snippets and return types |
+| `../src/lib/README.md` (analytics section) | 8 analytics functions (`getTotalItems`, `getItemsToday`, `getItemsThisWeek`, `getItemsBySource`, `getItemsByCategory`, `getIngestionStatus`, `getLastGlobalIngestion`, `getGlobalIngestionStatus`) with query patterns and return types. `getItemsBySource`/`getItemsByCategory` now use Supabase RPC functions (`get_source_counts`, `get_category_counts`) |
 
 ---
+
+## Authentication
+
+| Page | Description |
+|------|-------------|
+| `/login` (`app/login/`) | Sign in — email/password form + GitHub OAuth, redirect support, glassmorphism card |
+| `/signup` (`app/signup/`) | Create account — email/password, min 6 char validation, redirects to /feed |
+| `/auth/callback` (`app/auth/`) | OAuth callback — exchanges code for session via @supabase/ssr |
+
+Auth is powered by Supabase Auth. Pages are exempt from middleware (see `proxy.ts` `PUBLIC_ROUTES`).
+
+## Intern Safe Task Board
+
+| Doc | Description |
+|-----|-------------|
+| `../app/intern-tasks/README.md` | Full page: category pills, difficulty/sort filters, expandable cards, static config — no DB |
+| `../components/intern-tasks/README.md` | InternTaskCard component: expandable sections, category/difficulty color maps |
+| `plans/intern-task-board-mvp-plan.md` | MVP plan: 8 phases, 7 components, explicit exclusions (no claiming, no completion, no auth) |
 
 ## Dashboard
 
@@ -126,6 +144,7 @@ This folder contains onboarding guides, architecture references, research materi
 |-----|-------------|
 | `plans/README.md` | Department-level problem statements and potential solutions (executive, marketing, sales, finance, HR, engineering, operations, admin, health) |
 | `plans/_TEMPLATE.md` | Template for documenting new problems and solutions |
+| `plans/intern-task-board-mvp-plan.md` | Intern Safe Task Board MVP plan — read-only task catalog, 8 implementation phases, explicit exclusions, component tree |
 
 ---
 

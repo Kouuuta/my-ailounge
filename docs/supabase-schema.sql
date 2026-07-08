@@ -154,9 +154,6 @@ CREATE TABLE IF NOT EXISTS repo_radar_items (
   notes               TEXT,
   is_active           INTEGER NOT NULL DEFAULT 1,
   last_refreshed_at   TIMESTAMPTZ,
-  notes               TEXT,
-  is_active           INTEGER NOT NULL DEFAULT 1,
-  last_refreshed_at   TIMESTAMPTZ,
   created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

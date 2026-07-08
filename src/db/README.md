@@ -21,6 +21,32 @@ Requires `.env.local` with:
 - `NEXT_PUBLIC_SUPABASE_URL` — your Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — your Supabase anon/public key
 
+### `browser-client.ts`
+
+Creates a Supabase client for browser (client-side) usage using `@supabase/ssr` `createBrowserClient`. Used by login, signup, and the AuthProvider:
+
+```ts
+import { getBrowserSupabase } from "@/src/db/browser-client";
+
+const supabase = getBrowserSupabase();
+const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+```
+
+### `server-client.ts`
+
+Creates a Supabase client for server components using `@supabase/ssr` `createServerClient` with Next.js `cookies()` for cookie-based auth. Used by server components and route handlers that need session-aware queries:
+
+```ts
+import { getServerSupabase } from "@/src/db/server-client";
+
+const supabase = await getServerSupabase();
+const { data: { user } } = await supabase.auth.getUser();
+```
+
+### `supabase-client.ts`
+
+Original Supabase client (legacy) — singleton created with `@supabase/supabase-js` `createClient`. Does NOT handle auth cookies. Still exported for backward compatibility but most code should use `browser-client.ts` or `server-client.ts` for auth-aware queries.
+
 ### `client.ts`
 
 Re-exports `supabase` from `supabase-client.ts` for convenience. Was previously a `getDb()` singleton for `better-sqlite3` — kept as the same import path so consuming code didn't need import changes.

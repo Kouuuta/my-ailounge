@@ -11,7 +11,7 @@ import Link from "next/link";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/feed";
+  const redirect = searchParams.get("redirect") || "/";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +24,10 @@ function LoginForm() {
     setLoading(true);
 
     const supabase = getBrowserSupabase();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (error) {
       setError(error.message);
@@ -127,7 +130,11 @@ export default function LoginPage() {
       <div className="w-full max-w-sm animate-scale-in">
         <div className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-xl p-8">
           <div className="flex flex-col items-center mb-8">
-            <Image src={logoImage} alt="Mind You" className="h-12 w-auto mb-4" />
+            <Image
+              src={logoImage}
+              alt="Mind You"
+              className="h-12 w-auto mb-4"
+            />
             <h1 className="text-xl font-bold text-foreground font-display tracking-tight">
               Welcome back
             </h1>
@@ -136,7 +143,13 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <Suspense fallback={<div className="h-48 flex items-center justify-center text-sm text-muted-foreground">Loading...</div>}>
+          <Suspense
+            fallback={
+              <div className="h-48 flex items-center justify-center text-sm text-muted-foreground">
+                Loading...
+              </div>
+            }
+          >
             <LoginForm />
           </Suspense>
         </div>

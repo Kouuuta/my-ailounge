@@ -62,6 +62,8 @@ npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at doc
 | Add a stats API endpoint        | app/api/stats/route.ts                        |
 | Modify theme colors / fonts     | app/globals.css @theme block                  |
 | Add a prompt page or feature    | app/prompts/page.tsx (UI), app/api/prompts/ (API) |
+| Add a login/signup page feature | app/login/page.tsx, app/signup/page.tsx |
+| Add/modify auth middleware       | proxy.ts (PUBLIC_ROUTES + PUBLIC_API_ROUTES constants) |
 | Add a prompt component          | components/prompts/<Name>.tsx                 |
 | Add a prompt ingester source    | src/ingesters/prompts/index.ts (add function + call in main) |
 
