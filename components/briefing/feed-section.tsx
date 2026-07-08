@@ -13,8 +13,6 @@ interface FeedItem {
   score: number | null;
   published_at: string | null;
   fetched_at: string;
-  is_pinned: number;
-  is_read: number;
 }
 
 const SECTION_ACCENT = {

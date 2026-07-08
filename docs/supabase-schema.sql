@@ -161,7 +161,23 @@ CREATE TABLE IF NOT EXISTS repo_radar_items (
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- 10. Helper functions for feed breakdown stats (used by homepage chart)
+-- 10. user_feed_states — per-user read/pin state (replaced global is_pinned/is_read on feed_items)
+CREATE TABLE IF NOT EXISTS user_feed_states (
+  user_id       UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  feed_item_id  BIGINT NOT NULL REFERENCES feed_items(id) ON DELETE CASCADE,
+  is_read       INTEGER DEFAULT 0,
+  is_pinned     INTEGER DEFAULT 0,
+  saved_at      TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (user_id, feed_item_id)
+);
+
+ALTER TABLE user_feed_states ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY IF NOT EXISTS user_own_states ON user_feed_states
+  USING (auth.uid() = user_id)
+  WITH CHECK (auth.uid() = user_id);
+
+-- 11. Helper functions for feed breakdown stats (used by homepage chart)
 CREATE OR REPLACE FUNCTION get_category_counts()
 RETURNS TABLE(category text, count bigint)
 LANGUAGE sql

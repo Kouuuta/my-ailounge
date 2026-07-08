@@ -1,4 +1,4 @@
-import { supabase } from "@/src/db/supabase-client";
+import { getServerSupabase } from "@/src/db/server-client";
 import {
   getItemsBySource,
   getItemsByCategory,
@@ -48,8 +48,6 @@ interface FeedItem {
   score: number | null;
   published_at: string | null;
   fetched_at: string;
-  is_pinned: number;
-  is_read: number;
 }
 
 function timeAgo(dateStr: string): string {
@@ -69,25 +67,24 @@ function timeAgo(dateStr: string): string {
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+  const supabase = await getServerSupabase();
+  const { data: { user } } = await supabase.auth.getUser();
+
   const [
     { data: aiData },
     { data: frameworkData },
     { data: trendingData },
     { data: securityData },
     { data: recommendedData },
-    { data: featuredData },
     { count: totalCount },
-    { count: unreadCount },
     { data: featuredPromptData },
   ] = await Promise.all([
     supabase.from("feed_items").select("*").eq("category", "ai").neq("source", "manual").order("score", { ascending: false }).order("published_at", { ascending: false }).limit(5),
     supabase.from("feed_items").select("*").in("category", ["nextjs", "django"]).neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(5),
     supabase.from("feed_items").select("*").eq("source", "github_trending").order("fetched_at", { ascending: false }).limit(5),
     supabase.from("feed_items").select("*").or("category.eq.security,tags.ilike.%cve%").neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(5),
-    supabase.from("feed_items").select("id, title, url, summary, tags").eq("is_read", 0).neq("source", "manual").or("tags.ilike.%ai%,tags.ilike.%tool%").order("score", { ascending: false }).order("fetched_at", { ascending: false }).limit(1).maybeSingle(),
-    supabase.from("feed_items").select("*").eq("is_pinned", 1).neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(4),
+    supabase.from("feed_items").select("id, title, url, summary, tags").neq("source", "manual").or("tags.ilike.%ai%,tags.ilike.%tool%").order("score", { ascending: false }).order("fetched_at", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("feed_items").select("*", { count: "exact", head: true }).neq("source", "manual"),
-    supabase.from("feed_items").select("*", { count: "exact", head: true }).eq("is_read", 0).neq("source", "manual"),
     supabase.from("prompts").select("*").eq("is_featured", 1).eq("source", "curated").order("id").limit(1).maybeSingle(),
   ]);
 
@@ -96,10 +93,29 @@ export default async function HomePage() {
   const trendingItems = (trendingData ?? []) as FeedItem[];
   const securityItems = (securityData ?? []) as FeedItem[];
   const recommendedItem = (recommendedData as FeedItem | null) ?? null;
-  const featuredItems = (featuredData ?? []) as FeedItem[];
   const totalItems = totalCount ?? 0;
-  const unreadItems = unreadCount ?? 0;
   const featuredPrompt = (featuredPromptData as PromptItem | null) ?? null;
+
+  let featuredItems: FeedItem[] = [];
+  if (user) {
+    const { data: pinnedStates } = await supabase
+      .from("user_feed_states")
+      .select("feed_item_id")
+      .eq("user_id", user.id)
+      .eq("is_pinned", 1);
+
+    const pinnedIds = (pinnedStates ?? []).map((p) => p.feed_item_id);
+    if (pinnedIds.length > 0) {
+      const { data: pinnedData } = await supabase
+        .from("feed_items")
+        .select("*")
+        .in("id", pinnedIds)
+        .order("published_at", { ascending: false })
+        .limit(4);
+
+      featuredItems = (pinnedData ?? []) as FeedItem[];
+    }
+  }
 
   const taskIndex = Math.floor(Date.now() / 86400000);
   const todayTask = INTERN_TASKS[taskIndex % INTERN_TASKS.length];
@@ -137,7 +153,7 @@ export default async function HomePage() {
               </h1>
             </div>
             <p className="text-muted-foreground text-sm mt-1">
-              {totalItems} items &middot; {unreadItems} unread
+              {totalItems} items
             </p>
           </div>
           <div className="flex gap-2">
@@ -160,7 +176,7 @@ export default async function HomePage() {
             icon={BookOpen}
             accentColor="bg-emerald-500"
             gradient="from-emerald-500 to-teal-500"
-            secondary={`${unreadItems} unread`}
+            secondary="ingested"
             delay={0}
           />
           <StatCard

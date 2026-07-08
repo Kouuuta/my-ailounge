@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Sidebar } from "@/components/sidebar/sidebar";
+import { AuthProvider } from "@/components/auth-provider";
+import { Shell } from "@/components/shell";
 import { Toaster } from "sonner";
 
 const spaceGrotesk = Space_Grotesk({
@@ -40,13 +41,10 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <ThemeProvider>
-          <div className="flex min-h-screen">
-            <Sidebar />
-            <main className="flex-1 ml-60 min-h-screen">
-              {children}
-            </main>
-          </div>
-          <Toaster position="top-right" richColors />
+          <AuthProvider>
+            <Shell>{children}</Shell>
+            <Toaster position="top-right" richColors />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
