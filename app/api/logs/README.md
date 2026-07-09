@@ -9,7 +9,7 @@ REST API for uploading CSV log files and retrieving parsed analysis results. Sup
 - **Content-Type**: `multipart/form-data`
 - **Body**: `file` field, `.csv` only
 - **Source detection**: `acuity_*.csv` → `"acuity"`, otherwise `"zoho"`
-- **Pipeline**: CSV → `csv-parse/sync` → `parseLogCsv()` → column detection → error extraction → pattern grouping → anomaly detection → SQLite inserts (4 tables)
+- **Pipeline**: CSV → `csv-parse/sync` → `parseLogCsv()` → column detection → error extraction → pattern grouping → anomaly detection → Supabase PostgreSQL inserts (4 tables)
 - **Response** `201`: `{ id, source, total_rows, error_count, ... }`
 - **Errors** `400`: "No file provided", "Only CSV files are accepted", or parse failure message
 
