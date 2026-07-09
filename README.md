@@ -56,7 +56,7 @@ The platform currently supports ingestion from:
 - GitHub Trending
 - Manually Curated Feed Sources
 
-All feed data is normalized and stored in a centralized SQLite database, allowing the dashboard to provide a unified view of engineering-related information.
+All feed data is normalized and stored in a centralized Supabase PostgreSQL database, allowing the dashboard to provide a unified view of engineering-related information.
 
 ### Dashboard Architecture
 
@@ -66,7 +66,7 @@ Feed Sources
         ↓
 Feed Ingesters
         ↓
-SQLite Database (data/dashboard.db)
+Supabase PostgreSQL
         ↓
 API Layer (/api/feed)
         ↓
@@ -91,8 +91,8 @@ Feed Dashboard
 
 #### Database
 
-- SQLite
-- node:sqlite
+- Supabase PostgreSQL
+- @supabase/supabase-js
 
 #### Automation
 
@@ -158,7 +158,7 @@ Create the local database directory:
 mkdir data
 ```
 
-Initialize the SQLite database:
+Set up the database:
 
 ```bash
 npm run db:migrate
@@ -188,7 +188,7 @@ Dashboard Feed:
 http://localhost:3000/feed
 ```
 
-> Note: `data/dashboard.db` is intentionally not committed to Git and must be generated locally.
+> Note: The project uses Supabase PostgreSQL (migrated from SQLite).
 
 ---
 
@@ -239,14 +239,14 @@ npm run ingest
 3. Each ingester fetches new content and stores it in:
 
 ```text
-data/dashboard.db
+Supabase PostgreSQL
 ```
 
-4. Records are normalized and inserted into SQLite using database constraints that automatically prevent duplicate entries.
+4. Records are normalized and inserted into Supabase PostgreSQL using database constraints that automatically prevent duplicate entries.
 
 5. The Next.js application reads directly from the same database.
 
-6. The Engineering Briefing page loads statistics and recent feed items directly from SQLite using Server Components.
+6. The Engineering Briefing page loads statistics and recent feed items directly from Supabase PostgreSQL using Server Components.
 
 7. The Feed Dashboard retrieves records through:
 
@@ -280,7 +280,7 @@ data/dashboard.db
 - Item Pinning
 - Manual Feed Creation
 - Feed Item Deletion
-- SQLite Persistence
+- Supabase PostgreSQL Persistence
 
 ---
 
@@ -317,7 +317,7 @@ The goal is to reduce operational overhead while maintaining reliable feed updat
 - `/diagrams/` - Architecture diagrams and workflow visualizations.
 - `/ideas/` - Brainstorming, experiments, and proposals.
 - `/intern-logs/` - Contributor workspaces and task tracking.
-- `/data/` - Local SQLite database storage (generated locally).
+- `/data/` - Legacy SQLite database storage (no longer actively used).
 
 ---
 
