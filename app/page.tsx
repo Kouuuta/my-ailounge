@@ -25,6 +25,7 @@ import type { BreakdownItem } from "@/components/briefing/feed-breakdown";
 import { FeaturedNews } from "@/components/briefing/featured-news";
 import { InternTasks } from "@/components/briefing/intern-tasks";
 import { AutomationStatus } from "@/components/briefing/automation-status";
+import { StackSummary } from "@/components/briefing/stack-summary";
 import { FeaturedPrompt } from "@/components/briefing/featured-prompt";
 
 interface PromptItem {
@@ -205,6 +206,11 @@ export default async function HomePage() {
           />
         </div>
 
+        {/* Stack Summary */}
+        <div className="mb-8 max-w-sm">
+          <StackSummary />
+        </div>
+
         {/* Featured News */}
         {featuredItems.length > 0 && (
           <div className="mb-8">
@@ -248,18 +254,18 @@ export default async function HomePage() {
           />
         </div>
 
-        {/* Bottom row: Breakdown + Tasks + Automation + Featured Prompt */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          <div className="md:col-span-1 lg:col-span-1">
-            <div className="hidden md:block">
-              <FeedBreakdown
-                sources={sources}
-                categories={categories}
-                total={totalItems}
-                delay={400}
-              />
-            </div>
-          </div>
+        {/* Feed Breakdown */}
+        <div className="mb-8">
+          <FeedBreakdown
+            sources={sources}
+            categories={categories}
+            total={totalItems}
+            delay={400}
+          />
+        </div>
+
+        {/* Bottom row: Tasks + Featured Prompt + Automation */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
           <div className="md:col-span-1 lg:col-span-1">
             <InternTasks
               recommendedItem={recommendedItem}

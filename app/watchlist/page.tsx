@@ -5,6 +5,7 @@ import {
   Plus,
   X,
   Trash2,
+  Search,
   ShieldCheck,
   ShieldAlert,
   ShieldX,
@@ -98,6 +99,7 @@ export default function WatchlistPage() {
   const [sortField, setSortField] = useState<string>("name");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
+  const [search, setSearch] = useState("");
   const [addName, setAddName] = useState("");
   const [addCategory, setAddCategory] = useState("framework");
   const [addRisk, setAddRisk] = useState("low");
@@ -184,6 +186,15 @@ export default function WatchlistPage() {
     const cmp = String(aVal ?? "").localeCompare(String(bVal ?? ""));
     return sortDir === "asc" ? cmp : -cmp;
   });
+
+  const filtered = search
+    ? sorted.filter(
+        (item) =>
+          item.name.toLowerCase().includes(search.toLowerCase()) ||
+          (item.category ?? "").toLowerCase().includes(search.toLowerCase()) ||
+          (item.upgrade_notes ?? "").toLowerCase().includes(search.toLowerCase()),
+      )
+    : sorted;
 
   const counts = { high: 0, medium: 0, low: 0 };
   for (const item of items) {
@@ -288,6 +299,16 @@ export default function WatchlistPage() {
           </div>
         )}
 
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by name, category, or notes..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+
         <Card className="animate-fade-in">
           <CardContent className="p-0">
             {loading ? (
@@ -300,10 +321,10 @@ export default function WatchlistPage() {
                   />
                 ))}
               </div>
-            ) : sorted.length === 0 ? (
+            ) : filtered.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 <Wrench className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                <p>No items tracked yet.</p>
+                <p>{search ? "No items match your search." : "No items tracked yet."}</p>
                 <Button
                   size="sm"
                   variant="outline"
@@ -319,50 +340,61 @@ export default function WatchlistPage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead
-                      className="cursor-pointer select-none w-[180px]"
+                      className="cursor-pointer select-none w-[160px]"
                       onClick={() => toggleSort("name")}
                     >
                       Name <SortIcon field="name" />
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer select-none w-[100px]"
+                      className="cursor-pointer select-none w-[90px]"
                       onClick={() => toggleSort("category")}
                     >
                       Category <SortIcon field="category" />
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer select-none w-[110px]"
+                      className="cursor-pointer select-none w-[120px]"
                       onClick={() => toggleSort("installed_version")}
                     >
                       Installed <SortIcon field="installed_version" />
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer select-none w-[110px]"
+                      className="cursor-pointer select-none w-[100px]"
                       onClick={() => toggleSort("latest_version")}
                     >
                       Latest <SortIcon field="latest_version" />
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer select-none w-[90px]"
+                      className="cursor-pointer select-none w-[100px]"
+                      onClick={() => toggleSort("known_vulns")}
+                    >
+                      Vulns <SortIcon field="known_vulns" />
+                    </TableHead>
+                    <TableHead
+                      className="cursor-pointer select-none w-[80px]"
                       onClick={() => toggleSort("risk_level")}
                     >
                       Risk <SortIcon field="risk_level" />
                     </TableHead>
                     <TableHead>Notes</TableHead>
                     <TableHead
-                      className="cursor-pointer select-none w-[80px]"
+                      className="cursor-pointer select-none w-[75px]"
                       onClick={() => toggleSort("updated_at")}
                     >
                       Updated <SortIcon field="updated_at" />
                     </TableHead>
-                    <TableHead className="w-[40px]" />
+                    <TableHead className="w-[36px]" />
+                    <TableHead className="w-[36px]" />
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sorted.map((item, index) => {
+                  {filtered.map((item, index) => {
                     const risk =
                       RISK_CONFIG[item.risk_level] || RISK_CONFIG.low;
                     const RiskIcon = risk.icon;
+                    const hasDrift =
+                      item.installed_version &&
+                      item.latest_version &&
+                      item.installed_version !== item.latest_version;
                     return (
                       <TableRow
                         key={item.id}
@@ -385,12 +417,19 @@ export default function WatchlistPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <EditableCell
-                            value={item.installed_version}
-                            onSave={(v) =>
-                              updateField(item.id, "installed_version", v)
-                            }
-                          />
+                          <div className="flex items-center gap-1.5">
+                            <EditableCell
+                              value={item.installed_version}
+                              onSave={(v) =>
+                                updateField(item.id, "installed_version", v)
+                              }
+                            />
+                            {hasDrift && (
+                              <span className="inline-flex items-center rounded-full bg-amber-500/10 px-1.5 py-0 text-[9px] font-medium text-amber-600 dark:text-amber-400 whitespace-nowrap">
+                                Drift
+                              </span>
+                            )}
+                          </div>
                         </TableCell>
                         <TableCell>
                           <EditableCell
@@ -398,6 +437,15 @@ export default function WatchlistPage() {
                             onSave={(v) =>
                               updateField(item.id, "latest_version", v)
                             }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <EditableCell
+                            value={item.known_vulns}
+                            onSave={(v) =>
+                              updateField(item.id, "known_vulns", v)
+                            }
+                            placeholder="—"
                           />
                         </TableCell>
                         <TableCell>
@@ -452,6 +500,23 @@ export default function WatchlistPage() {
                           {formatDate(item.updated_at)}
                         </TableCell>
                         <TableCell>
+                          {item.migration_link ? (
+                            <a
+                              href={item.migration_link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-accent-vibrant hover:bg-accent/50 transition-colors"
+                              title="Migration guide"
+                            >
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            </a>
+                          ) : (
+                            <span className="inline-flex h-7 w-7 items-center justify-center text-muted-foreground/30">
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            </span>
+                          )}
+                        </TableCell>
+                        <TableCell>
                           <Button
                             variant="ghost"
                             size="icon"
@@ -481,7 +546,7 @@ export default function WatchlistPage() {
 
         {items.length > 0 && (
           <div className="animate-fade-in mt-4 flex items-center gap-3 text-xs text-muted-foreground">
-            <span>{items.length} total</span>
+            <span>{search ? `${filtered.length} of ${items.length}` : `${items.length} total`}</span>
             <span className="flex items-center gap-1">
               <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
               {counts.high} high
