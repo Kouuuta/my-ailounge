@@ -3,7 +3,7 @@ import { supabase } from "@/src/db/supabase-client";
 
 const VALID_FIELDS = [
   "name", "category", "installed_version", "latest_version",
-  "risk_level", "upgrade_notes", "known_vulns", "migration_link",
+  "risk_level", "risk_reason", "upgrade_notes", "known_vulns", "migration_link",
 ] as const;
 
 export async function PATCH(

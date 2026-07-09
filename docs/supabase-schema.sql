@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS watchlist_items (
   installed_version TEXT,
   latest_version    TEXT,
   risk_level        TEXT DEFAULT 'low',
+  risk_reason       TEXT,
   upgrade_notes     TEXT,
   known_vulns       TEXT,
   migration_link    TEXT,

@@ -12,7 +12,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { name, category, installed_version, latest_version, risk_level, upgrade_notes, known_vulns, migration_link } = body;
+  const { name, category, installed_version, latest_version, risk_level, risk_reason, upgrade_notes, known_vulns, migration_link } = body;
 
   if (!name) {
     return NextResponse.json({ error: "name is required" }, { status: 400 });
@@ -29,6 +29,7 @@ export async function POST(req: NextRequest) {
     installed_version: installed_version || null,
     latest_version: latest_version || null,
     risk_level: risk_level || "low",
+    risk_reason: risk_reason || null,
     upgrade_notes: upgrade_notes || null,
     known_vulns: known_vulns || null,
     migration_link: migration_link || null,
