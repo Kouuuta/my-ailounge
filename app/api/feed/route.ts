@@ -10,6 +10,8 @@ export async function GET(req: NextRequest) {
   const q = searchParams.get("q");
   const is_read_param = searchParams.get("is_read");
   const is_pinned_param = searchParams.get("is_pinned");
+  const sort = searchParams.get("sort");
+  const min_score = searchParams.get("min_score");
   const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 200);
   const offset = Math.max(parseInt(searchParams.get("offset") || "0"), 0);
 
@@ -27,10 +29,49 @@ export async function GET(req: NextRequest) {
   if (tag) query = query.ilike("tags", `%${tag}%`);
   if (q) query = query.ilike("title", `%${q}%`);
 
-  query = query
-    .order("published_at", { ascending: false })
-    .order("fetched_at", { ascending: false })
-    .range(offset, offset + limit - 1);
+  if (min_score) {
+    const val = parseInt(min_score);
+    if (!isNaN(val)) query = query.gte("ai_relevance_score", val);
+  }
+
+  if (sort === "relevance") {
+    query = query
+      .order("ai_relevance_score", { ascending: false, nullsFirst: false })
+      .order("published_at", { ascending: false });
+  } else {
+    query = query
+      .order("published_at", { ascending: false })
+      .order("fetched_at", { ascending: false });
+  }
+
+  if (userId && is_pinned_param === "1") {
+    const { data: pinnedStates } = await supabase
+      .from("user_feed_states")
+      .select("feed_item_id")
+      .eq("user_id", userId)
+      .eq("is_pinned", 1);
+
+    const pinnedIds = (pinnedStates ?? []).map((p) => p.feed_item_id);
+    if (pinnedIds.length === 0) {
+      return NextResponse.json({ items: [], total: 0, limit, offset });
+    }
+    query = query.in("id", pinnedIds);
+  }
+
+  if (userId && is_read_param === "0") {
+    const { data: readStates } = await supabase
+      .from("user_feed_states")
+      .select("feed_item_id")
+      .eq("user_id", userId)
+      .eq("is_read", 1);
+
+    const readIds = (readStates ?? []).map((r) => r.feed_item_id);
+    if (readIds.length > 0) {
+      query = query.not("id", "in", `(${readIds.join(",")})`);
+    }
+  }
+
+  query = query.range(offset, offset + limit - 1);
 
   const { data: items, count: total } = await query;
 
@@ -43,7 +84,7 @@ export async function GET(req: NextRequest) {
 
   const itemIds = (items ?? []).map((i) => i.id);
   if (itemIds.length === 0) {
-    return NextResponse.json({ items: [], total: 0, limit, offset });
+    return NextResponse.json({ items: [], total, limit, offset });
   }
 
   const { data: states } = await supabase
@@ -61,17 +102,12 @@ export async function GET(req: NextRequest) {
     return { ...item, is_pinned: state?.is_pinned ?? 0, is_read: state?.is_read ?? 0 };
   });
 
-  if (is_pinned_param === "0" || is_pinned_param === "1") {
-    const val = parseInt(is_pinned_param);
-    mapped = mapped.filter((item) => item.is_pinned === val);
-  }
-
   if (is_read_param === "0" || is_read_param === "1") {
     const val = parseInt(is_read_param);
     mapped = mapped.filter((item) => item.is_read === val);
   }
 
-  return NextResponse.json({ items: mapped, total: mapped.length, limit, offset });
+  return NextResponse.json({ items: mapped, total, limit, offset });
 }
 
 export async function POST(req: NextRequest) {

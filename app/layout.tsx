@@ -4,6 +4,7 @@ import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/components/auth-provider";
 import { Shell } from "@/components/shell";
+import { CommandPalette } from "@/components/command-palette";
 import { Toaster } from "sonner";
 
 const spaceGrotesk = Space_Grotesk({
@@ -43,6 +44,7 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <Shell>{children}</Shell>
+            <CommandPalette />
             <Toaster position="top-right" richColors />
           </AuthProvider>
         </ThemeProvider>

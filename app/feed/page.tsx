@@ -5,6 +5,7 @@ import {
   Search,
   Pin,
   PinOff,
+  Target,
   Check,
   CheckCheck,
   Trash2,
@@ -40,6 +41,8 @@ type FeedItem = {
   fetched_at: string;
   is_pinned: number;
   is_read: number;
+  ai_relevance_score: number | null;
+  ai_relevance_label: string | null;
 };
 
 type FeedResponse = {
@@ -125,6 +128,8 @@ function FilterBar({
   setIsRead,
   isPinned,
   setIsPinned,
+  sort,
+  setSort,
   hasFilters,
   clearFilters,
   onRefresh,
@@ -140,6 +145,8 @@ function FilterBar({
   setIsRead: (v: string) => void;
   isPinned: string;
   setIsPinned: (v: string) => void;
+  sort: string;
+  setSort: (v: string) => void;
   hasFilters: boolean;
   clearFilters: () => void;
   onRefresh: () => void;
@@ -215,6 +222,16 @@ function FilterBar({
             <SelectItem value="0">Unpinned</SelectItem>
           </SelectContent>
         </Select>
+        <Button
+          variant={sort === "relevance" ? "default" : "outline"}
+          size="sm"
+          className="h-9 gap-1.5"
+          onClick={() => setSort(sort === "relevance" ? "" : "relevance")}
+          title="Sort by relevance"
+        >
+          <Target className="h-4 w-4" />
+          Relevant
+        </Button>
         {hasFilters && (
           <Button variant="ghost" size="sm" onClick={clearFilters}>
             <X className="h-4 w-4" />
@@ -252,6 +269,10 @@ function FeedContent() {
   const [q, setQ] = useState(searchParams.get("q") || "");
   const [isRead, setIsRead] = useState(searchParams.get("is_read") || "");
   const [isPinned, setIsPinned] = useState(searchParams.get("is_pinned") || "");
+  const [sort, setSort] = useState(searchParams.get("sort") || "");
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+  const pageSize = 50;
+  const totalPages = Math.ceil(total / pageSize);
 
   const [showAddForm, setShowAddForm] = useState(false);
   const [addTitle, setAddTitle] = useState("");
@@ -268,7 +289,7 @@ function FeedContent() {
   }, []);
 
   const fetchItems = useCallback(
-    async (append = false) => {
+    async () => {
       setLoading(true);
       setError(null);
       const params = new URLSearchParams();
@@ -277,14 +298,15 @@ function FeedContent() {
       if (q) params.set("q", q);
       if (isRead !== "") params.set("is_read", isRead);
       if (isPinned !== "") params.set("is_pinned", isPinned);
-      if (append) params.set("offset", String(items.length));
-      params.set("limit", "50");
+      if (sort) params.set("sort", sort);
+      params.set("offset", String((page - 1) * pageSize));
+      params.set("limit", String(pageSize));
 
       try {
         const res = await fetch(`/api/feed?${params}`);
         if (!res.ok) throw new Error(`Status ${res.status}`);
         const data: FeedResponse = await res.json();
-        setItems(append ? [...items, ...data.items] : data.items);
+        setItems(data.items);
         setTotal(data.total);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch");
@@ -292,12 +314,17 @@ function FeedContent() {
         setLoading(false);
       }
     },
-    [source, category, q, isRead, isPinned],
+    [source, category, q, isRead, isPinned, sort, page],
   );
 
   useEffect(() => {
     fetchItems();
   }, [fetchItems]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [source, category, q, isRead, isPinned, sort]);
 
   // Sync filters to URL
   useEffect(() => {
@@ -307,16 +334,19 @@ function FeedContent() {
     if (q) params.set("q", q);
     if (isRead) params.set("is_read", isRead);
     if (isPinned) params.set("is_pinned", isPinned);
+    if (sort) params.set("sort", sort);
+    if (page > 1) params.set("page", String(page));
     const qs = params.toString();
     router.replace(`/feed${qs ? `?${qs}` : ""}`, { scroll: false });
-  }, [source, category, q, isRead, isPinned, router]);
+  }, [source, category, q, isRead, isPinned, sort, page, router]);
 
   const hasFilters = !!(
     source ||
     category ||
     q ||
     isRead !== "" ||
-    isPinned !== ""
+    isPinned !== "" ||
+    sort
   );
 
   const clearFilters = () => {
@@ -325,6 +355,7 @@ function FeedContent() {
     setQ("");
     setIsRead("");
     setIsPinned("");
+    setSort("");
   };
 
   const togglePin = async (item: FeedItem) => {
@@ -405,8 +436,6 @@ function FeedContent() {
     }
   };
 
-  const hasMore = items.length < total;
-
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-7xl px-6 py-8">
@@ -482,6 +511,8 @@ function FeedContent() {
           setIsRead={setIsRead}
           isPinned={isPinned}
           setIsPinned={setIsPinned}
+          sort={sort}
+          setSort={setSort}
           hasFilters={hasFilters}
           clearFilters={clearFilters}
           onRefresh={() => fetchItems()}
@@ -561,6 +592,23 @@ function FeedContent() {
                           >
                             {item.category}
                           </Badge>
+                          {item.ai_relevance_label && (
+                            <Badge
+                              variant="secondary"
+                              className={cn(
+                                "text-[10px] px-1.5 py-0 font-medium",
+                                item.ai_relevance_score !== null && item.ai_relevance_score >= 70
+                                  ? "bg-teal-500/10 text-teal-600 dark:text-teal-400"
+                                  : item.ai_relevance_score !== null && item.ai_relevance_score >= 50
+                                    ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                                    : "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+                              )}
+                            >
+                              <Target className="h-3 w-3 mr-0.5" />
+                              {item.ai_relevance_score !== null && `${item.ai_relevance_score} `}
+                              {item.ai_relevance_label}
+                            </Badge>
+                          )}
                           <span className="text-[11px] text-muted-foreground">
                             {formatDate(item.published_at)}
                           </span>
@@ -642,16 +690,26 @@ function FeedContent() {
           )}
         </div>
 
-        {hasMore && (
-          <div className="flex justify-center mt-6 animate-fade-in">
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-4 mt-8 pb-8 animate-fade-in">
             <Button
               variant="outline"
-              onClick={() => fetchItems(true)}
-              disabled={loading}
+              size="sm"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
             >
-              {loading
-                ? "Loading..."
-                : `Load more (${items.length} of ${total})`}
+              ← Prev
+            </Button>
+            <span className="text-sm text-muted-foreground font-mono">
+              Page {page} / {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              Next →
             </Button>
           </div>
         )}

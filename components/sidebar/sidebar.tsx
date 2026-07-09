@@ -22,7 +22,7 @@ import {
 import { useTheme } from "@/components/theme-provider";
 import { useUser } from "@/components/auth-provider";
 
-const NAV_ITEMS = [
+export const NAV_ITEMS = [
   { href: "/", label: "Briefing", icon: LayoutDashboard },
   { href: "/feed", label: "Feed", icon: Rss },
   { href: "/watchlist", label: "Stack", icon: Layers },

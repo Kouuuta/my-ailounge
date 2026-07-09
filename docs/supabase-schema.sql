@@ -13,14 +13,17 @@ CREATE TABLE IF NOT EXISTS feed_items (
   score        INTEGER,
   published_at TIMESTAMPTZ,
   fetched_at   TIMESTAMPTZ DEFAULT NOW(),
-  is_pinned    INTEGER DEFAULT 0,
-  is_read      INTEGER DEFAULT 0,
+  ai_relevance_score  INTEGER,
+  ai_relevance_label  TEXT,
+  ai_relevance_reason TEXT,
+  ai_tldr             TEXT,
   UNIQUE (source, url)
 );
 
 CREATE INDEX IF NOT EXISTS idx_feed_category ON feed_items(category);
 CREATE INDEX IF NOT EXISTS idx_feed_source ON feed_items(source);
 CREATE INDEX IF NOT EXISTS idx_feed_published ON feed_items(published_at);
+CREATE INDEX IF NOT EXISTS idx_feed_relevance_score ON feed_items(ai_relevance_score DESC);
 
 -- 2. kv_store
 CREATE TABLE IF NOT EXISTS kv_store (
