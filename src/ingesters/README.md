@@ -1,6 +1,6 @@
 # `src/ingesters/` — Feed Ingestion Pipeline
 
-Fetches, parses, and stores feed items from multiple sources. Every ingester writes to **both** SQLite (via `lib/db.upsertEntry`) and markdown (via `lib/markdown.appendToFeed`).
+Fetches, parses, and stores feed items from multiple sources. Every ingester writes to **both** Supabase PostgreSQL (via `lib/db.upsertEntry`) and markdown (via `lib/markdown.appendToFeed`).
 
 ## Architecture
 
@@ -20,7 +20,7 @@ Fetches, parses, and stores feed items from multiple sources. Every ingester wri
                     ┌─────────┴─────────┐
                     ▼                   ▼
               lib/db.ts           lib/markdown.ts
-           (SQLite upsert)      (append to .md)
+           (Supabase upsert)      (append to .md)
 ```
 
 > `manual-feeds/` is **not** part of the `run-all` orchestrator. Run it separately via `npm run ingest:manual`.
@@ -29,7 +29,7 @@ Fetches, parses, and stores feed items from multiple sources. Every ingester wri
 
 ### `rss/` ✅ Done
 
-Fetches 20 RSS/Atom feed URLs, parses with a regex-based parser (no external deps), writes to SQLite + markdown.
+Fetches 20 RSS/Atom feed URLs, parses with a regex-based parser (no external deps), writes to Supabase + markdown.
 
 **Source:** `'rss'`
 
@@ -44,7 +44,7 @@ Fetches 20 RSS/Atom feed URLs, parses with a regex-based parser (no external dep
 - DevOps (DevOps.com, The New Stack)
 - GitHub (GitHub blog, GitHub Engineering)
 
-**Date filter:** Only writes to markdown if `published_at >= 2026-01-01`. Always writes to SQLite.
+**Date filter:** Only writes to markdown if `published_at >= 2026-01-01`. Always writes to Supabase.
 
 ```bash
 npm run ingest:rss
@@ -60,7 +60,7 @@ Fetches top 20 stories from the [HN Algolia API](https://hn.algolia.com/api) (`s
 - Calls `https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=20`
 - Strips `Ask HN:`, `Show HN:`, `Tell HN:` prefixes from titles
 - Falls back to `https://news.ycombinator.com/item?id={objectID}` when no URL
-- Writes both to `05-hacker-news.md` and SQLite with score (points)
+- Writes both to `05-hacker-news.md` and Supabase with score (points)
 
 ```bash
 npm run ingest:hn
@@ -77,7 +77,7 @@ Fetches GitHub Trending repos directly via RSS, no longer reads intermediate mar
 - Parses with a regex-based RSS parser (same pattern as the RSS ingester)
 - Deduplicates results across the 3 feeds
 - Category set to `github` for all entries
-- Writes both to `04-github-trending.md` and SQLite (entries >= 2026-01-01 to markdown)
+- Writes both to `04-github-trending.md` and Supabase (entries >= 2026-01-01 to markdown)
 
 **Note:** The legacy Python scraper (`src/scraper.py`) still exists but is separate — this ingester no longer depends on it. The old `ideas/trending.md` file has been removed.
 
@@ -87,7 +87,7 @@ npm run ingest:trending
 
 ### `manual-feeds/` ✅ Done (`'manual'`, standalone)
 
-Parses `docs/feeds/*.md` files and upserts entries into SQLite.
+Parses `docs/feeds/*.md` files and upserts entries into Supabase.
 
 **Format parsed:** `- [Title](URL) | YYYY-MM-DD | tag1, tag2`
 

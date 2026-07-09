@@ -48,15 +48,15 @@ Each tracked repo displays as a card with:
 ## Data Flow
 
 ```
-User adds repo → POST /api/repo-radar → GitHub API (info, release, PRs, issues) → SQLite → UI refresh
+User adds repo → POST /api/repo-radar → GitHub API (info, release, PRs, issues) → Supabase PostgreSQL → UI refresh
 
-User clicks Refresh → POST /api/repo-radar/refresh → refreshAll() → GitHub API per repo → SQLite → UI refresh
+User clicks Refresh → POST /api/repo-radar/refresh → refreshAll() → GitHub API per repo → Supabase PostgreSQL → UI refresh
 
-Page load → GET /api/repo-radar → SQLite → card grid
+Page load → GET /api/repo-radar → Supabase PostgreSQL → card grid
 
-Edit notes → PATCH /api/repo-radar/[id] → SQLite → UI update
+Edit notes → PATCH /api/repo-radar/[id] → Supabase PostgreSQL → UI update
 
-Delete repo → DELETE /api/repo-radar/[id] → SQLite → card removed
+Delete repo → DELETE /api/repo-radar/[id] → Supabase PostgreSQL → card removed
 ```
 
 ## API Dependencies
