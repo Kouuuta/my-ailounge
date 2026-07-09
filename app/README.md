@@ -57,12 +57,14 @@ Wraps all pages with:
 - **Shell** — layout wrapper (from `components/shell`) that hides `Sidebar` on `/login` and `/signup` routes
 - **Sidebar** — fixed left sidebar (240px) with nav, theme toggle, quick stats, user avatar + logout (from `components/sidebar/sidebar`)
 - **Toaster** — toast notifications via `sonner` (used by `IngestButton` and future components)
+- **CommandPalette** — Cmd+K keyboard palette for quick navigation and search (from `components/command-palette`)
 
 ```tsx
 <ThemeProvider>
   <AuthProvider>
     <Shell>
       {children}
+      <CommandPalette />
       <Toaster position="top-right" richColors />
     </Shell>
   </AuthProvider>
@@ -98,6 +100,10 @@ A **server component** (`force-dynamic`) that queries Supabase PostgreSQL (migra
 | Featured (pinned) | `is_pinned = 1 AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 4` | `feed_items` |
 | Featured Prompt | `is_featured = 1 AND source = 'curated' ORDER BY id LIMIT 1` | `prompts` |
 
+### Stack Summary
+
+A `StackSummary` component from `components/briefing/stack-summary.tsx` renders between the stat cards and featured news. Fetches `/api/stats` for `stackTotal`, `stackHigh`, `stackMedium`, `stackLow` and displays a clickable card linking to `/watchlist`.
+
 ### Stat Cards
 
 4 `StatCard` components from `components/briefing/stat-card.tsx`:
@@ -127,12 +133,13 @@ Day-based rotation from `src/config/intern-tasks.ts` (13 tasks). Shows today's t
 HomePage
 ├── IngestButton (header — triggers POST /api/ingest)
 ├── StatCard × 4 (total items, last ingestion, today, week)
+├── StackSummary (clickable card with stack risk counts)
 ├── FeaturedNews (hero section — top pinned item + 3-grid)
 ├── FeedSection × 4 (AI, Trending, Frameworks, Security)
 │   ├── accent bar per section (teal/purple/blue/red)
 │   ├── icon bg + count badge per theme
 │   └── ItemCard × 5 per section
-├── FeedBreakdown (sources + categories Nivo bar chart, tabbed)
+├── FeedBreakdown (sources + categories Nivo bar chart — desktop side-by-side, mobile tabs)
 ├── InternTasks (recommended tool + today/tomorrow)
 ├── FeaturedPrompt (daily rotating prompt card, links to /prompts)
 └── AutomationStatus (per-ingester health with ping dots)

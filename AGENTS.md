@@ -66,12 +66,15 @@ npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at doc
 | Add/modify auth middleware       | proxy.ts (PUBLIC_ROUTES + PUBLIC_API_ROUTES constants) |
 | Add a prompt component          | components/prompts/<Name>.tsx                 |
 | Add a prompt ingester source    | src/ingesters/prompts/index.ts (add function + call in main) |
+| Add/modify the command palette  | components/command-palette.tsx (plus components/ui/command.tsx) |
+| Add/modify relevance scoring    | src/lib/relevance-scorer.ts (called from src/lib/db.ts upsertEntry) |
 
 ## New Packages (Log Analysis Dashboard + Supabase Migration)
 
 - `@nivo/bar`, `@nivo/pie`, `@nivo/core` — Nivo charting for error trend bar chart and source donut
 - `csv-parse` — CSV parsing in `src/lib/log-parser.ts`
 - `sonner` — Toast notifications for `IngestButton` and other client interactions
+- `cmdk` — Command menu primitive for `CommandPalette`
 - `@supabase/supabase-js` — Supabase PostgreSQL client (replaced `better-sqlite3`)
 - `dotenv` — Env variable loading for ingesters and scripts
 - Log parser auto-detects columns by header name regex (timestamp, content, action, method, error_code, response)

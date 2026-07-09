@@ -6,17 +6,23 @@ Client-side page for tracking versions and risks across your tech stack. Rendere
 
 A **client component** with a sortable, inline-editable table.
 
+### Search
+
+A search input at the top filters items by `name`, `category`, or `upgrade_notes` (case-insensitive substring match). Shows `N of M` count when search is active.
+
 ### Table Columns (sortable)
 
 | Column | Type | Editable |
 |--------|------|----------|
 | Name | Text | No |
 | Category | Badge | No |
-| Installed | Text | Yes (inline) |
+| Installed | Text | Yes (inline) — with "Drift" badge when `installed_version ≠ latest_version` |
 | Latest | Text | Yes (inline) |
+| Vulns | Text | Yes (inline) |
 | Risk | Select | Yes (dropdown) |
 | Notes | Text | Yes (inline) |
 | Updated | Date | No |
+| Migration | Link icon | — (opens `migration_link` in new tab, dimmed when empty) |
 | Delete | Button | — |
 
 Click any column header to sort ascending/descending. Sort icon indicates active sort.

@@ -31,7 +31,9 @@ Add a new watchlist item.
   "installed_version": "string | null",
   "latest_version": "string | null",
   "risk_level": "'low' | 'medium' | 'high' (default: 'low')",
-  "upgrade_notes": "string | null"
+  "upgrade_notes": "string | null",
+  "known_vulns": "string | null",
+  "migration_link": "string | null"
 }
 ```
 

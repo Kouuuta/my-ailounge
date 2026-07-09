@@ -19,8 +19,9 @@ Every component uses shared tokens from `globals.css`:
 | **StatCard** | Server (presentational) | KPI with gradient icon, left accent bar, optional subtitle | `label`, `value`, `icon`, `accentColor`, `gradient`, `secondary?`, `delay?` |
 | **FeedSection** | Server (presentational) | Categorized feed list with accent header, count badge, empty state | `title`, `icon`, `items`, `viewAllHref?`, `delay?`, `theme` (ai/trending/framework/security) |
 | **FeaturedNews** | Server (presentational) | Hero section — large card + 3 secondary cards for pinned items | `items`, `delay?` |
-| **FeedBreakdown** | Client (`"use client"`) | Tabbed Nivo bar chart (By Source / By Category) | `sources`, `categories`, `total`, `delay?` |
+| **FeedBreakdown** | Client (`"use client"`) | Tabbed Nivo bar chart (By Source / By Category) — desktop shows side-by-side, mobile uses tabs | `sources`, `categories`, `total`, `delay?` |
 | **InternTasks** | Server (presentational) | Recommended tool + today/tomorrow intern task cards with category badges + "View all →" link | `recommendedItem`, `todayTask`, `tomorrowTask`, `delay?` |
+| **StackSummary** | Client (`"use client"`) | Stack Watchlist summary card — fetches `/api/stats`, shows total + high/medium/low risk counts, links to `/watchlist` | none — fetches own data |
 | **AutomationStatus** | Server (reads db) | Per-ingester health with animated ping dots | none — reads `getIngestionStatus()` + `getGlobalIngestionStatus()` |
 
 ## Server vs Client
@@ -33,9 +34,10 @@ Every component uses shared tokens from `globals.css`:
 - `InternTasks` — receives tasks from `src/config/intern-tasks.ts`
 - `AutomationStatus` — calls `getIngestionStatus()` which reads from `kv_store`
 
-1 **Client Component** (`"use client"`):
+2 **Client Components** (`"use client"`):
 
 - `FeedBreakdown` — uses `Tabs` from Radix UI + `ResponsiveBar` from `@nivo/bar`
+- `StackSummary` — fetches `/api/stats` on mount for stack risk counts
 
 ## Accent Color Map
 
@@ -90,6 +92,7 @@ Used by `FeaturedNews` for source labels on cards:
 
 - Uses Nivo `ResponsiveBar` with horizontal layout, per-name color hash
 - Source colors: hn=orange, github_trending=purple, rss=blue
+- **Layout:** Desktop (≥1024px) shows sources and categories side-by-side; mobile uses tabs
 
 ### InternTasks
 
@@ -104,3 +107,16 @@ Used by `FeaturedNews` for source labels on cards:
 - Category badges: synthetic-data (purple), mock-apis (blue), local-db (emerald), code-review (orange), docs-research (pink), git-workflow (cyan)
 - Tasks rotate daily from `src/config/intern-tasks.ts`
 - Includes "View all →" link at bottom that routes to `/intern-tasks`
+
+### StackSummary
+
+**Type:** Client (`"use client"`) — fetches data via `useEffect`.
+
+| Prop | Type | Description |
+|------|------|-------------|
+| (none) | — | Fetches `/api/stats` on mount, reads `stackTotal`, `stackHigh`, `stackMedium`, `stackLow` |
+
+- Renders as a clickable card linking to `/watchlist`
+- Shows total item count plus per-risk-level breakdown with colored icons
+- **Hidden** when `total === 0` (no items tracked yet)
+- Icons: `ShieldX` (rose) for high, `ShieldAlert` (amber) for medium, `ShieldCheck` (emerald) for low

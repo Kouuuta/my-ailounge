@@ -45,7 +45,7 @@ This folder contains onboarding guides, architecture references, research materi
 | Doc | Description |
 |-----|-------------|
 | `../src/db/README.md` | Database layer: originally SQLite (`better-sqlite3`, WAL mode, `getDb()` singleton), now **Supabase PostgreSQL** (`@supabase/supabase-js`, `supabase.from()`, async queries). 9 tables with full column/index docs, migration history, seed data, env var setup |
-| `supabase-schema.sql` | PostgreSQL DDL for all 9 tables — run this in Supabase SQL editor before seeding. Source of truth for table definitions |
+| `supabase-schema.sql` | PostgreSQL DDL for all 9 tables — run this in Supabase SQL editor before seeding. Source of truth for table definitions. `feed_items` now includes `ai_relevance_score`, `ai_relevance_label`, `ai_relevance_reason`, `ai_tldr` columns; `is_pinned`/`is_read` moved to `user_feed_states` table |
 
 ---
 
@@ -54,7 +54,7 @@ This folder contains onboarding guides, architecture references, research materi
 | Doc | Description |
 |-----|-------------|
 | `../src/ingesters/README.md` | Full ingestion pipeline: architecture diagram, 4 ingesters (manual-feeds, rss, hacker-news, github-trending) with format/source/commands, RSS feed URL list (12 feeds, 5 categories), HN Algolia API details, orchestrator + kv_store key schema, how to add a new RSS feed |
-| `../src/lib/README.md` | Shared utilities: `IngestEntry` interface, `upsertEntry()` dedup logic, `appendToFeed()` markdown writer with 500-line trim, `cn()` CSS utility |
+| `../src/lib/README.md` | Shared utilities: `IngestEntry` interface, `upsertEntry()` dedup logic with relevance scoring, `appendToFeed()` markdown writer with 500-line trim, `scoreRelevance()` watchlist-based relevance scorer, `cn()` CSS utility |
 | `feeds/feeds-format-guide.md` | Standard markdown feed entry format and manual editing rules |
 
 ---
@@ -89,7 +89,7 @@ Auth is powered by Supabase Auth. Pages are exempt from middleware (see `proxy.t
 
 | Doc | Description |
 |-----|-------------|
-| `guides/developer-dashboard.md` | Dashboard requirements specification: 3 audiences (lead devs, interns, team), 8 modules with feature descriptions, non-binding stack suggestions |
+| `guides/developer-dashboard.md` | Dashboard requirements specification: 3 audiences (lead devs, interns, team), 8 modules with feature descriptions, non-binding stack suggestions. Module 8 (Intern Task Board) now marked as MVP with status |
 
 ---
 

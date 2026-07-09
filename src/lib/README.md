@@ -37,7 +37,29 @@ interface IngestEntry {
 
 **`upsertEntry(entry)`** — Inserts a row into `feed_items`. Returns `'inserted'` or `'skipped'` (if `UNIQUE(source, url)` constraint fires).
 
-Used by: `ingesters/manual-feeds`, `ingesters/rss`, and future `ingesters/hacker-news` and `ingesters/github-trending`.
+**Relevance scoring integration:**
+
+`upsertEntry()` now calls `scoreRelevance()` from `relevance-scorer.ts` after a successful insert. If a match is found, it stores `ai_relevance_score`, `ai_relevance_label`, and `ai_relevance_reason` on the inserted row.
+
+Used by: `ingesters/manual-feeds`, `ingesters/rss`, `ingesters/hacker-news`, `ingesters/github-trending`.
+
+---
+
+### `relevance-scorer.ts`
+
+Scores feed items against the user's stack watchlist to surface relevant content. Called automatically from `upsertEntry()` at ingestion time.
+
+**`scoreRelevance(item)`** — accepts `{ title, summary?, tags?, category }`. Returns `{ score, label, reason }` or `null`.
+
+**Scoring logic:**
+
+| Match Type | Score | Condition |
+|------------|-------|-----------|
+| Exact keyword match | 80 | Watchlist item name appears in title/summary/tags |
+| Partial word match | 60 | ≥50% of watchlist name words appear in text |
+| Category match | 40 | Feed category matches watchlist item category |
+
+**Caching:** Watchlist data is cached in-memory for 10 minutes (600,000ms) to avoid repeated DB queries during batch ingestion.
 
 ---
 

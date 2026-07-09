@@ -8,10 +8,11 @@ Reusable React components used by the Developer Dashboard pages.
 |------------------|----------|
 | `ui/` | shadcn/ui-style primitives — 10 components (Button, Card, Badge, Input, Select, Tabs, Toggle, Separator, Table, Skeleton) |
 | `engineering-intelligence/` | Dashboard-specific widgets — 4 components (AutomationStatus, BreakdownCard, IngestButton, StatCard). Still exists but homepage now imports from `briefing/` |
-| `briefing/` | Engineering Briefing homepage components — 7 components (StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, AutomationStatus, FeaturedPrompt) |
+| `briefing/` | Engineering Briefing homepage components — 8 components (StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, AutomationStatus, StackSummary, FeaturedPrompt) |
 | `sidebar/` | Fixed left sidebar — user info, nav, theme toggle, logout, Quick Stats |
 | `prompts/` | Prompt Library — 2 components (PromptCard, CategoryFilter + SourceFilter) |
 | `logs/` | Log Analysis Dashboard — 4 components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown) |
+| `command-palette/` | Command Palette — Cmd+K palette, searches pages/feed/prompts/watchlist/radar |
 | `intern-tasks/` | Intern Safe Task Board — 1 component (InternTaskCard) with expandable detail sections |
 | `theme-provider.tsx` | Dark/light mode React Context (used by Sidebar theme toggle) |
 | `auth-provider.tsx` | Supabase Auth context — `AuthProvider` + `useUser()` hook (user, loading, signOut) |
@@ -39,3 +40,4 @@ There is a second `cn()` at `src/lib/utils.ts` (simple string join) — that one
 - [Prompt Library Components →](./prompts/README.md)
 - [Log Analysis Components →](./logs/README.md)
 - [Intern Task Components →](./intern-tasks/README.md)
+- [Command Palette →](./command-palette/README.md)

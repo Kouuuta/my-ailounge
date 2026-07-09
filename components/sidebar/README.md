@@ -51,7 +51,7 @@ Shown when `user` is available and `loading` is false:
 
 ### Nav Items
 
-7 items defined in `NAV_ITEMS` constant:
+7 items defined in `NAV_ITEMS` constant (exported — consumed by `CommandPalette` in `components/command-palette.tsx`):
 
 | Label | Icon | Path |
 |-------|------|------|
