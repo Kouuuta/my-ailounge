@@ -24,7 +24,7 @@ import { FeedBreakdown } from "@/components/briefing/feed-breakdown";
 import type { BreakdownItem } from "@/components/briefing/feed-breakdown";
 import { FeaturedNews } from "@/components/briefing/featured-news";
 import { InternTasks } from "@/components/briefing/intern-tasks";
-import { AutomationStatus } from "@/components/briefing/automation-status";
+import { IngestHealth } from "@/components/briefing/ingest-health";
 import { StackSummary } from "@/components/briefing/stack-summary";
 import { FeaturedPrompt } from "@/components/briefing/featured-prompt";
 
@@ -278,7 +278,7 @@ export default async function HomePage() {
             <FeaturedPrompt item={featuredPrompt} delay={600} />
           </div>
           <div className="md:col-span-1 lg:col-span-1">
-            <AutomationStatus />
+            <IngestHealth />
           </div>
         </div>
       </div>

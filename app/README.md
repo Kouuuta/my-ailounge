@@ -142,7 +142,7 @@ HomePage
 ├── FeedBreakdown (sources + categories Nivo bar chart — desktop side-by-side, mobile tabs)
 ├── InternTasks (recommended tool + today/tomorrow)
 ├── FeaturedPrompt (daily rotating prompt card, links to /prompts)
-└── AutomationStatus (per-ingester health with ping dots)
+    └── IngestHealth (per-ingester health with ping dots, elapsed times, source icons, total counts)
 ```
 
 ## Sub-READMEs

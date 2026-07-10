@@ -22,7 +22,7 @@ Every component uses shared tokens from `globals.css`:
 | **FeedBreakdown** | Client (`"use client"`) | Tabbed Nivo bar chart (By Source / By Category) — desktop shows side-by-side, mobile uses tabs | `sources`, `categories`, `total`, `delay?` |
 | **InternTasks** | Server (presentational) | Recommended tool + today/tomorrow intern task cards with category badges + "View all →" link | `recommendedItem`, `todayTask`, `tomorrowTask`, `delay?` |
 | **StackSummary** | Client (`"use client"`) | Stack Watchlist summary card — fetches `/api/stats`, shows total + high/medium/low risk counts, links to `/watchlist` | none — fetches own data |
-| **AutomationStatus** | Server (reads db) | Per-ingester health with animated ping dots | none — reads `getIngestionStatus()` + `getGlobalIngestionStatus()` |
+| **IngestHealth** | Server (reads db) | Per-ingester health with source icons, elapsed times, total DB counts | none — reads `getIngestionStatus()` + `getGlobalIngestionStatus()` + per-source total counts |
 
 ## Server vs Client
 
@@ -32,7 +32,7 @@ Every component uses shared tokens from `globals.css`:
 - `FeedSection` — receives `items` array
 - `FeaturedNews` — receives `items` array
 - `InternTasks` — receives tasks from `src/config/intern-tasks.ts`
-- `AutomationStatus` — calls `getIngestionStatus()` which reads from `kv_store`
+- `IngestHealth` — calls `getIngestionStatus()` + per-source `COUNT(*)` from DB
 
 2 **Client Components** (`"use client"`):
 

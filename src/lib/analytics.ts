@@ -60,7 +60,7 @@ export async function getItemsByCategory(): Promise<CategoryBreakdown[]> {
 }
 
 export async function getIngestionStatus(): Promise<IngestionStatus[]> {
-  const sources = ["hn", "rss", "github_trending"];
+  const sources = ["hn", "rss", "github_trending", "repo_radar"];
   const keys = sources.flatMap((s) => [
     `ingest:last_run:${s}`,
     `ingest:status:${s}`,
