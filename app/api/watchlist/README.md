@@ -47,6 +47,8 @@ Add a new watchlist item.
 
 UNIQUE constraint on `name`. Invalid risk_level returns 400.
 
+**Side effect:** After a successful insert, calls `retroactivelyScore({ name, category })` from `src/lib/retroactive-scorer.ts` which rescans existing `feed_items` for matches and updates their relevance scores.
+
 ---
 
 ## Update & Delete — `[id]/route.ts`
@@ -70,7 +72,7 @@ risk_level, upgrade_notes, known_vulns, migration_link
 }
 ```
 
-Auto-sets `updated_at = datetime('now')` on every update.
+Auto-sets `updated_at = new Date().toISOString()` (JavaScript `Date`) on every update.
 
 Risk level is validated: `low`, `medium`, or `high` only.
 

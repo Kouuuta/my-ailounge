@@ -62,11 +62,9 @@ Wraps all pages with:
 ```tsx
 <ThemeProvider>
   <AuthProvider>
-    <Shell>
-      {children}
-      <CommandPalette />
-      <Toaster position="top-right" richColors />
-    </Shell>
+    <Shell>{children}</Shell>
+    <CommandPalette />
+    <Toaster position="top-right" richColors />
   </AuthProvider>
 </ThemeProvider>
 ```
@@ -96,8 +94,8 @@ A **server component** (`force-dynamic`) that queries Supabase PostgreSQL (migra
 | Framework Updates | `category IN ('nextjs', 'django') AND source != 'manual' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
 | Trending Repos | `source = 'github_trending' ORDER BY fetched_at DESC LIMIT 5` | `feed_items` |
 | Security | `(category = 'security' OR tags LIKE '%cve%') AND source != 'manual' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
-| Recommended Tool | `is_read = 0 AND source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC LIMIT 1` | `feed_items` |
-| Featured (pinned) | `is_pinned = 1 AND source != 'manual' ORDER BY published_at DESC, fetched_at DESC LIMIT 4` | `feed_items` |
+| Recommended Tool | `source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1` | `feed_items` |
+| Featured (pinned) | Queries `user_feed_states` for current user's pinned IDs, then fetches those items `ORDER BY published_at DESC LIMIT 4` | `feed_items` + `user_feed_states` |
 | Featured Prompt | `is_featured = 1 AND source = 'curated' ORDER BY id LIMIT 1` | `prompts` |
 
 ### Stack Summary
@@ -142,7 +140,7 @@ HomePage
 ├── FeedBreakdown (sources + categories Nivo bar chart — desktop side-by-side, mobile tabs)
 ├── InternTasks (recommended tool + today/tomorrow)
 ├── FeaturedPrompt (daily rotating prompt card, links to /prompts)
-    └── IngestHealth (per-ingester health with ping dots, elapsed times, source icons, total counts)
+├── IngestHealth (per-ingester health with ping dots, elapsed times, source icons, total counts)
 ```
 
 ## Sub-READMEs

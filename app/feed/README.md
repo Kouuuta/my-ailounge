@@ -17,7 +17,7 @@ A **client component** wrapped in `<Suspense>` (needed for `useSearchParams`).
 | Category | `Select` | `category` | `ai`, `cloud`, `devops`, `django`, `nextjs`, `hn`, `github`, `security`, `rumors`, `general` |
 | Status | `Select` | `is_read` | `0` (unread), `1` (read) |
 | Pinned | `Select` | `is_pinned` | `1` (pinned), `0` (unpinned) |
-| Relevance sort | Button | `sort` | Toggle `relevance` (highlights teal) |
+| Relevance sort | Button | `sort` | Toggle `relevance` (toggles between outline/default variant) |
 | Clear button | Button | — | Resets all filters |
 
 Includes a **Refresh** button and an item count summary.

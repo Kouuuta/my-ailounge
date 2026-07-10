@@ -68,6 +68,10 @@ npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at doc
 | Add a prompt ingester source    | src/ingesters/prompts/index.ts (add function + call in main) |
 | Add/modify the command palette  | components/command-palette.tsx (plus components/ui/command.tsx) |
 | Add/modify relevance scoring    | src/lib/relevance-scorer.ts (called from src/lib/db.ts upsertEntry) |
+| Add/modify engagement scoring   | src/lib/engagement-scorer.ts (called from upsertEntry + retroactive-scorer + runAll) |
+| Add/modify retroactive scoring  | src/lib/retroactive-scorer.ts (called from POST /api/watchlist) |
+| Query ingestion status API      | app/api/ingest/status/route.ts |
+| Add/change IngestHealth widget  | components/briefing/ingest-health.tsx |
 
 ## New Packages (Log Analysis Dashboard + Supabase Migration)
 

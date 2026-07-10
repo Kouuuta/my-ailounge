@@ -1,6 +1,6 @@
 # `components/briefing/` — Engineering Briefing Components
 
-6 components for the Engineering Briefing homepage (`app/page.tsx`). Designed with glassmorphism (`bg-card/50 backdrop-blur-xl`), animated entrance (`animate-slide-up`), and an accent color system mapped to content theme.
+8 components for the Engineering Briefing homepage (`app/page.tsx`). Designed with glassmorphism (`bg-card/50 backdrop-blur-xl`), animated entrance (`animate-slide-up`), and an accent color system mapped to content theme.
 
 ## Design System
 
@@ -22,17 +22,19 @@ Every component uses shared tokens from `globals.css`:
 | **FeedBreakdown** | Client (`"use client"`) | Tabbed Nivo bar chart (By Source / By Category) — desktop shows side-by-side, mobile uses tabs | `sources`, `categories`, `total`, `delay?` |
 | **InternTasks** | Server (presentational) | Recommended tool + today/tomorrow intern task cards with category badges + "View all →" link | `recommendedItem`, `todayTask`, `tomorrowTask`, `delay?` |
 | **StackSummary** | Client (`"use client"`) | Stack Watchlist summary card — fetches `/api/stats`, shows total + high/medium/low risk counts, links to `/watchlist` | none — fetches own data |
-| **IngestHealth** | Server (reads db) | Per-ingester health with source icons, elapsed times, total DB counts | none — reads `getIngestionStatus()` + `getGlobalIngestionStatus()` + per-source total counts |
+| **IngestHealth** | Server (reads db) | Per-ingester health with source icons, ping dots, elapsed times, total DB counts, error badge | none — reads `getIngestionStatus()` + `getGlobalIngestionStatus()` + per-source `COUNT(*)` |
+| **FeaturedPrompt** | Server (presentational) | Daily rotating featured prompt card with content, copy button, link to /prompts | `item` (PromptItem \| null), `delay?` |
 
 ## Server vs Client
 
-5 **Server Components** receive data via props or call `getDb()`:
+6 **Server Components** receive data via props or call `getDb()`:
 
 - `StatCard` — pure presentational
 - `FeedSection` — receives `items` array
 - `FeaturedNews` — receives `items` array
 - `InternTasks` — receives tasks from `src/config/intern-tasks.ts`
-- `IngestHealth` — calls `getIngestionStatus()` + per-source `COUNT(*)` from DB
+- `IngestHealth` — calls `getIngestionStatus()` + `getGlobalIngestionStatus()` + per-source `COUNT(*)` from DB (replaced `AutomationStatus` in `e331bf9`)
+- `FeaturedPrompt` — receives `item` prop from homepage server component
 
 2 **Client Components** (`"use client"`):
 
@@ -120,3 +122,30 @@ Used by `FeaturedNews` for source labels on cards:
 - Shows total item count plus per-risk-level breakdown with colored icons
 - **Hidden** when `total === 0` (no items tracked yet)
 - Icons: `ShieldX` (rose) for high, `ShieldAlert` (amber) for medium, `ShieldCheck` (emerald) for low
+
+### IngestHealth
+
+**Type:** Server — reads DB directly (no `"use client"`).
+
+| Prop | Type | Description |
+|------|------|-------------|
+| (none) | — | Reads `getIngestionStatus()` + `getGlobalIngestionStatus()` + per-source `COUNT(*)` via `supabase` |
+
+- Source config: hn → Radio (orange), github_trending → TrendingUp (purple), rss → Rss (blue), repo_radar → Radar (teal)
+- Status dot: green with `animate-ping` when ok, red when error, gray when no data
+- Empty state: "No data. Run `npm run ingest`"
+- Header badge: "Healthy" (emerald) for 0 errors, "N error(s)" (red) otherwise
+- Replaced `AutomationStatus` in commit `e331bf9`
+
+### FeaturedPrompt
+
+**Type:** Server (presentational).
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `item` | `PromptItem \| null` | Featured prompt object with `title`, `content`, `category`, `usage_count` |
+| `delay` | `number?` | Animation delay in ms |
+
+- Renders a glassmorphism card with the featured prompt title, category badge, content preview, and a "View in Library" link to `/prompts`
+- Includes a copy button for the prompt content
+- When `item` is null, renders nothing (hidden)

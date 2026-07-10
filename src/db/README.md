@@ -87,9 +87,14 @@ Same 9 tables, now served by PostgreSQL via Supabase. Column types below are the
 | `tags` | TEXT | Comma-separated tags |
 | `score` | INTEGER | HN points, stars, relevance rank |
 | `published_at` | TEXT | ISO 8601 |
-| `fetched_at` | TEXT | ISO 8601, defaults to `datetime('now')` |
-| `is_pinned` | INTEGER | 0/1 |
-| `is_read` | INTEGER | 0/1 |
+| `fetched_at` | TEXT | ISO 8601, defaults to `NOW()` |
+| `ai_relevance_score` | INTEGER | Watchlist-based relevance score (0-100) |
+| `ai_relevance_label` | TEXT | Matched watchlist item name |
+| `ai_relevance_reason` | TEXT | Explanation of why it matched |
+| `relevance_base` | INTEGER | Base score before engagement boosts |
+| `ai_tldr` | TEXT | Auto-generated summary |
+| ~~`is_pinned`~~ | ~~INTEGER~~ | ~~Moved to `user_feed_states`~~ |
+| ~~`is_read`~~ | ~~INTEGER~~ | ~~Moved to `user_feed_states`~~ |
 
 **Indexes:** `category`, `source`, `published_at`
 
@@ -121,7 +126,7 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `upgrade_notes` | TEXT | Migration notes |
 | `known_vulns` | TEXT | Known CVEs |
 | `migration_link` | TEXT | Link to upgrade guide |
-| `updated_at` | TEXT | ISO 8601, defaults to `datetime('now')` |
+| `updated_at` | TEXT | ISO 8601, defaults to `NOW()` |
 
 **Seed data:** 14 items on first migration (Next.js, React, Django, DRF, PostgreSQL, Redis, Docker, AWS, Celery, GitHub Actions, Sentry, OpenAI SDK, Anthropic SDK, DeepSeek SDK).
 
@@ -134,7 +139,7 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `id` | INTEGER | Primary key, autoincrement |
 | `filename` | TEXT | Uploaded CSV filename |
 | `source` | TEXT | `'acuity'` or `'zoho'` |
-| `uploaded_at` | TEXT | ISO 8601, defaults to `datetime('now')` |
+| `uploaded_at` | TEXT | ISO 8601, defaults to `NOW()` |
 | `total_rows` | INTEGER | Total parsed CSV rows |
 | `error_count` | INTEGER | Rows classified as errors |
 | `unique_errors` | INTEGER | Distinct error patterns |
@@ -231,8 +236,8 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `notes` | TEXT | User notes |
 | `is_active` | INTEGER | `1` active, `0` archived (default 1) |
 | `last_refreshed_at` | TEXT | Last GitHub API refresh |
-| `created_at` | TEXT | Defaults to `datetime('now')` |
-| `updated_at` | TEXT | Defaults to `datetime('now')` |
+| `created_at` | TEXT | Defaults to `NOW()` |
+| `updated_at` | TEXT | Defaults to `NOW()` |
 
 **Seed data:** 14 repos on first migration (Next.js, Django, DRF, Celery, PostgreSQL, LangChain, OpenAI Python SDK, Anthropic SDK, shadcn/ui, Vercel AI SDK, Cal.com, Sentry, Supabase, OpenCode).
 
@@ -255,8 +260,8 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `source` | TEXT | `'curated'`, `'community'`, or `'ui_design'` (added via migration) |
 | `external_id` | TEXT | SHA-256 hash of content for dedup (unique per source) |
 | `source_url` | TEXT | Original source URL (for community/ui_design) |
-| `created_at` | TEXT | Defaults to `datetime('now')` |
-| `updated_at` | TEXT | Defaults to `datetime('now')` |
+| `created_at` | TEXT | Defaults to `NOW()` |
+| `updated_at` | TEXT | Defaults to `NOW()` |
 
 **Index:** `category`
 

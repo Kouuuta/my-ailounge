@@ -25,7 +25,7 @@ Do not rebuild these. Extend them.
 | Feed format/tagging rules                                               | `docs/feeds/feeds-format-guide.md`       | ✅ Done                                                                                                              |
 | Intern task seed data (13 tasks)                                        | `src/config/intern-tasks.ts`             | ✅ Done                                                                                                              |
 | Shared utilities (DB writes, markdown append, analytics queries)        | `src/lib/`                               | ✅ Done                                                                                                              |
-| Dashboard widgets (AutomationStatus, BreakdownCard, IngestButton, StatCard) | `components/engineering-intelligence/` | ✅ Done                                                                                                              |
+| Dashboard widgets (BreakdownCard, IngestButton, StatCard) | `components/engineering-intelligence/` | ✅ Done (AutomationStatus replaced by IngestHealth in `components/briefing/`)                                        |
 | shadcn/ui primitives (11 components)                                    | `components/ui/`                         | ✅ Done                                                                                                              |
 | Dark/light theme provider                                               | `components/theme-provider.tsx`          | ✅ Done                                                                                                              |
 | Sidebar with user info, 7 nav items, logout, quick stats               | `components/sidebar/sidebar.tsx`         | ✅ Done                                                                                                              |
@@ -264,7 +264,7 @@ The orchestrator runs each ingester one at a time and records:
 | `ingest:elapsed_ms:<source>` | `ingest:elapsed_ms:hn` | Execution time in ms              |
 | `ingest:status:all`          | `ingest:status:all`    | `'ok'` or `'degraded'`            |
 
-After all ingesters finish, it prints a summary table showing each source's status, count, and duration. This `kv_store` data is consumed by the `AutomationStatus` and `StatCard` dashboard widgets.
+After all ingesters finish, it prints a summary table showing each source's status, count, and duration. It also calls `recalcAllEngagementScores()` to update engagement-based relevance boosts. This `kv_store` data is consumed by the `IngestHealth` and `StatCard` dashboard widgets.
 
 Each ingester writes data to **both** Supabase PostgreSQL (via `lib/db.upsertEntry`, which also calls `scoreRelevance()` for watchlist-based relevance scoring) and markdown (via `lib/markdown.appendToFeed`). The `UNIQUE (source, url)` constraint prevents duplicates on repeated runs.
 
@@ -310,7 +310,7 @@ The scraper still exists for Slack notifications but is separate from the dashbo
 ```
 app/          → app/README.md        # 9 pages (/, /login, /signup, /feed, /watchlist, /logs, /intern-tasks, /repo-radar, /prompts) + auth callback + 10 API route groups (feed, watchlist, logs, ingest, repo-radar, stats, prompts)
 components/   → components/README.md # 10 shadcn/ui primitives + 8 briefing components + 2 prompt components + 4 dashboard widgets + 4 log components + command-palette + intern-tasks + sidebar + shell + auth-provider + theme
-src/          → src/README.md        # 6 ingesters (4 in orchestrator + 1 standalone repo-radar + 1 standalone prompts) + DB (9 tables + browser/server clients) + analytics + log-parser + repo-radar + relevance-scorer
+src/          → src/README.md        # 6 ingesters (4 in orchestrator + 1 standalone repo-radar + 1 standalone prompts) + DB (9 tables + browser/server clients) + analytics + log-parser + repo-radar + relevance-scorer + engagement-scorer + retroactive-scorer
   ├── db/     → src/db/README.md
   ├── ingesters/ → src/ingesters/README.md
   ├── lib/    → src/lib/README.md
@@ -338,7 +338,7 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | Relevance scoring (watchlist-based, called from upsertEntry)            | `src/lib/relevance-scorer.ts`            | ✅ Done                                                                                                              |
 | Feed API: GET (filters + pagination + relevance sort), POST, PATCH, DELETE | ✅     |
 | 3    | `/feed` page with filter bar, search, pin/read/delete/add | ✅     |
-| 4    | All 3 ingesters: HN, GitHub Trending, RSS (manual standalone) | ✅     |
+| 4    | All 4 ingesters: HN, GitHub Trending, RSS, repo_radar (manual standalone) | ✅     |
 | 5    | `run-all.ts` orchestrator (exports `runAll()`) + `npm run ingest` | ✅     |
 | 6    | Confirmed `/feed` shows data from all sources             | ✅     |
 | 7    | Engineering Briefing homepage (5 sections + stats)        | ✅     |
@@ -355,7 +355,7 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 18   | Repo Radar: page + API + GitHub client + ingester + seed data | ✅     |
 | 19   | Repo Radar README docs: app/repo-radar/, app/api/repo-radar/ | ✅     |
 | 20   | Sidebar with branding, nav, quick stats, theme toggle    | ✅     |
-| 21   | Briefing components (6): StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, AutomationStatus | ✅     |
+| 21   | Briefing components (7): StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, IngestHealth, StackSummary | ✅     |
 | 22   | Stats API (`GET /api/stats`) consumed by sidebar         | ✅     |
 | 23   | Theme revamp: dark palette, accent colors, dot grid bg, 3 font variables | ✅     |
 | 24   | Briefing/Sidebar/Stats README docs                       | ✅     |
@@ -373,10 +373,14 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 36   | Feed pagination: page-based (Prev/Next) replaces infinite scroll | ✅     |
 | 37   | Watchlist enhancements: search, drift badge, vulns column, migration link | ✅     |
 | 38   | Auth-related README docs: login, signup, auth/callback, shell, auth-provider | ✅     |
+| 39   | Engagement scorer: pin/read-based relevance boost (relevance_base + pins×5 + reads×1, cap 100) | ✅     |
+| 40   | Retroactive scorer: re-scores existing feed items when watchlist grows | ✅     |
+| 41   | Ingestion status API (`GET /api/ingest/status`): per-source status + summary | ✅     |
+| 42   | IngestHealth widget: per-ingester health with source icons, ping dots, elapsed times | ✅     |
 
 ### ✅ All Modules Complete
 
-**Modules 1, 2, 3, 5, 7, and 8 are all built.** The MVP is complete. Additional features built: command palette, relevance scoring, StackSummary widget, feed pagination, watchlist enhancements, auth system.
+**Modules 1, 2, 3, 5, 7, and 8 are all built.** The MVP is complete. Additional features built: command palette, relevance scoring, engagement scoring, retroactive scoring, StackSummary widget, feed pagination, watchlist enhancements, auth system, ingestion health panel.
 
 ### Bonus — Scheduled Ingestion (not yet implemented)
 

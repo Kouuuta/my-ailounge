@@ -54,7 +54,7 @@ This folder contains onboarding guides, architecture references, research materi
 | Doc | Description |
 |-----|-------------|
 | `../src/ingesters/README.md` | Full ingestion pipeline: architecture diagram, 4 ingesters (manual-feeds, rss, hacker-news, github-trending) with format/source/commands, RSS feed URL list (12 feeds, 5 categories), HN Algolia API details, orchestrator + kv_store key schema, how to add a new RSS feed |
-| `../src/lib/README.md` | Shared utilities: `IngestEntry` interface, `upsertEntry()` dedup logic with relevance scoring, `appendToFeed()` markdown writer with 500-line trim, `scoreRelevance()` watchlist-based relevance scorer, `cn()` CSS utility |
+| `../src/lib/README.md` | Shared utilities: `IngestEntry` interface, `upsertEntry()` dedup logic with relevance scoring + engagement boost, `appendToFeed()` markdown writer with 500-line trim, `scoreRelevance()` watchlist-based relevance scorer, `recalcEngagementForItem()` pin/read-based score boost, `retroactivelyScore()` re-scores existing items when watchlist grows, `cn()` CSS utility |
 | `feeds/feeds-format-guide.md` | Standard markdown feed entry format and manual editing rules |
 
 ---

@@ -39,7 +39,7 @@ interface IngestEntry {
 
 **Relevance scoring integration:**
 
-`upsertEntry()` now calls `scoreRelevance()` from `relevance-scorer.ts` after a successful insert. If a match is found, it stores `ai_relevance_score`, `ai_relevance_label`, and `ai_relevance_reason` on the inserted row.
+`upsertEntry()` calls `scoreRelevance()` from `relevance-scorer.ts` after a successful insert. If a match is found, it stores `ai_relevance_score`, `ai_relevance_label`, `ai_relevance_reason`, and `relevance_base` on the inserted row, then calls `recalcEngagementForItem()` from `engagement-scorer.ts` to apply engagement boosts.
 
 Used by: `ingesters/manual-feeds`, `ingesters/rss`, `ingesters/hacker-news`, `ingesters/github-trending`.
 
@@ -60,6 +60,31 @@ Scores feed items against the user's stack watchlist to surface relevant content
 | Category match | 40 | Feed category matches watchlist item category |
 
 **Caching:** Watchlist data is cached in-memory for 10 minutes (600,000ms) to avoid repeated DB queries during batch ingestion.
+
+---
+
+### `engagement-scorer.ts`
+
+Boosts `ai_relevance_score` based on user engagement (pins/reads) to surface community-validated content.
+
+**`recalcEngagementForItem(itemId)`** — recalculates score for a single item:
+```
+final = min(relevance_base + pins×5 + reads×1, 100)
+```
+
+Called from `upsertEntry()` (on insert) and from `retroactivelyScore()` (on retroactive update).
+
+**`recalcAllEngagementScores()`** — recalculates for all items with non-null `relevance_base`. Called at the end of `runAll()` orchestrator.
+
+---
+
+### `retroactive-scorer.ts`
+
+Re-scores existing feed items when the watchlist grows, so new watchlist entries immediately surface relevant historical content.
+
+**`retroactivelyScore({ name, category })`** — finds feed items whose `title`, `summary`, `tags`, or `category` match the new watchlist item, runs them through `scoreRelevance()`, and updates `relevance_base`, `ai_relevance_score`, `ai_relevance_label`, `ai_relevance_reason`. Then calls `recalcEngagementForItem()` for each matched item.
+
+Called from `POST /api/watchlist` after a successful insert.
 
 ---
 
@@ -95,7 +120,7 @@ Dashboard analytics queries against **Supabase PostgreSQL** (migrated from SQLit
 | `getItemsByCategory()` | `Promise<CategoryBreakdown[]>` | `supabase.from("feed_items").select("category, count:category.count()")` | `GROUP BY category ORDER BY count DESC` |
 | `getIngestionStatus()` | `Promise<IngestionStatus[]>` | Reads all `ingest:*` keys from `kv_store` via `.in()` filter | Same logic, sync SQLite |
 | `getLastGlobalIngestion()` | `Promise<string \| null>` | `.select("value").eq("key", "ingest:last_run:all").single()` | Same logic, sync SQLite |
-| `getGlobalIngestionStatus()` | `Promise<string \| null>` | `.select("value").eq("key", "ingest:status:all").single()` | Same logic, sync SQLite |
+| `getGlobalIngestionStatus()` | `Promise<string \| null>` | `.select("value").eq("key", "ingest:status:all").single()` | Same logic, sync SQLite (added in `e331bf9`) |
 
 **IngestionStatus fields:** `source`, `lastRun`, `status`, `count`, `elapsedMs`
 

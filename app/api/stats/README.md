@@ -28,8 +28,8 @@ Single `GET` endpoint consumed by the Sidebar's Quick Stats panel. Returns aggre
 |-------|------|--------|
 | `totalItems` | `number` | `SELECT COUNT(*) FROM feed_items WHERE source != 'manual'` |
 | `lastIngest` | `string\|null` | `getLastGlobalIngestion()` — reads `ingest:last_run:all` from `kv_store` |
-| `itemsToday` | `number` | `getItemsToday()` — filtered by `date(fetched_at) = date('now')` |
-| `itemsThisWeek` | `number` | `getItemsThisWeek()` — filtered by `fetched_at >= datetime('now', '-7 days')` |
+| `itemsToday` | `number` | `getItemsToday()` — filtered by `fetched_at` between today midnight and tomorrow midnight (JS `Date`) |
+| `itemsThisWeek` | `number` | `getItemsThisWeek()` — filtered by `fetched_at >= 7 days ago` (JS `Date`) |
 | `errors` | `number` | `getIngestionStatus()` count where `status === 'error'` |
 | `stackTotal` | `number` | `SELECT COUNT(*) FROM watchlist_items` |
 | `stackHigh` | `number` | Count of `watchlist_items` with `risk_level='high'` |
