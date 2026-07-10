@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/src/db/supabase-client";
+import { retroactivelyScore } from "@/src/lib/retroactive-scorer";
 
 export async function GET() {
   const { data: items } = await supabase
@@ -41,6 +42,9 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
+
+  retroactivelyScore({ name: body.name, category: body.category || null })
+    .catch((e) => console.error("retroactive scoring failed", e));
 
   return NextResponse.json({ ok: true, id: data.id }, { status: 201 });
 }
