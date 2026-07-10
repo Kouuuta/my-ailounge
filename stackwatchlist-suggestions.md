@@ -17,8 +17,8 @@ Help developers immediately identify which technologies require attention.
 ## Current
 
 | Installed | Latest |
-|-----------|--------|
-| 16.2.7 | 16.2.9 |
+| --------- | ------ |
+| 16.2.7    | 16.2.9 |
 
 The developer must manually compare versions.
 
@@ -40,9 +40,9 @@ Examples:
 
 Example:
 
-| Installed | Latest | Status |
-|-----------|--------|--------|
-|16.2.7|16.2.9|🟡 2 patch versions behind|
+| Installed | Latest | Status                     |
+| --------- | ------ | -------------------------- |
+| 16.2.7    | 16.2.9 | 🟡 2 patch versions behind |
 
 ## Benefits
 
@@ -242,13 +242,13 @@ These can be displayed inside the expanded panel or as quick actions.
 
 # Summary
 
-| Priority | Proposal | Purpose |
-|----------|----------|---------|
-| ⭐⭐⭐⭐⭐ | Version Health Indicator | Quickly identify technologies requiring updates |
+| Priority   | Proposal                 | Purpose                                                     |
+| ---------- | ------------------------ | ----------------------------------------------------------- |
+| ⭐⭐⭐⭐⭐ | Version Health Indicator | Quickly identify technologies requiring updates             |
 | ⭐⭐⭐⭐⭐ | Expandable Details Panel | Display additional information without cluttering the table |
-| ⭐⭐⭐⭐⭐ | Risk Explanation | Explain why a dependency has a specific risk level |
-| ⭐⭐⭐⭐☆ | Last Checked Timestamp | Show when dependency information was last verified |
-| ⭐⭐⭐⭐☆ | Quick Resource Links | Provide one-click access to documentation and release notes |
+| ⭐⭐⭐⭐⭐ | Risk Explanation         | Explain why a dependency has a specific risk level          |
+| ⭐⭐⭐⭐☆  | Last Checked Timestamp   | Show when dependency information was last verified          |
+| ⭐⭐⭐⭐☆  | Quick Resource Links     | Provide one-click access to documentation and release notes |
 
 ---
 

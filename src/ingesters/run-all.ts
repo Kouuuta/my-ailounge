@@ -1,5 +1,6 @@
 import { migrate } from "../db/schema";
 import { supabase, closeDb } from "../db/client";
+import { recalcAllEngagementScores } from "../lib/engagement-scorer";
 import { ingestHackerNews } from "./hacker-news/index";
 import { ingestGithubTrending } from "./github-trending/index";
 import { ingestRss } from "./rss/index";
@@ -64,6 +65,9 @@ export async function runAll(opts?: { closeDb?: boolean }): Promise<IngestResult
   results.repo_radar = await runTracked("repo_radar", "repo_radar", ingestRepoRadar);
 
   const allOk = Object.values(results).every((r) => r.ok);
+
+  const engagementCount = await recalcAllEngagementScores();
+  console.log(`  📊 Engagement scores recalculated for ${engagementCount} items`);
 
   await setKv("ingest:last_run:all", new Date().toISOString());
   await setKv("ingest:status:all", allOk ? "ok" : "degraded");

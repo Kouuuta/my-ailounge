@@ -1,5 +1,6 @@
 import { supabase } from "../db/supabase-client";
 import { scoreRelevance } from "./relevance-scorer";
+import { recalcEngagementForItem } from "./engagement-scorer";
 
 export interface IngestEntry {
   source:       string;
@@ -57,8 +58,11 @@ export async function upsertEntry(entry: IngestEntry): Promise<"inserted" | "ski
         ai_relevance_score: relevance.score,
         ai_relevance_label: relevance.label,
         ai_relevance_reason: relevance.reason,
+        relevance_base: relevance.score,
       })
       .eq("id", inserted.id);
+
+    await recalcEngagementForItem(inserted.id);
   }
 
   return "inserted";

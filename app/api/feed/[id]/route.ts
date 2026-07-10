@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSupabase } from "@/src/db/server-client";
+import { recalcEngagementForItem } from "@/src/lib/engagement-scorer";
 
 export async function PATCH(
   req: NextRequest,
@@ -42,6 +43,8 @@ export async function PATCH(
     }, {
       onConflict: "user_id, feed_item_id",
     });
+
+    await recalcEngagementForItem(itemId);
   }
 
   const { data: updated } = await supabase

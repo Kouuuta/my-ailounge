@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS feed_items (
   ai_relevance_score  INTEGER,
   ai_relevance_label  TEXT,
   ai_relevance_reason TEXT,
+  relevance_base      INTEGER,
   ai_tldr             TEXT,
   UNIQUE (source, url)
 );
