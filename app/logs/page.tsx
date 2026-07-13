@@ -24,6 +24,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PatternDrillDown } from "@/components/logs/pattern-drilldown";
 import { SeverityLegend } from "@/components/logs/severity-legend";
 import { DateFilter, getDateRange } from "@/components/logs/date-filter";
+import { SeverityFilter } from "@/components/logs/severity-filter";
+import { PatternSearch } from "@/components/logs/pattern-search";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -120,6 +122,8 @@ function LogsContent() {
   const [trendDailyCounts, setTrendDailyCounts] = useState<{ day: string; count: number }[]>([]);
   const [trendPeriod, setTrendPeriod] = useState("all");
   const [patternsPeriod, setPatternsPeriod] = useState("all");
+  const [patternsSeverity, setPatternsSeverity] = useState("all");
+  const [patternsSearch, setPatternsSearch] = useState("");
   const [anomaliesPeriod, setAnomaliesPeriod] = useState("all");
   const [trendCustomRange, setTrendCustomRange] = useState<{ from: string; to: string } | null>(null);
   const [patternsCustomRange, setPatternsCustomRange] = useState<{ from: string; to: string } | null>(null);
@@ -299,6 +303,18 @@ function LogsContent() {
       methodsList = JSON.parse(detail.methods || "[]");
     } catch {}
 
+    const filteredPatterns = patterns
+      .filter((p) => patternsSeverity === "all" || p.severity === patternsSeverity)
+      .filter((p) => {
+        if (!patternsSearch) return true;
+        const q = patternsSearch.toLowerCase();
+        return (
+          p.sample_message.toLowerCase().includes(q) ||
+          p.pattern_key.toLowerCase().includes(q) ||
+          String(p.count).includes(q)
+        );
+      });
+
     const trendData = (trendDailyCounts || []).map((d) => ({
       date: d.day,
       errors: d.count,
@@ -406,19 +422,23 @@ function LogsContent() {
                 <CardTitle className="text-sm font-medium">
                   Top Error Patterns
                 </CardTitle>
-                <DateFilter value={patternsPeriod} onChange={setPatternsPeriod} customDateRange={patternsCustomRange} onCustomDateRangeApply={setPatternsCustomRange} />
+                <div className="flex items-center gap-2">
+                  <SeverityFilter value={patternsSeverity} onChange={setPatternsSeverity} />
+                  <DateFilter value={patternsPeriod} onChange={setPatternsPeriod} customDateRange={patternsCustomRange} onCustomDateRangeApply={setPatternsCustomRange} />
+                </div>
               </div>
             </CardHeader>
             <CardContent>
-              {patterns.length === 0 ? (
+              {filteredPatterns.length === 0 ? (
                 <p className="py-8 text-center text-sm text-muted-foreground">
                   No patterns detected
                 </p>
               ) : (
                 <>
-                  <SeverityLegend className="mb-3" />
+                  <PatternSearch value={patternsSearch} onChange={setPatternsSearch} />
+                  <SeverityLegend className="mt-3 mb-3" />
                   <div className="space-y-2">
-                    {patterns.slice(0, 10).map((p) => (
+                    {filteredPatterns.slice(0, 10).map((p) => (
                     <button
                       key={p.id}
                       className="w-full rounded-lg border px-3 py-2 text-left transition-colors hover:border-accent-vibrant/30"
