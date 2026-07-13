@@ -124,6 +124,7 @@ function LogsContent() {
   const [patternsPeriod, setPatternsPeriod] = useState("all");
   const [patternsSeverity, setPatternsSeverity] = useState("all");
   const [patternsSearch, setPatternsSearch] = useState("");
+  const [anomaliesSearch, setAnomaliesSearch] = useState("");
   const [anomaliesPeriod, setAnomaliesPeriod] = useState("all");
   const [trendCustomRange, setTrendCustomRange] = useState<{ from: string; to: string } | null>(null);
   const [patternsCustomRange, setPatternsCustomRange] = useState<{ from: string; to: string } | null>(null);
@@ -315,6 +316,24 @@ function LogsContent() {
         );
       });
 
+    const filteredAnomalies = !anomaliesSearch
+      ? anomalies
+      : anomalies.filter((a) => {
+          const q = anomaliesSearch.toLowerCase();
+          return (
+            a.description.toLowerCase().includes(q) ||
+            a.severity.toLowerCase().includes(q) ||
+            String(a.error_count).includes(q) ||
+            String(a.expected_count).includes(q) ||
+            a.detected_at.toLowerCase().includes(q) ||
+            (a.top_patterns ?? []).some(
+              (tp) =>
+                tp.raw_sample.toLowerCase().includes(q) ||
+                tp.pattern_key.toLowerCase().includes(q),
+            )
+          );
+        });
+
     const trendData = (trendDailyCounts || []).map((d) => ({
       date: d.day,
       errors: d.count,
@@ -429,43 +448,48 @@ function LogsContent() {
               </div>
             </CardHeader>
             <CardContent>
+              <PatternSearch value={patternsSearch} onChange={setPatternsSearch} placeholder="Search error patterns..." />
+              <SeverityLegend className="mt-3 mb-3" />
               {filteredPatterns.length === 0 ? (
-                <p className="py-8 text-center text-sm text-muted-foreground">
-                  No patterns detected
-                </p>
+                patterns.length === 0 ? (
+                  <p className="py-8 text-center text-sm text-muted-foreground">
+                    No patterns detected
+                  </p>
+                ) : (
+                  <div className="py-8 text-center">
+                    <p className="text-sm text-muted-foreground">No matching patterns found</p>
+                    <p className="text-xs text-muted-foreground/60 mt-1">Try adjusting the search, severity filter, or date range.</p>
+                  </div>
+                )
               ) : (
-                <>
-                  <PatternSearch value={patternsSearch} onChange={setPatternsSearch} />
-                  <SeverityLegend className="mt-3 mb-3" />
-                  <div className="space-y-2">
-                    {filteredPatterns.slice(0, 10).map((p) => (
-                    <button
-                      key={p.id}
-                      className="w-full rounded-lg border px-3 py-2 text-left transition-colors hover:border-accent-vibrant/30"
-                      onClick={() => {
-                        const params = new URLSearchParams(searchParams.toString());
-                        params.set("pattern", String(p.id));
-                        router.push(`/logs?${params.toString()}`);
-                      }}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="min-w-0 flex-1 truncate text-sm font-medium">
-                          {p.sample_message}
-                        </p>
-                        <Badge
-                          className={`shrink-0 text-[10px] ${severityBadge(p.severity)}`}
-                        >
-                          {p.count}
-                        </Badge>
-                      </div>
-                      <p className="mt-0.5 text-[11px] text-muted-foreground">
-                        {p.first_seen.substring(0, 10)} —{" "}
-                        {p.last_seen.substring(0, 10)}
+                <div className="space-y-2">
+                  {filteredPatterns.slice(0, 10).map((p) => (
+                  <button
+                    key={p.id}
+                    className="w-full rounded-lg border px-3 py-2 text-left transition-colors hover:border-accent-vibrant/30"
+                    onClick={() => {
+                      const params = new URLSearchParams(searchParams.toString());
+                      params.set("pattern", String(p.id));
+                      router.push(`/logs?${params.toString()}`);
+                    }}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="min-w-0 flex-1 truncate text-sm font-medium">
+                        {p.sample_message}
                       </p>
-                    </button>
-                  ))}
-                </div>
-                </>
+                      <Badge
+                        className={`shrink-0 text-[10px] ${severityBadge(p.severity)}`}
+                      >
+                        {p.count}
+                      </Badge>
+                    </div>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">
+                      {p.first_seen.substring(0, 10)} —{" "}
+                      {p.last_seen.substring(0, 10)}
+                    </p>
+                  </button>
+                ))}
+              </div>
               )}
             </CardContent>
           </Card>
@@ -479,62 +503,70 @@ function LogsContent() {
               </div>
             </CardHeader>
             <CardContent>
-              {anomalies.length === 0 ? (
-                <p className="py-8 text-center text-sm text-muted-foreground">
-                  No anomalies detected
-                </p>
+              <PatternSearch value={anomaliesSearch} onChange={setAnomaliesSearch} placeholder="Search anomalies..." />
+              {filteredAnomalies.length === 0 ? (
+                anomalies.length === 0 ? (
+                  <p className="py-8 text-center text-sm text-muted-foreground">
+                    No anomalies detected
+                  </p>
+                ) : (
+                  <div className="py-8 text-center">
+                    <p className="text-sm text-muted-foreground">No matching anomalies found</p>
+                    <p className="text-xs text-muted-foreground/60 mt-1">Try adjusting the search or date range.</p>
+                  </div>
+                )
               ) : (
-                <div className="space-y-2">
-                  {anomalies.map((a, i) => (
-                    <div
-                      key={i}
-                      className="rounded-lg border px-3 py-2"
-                    >
-                      <div className="flex items-start gap-3">
-                        <AlertTriangle
-                          className={`mt-0.5 h-4 w-4 shrink-0 ${a.severity === "high" ? "text-red-500" : "text-amber-500"}`}
-                        />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium">{a.description}</p>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {a.error_count} errors vs{" "}
-                            {Math.round(a.expected_count)} expected
-                          </p>
-                        </div>
-                        <Badge
-                          className={`shrink-0 text-[10px] ${severityBadge(a.severity)}`}
-                        >
-                          {a.severity}
-                        </Badge>
+                <div className="space-y-2 mt-3">
+                  {filteredAnomalies.map((a, i) => (
+                  <div
+                    key={i}
+                    className="rounded-lg border px-3 py-2"
+                  >
+                    <div className="flex items-start gap-3">
+                      <AlertTriangle
+                        className={`mt-0.5 h-4 w-4 shrink-0 ${a.severity === "high" ? "text-red-500" : "text-amber-500"}`}
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium">{a.description}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          {a.error_count} errors vs{" "}
+                          {Math.round(a.expected_count)} expected
+                        </p>
                       </div>
-                      {a.top_patterns && a.top_patterns.length > 0 && (
-                        <>
-                          <Separator className="my-1.5" />
-                          <div className="space-y-0.5">
-                            <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">
-                              Top Patterns
-                            </p>
-                            {a.top_patterns.map((p, j) => (
-                              <div key={j} className="space-y-0.5">
-                                <div className="flex items-center justify-between text-[11px]">
-                                  <span className="min-w-0 flex-1 truncate mr-2" title={p.pattern_key}>
-                                    {p.pattern_key}
-                                  </span>
-                                  <span className="shrink-0 tabular-nums text-muted-foreground">
-                                    {p.count} ({p.percentage}%)
-                                  </span>
-                                </div>
-                                <p className="truncate text-[10px] text-muted-foreground/60 italic pl-1" title={p.raw_sample}>
-                                  {p.raw_sample}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </>
-                      )}
+                      <Badge
+                        className={`shrink-0 text-[10px] ${severityBadge(a.severity)}`}
+                      >
+                        {a.severity}
+                      </Badge>
                     </div>
-                  ))}
-                </div>
+                    {a.top_patterns && a.top_patterns.length > 0 && (
+                      <>
+                        <Separator className="my-1.5" />
+                        <div className="space-y-0.5">
+                          <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                            Top Patterns
+                          </p>
+                          {a.top_patterns.map((p, j) => (
+                            <div key={j} className="space-y-0.5">
+                              <div className="flex items-center justify-between text-[11px]">
+                                <span className="min-w-0 flex-1 truncate mr-2" title={p.pattern_key}>
+                                  {p.pattern_key}
+                                </span>
+                                <span className="shrink-0 tabular-nums text-muted-foreground">
+                                  {p.count} ({p.percentage}%)
+                                </span>
+                              </div>
+                              <p className="truncate text-[10px] text-muted-foreground/60 italic pl-1" title={p.raw_sample}>
+                                {p.raw_sample}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
               )}
             </CardContent>
           </Card>
