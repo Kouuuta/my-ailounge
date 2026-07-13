@@ -9,10 +9,18 @@ export async function GET(
   const { id } = await params;
   const db = getDb();
   const includePatterns = req.nextUrl.searchParams.get("include_patterns") === "true";
+  const fromDate = req.nextUrl.searchParams.get("from_date");
+  const toDate = req.nextUrl.searchParams.get("to_date");
 
-  const rows = db
-    .prepare("SELECT * FROM log_anomalies WHERE analysis_id = ? ORDER BY deviation DESC")
-    .all(id) as Record<string, unknown>[];
+  let sql = "SELECT * FROM log_anomalies WHERE analysis_id = ?";
+  const queryParams: (string | number)[] = [id];
+  if (fromDate && toDate) {
+    sql += " AND detected_at >= ? AND detected_at <= ?";
+    queryParams.push(fromDate, toDate);
+  }
+  sql += " ORDER BY deviation DESC";
+
+  const rows = db.prepare(sql).all(...queryParams) as Record<string, unknown>[];
 
   if (includePatterns && rows.length > 0) {
     const getTopPatterns = db.prepare(`
