@@ -4,6 +4,26 @@
 
 ## June 2026
 
+- [Greptile, Cursor, and Devin agree that agents should run their code. What they run it against matters.](https://thenewstack.io/runtime-verification-coding-agents/) | 2026-06-27 | devops
+- [Okta is the first to bring AI agent governance inside FedRAMP boundaries](https://thenewstack.io/okta-ai-agents-fedramp/) | 2026-06-28 | devops
+- [&#8220;Bring it to our shop&#8221;: Workday&#8217;s pitch for keeping AI agents close to your most valuable data](https://thenewstack.io/workday-ai-inference-guardrails/) | 2026-06-28 | devops
+- [Palantir and Nvidia want to change who owns government AI](https://thenewstack.io/palantir-nvidia-sovereign-ai/) | 2026-06-29 | devops
+- [JetBrains kills Kotlin Notebook months after Microsoft&#8217;s Polyglot exit. But Jupyter is doing just fine.](https://thenewstack.io/kotlin-notebook-jupyter-python-retreat/) | 2026-06-29 | devops
+- [Base44 bets a narrow model beats frontier AI for vibe coding](https://thenewstack.io/base44-base-one-model/) | 2026-06-29 | devops
+- [IdentityServer4 is dead. Here&#8217;s what comes next.](https://thenewstack.io/rsk-forks-open-identityserver/) | 2026-06-30 | devops
+- [Operating Kubernetes at scale: a few stories from running Amazon EKS](https://thenewstack.io/eks-kubernetes-etcd-scale/) | 2026-06-30 | devops
+- [Aikido acquires Root to backport open source fixes without forcing upgrades](https://thenewstack.io/aikido-acquires-root-security/) | 2026-06-30 | devops
+- [&#8220;The harness is where the hard work is&#8221;: Harness bets on agents that enterprises can trust in production](https://thenewstack.io/harness-autonomous-worker-agents/) | 2026-06-30 | devops
+- [AWS just put $1 billion into forward deployed engineers. Here&#8217;s why it matters for enterprise teams.](https://thenewstack.io/aws-forward-deployed-engineering/) | 2026-06-30 | devops
+- [AWS launches a desktop for agents](https://thenewstack.io/aws-workspaces-desktops-for-agents/) | 2026-06-30 | devops
+- [Anthropic launches Claude Science, an AI workbench for scientific research](https://thenewstack.io/anthropic-claude-science-workbench/) | 2026-06-30 | devops
+- [Anthropic Sonnet 5: It closes the gap with Opus 4.8, and is cheap until August](https://thenewstack.io/claude-sonnet-5-launch/) | 2026-06-30 | devops
+- [The infrastructure lock-in costing AI companies hundreds of millions](https://thenewstack.io/future-proof-ai-infrastructure/) | 2026-06-30 | devops
+- [Anthropic&#8217;s Claude Sonnet 5 system card says more about the future of AI than its benchmarks do](https://thenewstack.io/ai-agent-infrastructure-reliability/) | 2026-06-30 | devops
+- [AI Coding Costs Could Exceed Developer Salaries, Gartner Warns](https://devops.com/ai-coding-costs-could-exceed-developer-salaries-gartner-warns/) | 2026-06-30 | devops
+- [Harness Adds Autonomous AI Agents to Automate DevOps Workflows](https://devops.com/harness-adds-autonomous-ai-agents-to-automate-devops-workflows/) | 2026-06-30 | devops
+- [Mozilla Shows the Danger of Indirect Prompt Injections in AI Coding Agents](https://devops.com/mozilla-shows-the-danger-of-indirect-prompt-injections-in-ai-coding-agents/) | 2026-06-30 | devops
+- [OpenAI Expands Into Developer Hardware With Codex Micro Keyboard](https://devops.com/openai-expands-into-developer-hardware-with-codex-micro-keyboard/) | 2026-06-30 | devops
 - [Sakana Fugu is more than a router. But it’s not the blueprint for AI sovereignty, either.](https://thenewstack.io/sakana-fugu-ai-sovereignty/) | 2026-06-24 | devops
 - [Agentic infrastructure operations begin with accurate, reliable infrastructure data](https://thenewstack.io/netbox-infrastructure-ai-agents/) | 2026-06-24 | devops
 - [Chainguard targets Java&#8217;s unpatched vulnerability backlog with drop-in remediated libraries](https://thenewstack.io/chainguard-java-libraries-spring-boot-cves/) | 2026-06-24 | devops
@@ -67,3 +87,57 @@
 - [IaC Isn't Dying. AI Makes it More Important](https://devops.com/iac-isnt-dying-ai-makes-it-more-important/) | 2026-06-18 | devops, iac, ai
 - [Why the RAMpocalypse is the Next Frontier for DevOps](https://devops.com/why-the-rampocalypse-is-the-next-frontier-for-devops-not-the-end-of-the-line/) | 2026-06-19 | devops, infrastructure
 - [SDLC Data Governance Critical as AI Systems Outpace Human Oversight](https://devops.com/sdlc-data-governance-critical-as-ai-systems-outpace-human-oversight/) | 2026-06-19 | devops, governance, ai
+
+## July 2026
+- [Z.ai Debuts ZCode to Compete With GitHub Copilot, Cursor and Anthropic](https://devops.com/z-ai-debuts-zcode-to-compete-with-github-copilot-cursor-and-anthropic/) | 2026-07-02 | devops
+- [Apple just turned Safari into something AI agents can control](https://thenewstack.io/safari-mcp-platform-infrastructure/) | 2026-07-03 | devops
+- [Why cheaper models alone won&#8217;t save your AI budget](https://thenewstack.io/agentic-ai-token-costs/) | 2026-07-04 | devops
+- [The AI revolution will not be televised — it&#8217;ll be quantized](https://thenewstack.io/chinese-frontier-models-quantization/) | 2026-07-05 | devops
+- [10 moments that defined AI&#8217;s turbulent first half of 2026](https://thenewstack.io/biggest-ai-moments-2026/) | 2026-07-05 | devops
+- [Microsoft, AWS and Anthropic are spending billions — and not on better models](https://thenewstack.io/microsoft-frontier-forward-deployed/) | 2026-07-05 | devops
+- [The code review bug hunt is dead. Here&#8217;s what developers get wrong.](https://thenewstack.io/code-review-catches-maintainability-bugs/) | 2026-07-06 | devops
+- [Andrej Karpathy, Google and Garry Tan agree Markdown is the answer, but they&#8217;re not solving the same problem](https://thenewstack.io/markdown-agent-memory-moat/) | 2026-07-06 | devops
+- [Palantir&#8217;s Alex Karp and Mistral&#8217;s Arthur Mensch agree: AI lock-in is coming for enterprises](https://thenewstack.io/karp-mensch-ai-lockin/) | 2026-07-06 | devops
+- [Why most AI projects fail: It’s infrastructure and people](https://thenewstack.io/why-most-ai-projects-fail-its-infrastructure-and-people/) | 2026-07-06 | devops
+- [Getting Claude Code to grunt in Caveman-speak might not save as many tokens as you think](https://thenewstack.io/caveman-mode-token-savings/) | 2026-07-06 | devops
+- [Microsoft, Google and Cloudflare just made 2029 the new quantum deadline](https://thenewstack.io/post-quantum-cryptography-deadline-2029/) | 2026-07-06 | devops
+- [A new study just debunked the biggest fear about AI and open source](https://thenewstack.io/ai-open-source-newcomers-study/) | 2026-07-06 | devops
+- [How to kill the code review](https://thenewstack.io/killing-the-code-review/) | 2026-07-07 | devops
+- [The organizational iceberg: the invisible data breaking your AI agents](https://thenewstack.io/invisible-data-ai-agents/) | 2026-07-07 | devops
+- [Anthropic&#8217;s Claude Cowork now keeps working when you close your laptop](https://thenewstack.io/claude-cowork-cloud-mobile/) | 2026-07-07 | devops
+- [Anthropic gives Claude subscribers five more days with Fable 5](https://thenewstack.io/anthropic-extends-fable-5/) | 2026-07-07 | devops
+- [Vercel acquires Better Auth to give AI agents their own identity](https://thenewstack.io/vercel-acquires-better-auth/) | 2026-07-07 | devops
+- [Watch AWS engineers troubleshoot agentic AI with OpenTelemetry and OpenSearch](https://thenewstack.io/opentelemetry-opensearch-agent-observability/) | 2026-07-07 | devops
+- [Coinbase runs 1,200 agents and just slashed its AI bill in half](https://thenewstack.io/multi-model-ai-infrastructure/) | 2026-07-07 | devops
+- [Entire is building a Git network for agents](https://thenewstack.io/entire-git-for-agents/) | 2026-07-08 | devops
+- [“Nature is the most computationally efficient system we know”: How Refiant used swarm optimization to build a 10-million-token AI model](https://thenewstack.io/refiant-protea-swarm-optimization/) | 2026-07-08 | devops
+- [Most enterprises will hand root cause analysis to AI agents within two years](https://thenewstack.io/elastic-agentic-observability-enterprise-adoption/) | 2026-07-08 | devops
+- [OpenAI&#8217;s own safety card says GPT-5.6 has a lying problem](https://thenewstack.io/gpt-5-6-developer-reactions/) | 2026-07-08 | devops
+- [Meta says it caught OpenAI. One thing is missing.](https://thenewstack.io/meta-watermelon-benchmark-claim/) | 2026-07-08 | devops
+- [JetBrains&#8217; next move isn&#8217;t a better IDE — it&#8217;s a governance layer over Claude Code, Codex, and Gemini CLI](https://thenewstack.io/jetbrains-ai-team-governance/) | 2026-07-08 | devops
+- [&#8220;Opus-class, but faster&#8221;: What Elon Musk says about beating Anthropic](https://thenewstack.io/grok-45-opus-killer-launch/) | 2026-07-08 | devops
+- [How AI is revamping DevSecOps processes](https://devops.com/how-ai-is-revamping-devsecops-processes/) | 2026-07-07 | devops
+- [‘GitLost’ Flaw Lets Attackers Trick GitHub AI Agent Into Leaking Private Repos](https://devops.com/gitlost-flaw-lets-attackers-trick-github-ai-agent-into-leaking-private-repos/) | 2026-07-08 | devops
+- [Pentagon Campaign Seeks Engineers for Defense AI and Software Modernization](https://devops.com/pentagon-campaign-seeks-engineers-for-defense-ai-and-software-modernization/) | 2026-07-08 | devops
+- [North Korea Expands the Reach of PolinRider Supply Chain Attack Campaign](https://devops.com/north-korea-expands-the-reach-of-polinrider-supply-chain-attack-campaign/) | 2026-07-08 | devops
+- [Former GitHub CEO Unveils Distributed Git Network Built for AI Coding Agents](https://devops.com/former-github-ceo-unveils-distributed-git-network-built-for-ai-coding-agents/) | 2026-07-08 | devops
+- [GitHub Copilot Bills Hit $800: Visual Studio&#8217;s June Update Adds Real-Time Usage Alerts and MCP Trust Checks](https://devops.com/github-copilot-bills-hit-800-visual-studios-june-update-adds-real-time-usage-alerts-and-mcp-trust-checks/) | 2026-07-09 | devops
+- [Developing Real-Time Event Processing With Micronaut and Kafka Streams: A Step-by-Step Guide](https://devops.com/developing-real-time-event-processing-with-micronaut-and-kafka-streams-a-step-by-step-guide/) | 2026-07-09 | devops
+- [Why AI-Driven Devops is Exposing the Limits of Traditional Toolchains and What Comes Next for Engineering Teams in 2026](https://devops.com/why-aihe-limits-of-traditional-toolchains-and-what-comes-next-for-engineering-teams-in-2026/) | 2026-07-09 | devops
+- [Building CI/CD Pipelines for On-Prem Azure DevOps: What the Cloud Docs Don’t Tell You](https://devops.com/building-ci-cd-pipelines-for-on-prem-azure-devops-what-the-cloud-docs-dont-tell-you/) | 2026-07-09 | devops
+- [Self-Healing Infrastructure With Cognitive Automation: How LLMs and Ansible Transform Middleware Reliability](https://devops.com/self-healing-infrastructure-with-cognitive-automation-how-llms-and-ansible-transform-middleware-reliability/) | 2026-07-09 | devops
+- [Fable is coming back: Federal government lifts export controls on Anthropic AI model](https://thenewstack.io/anthropic-fable-ban-lifted/) | 2026-07-01 | devops
+- [How Anthropic is bringing Fable 5 back — and when it&#8217;ll cost you](https://thenewstack.io/how-anthropic-is-bringing-fable-5-back/) | 2026-07-01 | devops
+- [The call is coming from inside your pipeline: the anatomy of a Codecov attack](https://thenewstack.io/codecov-supply-chain-attack/) | 2026-07-01 | devops
+- [&#8220;You Only Compute Once&#8221;: How Clockwork wants to put an end to AI training restarts](https://thenewstack.io/clockwork-torchpass-gpu-migration/) | 2026-07-01 | devops
+- [Cloudflare wants to build the economic layer of the AI web](https://thenewstack.io/cloudflare-ai-web-economics/) | 2026-07-01 | devops
+- [Cordyceps flaw pattern is more proof CI/CD is part of the attack surface](https://thenewstack.io/cordyceps-cicd/) | 2026-07-01 | devops
+- [OpenClaw&#8217;s new app doesn&#8217;t run AI on your phone. That&#8217;s the whole point.](https://thenewstack.io/openclaw-persistent-agent-architecture/) | 2026-07-01 | devops
+- [Why traditional CI/CD fails for LLMs (and the release gates we built to fix it)](https://thenewstack.io/why-cicd-fails-llms/) | 2026-07-02 | devops
+- [Your social login buttons run on third-party cookies. FedCM doesn&#8217;t.](https://thenewstack.io/fedcm-federated-login-standard/) | 2026-07-02 | devops
+- [What comes after attention? This startup says it already knows.](https://thenewstack.io/subquadratic-sparse-attention-no-attention/) | 2026-07-02 | devops
+- [Anthropic Adds Enterprise Gateway to Simplify Claude Code Access on AWS and Google Cloud](https://devops.com/anthropic-adds-enterprise-gateway-to-simplify-claude-code-access-on-aws-and-google-cloud/) | 2026-07-01 | devops
+- [Ornith Models Automate Agentic Coding With Self-Scaffolding](https://devops.com/ornith-models-automate-agentic-coding-with-self-scaffolding/) | 2026-07-01 | devops
+- [Reliability Comes From the System, Not the Agent](https://devops.com/reliability-comes-from-the-system-not-the-agent/) | 2026-07-01 | devops
+- [Platform Engineering vs. DevOps: Why This Is the Wrong Question](https://devops.com/platform-engineering-vs-devops-why-this-is-the-wrong-question/) | 2026-07-02 | devops
+- [Lightrun Adds Ability to Assess Impact Pull Request Will Have in Production](https://devops.com/lightrun-adds-ability-to-assess-impact-pull-request-will-have-in-production/) | 2026-07-02 | devops

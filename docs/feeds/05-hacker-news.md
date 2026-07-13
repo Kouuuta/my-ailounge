@@ -337,3 +337,45 @@
 - [Malicious npm Packages Detected Across Red Hat Cloud Services](https://news.ycombinator.com/item?id=48356625) | 2026-06-01 | hn, discussion, engineering
 - [A 10 Year Old Xeon Is All You Need](https://news.ycombinator.com/item?id=48353348) | 2026-06-01 | hn, discussion, engineering
 
+
+## July 2026
+- [Happy Voluntary Lobotomy Day, Microsoft](https://www.uplevel.pro/p/happy-voluntary-lobotomy-day-microsoft) | 2026-07-02 | hn, discussion
+- [Bonnie Tyler latest: Legendary rock singer dies 'unexpectedly' in Portugal](https://news.sky.com/story/bonnie-tyler-latest-legendary-rock-singer-dies-in-portugal-13542742) | 2026-07-09 | hn, discussion
+- [The Traverse of the GR20](https://mongr20.com/en/) | 2026-07-09 | hn, discussion
+- [China Weighs Limits on the AI Models American Companies Love](https://www.wsj.com/tech/ai/china-weighs-limits-on-the-ai-models-american-companies-love-c3ad8f2b) | 2026-07-09 | hn, discussion
+- [If Microsoft sold off Xbox, who would even buy it?](https://www.theverge.com/games/962837/microsoft-xbox-spin-off-sell-divest-layoffs-asha-sharma) | 2026-07-09 | hn, discussion
+- [Ved AI Voice Assistant](https://github.com/Krish6190/Ved-Test) | 2026-07-09 | hn, discussion
+- [M64 Controller Review](https://retrododo.com/m64-controller-review-the-n64-remote-perfected/) | 2026-07-09 | hn, discussion
+- [Humm – free, private realtime speech-to-text](https://humm.so/) | 2026-07-09 | hn, discussion
+- [My Thoughts on the Bun Rust Rewrite](https://andrewkelley.me/post/my-thoughts-bun-rust-rewrite.html) | 2026-07-09 | hn, discussion
+- [Questions for the Team During Onboarding](https://simonwillison.net/2026/Mar/6/ally-piechowski/) | 2026-07-09 | hn, discussion
+- [The Fediverse Grew Up. Its Sign-Up Page Didn't](https://casually.onl/article?slug=fediverse-grew-up-2026) | 2026-07-09 | hn, discussion
+- [San Francisco homes sell for $1M above asking price amid AI boom](https://www.theguardian.com/us-news/2026/jul/07/san-francisco-home-sale-prices-ai) | 2026-07-09 | hn, discussion
+- [Grok 4.5 Benchmark Results](https://artificialanalysis.ai/models/grok-4-5) | 2026-07-09 | hn, discussion
+- [The UK plans to ban romantic AI chatbots for under-18s](https://blog.uehiro.ox.ac.uk/2026/06/the-uk-plans-to-ban-romantic-ai-chatbots-for-under-18s-young-people-have-bigger-worries-about-ai/) | 2026-07-09 | hn, discussion
+- [Tuta is making it easier to migrate all your emails to Tuta Mail](https://www.neowin.net/news/tuta-is-making-it-easier-to-migrate-all-your-emails-to-tuta-mail/) | 2026-07-09 | hn, discussion
+- [Relm – local LLMs as base-R objects, with interpretability](https://github.com/Vadale/R-ebirth) | 2026-07-09 | hn, discussion
+- [How to avoid dementia – what the science says](https://www.nature.com/articles/d41586-026-02098-z) | 2026-07-09 | hn, discussion
+- [Ask HK: Does it feel like the top modals routinely dismiss your opinion/advice?](https://news.ycombinator.com/item?id=48843420) | 2026-07-09 | hn, discussion
+- [Process Is a Tool, Not a Virtue](https://blog.kevingoldsmith.com/2026/03/18/process-is-a-tool-not-a-virtue/) | 2026-07-09 | hn, discussion
+- [The AI risk in marketing stacks inside orgs](https://singulr.ai/blog/the-hidden-ai-risk-in-your-marketing-stack-shadow-ai-automation-pipelines-and-the-hidden-data-leaks) | 2026-07-09 | hn, discussion
+- [Bonnie Tyler, singer of Total Eclipse of the Heart, dies aged 75](https://www.bbc.com/news/articles/cg5pd9z2487o) | 2026-07-09 | hn, discussion
+- [Timescapes of Non-Human Experience](https://www.sciencedirect.com/science/article/pii/S1364661326001087?dgcid=author#f0005) | 2026-07-02 | hn, discussion
+- [Does anyone use Google's Jules?](https://news.ycombinator.com/item?id=48764451) | 2026-07-02 | hn, discussion
+- [Incident with Pages GitHub](https://www.githubstatus.com/incidents/5bnwwg9tzd4q) | 2026-07-02 | hn, discussion
+- [Wordgard Release 0.1](https://marijnhaverbeke.nl/blog/wordgard-0.1.html) | 2026-07-02 | hn, discussion
+- [Banks Get Bids on $49B Paramount Debt Well Before Sale](https://www.bloomberg.com/news/articles/2026-07-02/banks-get-bids-on-49-billion-paramount-debt-well-before-sale) | 2026-07-02 | hn, discussion
+- [HealthChain – Python SDK to connect AI models to live EHR systems](https://github.com/healthchainai/HealthChain) | 2026-07-02 | hn, discussion
+- [MoltHub](https://moithub.com) | 2026-07-02 | hn, discussion
+- [TokenBudgeting: Our Conversations with Enterprises on Token Spend](https://newsletter.semianalysis.com/p/tokenbudgeting-our-conversations) | 2026-07-02 | hn, discussion
+- [Clinch – I intercept iOS app opens to interrupt doomscrolling](https://apps.apple.com/us/app/clinch-break-the-scroll/id6777446562) | 2026-07-02 | hn, discussion
+- [Bank of England explores trading 'kill switches' to contain AI meltdowns](https://www.computerweekly.com/news/366645329/Bank-of-England-explores-trading-kill-switches-to-contain-AI-meltdowns) | 2026-07-02 | hn, discussion
+- [Katri Vala (1901-1944)](https://authorscalendar.info/kvala.htm) | 2026-07-02 | hn, discussion
+- [After 30 years with Linux, I gave Windows 11 a chance and found 9 clear problems](https://www.zdnet.com/article/i-ditched-linux-for-windows-11-9-big-problems/) | 2026-07-02 | hn, discussion
+- [China has 400 private space companies. the West is barely paying attention](https://fortune.com/2026/07/02/china-private-space-industry-landspace-geely-spacex-rainer-zitelmann/) | 2026-07-02 | hn, discussion
+- [The Parrot in the Machine](https://www.nybooks.com/articles/2025/07/24/the-parrot-in-the-machine-the-ai-con-bender-hanna/) | 2026-07-02 | hn, discussion
+- [The Mental Models I Use to Work with AI](https://metedata.substack.com/p/015-the-mental-models-i-use-to-work) | 2026-07-02 | hn, discussion
+- [Neurosky EEG Pov TikTok](https://github.com/eegG0D/neurosky-eeg-pov-tiktok) | 2026-07-02 | hn, discussion
+- [Postgres Sorting at Scale Needs More Than Order By](https://www.tigerdata.com/blog/postgres-sorting-at-scale-order-by) | 2026-07-02 | hn, discussion
+- [Trump admin and Anthropic haven't discussed the gov't taking a stake in it](https://www.reuters.com/business/trump-administration-anthropic-have-not-discussed-government-taking-stakes-firm-2026-07-02/) | 2026-07-02 | hn, discussion
+- [Day 1: C# 15 Collection Expressions Just Got Superpowers – with()](https://medium.com/c-sharp-programming/day-1-csharp-15-collection-expressions-just-got-superpowers-with-explained-fb0324d88bda) | 2026-07-02 | hn, discussion

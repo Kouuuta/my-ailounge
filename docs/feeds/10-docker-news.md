@@ -4,6 +4,9 @@
 
 ## June 2026
 
+- [EU Cyber Resilience Act: Overview, Requirements, and Timelines](https://www.docker.com/blog/eu-cyber-resilience-act-overview/) | 2026-06-25 | docker
+- [How to Generate an SBOM for Container Workflows](https://www.docker.com/blog/sbom-generation-for-container-workflows/) | 2026-06-25 | docker
+- [What Does EU AI Act Compliance Require?](https://www.docker.com/blog/eu-ai-act-compliance/) | 2026-06-27 | docker
 - [What is an SBOM (and Why Can&#8217;t You Ship Without One)?](https://www.docker.com/blog/what-is-an-sbom/) | 2026-06-23 | docker
 - [Coding Agent Horror Stories: The 13-Hour AWS Outage](https://www.docker.com/blog/coding-agent-horror-stories-the-13-hour-aws-outage/) | 2026-06-18 | docker
 - [Coding Agent Horror Stories: The rm -rf ~/ Incident](https://www.docker.com/blog/coding-agent-horror-stories-the-rm-rf-incident/) | 2026-06-01 | docker
@@ -20,3 +23,7 @@
 
 ## May 2026
 - [Mitigating CVE-2026-31431 (&#8220;Copy Fail&#8221;) in Docker Engine](https://www.docker.com/blog/mitigating-cve-2026-31431-copy-fail-in-docker-engine/) | 2026-05-27 | docker
+
+## July 2026
+- [Why AI Agents Need Isolation](https://www.docker.com/blog/why-ai-agents-need-isolation/) | 2026-07-01 | docker
+- [Your Laptop Is the New Production Environment](https://www.docker.com/blog/your-laptop-is-the-new-production-environment/) | 2026-07-08 | docker

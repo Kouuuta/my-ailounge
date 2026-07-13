@@ -5,6 +5,19 @@
 
 ## June 2026
 
+- [Our latest Google Finance upgrades, including a new app](https://blog.google/products-and-platforms/products/search/google-finance-updates-june-2026/) | 2026-06-25 | ai
+- [Ask an AI expert: What exactly is the full stack?](https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/) | 2026-06-29 | ai
+- [Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers](https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/) | 2026-06-30 | ai
+- [Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5) | 2026-06-30 | ai
+- [Introducing Claude Sonnet 5](https://www.anthropic.com/news/claude-sonnet-5) | 2026-06-30 | ai
+- [Claude Science, an AI workbench for scientists, is now available](https://www.anthropic.com/news/claude-science-ai-workbench) | 2026-06-30 | ai
+- [Previewing GPT-5.6 Sol: a next-generation model](https://openai.com/index/previewing-gpt-5-6-sol) | 2026-06-26 | ai
+- [HP Inc. launches Frontier strategic partnership with OpenAI](https://openai.com/index/hp-frontier-partnership) | 2026-06-28 | ai
+- [Mapping Europe’s AI Workforce Opportunity](https://openai.com/index/mapping-ai-jobs-transition-eu) | 2026-06-29 | ai
+- [Core dump epidemiology: fixing an 18-year-old bug](https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug) | 2026-06-30 | ai
+- [Introducing GeneBench-Pro](https://openai.com/index/introducing-genebench-pro) | 2026-06-30 | ai
+- [Inside Genebench-Pro](https://openai.com/index/genebench-pro/case-studies) | 2026-06-30 | ai
+- [How ChatGPT adoption has expanded](https://openai.com/index/how-chatgpt-adoption-has-expanded) | 2026-06-30 | ai
 - [How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work) | 2026-06-25 | ai
 - [OpenAI and Broadcom unveil LLM-optimized inference chip](https://openai.com/index/openai-broadcom-jalapeno-inference-chip) | 2026-06-24 | ai
 - [Introducing Claude Tag](https://www.anthropic.com/news/introducing-claude-tag) | 2026-06-23 | ai
@@ -395,3 +408,16 @@
 - [EMEA Youth & Wellbeing Grant](https://openai.com/index/emea-youth-and-wellbeing-grant) | 2026-01-28 | ai
 - [Retiring GPT-4o, GPT-4.1, GPT-4.1 mini, and OpenAI o4-mini in ChatGPT](https://openai.com/index/retiring-gpt-4o-and-older-models) | 2026-01-29 | ai
 - [Taisei Corporation shapes the next generation of talent with AI](https://openai.com/index/taisei) | 2026-01-29 | ai
+
+## July 2026
+- [The latest AI news we announced in June 2026](https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-june-2026/) | 2026-07-01 | ai
+- [Expanding Managed Agents in Gemini API:  background tasks, remote MCP and more](https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/) | 2026-07-07 | ai
+- [More details on Fable 5’s cyber safeguards and our jailbreak framework](https://www.anthropic.com/news/fable-safeguards-jailbreak-framework) | 2026-07-02 | ai
+- [Government of Alberta uses Claude to find and fix cybersecurity vulnerabilities across government systems](https://www.anthropic.com/news/alberta-government-claude-cybersecurity) | 2026-07-06 | ai
+- [MUFG aims to become AI-native with OpenAI](https://openai.com/index/mufg) | 2026-07-07 | ai
+- [Australian Payments Plus moves faster with ChatGPT and Codex](https://openai.com/index/australian-payments-plus) | 2026-07-07 | ai
+- [Introducing GPT-Live](https://openai.com/index/introducing-gpt-live) | 2026-07-08 | ai
+- [Helping K–12 educators build practical AI skills](https://openai.com/index/k-12-educators-practical-skills) | 2026-07-08 | ai
+- [Separating signal from noise in coding evaluations](https://openai.com/index/separating-signal-from-noise-coding-evaluations) | 2026-07-08 | ai
+- [Our approach to government and national security partnerships](https://openai.com/index/government-national-security-partnerships) | 2026-07-08 | ai
+- [New York City educators and industry leaders gathered at Google’s offices to shape the future of AI in classrooms.](https://blog.google/products-and-platforms/products/education/nyc-ai-summit/) | 2026-07-01 | ai

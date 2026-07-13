@@ -4,6 +4,8 @@
 
 ## June 2026
 
+- [Call for testing: Shopper Lists in WooCommerce](https://developer.woocommerce.com/2026/06/26/shopper-lists/) | 2026-06-26 | wordpress
+- [The First AI Leaders Graduates](https://wordpress.org/news/2026/06/ai-leaders-graduates/) | 2026-06-29 | wordpress
 - [WooCommerce 10.9.1 Release Notes](https://developer.woocommerce.com/2026/06/24/woocommerce-10-9-1/) | 2026-06-24 | wordpress
 - [PayPal Standard is Sunsetting: What WooCommerce merchants need to know](https://developer.woocommerce.com/2026/06/24/sunsetting-paypal-standard/) | 2026-06-24 | wordpress
 - [WooCommerce 10.9.0 Release Notes](https://developer.woocommerce.com/2026/06/23/woocommerce-10-9/) | 2026-06-23 | wordpress
@@ -49,3 +51,13 @@
 ## February 2026
 - [A better way to test HTML in WordPress with assertEqualHTML()](https://developer.wordpress.org/news/2026/02/a-better-way-to-test-html-in-wordpress-with-assertequalhtml/) | 2026-02-26 | wordpress
 - [How to add custom entries to the editor Preview dropdown](https://developer.wordpress.org/news/2026/02/how-to-add-custom-entries-to-the-editor-preview-dropdown/) | 2026-02-19 | wordpress
+
+## July 2026
+- [Auto-apply coupon: how 209 lines of code replaced ~13,000](https://developer.woocommerce.com/2026/07/01/auto-apply-coupons/) | 2026-07-01 | wordpress
+- [WooCommerce 10.9.2 Release Notes](https://developer.woocommerce.com/2026/07/03/woocommerce-10-9-2/) | 2026-07-02 | wordpress
+- [WooCommerce 10.9.3 Release Notes](https://developer.woocommerce.com/2026/07/03/woocommerce-10-9-3/) | 2026-07-03 | wordpress
+- [Supporting high quality contributions to WooCommerce core](https://developer.woocommerce.com/2026/07/07/contributor-limits/) | 2026-07-07 | wordpress
+- [WooCommerce 10.9.4 Release Notes](https://developer.woocommerce.com/2026/07/07/woocommerce-10-9-4/) | 2026-07-07 | wordpress
+- [Unifying extension settings in WooCommerce](https://developer.woocommerce.com/2026/07/08/unifying-extension-settings-in-woocommerce/) | 2026-07-08 | wordpress
+- [Call for testing: Settings UI support for WooCommerce extensions](https://developer.woocommerce.com/2026/07/08/settings-ui/) | 2026-07-08 | wordpress
+- [July Office Hours: Testing the new Settings UI for extensions](https://developer.woocommerce.com/2026/07/08/july-2026-office-hours/) | 2026-07-08 | wordpress
