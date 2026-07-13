@@ -9,12 +9,19 @@ export async function GET(
   const { id } = await params;
   const numId = Number(id);
   const includePatterns = req.nextUrl.searchParams.get("include_patterns") === "true";
+  const fromDate = req.nextUrl.searchParams.get("from_date");
+  const toDate = req.nextUrl.searchParams.get("to_date");
 
-  const { data: rows } = await supabase
+  let query = supabase
     .from("log_anomalies")
     .select("*")
-    .eq("analysis_id", numId)
-    .order("deviation", { ascending: false });
+    .eq("analysis_id", numId);
+
+  if (fromDate && toDate) {
+    query = query.gte("detected_at", fromDate).lte("detected_at", toDate);
+  }
+
+  const { data: rows } = await query.order("deviation", { ascending: false });
 
   const anomalies = (rows ?? []) as Record<string, unknown>[];
 

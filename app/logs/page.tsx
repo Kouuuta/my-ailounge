@@ -23,6 +23,7 @@ import { SourceBreakdown } from "@/components/logs/source-breakdown";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PatternDrillDown } from "@/components/logs/pattern-drilldown";
 import { SeverityLegend } from "@/components/logs/severity-legend";
+import { DateFilter, getDateRange } from "@/components/logs/date-filter";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -116,6 +117,13 @@ function LogsContent() {
   const [detail, setDetail] = useState<Analysis | null>(null);
   const [patterns, setPatterns] = useState<Pattern[]>([]);
   const [anomalies, setAnomaly] = useState<Anomaly[]>([]);
+  const [trendDailyCounts, setTrendDailyCounts] = useState<{ day: string; count: number }[]>([]);
+  const [trendPeriod, setTrendPeriod] = useState("all");
+  const [patternsPeriod, setPatternsPeriod] = useState("all");
+  const [anomaliesPeriod, setAnomaliesPeriod] = useState("all");
+  const [trendCustomRange, setTrendCustomRange] = useState<{ from: string; to: string } | null>(null);
+  const [patternsCustomRange, setPatternsCustomRange] = useState<{ from: string; to: string } | null>(null);
+  const [anomaliesCustomRange, setAnomaliesCustomRange] = useState<{ from: string; to: string } | null>(null);
   const [loadingDetail, setLoadingDetail] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [deleting, setDeleting] = useState<number | null>(null);
@@ -131,30 +139,64 @@ function LogsContent() {
     }
   }, []);
 
+  const getEffectiveRange = (period: string, customRange: { from: string; to: string } | null): { from_date?: string; to_date?: string } => {
+    if (period === "custom" && customRange) {
+      return {
+        from_date: new Date(customRange.from + "T00:00:00").toISOString(),
+        to_date: new Date(customRange.to + "T23:59:59").toISOString(),
+      };
+    }
+    return getDateRange(period);
+  };
+
   const fetchDetail = useCallback(async (id: number) => {
     setLoadingDetail(true);
     try {
-      const [detailRes, patternsRes, anomaliesRes] = await Promise.all([
-        fetch(`/api/logs/${id}`),
-        fetch(`/api/logs/${id}/patterns`),
-        fetch(`/api/logs/${id}/anomalies?include_patterns=true`),
-      ]);
-      if (detailRes.ok) {
-        const detail = await detailRes.json();
-        setDetail(detail);
-        if (patternsRes.ok) {
-          const patterns = await patternsRes.json();
-          setPatterns(patterns.patterns || []);
-        }
-        if (anomaliesRes.ok) {
-          const anomalies = await anomaliesRes.json();
-          setAnomaly(anomalies.anomalies || []);
-        }
-      }
+      const res = await fetch(`/api/logs/${id}`);
+      if (res.ok) setDetail(await res.json());
     } finally {
       setLoadingDetail(false);
     }
   }, []);
+
+  const fetchTrendData = useCallback(async (id: number) => {
+    const dateRange = getEffectiveRange(trendPeriod, trendCustomRange);
+    const params = new URLSearchParams();
+    if (dateRange.from_date) params.set("from_date", dateRange.from_date);
+    if (dateRange.to_date) params.set("to_date", dateRange.to_date);
+    const qs = params.toString();
+    const res = await fetch(`/api/logs/${id}/trend${qs ? `?${qs}` : ""}`);
+    if (res.ok) {
+      const data = await res.json();
+      setTrendDailyCounts(data.dailyCounts || []);
+    }
+  }, [trendPeriod, trendCustomRange]);
+
+  const fetchPatterns = useCallback(async (id: number) => {
+    const dateRange = getEffectiveRange(patternsPeriod, patternsCustomRange);
+    const params = new URLSearchParams();
+    if (dateRange.from_date) params.set("from_date", dateRange.from_date);
+    if (dateRange.to_date) params.set("to_date", dateRange.to_date);
+    const qs = params.toString();
+    const res = await fetch(`/api/logs/${id}/patterns${qs ? `?${qs}` : ""}`);
+    if (res.ok) {
+      const data = await res.json();
+      setPatterns(data.patterns || []);
+    }
+  }, [patternsPeriod, patternsCustomRange]);
+
+  const fetchAnomalies = useCallback(async (id: number) => {
+    const dateRange = getEffectiveRange(anomaliesPeriod, anomaliesCustomRange);
+    const params = new URLSearchParams();
+    if (dateRange.from_date) params.set("from_date", dateRange.from_date);
+    if (dateRange.to_date) params.set("to_date", dateRange.to_date);
+    const qs = params.toString();
+    const res = await fetch(`/api/logs/${id}/anomalies?include_patterns=true${qs ? `&${qs}` : ""}`);
+    if (res.ok) {
+      const data = await res.json();
+      setAnomaly(data.anomalies || []);
+    }
+  }, [anomaliesPeriod, anomaliesCustomRange]);
 
   useEffect(() => {
     fetchAnalyses();
@@ -165,10 +207,23 @@ function LogsContent() {
       fetchDetail(Number(analysisId));
     } else {
       setDetail(null);
+      setTrendDailyCounts([]);
       setPatterns([]);
       setAnomaly([]);
     }
   }, [analysisId, fetchDetail]);
+
+  useEffect(() => {
+    if (analysisId) fetchTrendData(Number(analysisId));
+  }, [analysisId, fetchTrendData]);
+
+  useEffect(() => {
+    if (analysisId) fetchPatterns(Number(analysisId));
+  }, [analysisId, fetchPatterns]);
+
+  useEffect(() => {
+    if (analysisId) fetchAnomalies(Number(analysisId));
+  }, [analysisId, fetchAnomalies]);
 
   const buildExportPayload = () => ({
     id: detail?.id,
@@ -244,7 +299,7 @@ function LogsContent() {
       methodsList = JSON.parse(detail.methods || "[]");
     } catch {}
 
-    const trendData = (detail.dailyCounts || []).map((d) => ({
+    const trendData = (trendDailyCounts || []).map((d) => ({
       date: d.day,
       errors: d.count,
     }));
@@ -318,7 +373,10 @@ function LogsContent() {
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">Error Trend</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-medium">Error Trend</CardTitle>
+                <DateFilter value={trendPeriod} onChange={setTrendPeriod} customDateRange={trendCustomRange} onCustomDateRangeApply={setTrendCustomRange} />
+              </div>
             </CardHeader>
             <CardContent>
               <ErrorTrendChart data={trendData} />
@@ -344,9 +402,12 @@ function LogsContent() {
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">
-                Top Error Patterns
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-medium">
+                  Top Error Patterns
+                </CardTitle>
+                <DateFilter value={patternsPeriod} onChange={setPatternsPeriod} customDateRange={patternsCustomRange} onCustomDateRangeApply={setPatternsCustomRange} />
+              </div>
             </CardHeader>
             <CardContent>
               {patterns.length === 0 ? (
@@ -390,9 +451,12 @@ function LogsContent() {
           </Card>
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium">
-                Anomaly Spikes
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-sm font-medium">
+                  Anomaly Spikes
+                </CardTitle>
+                <DateFilter value={anomaliesPeriod} onChange={setAnomaliesPeriod} customDateRange={anomaliesCustomRange} onCustomDateRangeApply={setAnomaliesCustomRange} />
+              </div>
             </CardHeader>
             <CardContent>
               {anomalies.length === 0 ? (
@@ -503,8 +567,8 @@ function LogsContent() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 md:px-6 py-6 md:py-8">
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3">
           <ScrollText className="h-5 w-5 text-accent-vibrant" />
           <h1 className="text-3xl font-bold tracking-tight">Log Analysis</h1>
         </div>
