@@ -142,7 +142,7 @@ export function DateFilter({ value, onChange, resultCount, customDateRange, onCu
       <Select value={value === "custom" ? "custom" : value} onValueChange={handleValueChange}>
         <SelectTrigger className="h-9 w-[160px] text-xs">
           <SelectValue placeholder="All Time">
-            {isCustomActive && customDateRange ? formatDateRange(customDateRange) : null}
+            {isCustomActive && customDateRange ? formatDateRange(customDateRange) : getPeriodLabel(value)}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
