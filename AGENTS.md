@@ -72,6 +72,14 @@ npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at doc
 | Add/modify retroactive scoring  | src/lib/retroactive-scorer.ts (called from POST /api/watchlist) |
 | Query ingestion status API      | app/api/ingest/status/route.ts |
 | Add/change IngestHealth widget  | components/briefing/ingest-health.tsx |
+| Add/modify CVE matcher           | src/lib/cve-matcher.ts (called from POST /api/watchlist and POST /api/watchlist/[id]/cve) |
+| Add/modify ecosystem detector    | src/lib/ecosystem-detector.ts (called from POST /api/watchlist) |
+| Add/modify version fetcher       | src/lib/version-fetcher.ts (called from POST /api/watchlist and POST /api/watchlist/[id]/version) |
+| Add/modify package name map      | src/lib/package-name-map.ts (used by cve-matcher and version-fetcher) |
+| Add package search API           | app/api/packages/search/route.ts |
+| Refresh CVE for a watchlist item | app/api/watchlist/[id]/cve/route.ts |
+| Fetch latest version for item    | app/api/watchlist/[id]/version/route.ts |
+| Add package suggestions          | src/config/package-suggestions.ts |
 
 ## New Packages (Log Analysis Dashboard + Supabase Migration)
 

@@ -1,8 +1,40 @@
 # `src/config/` — Seed Data & Configuration
 
-Seed data for the Developer Dashboard features. Currently contains intern task definitions for Module 8 (Intern Safe Task Board).
+Seed data and configuration for the Developer Dashboard features. Currently contains intern task definitions for Module 8 (Intern Safe Task Board) and package suggestions for the Stack Watchlist.
 
 ## Files
+
+### `package-suggestions.ts`
+
+Curated list of ~140 packages for the Watchlist add-item search combobox. Provides autocomplete suggestions across 10 ecosystems.
+
+**Interface:**
+
+```ts
+interface PackageSuggestion {
+  name: string;
+  ecosystem: string;
+}
+```
+
+**Coverage by ecosystem:**
+
+| Ecosystem | Count | Examples |
+|-----------|-------|----------|
+| npm | 70 | React, Next.js, Vue, Svelte, Tailwind CSS, Prisma, Vite, Supabase, Clerk |
+| PyPI | 25 | Django, Flask, FastAPI, PyTorch, Pandas, SQLAlchemy |
+| crates.io | 11 | Serde, Tokio, Axum, Actix, Rocket |
+| Go | 10 | Cobra, Viper, Gin, Fiber, GORM |
+| Maven | 9 | Spring Boot, Hibernate, Log4j, JUnit |
+| NuGet | 7 | ASP.NET Core, Entity Framework, Serilog |
+| RubyGems | 6 | Rails, Devise, RSpec, Sidekiq |
+| Packagist | 5 | Laravel, Symfony, Composer, PHPUnit |
+| (none/infra) | 38 | PostgreSQL, Docker, Kubernetes, AWS, Redis, Nginx |
+
+
+**How it's consumed:**
+
+`GET /api/packages/search?q=` filters this list (case-insensitive substring), falls back to npm registry API when < 8 curated matches, merges results (max 10).
 
 ### `intern-tasks.ts`
 

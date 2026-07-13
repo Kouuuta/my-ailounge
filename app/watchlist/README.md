@@ -4,7 +4,7 @@ Client-side page for tracking versions, risks, and resources across your tech st
 
 ## Page — `page.tsx`
 
-A **client component** with expandable rows, inline editing, and a sortable/searchable table.
+A **client component** with expandable rows, inline editing, a sortable/searchable table, and package search combobox.
 
 ### Search
 
@@ -18,7 +18,7 @@ A search input at the top filters items by `name`, `category`, or `upgrade_notes
 | Name | Text | No |
 | Category | Badge | No |
 | Version Health | `installed → latest` with Drift badge (patch behind / minor behind / major update / up to date) | No (editable in expanded panel) |
-| Vulns | Text count (rose when nonzero) | No (editable in expanded panel) |
+| Vulns | Count badge with severity color (e.g., "3 CVEs" in rose for CRITICAL/HIGH, amber for MODERATE, muted for LOW) | No (editable in expanded panel) |
 | Risk | Badge with icon + tooltip (ShieldCheck emerald / ShieldAlert amber / ShieldX rose) | No (editable in expanded panel) |
 | Last Checked | Relative time (e.g., "2h ago") | No |
 | Links | npm / GitHub / Docs icons (auto-detected from name, opens new tab) | No |
@@ -40,31 +40,50 @@ Version strings are parsed by stripping leading `v` and splitting on `.`. Missin
 
 ### Expanded Panel
 
-Click the chevron on any row to reveal an inline editing panel with 6 editable fields:
+Click the chevron on any row to reveal an inline editing panel:
 
-| Field | Label | Placeholder |
-|-------|-------|-------------|
-| `installed_version` | Installed | `—` |
-| `latest_version` | Latest | `—` |
-| `known_vulns` | Known Vulns | `—` |
-| `risk_reason` | Risk Reason | "Add reason..." |
-| `upgrade_notes` | Upgrade Notes | "Add note..." |
-| `migration_link` | Migration Link | "URL..." (shows ExternalLink icon when filled) |
+| Field | Label | Widget | Editable? |
+|-------|-------|--------|-----------|
+| `installed_version` | Installed | Click-to-edit input | Yes |
+| `latest_version` | Latest | Click-to-edit input + **Fetch** button | Yes |
+| `ecosystem` | Ecosystem | Dropdown (8 ecosystems) | Yes |
+| `known_vulns` | Known Vulns | Summary text + **Refresh** button | No (auto-refreshed) |
+| `risk_reason` | Risk Reason | Click-to-edit input | Yes |
+| `upgrade_notes` | Upgrade Notes | Click-to-edit input | Yes |
+| `migration_link` | Migration Link | Click-to-edit input + ExternalLink icon when filled | Yes |
 
-Each field uses the `EditableField` component: click to enter edit mode (auto-focus), Enter/Blur to save, Escape to cancel.
+Each `EditableField` component: click to enter edit mode (auto-focus), Enter/Blur to save, Escape to cancel.
+
+**Fetch button** — calls `POST /api/watchlist/{id}/version`, queries the package registry for the latest version, updates the row.
+**Refresh button** — calls `POST /api/watchlist/{id}/cve`, re-queries OSV.dev for vulnerabilities, auto-bumps risk level.
+
+### Add Item Form
+
+Toggle-able form with:
+
+| Field | Widget |
+|-------|--------|
+| Name | `PackageSearchInput` (debounced 200ms, searches curated list + npm registry, shows results in dropdown with ecosystem badge) |
+| Category | Select (6 options: framework, database, infra, cloud, ai-sdk, tool) |
+| Risk Level | Select (low / medium / high) |
+| Risk Reason | Optional text input |
+
+On submit, calls `POST /api/watchlist` which:
+1. Auto-detects ecosystem via `detectEcosystem()`
+2. Fetches latest version from the correct registry
+3. Runs CVE check on OSV.dev
+4. Triggers `retroactivelyScore()` to re-score existing feed items
 
 ### CRUD Operations
 
 | Action | API Call |
 |--------|----------|
 | List items | `GET /api/watchlist` |
-| Add item | `POST /api/watchlist` (name, category, risk_level, risk_reason) — also triggers `retroactivelyScore()` |
-| Update field | `PATCH /api/watchlist/[id]` (whitelisted fields: name, category, installed_version, latest_version, risk_level, risk_reason, upgrade_notes, known_vulns, migration_link) |
+| Add item | `POST /api/watchlist` (name, category, ecosystem, risk_level, risk_reason) |
+| Update field | `PATCH /api/watchlist/[id]` (whitelisted: name, category, ecosystem, installed_version, latest_version, risk_level, risk_reason, upgrade_notes, known_vulns, migration_link) |
 | Delete item | `DELETE /api/watchlist/[id]` (with confirmation dialog, animated fade-out) |
-
-### Add Item Form
-
-Toggle-able form with: Name (required), Category (select from 6), Risk Level (select: low/medium/high), Risk Reason (optional). Calls `POST /api/watchlist`.
+| Refresh CVE | `POST /api/watchlist/[id]/cve` |
+| Fetch version | `POST /api/watchlist/[id]/version` |
 
 ### Resource Links
 
@@ -72,10 +91,9 @@ Auto-detected based on item name. Common packages have hardcoded URLs (Next.js, 
 
 ### Risk Summary Footer
 
-When items exist, shows total count + per-level counts with colored dots:
-- High count with red dot
-- Medium count with amber dot
-- Low count with green dot
+When items exist, at the bottom of the table:
+- Total count (or `N of M` when searching)
+- Per-level counts with colored dots (high=red, medium=amber, low=green)
 
 ### Empty & Error States
 

@@ -1,6 +1,8 @@
 # `app/api/watchlist/` — Watchlist API Routes
 
-CRUD API for Stack Watchlist version/risk tracking. Two route files.
+CRUD API for Stack Watchlist version/risk tracking. Five route files.
+
+---
 
 ## List & Create — `route.ts`
 
@@ -13,14 +15,14 @@ List all watchlist items ordered by `category ASC, name ASC`.
 ```json
 {
   "items": [
-    { "id": 1, "name": "Next.js", "category": "framework", "risk_level": "low", ... }
+    { "id": 1, "name": "Next.js", "category": "framework", "ecosystem": "npm", "risk_level": "low", ... }
   ]
 }
 ```
 
 ### `POST /api/watchlist`
 
-Add a new watchlist item.
+Add a new watchlist item. Auto-detects ecosystem, fetches latest version, and checks vulnerabilities.
 
 **Request body:**
 
@@ -28,9 +30,11 @@ Add a new watchlist item.
 {
   "name": "string (required, unique)",
   "category": "string (default: null)",
+  "ecosystem": "string (default: auto-detected via detectEcosystem())",
   "installed_version": "string | null",
   "latest_version": "string | null",
   "risk_level": "'low' | 'medium' | 'high' (default: 'low')",
+  "risk_reason": "string | null",
   "upgrade_notes": "string | null",
   "known_vulns": "string | null",
   "migration_link": "string | null"
@@ -47,7 +51,12 @@ Add a new watchlist item.
 
 UNIQUE constraint on `name`. Invalid risk_level returns 400.
 
-**Side effect:** After a successful insert, calls `retroactivelyScore({ name, category })` from `src/lib/retroactive-scorer.ts` which rescans existing `feed_items` for matches and updates their relevance scores.
+**Side effects (fire-and-forget after insert):**
+
+1. `ecosystem` auto-detection via `detectEcosystem(name)` if not provided
+2. `fetchLatestVersion(name, ecosystem)` — queries npm/PyPI/Go/NuGet/crates.io/RubyGems registry, updates `latest_version`
+3. `checkVulnerabilities(name, ecosystem)` — queries OSV.dev API, stores structured CVE payload in `known_vulns`, auto-bumps `risk_level` based on severity
+4. `retroactivelyScore({ name, category })` — rescans existing `feed_items` for matches, updates relevance scores
 
 ---
 
@@ -55,11 +64,11 @@ UNIQUE constraint on `name`. Invalid risk_level returns 400.
 
 ### `PATCH /api/watchlist/[id]`
 
-Update specific fields. Only these 8 fields are accepted:
+Update specific fields. Only these 10 fields are accepted:
 
 ```
-name, category, installed_version, latest_version,
-risk_level, upgrade_notes, known_vulns, migration_link
+name, category, ecosystem, installed_version, latest_version,
+risk_level, risk_reason, upgrade_notes, known_vulns, migration_link
 ```
 
 **Request body** (any subset):
@@ -94,3 +103,45 @@ Remove a watchlist item.
 |--------|------|
 | 200 | `{ "ok": true }` |
 | 404 | `{ "error": "Item not found" }` |
+
+---
+
+## CVE Refresh — `[id]/cve/route.ts`
+
+### `POST /api/watchlist/[id]/cve`
+
+Re-checks vulnerabilities via OSV.dev API. Updates `known_vulns` (JSON payload with `lastChecked`, `totalCount`, `highestSeverity`, `summaryText`, `cves[]`) and auto-bumps `risk_level`.
+
+**Response:**
+
+```json
+{
+  "ok": true,
+  "cves": [{ "id": "CVE-2024-1234", "summary": "...", "severity": "HIGH", ... }],
+  "item": { ...full updated item... }
+}
+```
+
+**Responses:** 200 (success), 404 (not found).
+
+---
+
+## Version Fetch — `[id]/version/route.ts`
+
+### `POST /api/watchlist/[id]/version`
+
+Fetches the latest version from the correct package registry. Updates `latest_version` and `updated_at`.
+
+**Response:**
+
+```json
+{
+  "ok": true,
+  "version": "20.1.0",
+  "item": { ...full updated item... }
+}
+```
+
+**Responses:** 200 (success), 404 (not found), 502 (registry fetch failed).
+
+Registry support: npm, PyPI, Go, NuGet, crates.io, RubyGems. Name is normalized via `toRegistryName()` in `src/lib/package-name-map.ts`.

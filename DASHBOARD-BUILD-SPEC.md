@@ -201,9 +201,10 @@ CREATE TABLE IF NOT EXISTS watchlist_items (
   category          TEXT,                    -- 'framework' | 'database' | 'infra' | 'ai-sdk'
   installed_version TEXT,
   latest_version    TEXT,
+  ecosystem         TEXT DEFAULT 'npm',      -- 'npm' | 'PyPI' | 'Go' | 'crates.io' | 'Maven' | 'NuGet' | 'RubyGems' | 'Packagist'
   risk_level        TEXT DEFAULT 'low',      -- 'low' | 'medium' | 'high'
   upgrade_notes     TEXT,
-  known_vulns       TEXT,                    -- JSON array of CVE ids/links
+  known_vulns       TEXT,                    -- JSON payload from OSV.dev (CVE array + summary + lastChecked)
   migration_link    TEXT,
   updated_at        TEXT DEFAULT (datetime('now'))
 );
@@ -227,9 +228,13 @@ Includes:
 
 ### 4.4 "Latest version" lookups
 
-Manual entry for MVP. Future automation: npm registry API (`https://registry.npmjs.org/<pkg>/latest`),
-PyPI JSON API (`https://pypi.org/pypi/<pkg>/json`) — both are simple unauthenticated GETs and
-fit naturally as a scheduled job (see Section 6).
+Automated via `src/lib/version-fetcher.ts` — supports 7 registries (npm, PyPI, Go, NuGet,
+crates.io, RubyGems). Triggers automatically on item add (`POST /api/watchlist`) and manually
+via fetch button (`POST /api/watchlist/[id]/version`). Ecosystem is auto-detected via
+`src/lib/ecosystem-detector.ts` and can be overridden in the expanded panel.
+
+Vulnerabilities are auto-checked via `src/lib/cve-matcher.ts` (OSV.dev API) on add and
+manually refreshed via `POST /api/watchlist/[id]/cve`.
 
 ---
 
@@ -377,6 +382,7 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 40   | Retroactive scorer: re-scores existing feed items when watchlist grows | ✅     |
 | 41   | Ingestion status API (`GET /api/ingest/status`): per-source status + summary | ✅     |
 | 42   | IngestHealth widget: per-ingester health with source icons, ping dots, elapsed times | ✅     |
+| 43   | CVE matcher (OSV.dev), auto-fetch versions (7 registries), package search combobox, ecosystem auto-detection, manual CVE/version refresh endpoints | ✅     |
 
 ### ✅ All Modules Complete
 

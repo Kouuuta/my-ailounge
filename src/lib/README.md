@@ -88,6 +88,89 @@ Called from `POST /api/watchlist` after a successful insert.
 
 ---
 
+### `cve-matcher.ts`
+
+Queries the [OSV.dev API](https://osv.dev) for package vulnerabilities. Consumed by `POST /api/watchlist` (auto-check on add) and `POST /api/watchlist/[id]/cve` (manual refresh).
+
+**`checkVulnerabilities(name, ecosystem)`** — sends `{ package: { name, ecosystem } }` to `POST https://api.osv.dev/v1/query`. Returns:
+
+```ts
+interface CveResult {
+  cves: { id: string; summary: string; severity: string; aliases: string[]; published: string }[];
+  highestSeverity: string;  // "LOW" | "MODERATE" | "HIGH" | "CRITICAL"
+  totalCount: number;
+  summaryText: string;      // e.g. "3 CVEs found (2 high, 1 moderate)"
+}
+```
+
+**`severityToRiskLevel(severity)`** — maps OSV severity to watchlist risk_level:
+- `CRITICAL`/`HIGH` → `"high"`
+- `MODERATE` → `"medium"`
+- `LOW` → `"low"`
+
+**Error handling:** API failure returns `{ cves: [], highestSeverity: "LOW", totalCount: 0, summaryText: "API error" }`. Name is normalized via `toRegistryName()` from `package-name-map.ts`.
+
+---
+
+### `ecosystem-detector.ts`
+
+Auto-detects the correct package registry ecosystem from a package name. Used by `POST /api/watchlist` when no explicit ecosystem is provided.
+
+**`detectEcosystem(name)`** — returns a registry string:
+
+| Category | Examples | Detected |
+|----------|----------|----------|
+| JavaScript/TypeScript | `@foo/bar`, any unknown | `"npm"` (default) |
+| Python | `django`, `flask`, `fastapi`, `pandas`, `numpy`, `pytorch`, `celery`, `gunicorn`, `uvicorn`, `sqlalchemy`, `requests` | `"PyPI"` |
+| Go | `cobra`, `viper`, `gorilla` | `"Go"` |
+| Rust | `serde`, `tokio` | `"crates.io"` |
+| Java | `spring`, `log4j`, `hibernate` | `"Maven"` |
+| .NET | `asp.net`, `entityframework` | `"NuGet"` |
+| Ruby | `rails`, `devise` | `"RubyGems"` |
+| PHP | `laravel`, `symfony` | `"Packagist"` |
+
+Uses a `KNOWN` lookup table (29 entries). Falls back to `"npm"` for unrecognized names.
+
+---
+
+### `version-fetcher.ts`
+
+Fetches the latest version of a package from its registry. Used by `POST /api/watchlist` (auto-fetch on add) and `POST /api/watchlist/[id]/version` (manual refresh).
+
+**`fetchLatestVersion(name, ecosystem)`** — routes to the correct registry fetcher:
+
+| Ecosystem | Fetch method |
+|-----------|-------------|
+| npm | `GET https://registry.npmjs.org/{name}/latest` → `.version` |
+| PyPI | `GET https://pypi.org/pypi/{name}/json` → `.info.version` |
+| Go | `GET https://proxy.golang.org/{name}/@latest` → `.Version` |
+| NuGet | `GET https://api.nuget.org/v3-flatcontainer/{name}/index.json` → last stable version |
+| crates.io | `GET https://crates.io/api/v1/crates/{name}` → `.crate.max_version` |
+| RubyGems | `GET https://rubygems.org/api/v1/gems/{name}.json` → `.version` |
+
+Returns `string | null`. Name is normalized via `toRegistryName()` from `package-name-map.ts`.
+
+---
+
+### `package-name-map.ts`
+
+Maps display names to registry-safe names. Used by `cve-matcher.ts` and `version-fetcher.ts` to ensure correct API lookups.
+
+**`toRegistryName(displayName)`** — translates common display names:
+
+| Display | Registry |
+|---------|----------|
+| `"Next.js"` | `"next"` |
+| `"Tailwind CSS"` | `"tailwindcss"` |
+| `"React Native"` | `"react-native"` |
+| `"ASP.NET Core"` | `"aspnetcore"` |
+| `"shadcn/ui"` | `"shadcn-ui"` |
+| `"TanStack Query"` | `"@tanstack/react-query"` |
+
+Contains 23 overrides. Falls back to `key` (lowercased, trimmed input) for unrecognized names.
+
+---
+
 ### `markdown.ts`
 
 Writes entries to `docs/feeds/*.md` files in the standard format.

@@ -54,7 +54,7 @@ This folder contains onboarding guides, architecture references, research materi
 | Doc | Description |
 |-----|-------------|
 | `../src/ingesters/README.md` | Full ingestion pipeline: architecture diagram, 4 ingesters (manual-feeds, rss, hacker-news, github-trending) with format/source/commands, RSS feed URL list (12 feeds, 5 categories), HN Algolia API details, orchestrator + kv_store key schema, how to add a new RSS feed |
-| `../src/lib/README.md` | Shared utilities: `IngestEntry` interface, `upsertEntry()` dedup logic with relevance scoring + engagement boost, `appendToFeed()` markdown writer with 500-line trim, `scoreRelevance()` watchlist-based relevance scorer, `recalcEngagementForItem()` pin/read-based score boost, `retroactivelyScore()` re-scores existing items when watchlist grows, `cn()` CSS utility |
+| `../src/lib/README.md` | Shared utilities: `IngestEntry` interface, `upsertEntry()` dedup logic with relevance scoring + engagement boost, `appendToFeed()` markdown writer with 500-line trim, `scoreRelevance()` watchlist-based relevance scorer, `recalcEngagementForItem()` pin/read-based score boost, `retroactivelyScore()` re-scores existing items when watchlist grows, `checkVulnerabilities()` OSV.dev CVE matcher, `detectEcosystem()` registry auto-detection, `fetchLatestVersion()` 7-registry version fetcher, `toRegistryName()` display-to-registry-name mapping, `cn()` CSS utility |
 | `feeds/feeds-format-guide.md` | Standard markdown feed entry format and manual editing rules |
 
 ---
@@ -97,9 +97,11 @@ Auth is powered by Supabase Auth. Pages are exempt from middleware (see `proxy.t
 
 | Doc | Description |
 |-----|-------------|
-| `../src/db/README.md` (watchlist_items table) | `watchlist_items` table schema: columns, risk levels, seed data (14 items) |
-
-> No dedicated watchlist feature guide exists yet. See `internal/documentation-audit-v2.md` for the gap.
+| `../app/watchlist/README.md` | Full page: sortable table, expanded panel, package search combobox, inline editing, version health, CVE checking |
+| `../app/api/watchlist/README.md` | CRUD API: 5 routes (list+create, update+delete, CVE refresh, version fetch) |
+| `../src/lib/README.md` (cve-matcher, ecosystem-detector, version-fetcher, package-name-map sections) | Vulnerability checker, ecosystem detection, registry version fetchers, name mapping |
+| `../src/config/README.md` (package-suggestions section) | ~140 curated package names for the search combobox |
+| `../src/db/README.md` (watchlist_items table) | `watchlist_items` table schema: columns, `ecosystem` column, risk levels, seed data (14 items) |
 
 ---
 

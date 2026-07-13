@@ -122,6 +122,7 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 | `category` | TEXT | `'framework'`, `'database'`, `'infra'`, `'cloud'`, `'ai-sdk'` |
 | `installed_version` | TEXT | Currently deployed version |
 | `latest_version` | TEXT | Latest available version |
+| `ecosystem` | TEXT | Package registry: `'npm'`, `'PyPI'`, `'Go'`, `'crates.io'`, `'Maven'`, `'NuGet'`, `'RubyGems'`, `'Packagist'` (default `'npm'`) |
 | `risk_level` | TEXT | `'low'`, `'medium'`, `'high'` (default `'low'`) |
 | `upgrade_notes` | TEXT | Migration notes |
 | `known_vulns` | TEXT | Known CVEs |
