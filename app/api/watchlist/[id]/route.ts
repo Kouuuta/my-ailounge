@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/src/db/supabase-client";
 
 const VALID_FIELDS = [
-  "name", "category", "installed_version", "latest_version",
+  "name", "category", "ecosystem", "installed_version", "latest_version",
   "risk_level", "risk_reason", "upgrade_notes", "known_vulns", "migration_link",
 ] as const;
 

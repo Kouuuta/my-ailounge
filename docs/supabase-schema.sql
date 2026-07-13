@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS watchlist_items (
   category          TEXT,
   installed_version TEXT,
   latest_version    TEXT,
+  ecosystem         TEXT DEFAULT 'npm',
   risk_level        TEXT DEFAULT 'low',
   risk_reason       TEXT,
   upgrade_notes     TEXT,

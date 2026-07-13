@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   Plus,
   X,
@@ -17,6 +17,7 @@ import {
   Package,
   GitFork,
   BookOpen,
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -43,6 +44,7 @@ type WatchItem = {
   id: number;
   name: string;
   category: string | null;
+  ecosystem: string | null;
   installed_version: string | null;
   latest_version: string | null;
   risk_level: string;
@@ -69,6 +71,17 @@ const CATEGORIES = [
   "cloud",
   "ai-sdk",
   "tool",
+];
+
+const ECOSYSTEMS = [
+  "npm",
+  "PyPI",
+  "Go",
+  "Maven",
+  "NuGet",
+  "crates.io",
+  "RubyGems",
+  "Packagist",
 ];
 
 const RISK_CONFIG: Record<
@@ -185,6 +198,7 @@ export default function WatchlistPage() {
 
   const [search, setSearch] = useState("");
   const [addName, setAddName] = useState("");
+  const [addEcosystem, setAddEcosystem] = useState("npm");
   const [addCategory, setAddCategory] = useState("framework");
   const [addRisk, setAddRisk] = useState("low");
   const [addRiskReason, setAddRiskReason] = useState("");
@@ -218,6 +232,35 @@ export default function WatchlistPage() {
     }
   };
 
+  const [refreshingCve, setRefreshingCve] = useState<number | null>(null);
+  const [refreshingVer, setRefreshingVer] = useState<number | null>(null);
+
+  const checkCve = async (id: number) => {
+    setRefreshingCve(id);
+    try {
+      const res = await fetch(`/api/watchlist/${id}/cve`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        setItems((prev) => prev.map((i) => (i.id === id ? data.item : i)));
+      }
+    } finally {
+      setRefreshingCve(null);
+    }
+  };
+
+  const checkVersion = async (id: number) => {
+    setRefreshingVer(id);
+    try {
+      const res = await fetch(`/api/watchlist/${id}/version`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        setItems((prev) => prev.map((i) => (i.id === id ? data.item : i)));
+      }
+    } finally {
+      setRefreshingVer(null);
+    }
+  };
+
   const deleteItem = async (id: number) => {
     setDeletingId(id);
     const res = await fetch(`/api/watchlist/${id}`, { method: "DELETE" });
@@ -233,12 +276,14 @@ export default function WatchlistPage() {
       body: JSON.stringify({
         name: addName,
         category: addCategory,
+        ecosystem: addEcosystem,
         risk_level: addRisk,
         risk_reason: addRiskReason || null,
       }),
     });
     if (res.ok) {
       setAddName("");
+      setAddEcosystem("npm");
       setAddCategory("framework");
       setAddRisk("low");
       setAddRiskReason("");
@@ -321,7 +366,7 @@ export default function WatchlistPage() {
               <div className="grid gap-3 sm:grid-cols-5">
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">Name</label>
-                  <Input placeholder="e.g. Tailwind CSS" value={addName} onChange={(e) => setAddName(e.target.value)} />
+                  <PackageSearchInput value={addName} ecosystem={addEcosystem} onSelect={(name, eco) => { setAddName(name); setAddEcosystem(eco); }} />
                 </div>
                 <div>
                   <label className="text-xs font-medium text-muted-foreground mb-1 block">Category</label>
@@ -486,16 +531,26 @@ export default function WatchlistPage() {
 
                           {/* Vulns */}
                           <TableCell>
-                            {item.known_vulns ? (
-                              <span className={cn(
-                                "text-xs font-mono",
-                                item.known_vulns !== "0" && "text-rose-600 dark:text-rose-400 font-medium",
-                              )}>
-                                {item.known_vulns}
-                              </span>
-                            ) : (
-                              <span className="text-xs text-muted-foreground">—</span>
-                            )}
+                            {(() => {
+                              if (!item.known_vulns) return <span className="text-xs text-muted-foreground">—</span>;
+                              try {
+                                const parsed = JSON.parse(item.known_vulns);
+                                if (!parsed.cves || parsed.cves.length === 0) return <span className="text-xs text-emerald-600 dark:text-emerald-400 font-mono">0</span>;
+                                const sevColors: Record<string, string> = {
+                                  CRITICAL: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+                                  HIGH: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+                                  MODERATE: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+                                  LOW: "bg-muted text-muted-foreground",
+                                };
+                                return (
+                                  <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium font-mono", sevColors[parsed.highestSeverity] ?? "bg-muted text-muted-foreground")}>
+                                    {parsed.totalCount} CVE{parsed.totalCount > 1 ? "s" : ""}
+                                  </span>
+                                );
+                              } catch {
+                                return <span className="text-xs font-mono text-muted-foreground">{item.known_vulns}</span>;
+                              }
+                            })()}
                           </TableCell>
 
                           {/* Risk */}
@@ -568,12 +623,56 @@ export default function WatchlistPage() {
                                   {/* Latest version */}
                                   <div>
                                     <label className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1 block">Latest</label>
-                                    <EditableField value={item.latest_version} onSave={(v) => updateField(item.id, "latest_version", v)} placeholder="—" />
+                                    <div className="flex items-center gap-2">
+                                      <EditableField value={item.latest_version} onSave={(v) => updateField(item.id, "latest_version", v)} placeholder="—" />
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="h-7 text-[10px] gap-1 shrink-0"
+                                        onClick={() => checkVersion(item.id)}
+                                        disabled={refreshingVer === item.id}
+                                      >
+                                        <RefreshCw className={cn("h-3 w-3", refreshingVer === item.id && "animate-spin")} />
+                                        {refreshingVer === item.id ? "Fetching..." : "Fetch"}
+                                      </Button>
+                                    </div>
+                                  </div>
+                                  {/* Ecosystem */}
+                                  <div>
+                                    <label className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1 block">Ecosystem</label>
+                                    <EcosystemSelect value={item.ecosystem ?? "npm"} onChange={(v) => updateField(item.id, "ecosystem", v)} />
                                   </div>
                                   {/* Vulns */}
                                   <div>
                                     <label className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1 block">Known Vulns</label>
-                                    <EditableField value={item.known_vulns} onSave={(v) => updateField(item.id, "known_vulns", v)} placeholder="—" />
+                                    <div className="flex items-center gap-2">
+                                      <div className="flex-1 text-sm px-1.5 truncate">
+                                        {(() => {
+                                          if (!item.known_vulns) return <span className="text-muted-foreground/50 italic">Check CVEs</span>;
+                                          try {
+                                            const parsed = JSON.parse(item.known_vulns);
+                                            return (
+                                              <span className="text-xs text-muted-foreground">
+                                                {parsed.summaryText ?? `${parsed.totalCount} CVE${parsed.totalCount > 1 ? "s" : ""}`}
+                                                {parsed.lastChecked && ` — ${relativeTime(parsed.lastChecked)}`}
+                                              </span>
+                                            );
+                                          } catch {
+                                            return <span className="text-xs text-muted-foreground">{item.known_vulns}</span>;
+                                          }
+                                        })()}
+                                      </div>
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        className="h-7 text-[10px] gap-1 shrink-0"
+                                        onClick={() => checkCve(item.id)}
+                                        disabled={refreshingCve === item.id}
+                                      >
+                                        <RefreshCw className={cn("h-3 w-3", refreshingCve === item.id && "animate-spin")} />
+                                        {refreshingCve === item.id ? "Checking..." : "Refresh"}
+                                      </Button>
+                                    </div>
                                   </div>
                                   {/* Risk Reason */}
                                   <div>
@@ -633,6 +732,97 @@ export default function WatchlistPage() {
 
 function Fragment({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
+}
+
+function PackageSearchInput({
+  value,
+  ecosystem,
+  onSelect,
+}: {
+  value: string;
+  ecosystem: string;
+  onSelect: (name: string, eco: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [results, setResults] = useState<{ name: string; ecosystem: string }[]>([]);
+  const [loading, setLoading] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    if (!value.trim()) { setResults([]); setOpen(false); return; }
+    setLoading(true);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/packages/search?q=${encodeURIComponent(value)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setResults(data.results ?? []);
+          setOpen(data.results?.length > 0);
+        }
+      } catch {} finally {
+        setLoading(false);
+      }
+    }, 200);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [value]);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <Input
+        placeholder="e.g. Tailwind CSS"
+        value={value}
+        onChange={(e) => onSelect(e.target.value, ecosystem)}
+      />
+      {open && (
+        <div className="absolute z-50 top-full mt-1 w-full rounded-md border border-border bg-popover shadow-md overflow-hidden">
+          {loading ? (
+            <div className="px-3 py-2 text-xs text-muted-foreground">Searching...</div>
+          ) : results.length === 0 ? (
+            <div className="px-3 py-2 text-xs text-muted-foreground">No suggestions</div>
+          ) : (
+            results.map((r) => (
+              <button
+                key={`${r.ecosystem}:${r.name}`}
+                className="w-full flex items-center justify-between px-3 py-2 text-left text-sm hover:bg-accent transition-colors"
+                onClick={() => { onSelect(r.name, r.ecosystem); setOpen(false); }}
+              >
+                <span>{r.name}</span>
+                {r.ecosystem && (
+                  <span className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+                    {r.ecosystem}
+                  </span>
+                )}
+              </button>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EcosystemSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Select value={value} onValueChange={onChange} open={open} onOpenChange={setOpen}>
+      <SelectTrigger className="h-7 text-xs px-1.5">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {ECOSYSTEMS.map((e) => <SelectItem key={e} value={e}>{e}</SelectItem>)}
+      </SelectContent>
+    </Select>
+  );
 }
 
 function EditableField({

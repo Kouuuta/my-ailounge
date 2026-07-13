@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/src/db/supabase-client";
 import { retroactivelyScore } from "@/src/lib/retroactive-scorer";
+import { checkVulnerabilities, severityToRiskLevel } from "@/src/lib/cve-matcher";
+import { detectEcosystem } from "@/src/lib/ecosystem-detector";
+import { fetchLatestVersion } from "@/src/lib/version-fetcher";
 
 export async function GET() {
   const { data: items } = await supabase
@@ -13,7 +16,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { name, category, installed_version, latest_version, risk_level, risk_reason, upgrade_notes, known_vulns, migration_link } = body;
+  const { name, category, ecosystem, installed_version, latest_version, risk_level, risk_reason, upgrade_notes, known_vulns, migration_link } = body;
 
   if (!name) {
     return NextResponse.json({ error: "name is required" }, { status: 400 });
@@ -27,6 +30,7 @@ export async function POST(req: NextRequest) {
   const { data, error } = await supabase.from("watchlist_items").insert({
     name,
     category: category || null,
+    ecosystem: ecosystem || detectEcosystem(name),
     installed_version: installed_version || null,
     latest_version: latest_version || null,
     risk_level: risk_level || "low",
@@ -45,6 +49,34 @@ export async function POST(req: NextRequest) {
 
   retroactivelyScore({ name: body.name, category: body.category || null })
     .catch((e) => console.error("retroactive scoring failed", e));
+
+  const detectedEcosystem = ecosystem || detectEcosystem(name);
+
+  fetchLatestVersion(name, detectedEcosystem).then(async (version) => {
+    if (version) {
+      await supabase
+        .from("watchlist_items")
+        .update({ latest_version: version })
+        .eq("id", data.id);
+    }
+  }).catch((e) => console.error("version fetch failed", e));
+
+  checkVulnerabilities(name, detectedEcosystem).then(async (result) => {
+    const payload = {
+      lastChecked: new Date().toISOString(),
+      totalCount: result.totalCount,
+      highestSeverity: result.highestSeverity,
+      summaryText: result.summaryText,
+      cves: result.cves,
+    };
+    await supabase
+      .from("watchlist_items")
+      .update({
+        known_vulns: JSON.stringify(payload),
+        risk_level: severityToRiskLevel(result.highestSeverity),
+      })
+      .eq("id", data.id);
+  }).catch((e) => console.error("CVE check failed", e));
 
   return NextResponse.json({ ok: true, id: data.id }, { status: 201 });
 }
