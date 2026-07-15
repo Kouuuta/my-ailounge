@@ -83,7 +83,7 @@ export function FeaturedNews({ items, delay = 0 }: FeaturedNewsProps) {
               {top.summary}
             </p>
           )}
-          <span className="inline-flex items-center gap-1 text-xs text-accent-vibrant mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="inline-flex items-center gap-1 text-xs text-accent-vibrant mt-3 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
             Read more <ExternalLink className="h-3 w-3" />
           </span>
         </div>

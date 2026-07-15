@@ -598,7 +598,7 @@ function RepoCard({
         </div>
         <button
           onClick={onDelete}
-          className="ml-2 shrink-0 rounded-md p-1.5 text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive focus:opacity-100 group-hover:opacity-100"
+          className="ml-2 shrink-0 rounded-md p-1.5 text-muted-foreground md:opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive focus:opacity-100 md:group-hover:opacity-100"
           aria-label={`Remove ${item.full_name}`}
         >
           <Trash2 className="h-4 w-4" />

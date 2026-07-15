@@ -438,7 +438,7 @@ function FeedContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-6 py-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-8">
         <div className="animate-fade-in flex items-center justify-between mb-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Feed</h1>
@@ -472,9 +472,9 @@ function FeedContent() {
                   value={addUrl}
                   onChange={(e) => setAddUrl(e.target.value)}
                 />
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <Select value={addCategory} onValueChange={setAddCategory}>
-                    <SelectTrigger className="w-40">
+                    <SelectTrigger className="w-full sm:w-40">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -645,7 +645,7 @@ function FeedContent() {
                           </p>
                         )}
                       </div>
-                      <div className="flex flex-col gap-1 shrink-0">
+                      <div className="flex flex-row sm:flex-col gap-1 shrink-0">
                         <Button
                           variant="ghost"
                           size="icon"

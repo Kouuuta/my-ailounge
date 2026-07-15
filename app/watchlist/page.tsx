@@ -341,7 +341,7 @@ export default function WatchlistPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-6 py-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-8">
         {/* Header */}
         <div className="animate-fade-in flex items-center justify-between mb-4">
           <div>
@@ -440,24 +440,24 @@ export default function WatchlistPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8" />
+                    <TableHead className="w-8 hidden md:table-cell" />
                     <TableHead className="cursor-pointer select-none w-[160px]" onClick={() => toggleSort("name")}>
                       Name <SortIcon field="name" />
                     </TableHead>
-                    <TableHead className="cursor-pointer select-none w-[80px]" onClick={() => toggleSort("category")}>
+                    <TableHead className="cursor-pointer select-none w-[80px] hidden md:table-cell" onClick={() => toggleSort("category")}>
                       Category <SortIcon field="category" />
                     </TableHead>
-                    <TableHead className="w-[220px]">Version Health</TableHead>
+                    <TableHead className="w-[220px] hidden md:table-cell">Version Health</TableHead>
                     <TableHead className="cursor-pointer select-none w-[70px]" onClick={() => toggleSort("known_vulns")}>
                       Vulns <SortIcon field="known_vulns" />
                     </TableHead>
                     <TableHead className="cursor-pointer select-none w-[70px]" onClick={() => toggleSort("risk_level")}>
                       Risk <SortIcon field="risk_level" />
                     </TableHead>
-                    <TableHead className="cursor-pointer select-none w-[90px]" onClick={() => toggleSort("updated_at")}>
+                    <TableHead className="cursor-pointer select-none w-[90px] hidden md:table-cell" onClick={() => toggleSort("updated_at")}>
                       Last Checked <SortIcon field="updated_at" />
                     </TableHead>
-                    <TableHead className="w-[90px]">Links</TableHead>
+                    <TableHead className="w-[90px] hidden md:table-cell">Links</TableHead>
                     <TableHead className="w-[36px]" />
                   </TableRow>
                 </TableHeader>
@@ -481,7 +481,7 @@ export default function WatchlistPage() {
                           style={{ animationDelay: `${index * 30}ms` }}
                         >
                           {/* Expand toggle */}
-                          <TableCell>
+                          <TableCell className="hidden md:table-cell">
                             <Button
                               variant="ghost"
                               size="icon"
@@ -501,7 +501,7 @@ export default function WatchlistPage() {
                           <TableCell className="font-medium text-sm">{item.name}</TableCell>
 
                           {/* Category */}
-                          <TableCell>
+                          <TableCell className="hidden md:table-cell">
                             {item.category ? (
                               <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
                                 {item.category}
@@ -512,7 +512,7 @@ export default function WatchlistPage() {
                           </TableCell>
 
                           {/* Version Health */}
-                          <TableCell>
+                          <TableCell className="hidden md:table-cell">
                             <div className="flex items-center gap-2">
                               <span className="text-xs font-mono text-muted-foreground">
                                 {item.installed_version || "—"}
@@ -571,12 +571,12 @@ export default function WatchlistPage() {
                           </TableCell>
 
                           {/* Last Checked */}
-                          <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                          <TableCell className="text-xs text-muted-foreground whitespace-nowrap hidden md:table-cell">
                             {relativeTime(item.updated_at)}
                           </TableCell>
 
                           {/* Resource Links */}
-                          <TableCell>
+                          <TableCell className="hidden md:table-cell">
                             <div className="flex items-center gap-0.5">
                               {links.npm && (
                                 <a href={links.npm} target="_blank" rel="noopener noreferrer" className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-accent-vibrant hover:bg-accent/50 transition-colors" title="npm">

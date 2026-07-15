@@ -18,6 +18,7 @@ import {
   Moon,
   LogOut,
   User,
+  X,
 } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 import { useUser } from "@/components/auth-provider";
@@ -99,15 +100,18 @@ function NavItem({
   label,
   icon: Icon,
   active,
+  onClick,
 }: {
   href: string;
   label: string;
   icon: React.ElementType;
   active: boolean;
+  onClick?: () => void;
 }) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={cn(
         "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-150",
         active
@@ -121,7 +125,7 @@ function NavItem({
   );
 }
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const { theme, toggle } = useTheme();
@@ -129,11 +133,31 @@ export function Sidebar() {
 
   async function handleLogout() {
     await signOut();
+    onClose();
     router.push("/login");
   }
 
+  function handleNavClick() {
+    onClose();
+  }
+
   return (
-    <aside className="fixed top-0 left-0 z-40 w-60 h-screen bg-background border-r border-border flex flex-col">
+    <aside
+      className={cn(
+        "fixed top-0 left-0 z-40 w-60 h-screen bg-background border-r border-border flex flex-col transition-transform duration-300 ease-out-expo",
+        "md:translate-x-0 md:shadow-none",
+        isOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full",
+      )}
+    >
+      {/* Close button (mobile) */}
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-4 md:hidden flex items-center justify-center h-8 w-8 rounded-lg bg-accent text-muted-foreground hover:text-foreground hover:bg-accent/80 transition-colors"
+        aria-label="Close menu"
+      >
+        <X className="h-4 w-4" />
+      </button>
+
       {/* Logo */}
       <div className="px-6 py-5 border-b border-border">
         <div className="flex items-center gap-2">
@@ -186,6 +210,7 @@ export function Sidebar() {
             label={item.label}
             icon={item.icon}
             active={pathname === item.href}
+            onClick={handleNavClick}
           />
         ))}
       </nav>
