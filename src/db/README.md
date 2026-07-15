@@ -32,33 +32,58 @@ const supabase = getBrowserSupabase();
 const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 ```
 
-### `server-client.ts`
+### `service-client.ts`
 
-Creates a Supabase client for server components using `@supabase/ssr` `createServerClient` with Next.js `cookies()` for cookie-based auth. Used by server components and route handlers that need session-aware queries:
+Creates a **service role** Supabase client using `@supabase/supabase-js` with the `SUPABASE_SERVICE_ROLE_KEY`. Bypasses all Row Level Security (RLS) — used by all API routes and lib files for server-side database operations:
 
 ```ts
-import { getServerSupabase } from "@/src/db/server-client";
+import { serviceClient } from "@/src/db/service-client";
 
-const supabase = await getServerSupabase();
+const { data, error } = await serviceClient
+  .from("feed_items")
+  .select("*")
+  .limit(10);
+```
+
+Requires `.env.local` with:
+- `NEXT_PUBLIC_SUPABASE_URL` — your Supabase project URL
+- `SUPABASE_SERVICE_ROLE_KEY` — your Supabase service role key (Settings → API → service_role key)
+
+This is the **primary DB client** for route handlers, ingesters, and library code. The anon-key `supabase-client.ts` is legacy and only kept for backward compatibility.
+
+### `server-client.ts`
+
+Provides two factory functions for **cookie-based auth** in server environments, using `@supabase/ssr` `createServerClient`:
+
+**`getServerClient(request)`** — for route handlers. Creates a Supabase client from the incoming `NextRequest` cookies. Returns `{ client, response }` — the `response` object must be returned from the handler to persist cookie changes:
+
+```ts
+import { getServerClient } from "@/src/db/server-client";
+
+export async function GET(request: NextRequest) {
+  const { client, response } = getServerClient(request);
+  const { data: { user } } = await client.auth.getUser();
+  return response; // must return response to persist cookies
+}
+```
+
+**`getServerComponentClient()`** — for Server Components. Uses `next/headers` `cookies()` to read the cookie store:
+
+```ts
+import { getServerComponentClient } from "@/src/db/server-client";
+
+const supabase = await getServerComponentClient();
 const { data: { user } } = await supabase.auth.getUser();
 ```
 
-### `supabase-client.ts`
-
-Original Supabase client (legacy) — singleton created with `@supabase/supabase-js` `createClient`. Does NOT handle auth cookies. Still exported for backward compatibility but most code should use `browser-client.ts` or `server-client.ts` for auth-aware queries.
-
 ### `client.ts`
 
-Re-exports `supabase` from `supabase-client.ts` for convenience. Was previously a `getDb()` singleton for `better-sqlite3` — kept as the same import path so consuming code didn't need import changes.
+Convenience re-export. Now re-exports `serviceClient` from `service-client.ts` (was `supabase` from `supabase-client.ts`). Kept as the same import path so consuming code didn't need import changes:
 
 ```ts
-// Old (SQLite):
-import { getDb } from "@/src/db/client";
-const db = getDb();
-
-// New (Supabase):
-import { supabase } from "@/src/db/client";
-// All queries are async now
+import { serviceClient, getDb } from "@/src/db/client";
+// getDb() returns serviceClient
+// closeDb() is a no-op with Supabase
 ```
 
 ### `schema.ts`
@@ -67,11 +92,11 @@ Previously defined all 9 table schemas + indexes + seed data (~421 lines). Now d
 
 - **Table DDL** moved to `docs/supabase-schema.sql` — run manually in Supabase SQL editor once
 - `migrate()` only handles **seed data** (initial rows for `watchlist_items`, `repo_radar_items`, `prompts`)
-- All inserts use `supabase.from().insert()` with `upsert` behavior
+- All inserts use `serviceClient.from().insert()` (bypasses RLS via service role)
 
 #### Tables (historical reference)
 
-Same 9 tables, now served by PostgreSQL via Supabase. Column types below are the original SQLite types; PostgreSQL equivalents are in `docs/supabase-schema.sql`.
+Same 10 tables, now served by PostgreSQL via Supabase. Column types below are the original SQLite types; PostgreSQL equivalents are in `docs/supabase-schema.sql`.
 
 **`feed_items`** — Core ingestion store for the Developer Intelligence Feed.
 
@@ -272,6 +297,29 @@ Used by `run-all.ts` and `analytics.ts` to track per-source ingestion status (`i
 
 **Migration columns:** `source`, `external_id`, `source_url` are added via `ALTER TABLE` to support the 3-source system (curated, community, ui_design) without recreating the table.
 
+---
+
+**`user_roles`** — Role-based access control (RBAC) for the application.
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `user_id` | UUID | Primary key, FK → `auth.users(id) ON DELETE CASCADE` |
+| `role` | TEXT | `'intern'` or `'lead'` (default `'intern'`, CHECK constraint) |
+| `created_at` | TIMESTAMPTZ | Defaults to `NOW()` |
+
+**Auto-assignment:** A `handle_new_user()` trigger (SECURITY DEFINER) inserts `(user_id, 'intern')` on every `auth.users` INSERT — no manual role setup needed for new signups.
+
+**Manually promoting a user to lead:**
+```sql
+INSERT INTO user_roles (user_id, role) VALUES ('<auth-user-uuid>', 'lead')
+  ON CONFLICT (user_id) DO UPDATE SET role = 'lead';
+```
+
+**RLS policies** are defined in `docs/rls-policies.sql`. Access model:
+- `intern` — read + insert + update on most tables, no delete
+- `lead` — full CRUD on all tables
+- `anon` — public read on `feed_items`, `kv_store`, `prompts`
+
 ### `migrate.ts`
 
 Entry point for seeding. Calls `schema.migrate()` which inserts seed data via Supabase API (no local SQLite file involved).
@@ -291,27 +339,30 @@ Create `.env.local` in the project root:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
+
+`NEXT_PUBLIC_*` vars are safe for client-side code. `SUPABASE_SERVICE_ROLE_KEY` is server-only — never expose it to the browser.
 
 ## Usage
 
 ```ts
-import { supabase } from "@/src/db/client";
+import { serviceClient } from "@/src/db/client";
 
 // Read (async)
-const { data: items, error } = await supabase
+const { data: items, error } = await serviceClient
   .from("feed_items")
   .select("*")
   .limit(10)
   .order("published_at", { ascending: false });
 
 // Write
-const { error } = await supabase
+const { error } = await serviceClient
   .from("feed_items")
   .insert({ source: "manual", title: "...", url: "..." });
 
 // Upsert
-const { error } = await supabase
+const { error } = await serviceClient
   .from("kv_store")
   .upsert(
     { key: "ingest:last_run:hn", value: new Date().toISOString() },
@@ -319,7 +370,7 @@ const { error } = await supabase
   );
 
 // Delete
-const { error } = await supabase
+const { error } = await serviceClient
   .from("feed_items")
   .delete()
   .eq("id", 42);

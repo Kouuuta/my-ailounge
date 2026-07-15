@@ -80,6 +80,10 @@ npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at doc
 | Refresh CVE for a watchlist item | app/api/watchlist/[id]/cve/route.ts |
 | Fetch latest version for item    | app/api/watchlist/[id]/version/route.ts |
 | Add package suggestions          | src/config/package-suggestions.ts |
+| Add/modify RBAC / auth helpers   | src/lib/auth-helpers.ts (requireRole middleware) |
+| Add/modify service DB client     | src/db/service-client.ts (serviceClient with SUPABASE_SERVICE_ROLE_KEY) |
+| Add RLS policies                 | docs/rls-policies.sql (user_roles table + RLS policies for all tables) |
+| Export watchlist as PDF          | app/api/watchlist/export/route.ts |
 
 ## New Packages (Log Analysis Dashboard + Supabase Migration)
 
@@ -89,6 +93,7 @@ npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at doc
 - `cmdk` — Command menu primitive for `CommandPalette`
 - `@supabase/supabase-js` — Supabase PostgreSQL client (replaced `better-sqlite3`)
 - `dotenv` — Env variable loading for ingesters and scripts
+- `pdf-lib` — PDF generation for watchlist export (`app/api/watchlist/export/route.ts`)
 - Log parser auto-detects columns by header name regex (timestamp, content, action, method, error_code, response)
 - Source detection: filename starting with `acuity` → Acuity, otherwise Zoho
 

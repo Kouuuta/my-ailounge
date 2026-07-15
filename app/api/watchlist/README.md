@@ -1,6 +1,6 @@
 # `app/api/watchlist/` — Watchlist API Routes
 
-CRUD API for Stack Watchlist version/risk tracking. Five route files.
+CRUD API for Stack Watchlist version/risk tracking. Six route files.
 
 ---
 
@@ -95,13 +95,14 @@ Risk level is validated: `low`, `medium`, or `high` only.
 
 ### `DELETE /api/watchlist/[id]`
 
-Remove a watchlist item.
+Remove a watchlist item. **Requires `lead` role** — guarded by `requireRole(request, ["lead"])`. Non-lead users receive 403.
 
 **Responses:**
 
 | Status | Body |
 |--------|------|
 | 200 | `{ "ok": true }` |
+| 403 | `{ "error": "Forbidden — requires one of roles: lead" }` |
 | 404 | `{ "error": "Item not found" }` |
 
 ---
@@ -145,3 +146,32 @@ Fetches the latest version from the correct package registry. Updates `latest_ve
 **Responses:** 200 (success), 404 (not found), 502 (registry fetch failed).
 
 Registry support: npm, PyPI, Go, NuGet, crates.io, RubyGems. Name is normalized via `toRegistryName()` in `src/lib/package-name-map.ts`.
+
+---
+
+## PDF Export — `export/route.ts`
+
+### `GET /api/watchlist/export`
+
+Generate and download a PDF report of all watchlist items. Uses `pdf-lib` for PDF generation — no HTML-to-PDF conversion.
+
+**Response:** Binary PDF download with `Content-Type: application/pdf` and `Content-Disposition: attachment` filename `stack-watchlist-{date}.pdf`.
+
+**Table layout (5 columns):**
+
+| Column | Content |
+|--------|---------|
+| Name | Item name |
+| Category | Item category |
+| Version | `installed → latest` with semver drift label |
+| Vulns | Parsed CVE count from `known_vulns` JSON, or `—` if none |
+| Risk | Risk level (green/amber/red) |
+
+**Responses:**
+
+| Status | Body |
+|--------|------|
+| 200 | Binary PDF |
+| 404 | `{ "error": "Watchlist is empty" }` |
+
+**Error handling:** Empty watchlist returns 404.

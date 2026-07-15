@@ -15,7 +15,7 @@ Reusable React components used by the Developer Dashboard pages.
 | `command-palette/` | Command Palette — Cmd+K palette, searches pages/feed/prompts/watchlist/radar |
 | `intern-tasks/` | Intern Safe Task Board — 1 component (InternTaskCard) with expandable detail sections |
 | `theme-provider.tsx` | Dark/light mode React Context (used by Sidebar theme toggle) |
-| `auth-provider.tsx` | Supabase Auth context — `AuthProvider` + `useUser()` hook (user, loading, signOut) |
+| `auth-provider.tsx` | Supabase Auth context — `AuthProvider` + `useUser()` hook (user, role, loading, signOut, refreshRole) |
 | `shell.tsx` | Layout shell — hides Sidebar on `/login` and `/signup` routes |
 
 ## Shared Utility

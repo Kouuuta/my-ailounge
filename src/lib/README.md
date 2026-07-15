@@ -88,6 +88,29 @@ Called from `POST /api/watchlist` after a successful insert.
 
 ---
 
+### `auth-helpers.ts`
+
+API route middleware for role-based access control. Consumed by 3 DELETE endpoints.
+
+**`requireRole(request, roles)`** — checks the user's role against `user_roles` table via `serviceClient`. Returns `NextResponse` with error if unauthorized, or `null` if allowed:
+
+```ts
+const err = await requireRole(request, ["lead"]);
+if (err) return err;
+```
+
+**Responses:**
+| Status | Condition |
+|--------|-----------|
+| 401 | No authenticated user |
+| 403 | User's role not in the allowed list |
+
+**Usage:** `DELETE /api/watchlist/[id]`, `DELETE /api/repo-radar/[id]`, `DELETE /api/logs/[id]` — all require `lead` role.
+
+The `user_roles` table is populated automatically by a database trigger on signup (default: `'intern'`). Promotion to `lead` is manual via SQL. See `docs/rls-policies.sql` for the full RLS policy definitions.
+
+---
+
 ### `cve-matcher.ts`
 
 Queries the [OSV.dev API](https://osv.dev) for package vulnerabilities. Consumed by `POST /api/watchlist` (auto-check on add) and `POST /api/watchlist/[id]/cve` (manual refresh).

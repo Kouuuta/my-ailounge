@@ -13,7 +13,7 @@ Do not rebuild these. Extend them.
 
 | Already in repo                                                         | Path                                     | Status                                                                                                               |
 | ----------------------------------------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Supabase PostgreSQL schema (9 tables — migrated from SQLite in June 2026. DDL at `docs/supabase-schema.sql`) | `docs/supabase-schema.sql` (run in Supabase SQL editor), `src/db/schema.ts` (seed only) | ✅ Done |
+| Supabase PostgreSQL schema (10 tables + user_feed_states — migrated from SQLite in June 2026. DDL at `docs/supabase-schema.sql`, RLS at `docs/rls-policies.sql`) | `docs/supabase-schema.sql` (run in Supabase SQL editor), `src/db/schema.ts` (seed only) | ✅ Done |
 | DB client (`supabase` singleton via `@supabase/supabase-js`, was `getDb()` for `better-sqlite3`) | `src/db/client.ts` (re-exports `supabase`) | ✅ Done                                                                                                              |
 | Migration entry point                                                   | `src/db/migrate.ts`                      | ✅ Done                                                                                                              |
 | Manual feeds ingester (parses `docs/feeds/*.md`, standalone only)       | `src/ingesters/manual-feeds/index.ts`    | ✅ Done (not part of orchestrator — run via `npm run ingest:manual`)                                                 |
@@ -25,7 +25,11 @@ Do not rebuild these. Extend them.
 | Feed format/tagging rules                                               | `docs/feeds/feeds-format-guide.md`       | ✅ Done                                                                                                              |
 | Intern task seed data (13 tasks)                                        | `src/config/intern-tasks.ts`             | ✅ Done                                                                                                              |
 | Shared utilities (DB writes, markdown append, analytics queries)        | `src/lib/`                               | ✅ Done                                                                                                              |
-| Dashboard widgets (BreakdownCard, IngestButton, StatCard) | `components/engineering-intelligence/` | ✅ Done (AutomationStatus replaced by IngestHealth in `components/briefing/`)                                        |
+| Dashboard widgets (BreakdownCard, IngestButton, StatCard) | `components/engineering-intelligence/` | ✅ Done (AutomationStatus replaced by IngestHealth in `components/briefing/`)                                                                                                   |
+| `user_roles` table (RBAC — auto-assign on signup, RLS policies at `docs/rls-policies.sql`)         | docs/rls-policies.sql                  | ✅ Done                                                                                                              |
+| `serviceClient` singleton (bypasses RLS via `SUPABASE_SERVICE_ROLE_KEY`)                            | src/db/service-client.ts               | ✅ Done                                                                                                              |
+| `requireRole()` middleware (3 DELETE endpoints: watchlist, repo-radar, logs)                        | src/lib/auth-helpers.ts                | ✅ Done                                                                                                              |
+| AuthProvider extended (`role`, `refreshRole()` added to context)                                    | components/auth-provider.tsx           | ✅ Done                                        |
 | shadcn/ui primitives (11 components)                                    | `components/ui/`                         | ✅ Done                                                                                                              |
 | Dark/light theme provider                                               | `components/theme-provider.tsx`          | ✅ Done                                                                                                              |
 | Sidebar with user info, 7 nav items, logout, quick stats               | `components/sidebar/sidebar.tsx`         | ✅ Done                                                                                                              |
@@ -59,7 +63,7 @@ Do not rebuild these. Extend them.
 **Stack:**
 
 - Frontend: Next.js 16 (App Router), TypeScript, Tailwind CSS 4, Radix UI, Nivo (bar + pie charts), sonner (toast)
-- Data: **Supabase PostgreSQL** via `@supabase/supabase-js` — 9 tables. Originally SQLite via `better-sqlite3` (file at `data/dashboard.db`); migrated June 2026.
+- Data: **Supabase PostgreSQL** via `@supabase/supabase-js` — 10 tables (+ `user_feed_states`). Originally SQLite via `better-sqlite3` (file at `data/dashboard.db`); migrated June 2026. RLS policies at `docs/rls-policies.sql`.
 - Ingestion: TypeScript ingesters (`src/ingesters/*`) + one legacy Python scraper (`src/scraper.py`)
 - Backend "API": Next.js Route Handlers (`app/api/**/route.ts`) reading/writing Supabase directly via `supabase.from()` —
   no separate server process required for MVP. Python is used for ingestion scripts only
@@ -383,6 +387,7 @@ docs/         → docs/README.md       # Onboarding, plans, research, feeds, aud
 | 41   | Ingestion status API (`GET /api/ingest/status`): per-source status + summary | ✅     |
 | 42   | IngestHealth widget: per-ingester health with source icons, ping dots, elapsed times | ✅     |
 | 43   | CVE matcher (OSV.dev), auto-fetch versions (7 registries), package search combobox, ecosystem auto-detection, manual CVE/version refresh endpoints | ✅     |
+| 44   | RBAC: user_roles table, auto-assign trigger on signup, is_lead() helper, RLS policies for all 10 tables, serviceClient bypasses RLS, role-aware UI (delete buttons hidden for intern) | ✅     |
 
 ### ✅ All Modules Complete
 

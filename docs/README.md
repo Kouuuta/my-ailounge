@@ -44,8 +44,9 @@ This folder contains onboarding guides, architecture references, research materi
 
 | Doc | Description |
 |-----|-------------|
-| `../src/db/README.md` | Database layer: originally SQLite (`better-sqlite3`, WAL mode, `getDb()` singleton), now **Supabase PostgreSQL** (`@supabase/supabase-js`, `supabase.from()`, async queries). 9 tables with full column/index docs, migration history, seed data, env var setup |
-| `supabase-schema.sql` | PostgreSQL DDL for all 9 tables — run this in Supabase SQL editor before seeding. Source of truth for table definitions. `feed_items` now includes `ai_relevance_score`, `ai_relevance_label`, `ai_relevance_reason`, `ai_tldr` columns; `is_pinned`/`is_read` moved to `user_feed_states` table |
+| `../src/db/README.md` | Database layer: originally SQLite (`better-sqlite3`, WAL mode, `getDb()` singleton), now **Supabase PostgreSQL** (`@supabase/supabase-js`, `serviceClient.from()`, async queries). 10 tables + `user_feed_states` with full column/index docs, migration history, seed data, env var setup. Includes `service-client.ts` (bypasses RLS), `server-client.ts` (cookie-based auth), `auth-helpers.ts` (role middleware) |
+| `supabase-schema.sql` | PostgreSQL DDL for all 10 tables — run this in Supabase SQL editor before seeding. Source of truth for table definitions. `feed_items` now includes `ai_relevance_score`, `ai_relevance_label`, `ai_relevance_reason`, `ai_tldr` columns; `is_pinned`/`is_read` moved to `user_feed_states` table |
+| `rls-policies.sql` | Row Level Security migration: `user_roles` table (`intern`/`lead`), auto-assign trigger on signup, `is_lead()` helper function, RLS policies for all 10 tables + `user_feed_states`. Run after `supabase-schema.sql` |
 
 ---
 

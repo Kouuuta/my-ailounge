@@ -22,7 +22,7 @@ A search input at the top filters items by `name`, `category`, or `upgrade_notes
 | Risk | Badge with icon + tooltip (ShieldCheck emerald / ShieldAlert amber / ShieldX rose) | No (editable in expanded panel) |
 | Last Checked | Relative time (e.g., "2h ago") | No |
 | Links | npm / GitHub / Docs icons (auto-detected from name, opens new tab) | No |
-| Delete | Trash icon (with confirm dialog) | — |
+| Delete | Trash icon (with confirm dialog) — visible only for `lead` role | — |
 
 ### Version Health
 
@@ -81,7 +81,7 @@ On submit, calls `POST /api/watchlist` which:
 | List items | `GET /api/watchlist` |
 | Add item | `POST /api/watchlist` (name, category, ecosystem, risk_level, risk_reason) |
 | Update field | `PATCH /api/watchlist/[id]` (whitelisted: name, category, ecosystem, installed_version, latest_version, risk_level, risk_reason, upgrade_notes, known_vulns, migration_link) |
-| Delete item | `DELETE /api/watchlist/[id]` (with confirmation dialog, animated fade-out) |
+| Delete item | `DELETE /api/watchlist/[id]` (lead role only, with confirmation dialog, animated fade-out) |
 | Refresh CVE | `POST /api/watchlist/[id]/cve` |
 | Fetch version | `POST /api/watchlist/[id]/version` |
 
