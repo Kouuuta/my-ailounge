@@ -438,23 +438,26 @@ function FeedContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 py-8">
-        <div className="animate-fade-in flex items-center justify-between mb-4">
-          <div>
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-6 md:py-8">
+        <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+          <div className="flex-1 min-w-0">
             <h1 className="text-3xl font-bold tracking-tight">Feed</h1>
-            <p className="text-muted-foreground text-sm mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Developer Intelligence Feed
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button size="sm" onClick={() => setShowAddForm(!showAddForm)}>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setShowAddForm(!showAddForm)}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground"
+            >
               {showAddForm ? (
-                <X className="h-4 w-4" />
+                <X className="h-3.5 w-3.5" />
               ) : (
-                <Plus className="h-4 w-4" />
+                <Plus className="h-3.5 w-3.5" />
               )}
               {showAddForm ? "Cancel" : "Add Item"}
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -462,37 +465,53 @@ function FeedContent() {
           <Card className="mb-6 border-primary/30 animate-slide-down">
             <CardContent className="pt-6">
               <div className="grid gap-3">
-                <Input
-                  placeholder="Title"
-                  value={addTitle}
-                  onChange={(e) => setAddTitle(e.target.value)}
-                />
-                <Input
-                  placeholder="URL"
-                  value={addUrl}
-                  onChange={(e) => setAddUrl(e.target.value)}
-                />
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Select value={addCategory} onValueChange={setAddCategory}>
-                    <SelectTrigger className="w-full sm:w-40">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CATEGORIES.map((c) => (
-                        <SelectItem key={c} value={c}>
-                          {c}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">Title</label>
                   <Input
-                    placeholder="Tags (comma separated)"
-                    value={addTags}
-                    onChange={(e) => setAddTags(e.target.value)}
-                    className="flex-1"
+                    placeholder="e.g. New AI Framework Released"
+                    value={addTitle}
+                    onChange={(e) => setAddTitle(e.target.value)}
                   />
                 </div>
-                <Button onClick={addItem} className="w-full">
+                <div>
+                  <label className="mb-1 block text-xs font-medium text-muted-foreground">URL</label>
+                  <Input
+                    placeholder="https://example.com/article"
+                    value={addUrl}
+                    onChange={(e) => setAddUrl(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="flex-1">
+                    <label className="mb-1 block text-xs font-medium text-muted-foreground">Category</label>
+                    <Select value={addCategory} onValueChange={setAddCategory}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CATEGORIES.map((c) => (
+                          <SelectItem key={c} value={c}>
+                            {c}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex-1">
+                    <label className="mb-1 block text-xs font-medium text-muted-foreground">Tags</label>
+                    <Input
+                      placeholder="e.g. ai, llm, tools"
+                      value={addTags}
+                      onChange={(e) => setAddTags(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-3">
+                <Button variant="outline" onClick={() => setShowAddForm(false)}>
+                  Cancel
+                </Button>
+                <Button size="sm" onClick={addItem}>
                   Add to Feed
                 </Button>
               </div>

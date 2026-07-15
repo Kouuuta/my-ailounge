@@ -344,27 +344,33 @@ export default function WatchlistPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 md:px-6 py-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 py-6 md:py-8">
         {/* Header */}
-        <div className="animate-fade-in flex items-center justify-between mb-4">
-          <div>
+        <div className="flex items-start justify-between gap-4 flex-wrap mb-6">
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <Wrench className="h-5 w-5 text-accent-vibrant" />
+              <Wrench className="h-5 w-5 text-accent-vibrant shrink-0" />
               <h1 className="text-3xl font-bold tracking-tight">Stack Watchlist</h1>
             </div>
-            <p className="text-muted-foreground text-sm mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               Track versions, risks, and resources across your tech stack
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button size="sm" variant="outline" onClick={() => window.open("/api/watchlist/export", "_blank")}>
-              <FileDown className="h-4 w-4" />
-              <span className="hidden sm:inline ml-1">Export PDF</span>
-            </Button>
-            <Button size="sm" onClick={() => setShowAddForm(!showAddForm)}>
-              {showAddForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => window.open("/api/watchlist/export", "_blank")}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground"
+            >
+              <FileDown className="h-3.5 w-3.5" />
+              Export PDF
+            </button>
+            <button
+              onClick={() => setShowAddForm(!showAddForm)}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground"
+            >
+              {showAddForm ? <X className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
               {showAddForm ? "Cancel" : "Add Item"}
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -406,7 +412,10 @@ export default function WatchlistPage() {
                   />
                 </div>
               </div>
-              <Button onClick={addItem} className="w-full mt-3">Add</Button>
+              <div className="flex justify-end gap-2 mt-3">
+                <Button variant="outline" onClick={() => setShowAddForm(false)}>Cancel</Button>
+                <Button size="sm" onClick={addItem}>Add</Button>
+              </div>
             </CardContent>
           </Card>
         )}

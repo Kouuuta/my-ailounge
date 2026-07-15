@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { getIngestionStatus, getGlobalIngestionStatus } from "@/src/lib/analytics";
 import { serviceClient } from "@/src/db/service-client";
-import { Activity, Radio, Rss, TrendingUp, Radar } from "lucide-react";
+import { Activity, Radio, TrendingUp, Rss, Radar } from "lucide-react";
 
 const SOURCE_CONFIG: Record<string, { icon: React.ElementType; color: string }> = {
   hn: { icon: Radio, color: "text-orange-500" },
@@ -22,128 +22,69 @@ function timeAgo(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function formatMs(ms: number | null): string {
-  if (ms === null) return "—";
-  if (ms < 1000) return `${ms}ms`;
-  return `${(ms / 1000).toFixed(1)}s`;
-}
-
-async function getTotalBySource(): Promise<Map<string, number>> {
-  const sources = ["hn", "github_trending", "rss", "repo_radar"];
-  const results = await Promise.all(
-    sources.map(async (s) => {
-      const { count } = await serviceClient
-        .from("feed_items")
-        .select("*", { count: "exact", head: true })
-        .eq("source", s);
-      return [s, count ?? 0] as const;
-    }),
-  );
-  return new Map(results);
-}
-
 export async function IngestHealth() {
   const statuses = await getIngestionStatus();
-  const globalStatus = await getGlobalIngestionStatus();
-  const totals = await getTotalBySource();
   const errors = statuses.filter((s) => s.status === "error").length;
 
   return (
-    <div className="animate-slide-up rounded-2xl border border-border/50 bg-card/50 backdrop-blur-xl transition-all duration-300 hover:shadow-lg">
-      <div className="px-4 pt-4 pb-2">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-500/20">
-              <Activity className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-            </div>
-            <h3 className="text-sm font-semibold text-foreground font-display tracking-wide">
-              Ingestion Health
-            </h3>
+    <div className="rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:shadow-sm">
+      <div className="flex items-center justify-between mb-2.5">
+        <div className="flex items-center gap-2">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-accent/70">
+            <Activity className="h-3.5 w-3.5 text-muted-foreground" />
           </div>
-          {globalStatus && (
-            <span
-              className={cn(
-                "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium font-mono",
-                errors > 0
-                  ? "bg-red-500/10 text-red-600 dark:text-red-400"
-                  : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-              )}
-            >
-              {errors > 0 ? `${errors} error${errors > 1 ? "s" : ""}` : "Healthy"}
-            </span>
-          )}
+          <h3 className="text-sm font-semibold text-foreground font-display">Ingestion</h3>
         </div>
+        <span
+          className={cn(
+            "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium font-mono",
+            errors > 0
+              ? "bg-red-500/10 text-red-600 dark:text-red-400"
+              : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+          )}
+        >
+          {errors > 0 ? `${errors} error${errors > 1 ? "s" : ""}` : "Healthy"}
+        </span>
       </div>
-      <div className="px-4 pb-4">
-        {statuses.length === 0 ? (
-          <p className="text-sm text-muted-foreground py-4 text-center font-mono">
-            No data. Run{" "}
-            <code className="text-xs bg-muted px-1 rounded">npm run ingest</code>
-          </p>
-        ) : (
-          <div className="space-y-1.5">
-            {statuses.map((s) => {
-              const cfg = SOURCE_CONFIG[s.source] ?? { icon: Activity, color: "text-muted-foreground" };
-              const Icon = cfg.icon;
-              const total = totals.get(s.source) ?? 0;
-              return (
-                <div
-                  key={s.source}
-                  className="flex items-center justify-between rounded-xl bg-accent/50 border border-border/50 px-3 py-2 transition-all duration-200 hover:bg-accent"
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <span className="relative flex h-2 w-2 shrink-0">
-                      <span
-                        className={cn(
-                          "absolute inline-flex h-full w-full rounded-full opacity-75",
-                          s.status === "ok"
-                            ? "bg-emerald-400 animate-ping"
-                            : s.status === "error"
-                              ? "bg-red-400"
-                              : "bg-muted-foreground/30",
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          "relative inline-flex h-2 w-2 rounded-full",
-                          s.status === "ok"
-                            ? "bg-emerald-400"
-                            : s.status === "error"
-                              ? "bg-red-400"
-                              : "bg-muted-foreground/30",
-                        )}
-                      />
-                    </span>
-                    <Icon className={cn("h-3.5 w-3.5 shrink-0", cfg.color)} />
-                    <span className="text-sm text-foreground/90 truncate">
-                      {s.source.replace("_", " ")}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground font-mono">
-                      {total > 0 ? `(${total})` : ""}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground shrink-0 font-mono">
-                    {s.lastRun && <span>{timeAgo(s.lastRun)}</span>}
-                    {s.elapsedMs !== null && (
-                      <span className="text-[10px] text-muted-foreground/60">
-                        {formatMs(s.elapsedMs)}
-                      </span>
-                    )}
-                    <span
-                      className={cn(
-                        s.status === "ok" && "text-emerald-600 dark:text-emerald-400",
-                        s.status === "error" && "text-red-600 dark:text-red-400",
-                      )}
-                    >
-                      +{s.count}
-                    </span>
-                  </div>
+      {statuses.length === 0 ? (
+        <p className="text-xs text-muted-foreground py-3 text-center font-mono">
+          No data. Run <code className="text-xs bg-muted px-1 rounded">npm run ingest</code>
+        </p>
+      ) : (
+        <div className="space-y-1">
+          {statuses.map((s) => {
+            const cfg = SOURCE_CONFIG[s.source] ?? { icon: Activity, color: "text-muted-foreground" };
+            const Icon = cfg.icon;
+            return (
+              <div
+                key={s.source}
+                className="flex items-center justify-between rounded-lg px-2.5 py-1.5 transition-colors hover:bg-accent/40"
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <span className={cn(
+                    "inline-flex h-1.5 w-1.5 rounded-full shrink-0",
+                    s.status === "ok" ? "bg-emerald-400" : s.status === "error" ? "bg-red-400" : "bg-muted-foreground/30",
+                  )} />
+                  <Icon className={cn("h-3 w-3 shrink-0", cfg.color)} />
+                  <span className="text-xs text-foreground/80 truncate">
+                    {s.source.replace("_", " ")}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+                <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground font-mono shrink-0">
+                  {s.lastRun && <span>{timeAgo(s.lastRun)}</span>}
+                  <span className={cn(
+                    "font-medium",
+                    s.status === "ok" && "text-emerald-600 dark:text-emerald-400",
+                    s.status === "error" && "text-red-600 dark:text-red-400",
+                  )}>
+                    +{s.count}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

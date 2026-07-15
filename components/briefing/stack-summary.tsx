@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Layers, ShieldAlert, ShieldCheck, ShieldX } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Layers, ShieldX, ShieldAlert, ShieldCheck, ArrowRight } from "lucide-react";
 
 interface StackStats {
   total: number;
@@ -33,48 +32,50 @@ export function StackSummary() {
 
   return (
     <Link href="/watchlist" className="block group">
-      <Card className="h-full transition-all duration-200 hover:shadow-md hover:border-accent-vibrant/30">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-500/20">
-              <Layers className="h-3.5 w-3.5 text-purple-600 dark:text-purple-400" />
+      <div className="group/card relative overflow-hidden rounded-xl border border-border bg-card p-4 transition-all duration-200 hover:shadow-sm hover:border-accent-vibrant/30">
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent-vibrant/60 to-accent-vibrant/20 opacity-0 group-hover/card:opacity-100 transition-opacity" />
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 mb-2.5">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-accent/70">
+                <Layers className="h-3.5 w-3.5 text-muted-foreground" />
+              </div>
+              <h3 className="text-sm font-semibold text-foreground font-display">Stack</h3>
             </div>
-            <h3 className="text-sm font-semibold text-foreground font-display tracking-wide">
-              Stack Watchlist
-            </h3>
-          </div>
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Total</span>
-              <span className="font-medium">{stats.total}</span>
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground text-xs">Total packages</span>
+                <span className="font-medium text-sm">{stats.total}</span>
+              </div>
+              {stats.high > 0 && (
+                <div className="flex items-center justify-between text-xs">
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <ShieldX className="h-3 w-3 text-rose-500" /> High risk
+                  </span>
+                  <span className="font-medium text-rose-500">{stats.high}</span>
+                </div>
+              )}
+              {stats.medium > 0 && (
+                <div className="flex items-center justify-between text-xs">
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <ShieldAlert className="h-3 w-3 text-amber-500" /> Medium
+                  </span>
+                  <span className="font-medium text-amber-500">{stats.medium}</span>
+                </div>
+              )}
+              {stats.low > 0 && (
+                <div className="flex items-center justify-between text-xs">
+                  <span className="flex items-center gap-1 text-muted-foreground">
+                    <ShieldCheck className="h-3 w-3 text-emerald-500" /> Low
+                  </span>
+                  <span className="font-medium text-emerald-500">{stats.low}</span>
+                </div>
+              )}
             </div>
-            {stats.high > 0 && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1 text-muted-foreground">
-                  <ShieldX className="h-3.5 w-3.5 text-rose-500" /> High
-                </span>
-                <span className="font-medium text-rose-500">{stats.high}</span>
-              </div>
-            )}
-            {stats.medium > 0 && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1 text-muted-foreground">
-                  <ShieldAlert className="h-3.5 w-3.5 text-amber-500" /> Medium
-                </span>
-                <span className="font-medium text-amber-500">{stats.medium}</span>
-              </div>
-            )}
-            {stats.low > 0 && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1 text-muted-foreground">
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" /> Low
-                </span>
-                <span className="font-medium text-emerald-500">{stats.low}</span>
-              </div>
-            )}
           </div>
-        </CardContent>
-      </Card>
+          <ArrowRight className="h-4 w-4 text-accent-vibrant mt-1.5 shrink-0 opacity-0 -translate-x-1 group-hover/card:opacity-100 group-hover/card:translate-x-0 transition-all duration-200" />
+        </div>
+      </div>
     </Link>
   );
 }

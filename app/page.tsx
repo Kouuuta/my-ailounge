@@ -7,17 +7,10 @@ import {
   getLastGlobalIngestion,
 } from "@/src/lib/analytics";
 import { INTERN_TASKS } from "@/src/config/intern-tasks";
-import {
-  Brain,
-  Code,
-  TrendingUp,
-  Shield,
-  BookOpen,
-  Sparkles,
-  Clock,
-} from "lucide-react";
+import { BookOpen, Rss } from "lucide-react";
 import Link from "next/link";
 import { IngestButton } from "@/components/engineering-intelligence/ingest-button";
+import { Greeting } from "@/components/briefing/greeting";
 import { StatCard } from "@/components/briefing/stat-card";
 import { FeedSection } from "@/components/briefing/feed-section";
 import { FeedBreakdown } from "@/components/briefing/feed-breakdown";
@@ -59,10 +52,7 @@ function timeAgo(dateStr: string): string {
   if (hrs < 24) return `${hrs}h ago`;
   const days = Math.floor(hrs / 24);
   if (days < 30) return `${days}d ago`;
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
+  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 export const dynamic = "force-dynamic";
@@ -80,19 +70,19 @@ export default async function HomePage() {
     { count: totalCount },
     { data: featuredPromptData },
   ] = await Promise.all([
-    supabase.from("feed_items").select("*").eq("category", "ai").neq("source", "manual").order("score", { ascending: false }).order("published_at", { ascending: false }).limit(5),
-    supabase.from("feed_items").select("*").in("category", ["nextjs", "django"]).neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(5),
-    supabase.from("feed_items").select("*").eq("source", "github_trending").order("fetched_at", { ascending: false }).limit(5),
-    supabase.from("feed_items").select("*").or("category.eq.security,tags.ilike.%cve%").neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(5),
+    supabase.from("feed_items").select("*").eq("category", "ai").neq("source", "manual").order("score", { ascending: false }).order("published_at", { ascending: false }).limit(3),
+    supabase.from("feed_items").select("*").in("category", ["nextjs", "django"]).neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(3),
+    supabase.from("feed_items").select("*").eq("source", "github_trending").order("fetched_at", { ascending: false }).limit(3),
+    supabase.from("feed_items").select("*").or("category.eq.security,tags.ilike.%cve%").neq("source", "manual").order("published_at", { ascending: false }).order("fetched_at", { ascending: false }).limit(3),
     supabase.from("feed_items").select("id, title, url, summary, tags").neq("source", "manual").or("tags.ilike.%ai%,tags.ilike.%tool%").order("score", { ascending: false }).order("fetched_at", { ascending: false }).limit(1).maybeSingle(),
     supabase.from("feed_items").select("*", { count: "exact", head: true }).neq("source", "manual"),
     supabase.from("prompts").select("*").eq("is_featured", 1).eq("source", "curated").order("id").limit(1).maybeSingle(),
   ]);
 
-  const aiItems = (aiData ?? []) as FeedItem[];
-  const frameworkItems = (frameworkData ?? []) as FeedItem[];
-  const trendingItems = (trendingData ?? []) as FeedItem[];
-  const securityItems = (securityData ?? []) as FeedItem[];
+  const aiItems = (aiData ?? []).slice(0, 3) as FeedItem[];
+  const frameworkItems = (frameworkData ?? []).slice(0, 3) as FeedItem[];
+  const trendingItems = (trendingData ?? []).slice(0, 3) as FeedItem[];
+  const securityItems = (securityData ?? []).slice(0, 3) as FeedItem[];
   const recommendedItem = (recommendedData as FeedItem | null) ?? null;
   const totalItems = totalCount ?? 0;
   const featuredPrompt = (featuredPromptData as PromptItem | null) ?? null;
@@ -144,142 +134,113 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-6 md:py-8">
-        {/* Header */}
-        <div className="animate-fade-in flex items-center justify-between gap-3 flex-wrap mb-8">
-          <div>
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-accent-vibrant" />
-              <h1 className="text-3xl font-bold tracking-tight">
-                Engineering Briefing
-              </h1>
-            </div>
-            <p className="text-muted-foreground text-sm mt-1">
-              {totalItems} items
-            </p>
+        {/* Header row */}
+        <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
+          <div className="flex-1 min-w-0">
+            <Greeting totalItems={totalItems} />
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <IngestButton />
             <Link
               href="/feed"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-white/[0.06] border border-white/[0.08] px-3 py-2 text-sm font-medium text-gray-300 transition-all duration-200 hover:bg-white/[0.1] hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground"
             >
-              <BookOpen className="h-4 w-4" />
+              <Rss className="h-3.5 w-3.5" />
               Full Feed
             </Link>
           </div>
         </div>
 
-        {/* Stat Cards */}
-        <div className="animate-fade-in grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <StatCard
-            label="Total Items"
-            value={totalItems}
-            icon={BookOpen}
-            accentColor="bg-emerald-500"
-            gradient="from-emerald-500 to-teal-500"
-            secondary="ingested"
-            delay={0}
-          />
-          <StatCard
-            label="Last Ingestion"
-            value={lastIngestion ? timeAgo(lastIngestion) : "Never"}
-            icon={Sparkles}
-            accentColor="bg-gray-500"
-            gradient="from-gray-500 to-slate-500"
-            delay={100}
-          />
-          <StatCard
-            label="Items Today"
-            value={itemsToday}
-            icon={TrendingUp}
-            accentColor="bg-amber-500"
-            gradient="from-amber-500 to-orange-500"
-            delay={200}
-          />
-          <StatCard
-            label="Items This Week"
-            value={itemsThisWeek}
-            icon={Clock}
-            accentColor="bg-indigo-500"
-            gradient="from-blue-500 to-indigo-500"
-            delay={300}
-          />
-        </div>
-
-        {/* Stack Summary */}
-        <div className="mb-8 max-w-sm">
-          <StackSummary />
-        </div>
-
-        {/* Featured News */}
-        {featuredItems.length > 0 && (
-          <div className="mb-8">
-            <FeaturedNews items={featuredItems} delay={400} />
+        {/* Row 2: Featured hero + stat cards + stack */}
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 mb-8">
+          {/* Featured News — spans 4 cols */}
+          <div className="lg:col-span-4">
+            <FeaturedNews items={featuredItems} />
           </div>
-        )}
 
-        {/* Feed Sections */}
-        <div className="grid gap-4 md:grid-cols-2 mb-8">
+          {/* Stat cards + Stack — spans 2 cols */}
+          <div className="lg:col-span-2 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <StatCard
+                label="Total Items"
+                value={totalItems}
+                icon={BookOpen}
+                theme="blue"
+              />
+              <StatCard
+                label="Items Today"
+                value={itemsToday}
+                icon={Rss}
+                theme="teal"
+                trend={itemsThisWeek > 0 ? { value: `${itemsThisWeek} this week`, positive: itemsToday >= itemsThisWeek / 7 } : undefined}
+              />
+              <StatCard
+                label="This Week"
+                value={itemsThisWeek}
+                icon={BookOpen}
+                theme="purple"
+              />
+              <StatCard
+                label="Last Ingest"
+                value={lastIngestion ? timeAgo(lastIngestion) : "Never"}
+                icon={BookOpen}
+                theme="amber"
+              />
+            </div>
+            <StackSummary />
+          </div>
+        </div>
+
+        {/* Row 3: Feed sections — 3 columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <FeedSection
             title="AI Changes"
-            icon={Brain}
+            icon={BookOpen}
             items={aiItems}
             viewAllHref="/feed?category=ai"
-            delay={0}
-            theme="ai"
+            theme="teal"
           />
           <FeedSection
-            title="Trending Repos"
-            icon={TrendingUp}
+            title="Trending"
+            icon={BookOpen}
             items={trendingItems}
             viewAllHref="/feed?source=github_trending"
-            delay={100}
-            theme="trending"
+            theme="purple"
           />
           <FeedSection
-            title="Framework Updates"
-            icon={Code}
+            title="Frameworks"
+            icon={BookOpen}
             items={frameworkItems}
             viewAllHref="/feed?category=nextjs"
-            delay={200}
-            theme="framework"
+            theme="blue"
           />
+        </div>
+
+        {/* Row 4: Security + Featured Prompt */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <FeedSection
             title="Security"
-            icon={Shield}
+            icon={BookOpen}
             items={securityItems}
             viewAllHref="/feed?category=security"
-            delay={300}
-            theme="security"
+            theme="rose"
           />
+          <FeaturedPrompt item={featuredPrompt} />
         </div>
 
-        {/* Feed Breakdown */}
+        {/* Row 5: Feed Breakdown */}
         <div className="mb-8">
-          <FeedBreakdown
-            sources={sources}
-            categories={categories}
-            total={totalItems}
-            delay={400}
-          />
+          <FeedBreakdown sources={sources} categories={categories} total={totalItems} />
         </div>
 
-        {/* Bottom row: Tasks + Featured Prompt + Automation */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-8">
-          <div className="md:col-span-1 lg:col-span-1">
-            <InternTasks
-              recommendedItem={recommendedItem}
-              todayTask={todayTask}
-              tomorrowTask={tomorrowTask}
-              delay={500}
-            />
-          </div>
-          <div className="md:col-span-1 lg:col-span-1">
-            <FeaturedPrompt item={featuredPrompt} delay={600} />
-          </div>
-          <div className="md:col-span-1 lg:col-span-1">
-            <IngestHealth />
-          </div>
+        {/* Row 6: Tasks + Ingest Health */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InternTasks
+            recommendedItem={recommendedItem}
+            todayTask={todayTask}
+            tomorrowTask={tomorrowTask}
+          />
+          <IngestHealth />
         </div>
       </div>
     </div>
