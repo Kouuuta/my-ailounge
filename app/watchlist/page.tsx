@@ -18,6 +18,7 @@ import {
   GitFork,
   BookOpen,
   RefreshCw,
+  FileDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -353,10 +354,16 @@ export default function WatchlistPage() {
               Track versions, risks, and resources across your tech stack
             </p>
           </div>
-          <Button size="sm" onClick={() => setShowAddForm(!showAddForm)}>
-            {showAddForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-            {showAddForm ? "Cancel" : "Add Item"}
-          </Button>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" onClick={() => window.open("/api/watchlist/export", "_blank")}>
+              <FileDown className="h-4 w-4" />
+              <span className="hidden sm:inline ml-1">Export PDF</span>
+            </Button>
+            <Button size="sm" onClick={() => setShowAddForm(!showAddForm)}>
+              {showAddForm ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              {showAddForm ? "Cancel" : "Add Item"}
+            </Button>
+          </div>
         </div>
 
         {/* Add form */}
@@ -555,17 +562,24 @@ export default function WatchlistPage() {
 
                           {/* Risk */}
                           <TableCell>
-                            <div className="relative group">
-                              <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium", risk.bg, risk.text)}>
-                                <RiskIcon className="h-3 w-3" />
-                                {risk.label}
-                              </span>
-                              {item.risk_reason && (
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block z-10">
-                                  <div className="bg-popover border border-border rounded-md px-3 py-2 text-xs shadow-md whitespace-nowrap max-w-[260px]">
-                                    {item.risk_reason}
+                            <div className="flex flex-col">
+                              <div className="relative group">
+                                <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium", risk.bg, risk.text)}>
+                                  <RiskIcon className="h-3 w-3" />
+                                  {risk.label}
+                                </span>
+                                {item.risk_reason && (
+                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden md:group-hover:block z-50 pointer-events-none">
+                                    <div className="bg-popover border border-border rounded-md px-3 py-2 text-xs shadow-md whitespace-nowrap max-w-[260px]">
+                                      {item.risk_reason}
+                                    </div>
                                   </div>
-                                </div>
+                                )}
+                              </div>
+                              {item.risk_reason && (
+                                <span className="text-[10px] text-muted-foreground mt-0.5 truncate max-w-[70px] md:hidden">
+                                  {item.risk_reason}
+                                </span>
                               )}
                             </div>
                           </TableCell>

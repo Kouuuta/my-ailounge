@@ -155,7 +155,7 @@ function FilterBar({
   return (
     <div className="sticky top-14 z-40 -mx-4 px-4 py-3 mb-4 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="flex flex-wrap gap-2 items-center">
-        <div className="relative flex-1 min-w-[200px]">
+        <div className="relative flex-1 min-w-[140px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search title..."
@@ -168,7 +168,7 @@ function FilterBar({
           value={source}
           onValueChange={(v) => setSource(v === "all" ? "" : v)}
         >
-          <SelectTrigger className="w-32">
+          <SelectTrigger className="w-28 sm:w-32">
             <SelectValue placeholder="Source" />
           </SelectTrigger>
           <SelectContent>
@@ -184,7 +184,7 @@ function FilterBar({
           value={category}
           onValueChange={(v) => setCategory(v === "all" ? "" : v)}
         >
-          <SelectTrigger className="w-32">
+          <SelectTrigger className="w-28 sm:w-32">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -200,7 +200,7 @@ function FilterBar({
           value={isRead}
           onValueChange={(v) => setIsRead(v === "all" ? "" : v)}
         >
-          <SelectTrigger className="w-28">
+          <SelectTrigger className="w-24 sm:w-28">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -213,7 +213,7 @@ function FilterBar({
           value={isPinned}
           onValueChange={(v) => setIsPinned(v === "all" ? "" : v)}
         >
-          <SelectTrigger className="w-28">
+          <SelectTrigger className="w-24 sm:w-28">
             <SelectValue placeholder="Pinned" />
           </SelectTrigger>
           <SelectContent>

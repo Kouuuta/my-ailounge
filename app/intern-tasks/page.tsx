@@ -182,7 +182,7 @@ export default function InternTasksPage() {
               </Select>
             </div>
 
-            <span className="text-xs text-muted-foreground ml-auto">
+            <span className="text-xs text-muted-foreground sm:ml-auto sm:text-right">
               Showing {filtered.length} of {INTERN_TASKS.length} tasks
             </span>
           </div>
