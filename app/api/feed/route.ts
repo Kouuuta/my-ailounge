@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSupabase } from "@/src/db/server-client";
+import { getServerClient } from "@/src/db/server-client";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(searchParams.get("limit") || "50"), 200);
   const offset = Math.max(parseInt(searchParams.get("offset") || "0"), 0);
 
-  const supabase = await getServerSupabase();
+  const { client: supabase } = getServerClient(req);
   const { data: { user } } = await supabase.auth.getUser();
   const userId = user?.id;
 
@@ -111,7 +111,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const supabase = await getServerSupabase();
+  const { client: supabase } = getServerClient(req);
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

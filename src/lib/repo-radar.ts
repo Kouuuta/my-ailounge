@@ -1,4 +1,4 @@
-import { supabase } from "../db/supabase-client";
+import { serviceClient } from "../db/service-client";
 
 export interface RepoRadarItem {
   id: number;
@@ -209,7 +209,7 @@ export async function refreshSingleRepo(item: RepoRadarItem): Promise<{
     const spike = prevIssues7d > 0 && issuesOpened > prevIssues7d * 1.5;
 
     const now = new Date().toISOString();
-    await supabase
+    await serviceClient
       .from("repo_radar_items")
       .update({
         description: info.description,
@@ -253,7 +253,7 @@ export async function refreshAll(): Promise<{
   errors: number;
   results: { name: string; ok: boolean; error?: string; stars?: number; new_release?: string; breaking?: string | null; security?: string | null }[];
 }> {
-  const { data: items } = await supabase
+  const { data: items } = await serviceClient
     .from("repo_radar_items")
     .select("*")
     .eq("is_active", 1)
@@ -279,7 +279,7 @@ export async function refreshAll(): Promise<{
     { key: "repo_radar:count", value: String(repoItems.length) },
   ];
   for (const e of kvEntries) {
-    await supabase.from("kv_store").upsert(e, { onConflict: "key" });
+    await serviceClient.from("kv_store").upsert(e, { onConflict: "key" });
   }
 
   return { updated, errors, results };

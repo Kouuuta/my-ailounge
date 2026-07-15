@@ -1,4 +1,4 @@
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { getIngestionStatus } from "@/src/lib/analytics";
 
 export const dynamic = "force-dynamic";
@@ -6,12 +6,12 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const statuses = await getIngestionStatus();
 
-  const { data: allStatus } = await supabase
+  const { data: allStatus } = await serviceClient
     .from("kv_store")
     .select("value")
     .eq("key", "ingest:status:all")
     .single();
-  const { data: allLastRun } = await supabase
+  const { data: allLastRun } = await serviceClient
     .from("kv_store")
     .select("value")
     .eq("key", "ingest:last_run:all")

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 
 export async function GET(
   req: NextRequest,
@@ -12,7 +12,7 @@ export async function GET(
   const isError = url.searchParams.get("is_error");
 
   const numId = Number(id);
-  let query = supabase.from("log_errors").select("*", { count: "exact" }).eq("analysis_id", numId);
+  let query = serviceClient.from("log_errors").select("*", { count: "exact" }).eq("analysis_id", numId);
 
   if (isError === "0" || isError === "1") {
     query = query.eq("is_error", parseInt(isError));

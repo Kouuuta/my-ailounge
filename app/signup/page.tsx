@@ -48,6 +48,9 @@ export default function SignupPage() {
             <p className="text-sm text-muted-foreground mt-1">
               Start your own dashboard
             </p>
+            <p className="text-xs text-muted-foreground/60 mt-2">
+              Signup may be restricted to specific email domains configured in Supabase Auth.
+            </p>
           </div>
 
           <form onSubmit={handleSignup} className="space-y-4">

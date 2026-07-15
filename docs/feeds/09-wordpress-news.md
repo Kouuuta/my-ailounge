@@ -54,6 +54,13 @@
 
 ## July 2026
 - [Auto-apply coupon: how 209 lines of code replaced ~13,000](https://developer.woocommerce.com/2026/07/01/auto-apply-coupons/) | 2026-07-01 | wordpress
+- [Product shipping class taxonomy will be private in WooCommerce 11.0](https://developer.woocommerce.com/2026/07/09/product-shipping-class-taxonomy-private/) | 2026-07-09 | wordpress
+- [A more reliable get_queried_object() in WooCommerce 11.0](https://developer.woocommerce.com/2026/07/13/updating-get_queried_object-in-shop/) | 2026-07-13 | wordpress
+- [WooCommerce 11.0: What&#8217;s coming for developers](https://developer.woocommerce.com/2026/07/13/woocommerce-11-0-pre-release/) | 2026-07-13 | wordpress
+- [What&#8217;s new for developers (July 2026)](https://developer.wordpress.org/news/2026/07/whats-new-for-developers-july-2026/) | 2026-07-10 | wordpress
+- [On-brand maintenance mode for WordPress Block Themes](https://developer.wordpress.org/news/2026/07/on-brand-maintenance-mode-for-wordpress-block-themes/) | 2026-07-13 | wordpress
+- [WordPress 7.0.1 Maintenance Release](https://wordpress.org/news/2026/07/wordpress-7-0-1-maintenance-release/) | 2026-07-09 | wordpress
+- [Your Guide to WordCamp US 2026](https://wordpress.org/news/2026/07/wcus-2026-guide/) | 2026-07-13 | wordpress
 - [WooCommerce 10.9.2 Release Notes](https://developer.woocommerce.com/2026/07/03/woocommerce-10-9-2/) | 2026-07-02 | wordpress
 - [WooCommerce 10.9.3 Release Notes](https://developer.woocommerce.com/2026/07/03/woocommerce-10-9-3/) | 2026-07-03 | wordpress
 - [Supporting high quality contributions to WooCommerce core](https://developer.woocommerce.com/2026/07/07/contributor-limits/) | 2026-07-07 | wordpress

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 
 export async function GET(
   req: NextRequest,
@@ -11,7 +11,7 @@ export async function GET(
 
   if (fromDate && toDate) {
     const numId = Number(id);
-    const { data: errorRows } = await supabase
+    const { data: errorRows } = await serviceClient
       .from("log_errors")
       .select("pattern_key, error_type, raw_message, timestamp")
       .eq("analysis_id", numId)
@@ -67,7 +67,7 @@ export async function GET(
     return NextResponse.json({ patterns });
   }
 
-  const { data: rows } = await supabase
+  const { data: rows } = await serviceClient
     .from("log_patterns")
     .select("*")
     .eq("analysis_id", Number(id))

@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/components/auth-provider";
 
 interface RepoItem {
   id: number;
@@ -157,6 +158,7 @@ function ConfirmDialog({
 }
 
 export default function RepoRadarPage() {
+  const { role } = useUser();
   const [items, setItems] = useState<RepoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -400,6 +402,7 @@ export default function RepoRadarPage() {
               key={item.id}
               item={item}
               index={i}
+              role={role}
               editingNotes={editingNotes}
               notesText={notesText}
               onStartEdit={(id, notes) => {
@@ -429,6 +432,7 @@ export default function RepoRadarPage() {
 function RepoCard({
   item,
   index,
+  role,
   editingNotes,
   notesText,
   onStartEdit,
@@ -439,6 +443,7 @@ function RepoCard({
 }: {
   item: RepoItem;
   index: number;
+  role: string | null;
   editingNotes: number | null;
   notesText: string;
   onStartEdit: (id: number, notes: string | null) => void;
@@ -596,13 +601,15 @@ function RepoCard({
             </button>
           )}
         </div>
-        <button
-          onClick={onDelete}
-          className="ml-2 shrink-0 rounded-md p-1.5 text-muted-foreground md:opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive focus:opacity-100 md:group-hover:opacity-100"
-          aria-label={`Remove ${item.full_name}`}
-        >
-          <Trash2 className="h-4 w-4" />
-        </button>
+        {role === "lead" && (
+          <button
+            onClick={onDelete}
+            className="ml-2 shrink-0 rounded-md p-1.5 text-muted-foreground md:opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive focus:opacity-100 md:group-hover:opacity-100"
+            aria-label={`Remove ${item.full_name}`}
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        )}
       </div>
     </div>
   );

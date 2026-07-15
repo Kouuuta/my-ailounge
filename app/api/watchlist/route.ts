@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { retroactivelyScore } from "@/src/lib/retroactive-scorer";
 import { checkVulnerabilities, severityToRiskLevel } from "@/src/lib/cve-matcher";
 import { detectEcosystem } from "@/src/lib/ecosystem-detector";
 import { fetchLatestVersion } from "@/src/lib/version-fetcher";
 
 export async function GET() {
-  const { data: items } = await supabase
+  const { data: items } = await serviceClient
     .from("watchlist_items")
     .select("*")
     .order("category")
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "risk_level must be low, medium, or high" }, { status: 400 });
   }
 
-  const { data, error } = await supabase.from("watchlist_items").insert({
+  const { data, error } = await serviceClient.from("watchlist_items").insert({
     name,
     category: category || null,
     ecosystem: ecosystem || detectEcosystem(name),
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
   fetchLatestVersion(name, detectedEcosystem).then(async (version) => {
     if (version) {
-      await supabase
+      await serviceClient
         .from("watchlist_items")
         .update({ latest_version: version })
         .eq("id", data.id);
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       summaryText: result.summaryText,
       cves: result.cves,
     };
-    await supabase
+    await serviceClient
       .from("watchlist_items")
       .update({
         known_vulns: JSON.stringify(payload),

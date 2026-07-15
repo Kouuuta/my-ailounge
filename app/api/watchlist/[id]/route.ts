@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
+import { requireRole } from "@/src/lib/auth-helpers";
 
 const VALID_FIELDS = [
   "name", "category", "ecosystem", "installed_version", "latest_version",
@@ -13,7 +14,7 @@ export async function PATCH(
   const { id } = await params;
   const body = await req.json();
 
-  const { data: item } = await supabase.from("watchlist_items").select("*").eq("id", Number(id)).single();
+  const { data: item } = await serviceClient.from("watchlist_items").select("*").eq("id", Number(id)).single();
   if (!item) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
@@ -35,23 +36,26 @@ export async function PATCH(
   }
 
   updates.updated_at = new Date().toISOString();
-  await supabase.from("watchlist_items").update(updates).eq("id", Number(id));
+  await serviceClient.from("watchlist_items").update(updates).eq("id", Number(id));
 
-  const { data: updated } = await supabase.from("watchlist_items").select("*").eq("id", Number(id)).single();
+  const { data: updated } = await serviceClient.from("watchlist_items").select("*").eq("id", Number(id)).single();
   return NextResponse.json({ ok: true, item: updated });
 }
 
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const err = await requireRole(req, ["lead"]);
+  if (err) return err;
+
   const { id } = await params;
 
-  const { data: item } = await supabase.from("watchlist_items").select("id").eq("id", Number(id)).single();
+  const { data: item } = await serviceClient.from("watchlist_items").select("id").eq("id", Number(id)).single();
   if (!item) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
 
-  await supabase.from("watchlist_items").delete().eq("id", Number(id));
+  await serviceClient.from("watchlist_items").delete().eq("id", Number(id));
   return NextResponse.json({ ok: true });
 }

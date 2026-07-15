@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { PDFDocument, PDFPage, PDFFont, rgb, StandardFonts } from "pdf-lib";
 
 export const dynamic = "force-dynamic";
@@ -538,7 +538,7 @@ export async function GET(
   const { id } = await params;
   const numId = Number(id);
 
-  const { data: analysis } = await supabase
+  const { data: analysis } = await serviceClient
     .from("log_analyses")
     .select("*")
     .eq("id", numId)
@@ -548,12 +548,12 @@ export async function GET(
     return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
   }
 
-  const { data: patternsData } = await supabase
+  const { data: patternsData } = await serviceClient
     .from("log_patterns")
     .select("*")
     .eq("analysis_id", numId)
     .order("count", { ascending: false });
-  const { data: anomaliesData } = await supabase
+  const { data: anomaliesData } = await serviceClient
     .from("log_anomalies")
     .select("*")
     .eq("analysis_id", numId)

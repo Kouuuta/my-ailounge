@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { checkVulnerabilities } from "@/src/lib/cve-matcher";
 
 export async function POST(
@@ -9,7 +9,7 @@ export async function POST(
   const { id } = await params;
   const numId = Number(id);
 
-  const { data: item } = await supabase
+  const { data: item } = await serviceClient
     .from("watchlist_items")
     .select("name, ecosystem")
     .eq("id", numId)
@@ -29,7 +29,7 @@ export async function POST(
     cves: result.cves,
   };
 
-  await supabase
+  await serviceClient
     .from("watchlist_items")
     .update({
       known_vulns: JSON.stringify(payload),
@@ -41,7 +41,7 @@ export async function POST(
     })
     .eq("id", numId);
 
-  const { data: updated } = await supabase
+  const { data: updated } = await serviceClient
     .from("watchlist_items")
     .select("*")
     .eq("id", numId)

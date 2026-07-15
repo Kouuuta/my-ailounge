@@ -1,4 +1,4 @@
-import { supabase } from "../db/supabase-client";
+import { serviceClient } from "../db/service-client";
 import { scoreRelevance } from "./relevance-scorer";
 import { recalcEngagementForItem } from "./engagement-scorer";
 
@@ -14,7 +14,7 @@ export interface IngestEntry {
 }
 
 export async function upsertEntry(entry: IngestEntry): Promise<"inserted" | "skipped"> {
-  const { data: existing } = await supabase
+  const { data: existing } = await serviceClient
     .from("feed_items")
     .select("id")
     .eq("source", entry.source)
@@ -23,7 +23,7 @@ export async function upsertEntry(entry: IngestEntry): Promise<"inserted" | "ski
 
   if (existing) return "skipped";
 
-  const { data: inserted, error } = await supabase
+  const { data: inserted, error } = await serviceClient
     .from("feed_items")
     .insert({
       source: entry.source,
@@ -52,7 +52,7 @@ export async function upsertEntry(entry: IngestEntry): Promise<"inserted" | "ski
   });
 
   if (relevance) {
-    await supabase
+    await serviceClient
       .from("feed_items")
       .update({
         ai_relevance_score: relevance.score,

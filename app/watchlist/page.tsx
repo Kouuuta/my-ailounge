@@ -40,6 +40,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { useUser } from "@/components/auth-provider";
 
 type WatchItem = {
   id: number;
@@ -188,6 +189,7 @@ function relativeTime(dateStr: string): string {
 export const dynamic = "force-dynamic";
 
 export default function WatchlistPage() {
+  const { role } = useUser();
   const [items, setItems] = useState<WatchItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -611,16 +613,18 @@ export default function WatchlistPage() {
                           </TableCell>
 
                           {/* Delete */}
-                          <TableCell>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-7 w-7 text-destructive hover:text-destructive"
-                              onClick={() => { if (window.confirm(`Remove "${item.name}" from watchlist?`)) deleteItem(item.id); }}
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </Button>
-                          </TableCell>
+                          {role === "lead" && (
+                            <TableCell>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-7 w-7 text-destructive hover:text-destructive"
+                                onClick={() => { if (window.confirm(`Remove "${item.name}" from watchlist?`)) deleteItem(item.id); }}
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            </TableCell>
+                          )}
                         </TableRow>
 
                         {/* Expanded panel */}

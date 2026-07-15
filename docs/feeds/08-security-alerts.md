@@ -222,6 +222,86 @@
 
 ## July 2026
 - [[MEDIUM] [reviewed] OpenClaw: memory-wiki ingest could read local files with operator.write scope](https://github.com/advisories/GHSA-p2fh-f5fc-44hr) | 2026-07-02 | security
+- [[CRITICAL 9.8] CVE-2026-52993](https://nvd.nist.gov/vuln/detail/CVE-2026-52993) | 2026-07-10 | security
+- [[CRITICAL 9.8] CVE-2026-52989](https://nvd.nist.gov/vuln/detail/CVE-2026-52989) | 2026-07-10 | security
+- [[CRITICAL 9.8] CVE-2026-52986](https://nvd.nist.gov/vuln/detail/CVE-2026-52986) | 2026-07-10 | security
+- [[CRITICAL 9.8] CVE-2026-52982](https://nvd.nist.gov/vuln/detail/CVE-2026-52982) | 2026-07-10 | security
+- [[HIGH 8.1] CVE-2026-52967](https://nvd.nist.gov/vuln/detail/CVE-2026-52967) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-52971](https://nvd.nist.gov/vuln/detail/CVE-2026-52971) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-52973](https://nvd.nist.gov/vuln/detail/CVE-2026-52973) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-52975](https://nvd.nist.gov/vuln/detail/CVE-2026-52975) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-52976](https://nvd.nist.gov/vuln/detail/CVE-2026-52976) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-52987](https://nvd.nist.gov/vuln/detail/CVE-2026-52987) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-52991](https://nvd.nist.gov/vuln/detail/CVE-2026-52991) | 2026-07-10 | security
+- [[CRITICAL 9.1] CVE-2026-52999](https://nvd.nist.gov/vuln/detail/CVE-2026-52999) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53000](https://nvd.nist.gov/vuln/detail/CVE-2026-53000) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53005](https://nvd.nist.gov/vuln/detail/CVE-2026-53005) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53009](https://nvd.nist.gov/vuln/detail/CVE-2026-53009) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53011](https://nvd.nist.gov/vuln/detail/CVE-2026-53011) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53016](https://nvd.nist.gov/vuln/detail/CVE-2026-53016) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53020](https://nvd.nist.gov/vuln/detail/CVE-2026-53020) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53024](https://nvd.nist.gov/vuln/detail/CVE-2026-53024) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53025](https://nvd.nist.gov/vuln/detail/CVE-2026-53025) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53031](https://nvd.nist.gov/vuln/detail/CVE-2026-53031) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53033](https://nvd.nist.gov/vuln/detail/CVE-2026-53033) | 2026-07-10 | security
+- [[HIGH 7.8] CVE-2026-53036](https://nvd.nist.gov/vuln/detail/CVE-2026-53036) | 2026-07-10 | security
+- [[CRITICAL 9.1] CVE-2026-53043](https://nvd.nist.gov/vuln/detail/CVE-2026-53043) | 2026-07-10 | security
+- [[HIGH 7.0] CVE-2026-52969](https://nvd.nist.gov/vuln/detail/CVE-2026-52969) | 2026-07-10 | security
+- [[HIGH 7.0] CVE-2026-52972](https://nvd.nist.gov/vuln/detail/CVE-2026-52972) | 2026-07-10 | security
+- [[HIGH 7.5] CVE-2026-52974](https://nvd.nist.gov/vuln/detail/CVE-2026-52974) | 2026-07-10 | security
+- [[HIGH 7.5] CVE-2026-52981](https://nvd.nist.gov/vuln/detail/CVE-2026-52981) | 2026-07-10 | security
+- [[HIGH 7.5] CVE-2026-52983](https://nvd.nist.gov/vuln/detail/CVE-2026-52983) | 2026-07-10 | security
+- [[HIGH 7.1] CVE-2026-52988](https://nvd.nist.gov/vuln/detail/CVE-2026-52988) | 2026-07-10 | security
+- [[HIGH 7.5] CVE-2026-52998](https://nvd.nist.gov/vuln/detail/CVE-2026-52998) | 2026-07-10 | security
+- [[HIGH 7.1] CVE-2026-53044](https://nvd.nist.gov/vuln/detail/CVE-2026-53044) | 2026-07-10 | security
+- [[HIGH 7.1] CVE-2026-53041](https://nvd.nist.gov/vuln/detail/CVE-2026-53041) | 2026-07-10 | security
+- [[HIGH 7.1] CVE-2026-53040](https://nvd.nist.gov/vuln/detail/CVE-2026-53040) | 2026-07-10 | security
+- [[HIGH 7.5] CVE-2026-53026](https://nvd.nist.gov/vuln/detail/CVE-2026-53026) | 2026-07-10 | security
+- [[HIGH 7.5] CVE-2026-53003](https://nvd.nist.gov/vuln/detail/CVE-2026-53003) | 2026-07-10 | security
+- [[HIGH 8.8] CVE-2026-21262](https://nvd.nist.gov/vuln/detail/CVE-2026-21262) | 2026-07-10 | security
+- [[HIGH 8.7] CVE-2026-15308](https://nvd.nist.gov/vuln/detail/CVE-2026-15308) | 2026-07-10 | security
+- [[HIGH 7.5] CVE-2026-12151](https://nvd.nist.gov/vuln/detail/CVE-2026-12151) | 2026-07-13 | security
+- [[HIGH 7.5] CVE-2026-29146](https://nvd.nist.gov/vuln/detail/CVE-2026-29146) | 2026-07-13 | security
+- [[HIGH 7.5] CVE-2026-34486](https://nvd.nist.gov/vuln/detail/CVE-2026-34486) | 2026-07-13 | security
+- [[HIGH 8.9] CVE-2026-44432](https://nvd.nist.gov/vuln/detail/CVE-2026-44432) | 2026-07-13 | security
+- [[HIGH 7.8] CVE-2026-52923](https://nvd.nist.gov/vuln/detail/CVE-2026-52923) | 2026-07-13 | security
+- [[HIGH 7.4] CVE-2026-9697](https://nvd.nist.gov/vuln/detail/CVE-2026-9697) | 2026-07-13 | security
+- [[HIGH 7.5] CVE-2026-6734](https://nvd.nist.gov/vuln/detail/CVE-2026-6734) | 2026-07-13 | security
+- [[HIGH 8.3] CVE-2026-58596](https://nvd.nist.gov/vuln/detail/CVE-2026-58596) | 2026-07-13 | security
+- [[HIGH 8.3] CVE-2026-58281](https://nvd.nist.gov/vuln/detail/CVE-2026-58281) | 2026-07-13 | security
+- [[CRITICAL 9.1] CVE-2026-41041](https://nvd.nist.gov/vuln/detail/CVE-2026-41041) | 2026-07-13 | security
+- [[HIGH 8.1] CVE-2026-59245](https://nvd.nist.gov/vuln/detail/CVE-2026-59245) | 2026-07-14 | security
+- [[HIGH 8.1] CVE-2026-58065](https://nvd.nist.gov/vuln/detail/CVE-2026-58065) | 2026-07-14 | security
+- [CVE-2026-52828 [MEDIUM] [reviewed] Kimai: ExportTemplate CRUD Missing Authorization Check Allows Unauthorized TEAMLEAD Access](https://github.com/advisories/GHSA-rw46-qg69-vg6h) | 2026-07-14 | security
+- [CVE-2026-52827 [HIGH] [reviewed] Kimai: Pre-2FA KIMAI_SESSION cookie grants full authenticated REST API access, bypassing TOTP](https://github.com/advisories/GHSA-v8hx-4vx8-wc96) | 2026-07-14 | security
+- [CVE-2026-52826 [MEDIUM] [reviewed] Kimai: Improper Authorization in Project, Customer, and Activity Rate Edit Endpoints Allows Cross-Scope Rate Manipulation](https://github.com/advisories/GHSA-2xgg-2x8h-8xw4) | 2026-07-14 | security
+- [CVE-2026-52825 [MEDIUM] [reviewed] Kimai has Improper Authorization in Team Member and Team Activity Assignment APIs Which Allows Expansion of Team Scope Beyond Authorized Visibility](https://github.com/advisories/GHSA-xv4r-4885-gwpg) | 2026-07-14 | security
+- [CVE-2026-52824 [CRITICAL] [reviewed] Kimai: Default APP_SECRET in Docker Image Enables Cookie Forgery and Account Takeover](https://github.com/advisories/GHSA-jr9p-4h4j-6c58) | 2026-07-14 | security
+- [CVE-2026-52823 [MEDIUM] [reviewed] Kimai: Login CSRF in the Timesheet Stop and Restart API Endpoints Allows Unauthorized State Changes](https://github.com/advisories/GHSA-r8vr-m544-qh4h) | 2026-07-14 | security
+- [CVE-2026-52822 [MEDIUM] [reviewed] Improper Authorization in Kimai Timesheet Restart and Duplicate Allows New Timesheets After Project Access Revocation](https://github.com/advisories/GHSA-c6w6-57jj-62vh) | 2026-07-14 | security
+- [CVE-2026-52821 [MEDIUM] [reviewed] Kimai: Improper Authorization Through Activity Creation with Preset Project Allows Creation Under Unauthorized Projects](https://github.com/advisories/GHSA-3q6q-26vg-v97x) | 2026-07-14 | security
+- [CVE-2026-52820 [MEDIUM] [reviewed] Kimai: Timesheet PATCH/POST allows assigning to project outside user's team via query_builder OR-bypass](https://github.com/advisories/GHSA-vrr2-g9gh-c3jc) | 2026-07-13 | security
+- [CVE-2026-52819 [MEDIUM] [reviewed] Kimai: Teamlead authorization bypass in GET /api/timesheets allows reading other users' timesheet records without being teamlead of the target](https://github.com/advisories/GHSA-4m8q-55qv-9pwp) | 2026-07-13 | security
+- [CVE-2026-49992 [MEDIUM] [reviewed]  Kimai: Login CSRF in Default Team Creation Endpoints Allows Unauthorized Team and Permission Structure Changes](https://github.com/advisories/GHSA-pgcc-vfmc-7cw5) | 2026-07-13 | security
+- [[MEDIUM] [reviewed] Apple App Store Server Python Library: SignedDataVerifier accepts stale OCSP GOOD responses and can bypass certificate revocation checks](https://github.com/advisories/GHSA-8f6j-263m-g72x) | 2026-07-13 | security
+- [[HIGH] [reviewed] json_repair: Circular JSON Schema `$ref` causes unbounded CPU DoS](https://github.com/advisories/GHSA-xf7x-x43h-rpqh) | 2026-07-13 | security
+- [CVE-2026-47677 [CRITICAL] [reviewed] FacturaScripts: Account takeover of any 2FA-enabled user](https://github.com/advisories/GHSA-c67f-gmxw-mj93) | 2026-07-13 | security
+- [[HIGH] [reviewed] DIRAC: SQL injection and lack of access control in PilotManager service](https://github.com/advisories/GHSA-7xw9-549r-8jrc) | 2026-07-13 | security
+- [CVE-2026-61668 [HIGH] [reviewed] DIRAC: Pilot code downloaded over unverified HTTPS connection](https://github.com/advisories/GHSA-vg99-gr89-qhw9) | 2026-07-13 | security
+- [CVE-2026-61667 [CRITICAL] [reviewed] DIRAC is vulnerable to RCE in FileCatalog DatasetManager via SQL injection + eval](https://github.com/advisories/GHSA-m4m7-4cw8-62j6) | 2026-07-13 | security
+- [CVE-2026-59955 [HIGH] [reviewed] Apollo ConfigService access key authentication bypass via raw config file appId parsing](https://github.com/advisories/GHSA-h4pc-58cc-hc95) | 2026-07-13 | security
+- [CVE-2026-59954 [HIGH] [reviewed] Apollo ConfigService access key authentication bypass via appId parsing and non-canonical matching](https://github.com/advisories/GHSA-4w3q-qpfq-v992) | 2026-07-13 | security
+- [CVE-2026-55372 [HIGH] [reviewed] NukeViet: Pre-authentication SSRF via X-Forwarded-Host](https://github.com/advisories/GHSA-4chg-4752-w88r) | 2026-07-13 | security
+- [CVE-2026-54065 [HIGH] [reviewed] NukeViet: Path Traversal to Arbitrary File Deletion in Edit Comment Function](https://github.com/advisories/GHSA-c9xg-64p9-f2jj) | 2026-07-13 | security
+- [CVE-2026-54064 [HIGH] [reviewed] NukeViet: Multiple Anti-XSS Filter Bypasses Leading to Stored XSS in News Module](https://github.com/advisories/GHSA-465g-4q99-5x86) | 2026-07-13 | security
+- [CVE-2026-49259 [HIGH] [reviewed] NukeViet: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')](https://github.com/advisories/GHSA-w2w5-w2pw-r929) | 2026-07-13 | security
+- [CVE-2026-48118 [HIGH] [reviewed] NukeViet: Unauthenticated Reflected XSS in Comment Module](https://github.com/advisories/GHSA-mxpf-qgg6-v3ff) | 2026-07-13 | security
+- [CVE-2026-45579 [CRITICAL] [reviewed] DIRAC is vulnerable to RCE in RequestManager due to eval on untrusted input](https://github.com/advisories/GHSA-9jpv-c7p4-997x) | 2026-07-13 | security
+- [CVE-2026-45573 [MEDIUM] [reviewed] Decidim: Push subscriptions can be abused for server-side requests](https://github.com/advisories/GHSA-2g9c-vf8h-prxx) | 2026-07-13 | security
+- [CVE-2026-45572 [MEDIUM] [reviewed] Decidim: HTML content blocks allow stored script execution](https://github.com/advisories/GHSA-533c-2vh9-4r86) | 2026-07-13 | security
+- [CVE-2026-45415 [MEDIUM] [reviewed] Decidim: CSV census record endpoints improper authorization](https://github.com/advisories/GHSA-q79h-67vx-m9xg) | 2026-07-13 | security
+- [CVE-2026-45414 [HIGH] [reviewed] Decidim: JWT-backed authentication can be replayed across organizations](https://github.com/advisories/GHSA-r3v7-5x4c-c69q) | 2026-07-13 | security
+- [CVE-2026-45378 [HIGH] [reviewed] Decidim: Verification documents can be downloaded through reusable links](https://github.com/advisories/GHSA-3mvf-82qp-8qh5) | 2026-07-13 | security
 - [[HIGH 8.8] CVE-2026-42985](https://nvd.nist.gov/vuln/detail/CVE-2026-42985) | 2026-07-09 | security
 - [[HIGH 7.8] CVE-2026-44808](https://nvd.nist.gov/vuln/detail/CVE-2026-44808) | 2026-07-09 | security
 - [[HIGH 7.8] CVE-2026-44811](https://nvd.nist.gov/vuln/detail/CVE-2026-44811) | 2026-07-09 | security

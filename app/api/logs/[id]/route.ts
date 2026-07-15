@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
+import { requireRole } from "@/src/lib/auth-helpers";
 
 export async function GET(
   _req: NextRequest,
@@ -8,7 +9,7 @@ export async function GET(
   const { id } = await params;
   const numId = Number(id);
 
-  const { data: analysis } = await supabase
+  const { data: analysis } = await serviceClient
     .from("log_analyses")
     .select("*")
     .eq("id", numId)
@@ -24,10 +25,10 @@ export async function GET(
     { count: anomalyCount },
     { data: errorRows },
   ] = await Promise.all([
-    supabase.from("log_errors").select("*", { count: "exact", head: true }).eq("analysis_id", numId).eq("is_error", 1),
-    supabase.from("log_patterns").select("*", { count: "exact", head: true }).eq("analysis_id", numId),
-    supabase.from("log_anomalies").select("*", { count: "exact", head: true }).eq("analysis_id", numId),
-    supabase.from("log_errors").select("timestamp").eq("analysis_id", numId).eq("is_error", 1).order("timestamp"),
+    serviceClient.from("log_errors").select("*", { count: "exact", head: true }).eq("analysis_id", numId).eq("is_error", 1),
+    serviceClient.from("log_patterns").select("*", { count: "exact", head: true }).eq("analysis_id", numId),
+    serviceClient.from("log_anomalies").select("*", { count: "exact", head: true }).eq("analysis_id", numId),
+    serviceClient.from("log_errors").select("timestamp").eq("analysis_id", numId).eq("is_error", 1).order("timestamp"),
   ]);
 
   const dailyCounts: { day: string; count: number }[] = [];
@@ -51,13 +52,16 @@ export async function GET(
 }
 
 export async function DELETE(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const err = await requireRole(req, ["lead"]);
+  if (err) return err;
+
   const { id } = await params;
   const numId = Number(id);
 
-  const { data: existing } = await supabase
+  const { data: existing } = await serviceClient
     .from("log_analyses")
     .select("id")
     .eq("id", numId)
@@ -67,6 +71,6 @@ export async function DELETE(
     return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
   }
 
-  await supabase.from("log_analyses").delete().eq("id", numId);
+  await serviceClient.from("log_analyses").delete().eq("id", numId);
   return NextResponse.json({ ok: true });
 }

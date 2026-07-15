@@ -1,10 +1,10 @@
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { fetchRepoInfo, fetchLatestRelease, fetchRecentPRs, fetchRecentIssues, detectBreakingChanges, detectSecurityAdvisory } from "@/src/lib/repo-radar";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const { data: items } = await supabase
+  const { data: items } = await serviceClient
     .from("repo_radar_items")
     .select("*")
     .eq("is_active", 1)
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 
     const fullName = `${owner}/${repo}`.toLowerCase();
 
-    const { data: existing } = await supabase
+    const { data: existing } = await serviceClient
       .from("repo_radar_items")
       .select("id")
       .eq("full_name", fullName)
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     }
 
     const now = new Date().toISOString();
-    const { data, error } = await supabase.from("repo_radar_items").insert({
+    const { data, error } = await serviceClient.from("repo_radar_items").insert({
       owner: owner.toLowerCase(),
       repo: repo.toLowerCase(),
       full_name: fullName,

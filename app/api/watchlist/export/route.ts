@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { PDFDocument, StandardFonts, rgb, PDFFont } from "pdf-lib";
 
 export const dynamic = "force-dynamic";
@@ -41,7 +41,7 @@ const COL = {
 };
 
 export async function GET() {
-  const { data: items } = await supabase
+  const { data: items } = await serviceClient
     .from("watchlist_items")
     .select("*")
     .order("category")

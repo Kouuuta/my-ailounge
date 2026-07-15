@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { parseLogCsv } from "@/src/lib/log-parser";
 
 export async function GET() {
-  const { data: rows } = await supabase
+  const { data: rows } = await serviceClient
     .from("log_analyses")
     .select("*")
     .order("uploaded_at", { ascending: false });
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   const source = file.name.toLowerCase().startsWith("acuity") ? "acuity" : "zoho";
   const now = new Date().toISOString();
 
-  const { data: analysisData, error: analysisError } = await supabase
+  const { data: analysisData, error: analysisError } = await serviceClient
     .from("log_analyses")
     .insert({
       filename: file.name,
@@ -95,9 +95,9 @@ export async function POST(req: NextRequest) {
   }));
 
   const inserts = [];
-  if (errorRows.length > 0) inserts.push(supabase.from("log_errors").insert(errorRows));
-  if (patternRows.length > 0) inserts.push(supabase.from("log_patterns").insert(patternRows));
-  if (anomalyRows.length > 0) inserts.push(supabase.from("log_anomalies").insert(anomalyRows));
+  if (errorRows.length > 0) inserts.push(serviceClient.from("log_errors").insert(errorRows));
+  if (patternRows.length > 0) inserts.push(serviceClient.from("log_patterns").insert(patternRows));
+  if (anomalyRows.length > 0) inserts.push(serviceClient.from("log_anomalies").insert(anomalyRows));
   await Promise.all(inserts);
 
   return NextResponse.json({ id: analysisId, source, ...result.analysis }, { status: 201 });

@@ -1,4 +1,4 @@
-import { supabase, closeDb } from "@/src/db/client";
+import { getDb, closeDb } from "@/src/db/client";
 import { createHash } from "node:crypto";
 
 const COMMUNITY_JSON_URL =
@@ -357,7 +357,7 @@ export async function ingestCommunityPrompts(): Promise<number> {
   }
 
   const MAX_COMMUNITY = 300;
-  await supabase.from("prompts").delete().eq("source", "community");
+  await getDb().from("prompts").delete().eq("source", "community");
 
   const toInsert: Record<string, unknown>[] = [];
   for (const entry of entries.slice(0, MAX_COMMUNITY)) {
@@ -389,7 +389,7 @@ export async function ingestCommunityPrompts(): Promise<number> {
   }
 
   if (toInsert.length > 0) {
-    const { error } = await supabase.from("prompts").insert(toInsert);
+    const { error } = await getDb().from("prompts").insert(toInsert);
     if (error) console.error("  ❌ Failed to insert community prompts:", error.message);
   }
 
@@ -400,7 +400,7 @@ export async function ingestCommunityPrompts(): Promise<number> {
 export async function ingestCuratedExtras(): Promise<number> {
   let count = 0;
   for (const p of CURATED_EXTRAS) {
-    const { error } = await supabase.from("prompts").upsert({
+    const { error } = await getDb().from("prompts").upsert({
       title: p.title,
       content: p.content,
       category: p.category,
@@ -419,7 +419,7 @@ export async function ingestCuratedExtras(): Promise<number> {
 }
 
 export async function ingestUiDesignPrompts(): Promise<number> {
-  await supabase.from("prompts").delete().eq("source", "ui_design");
+  await getDb().from("prompts").delete().eq("source", "ui_design");
 
   const toInsert = UI_DESIGN_PROMPTS.map((p) => ({
     title: p.title,
@@ -435,7 +435,7 @@ export async function ingestUiDesignPrompts(): Promise<number> {
     is_featured: 0,
   }));
 
-  const { error } = await supabase.from("prompts").insert(toInsert);
+  const { error } = await getDb().from("prompts").insert(toInsert);
   if (error) console.error("  ❌ Failed to insert UI design prompts:", error.message);
 
   const count = error ? 0 : toInsert.length;
@@ -452,10 +452,10 @@ async function main() {
   await ingestUiDesignPrompts();
   await ingestCommunityPrompts();
 
-  const { count: total } = await supabase
+  const { count: total } = await getDb()
     .from("prompts")
     .select("*", { count: "exact", head: true });
-  const { data: bySource } = await supabase
+  const { data: bySource } = await getDb()
     .from("prompts")
     .select("source");
 

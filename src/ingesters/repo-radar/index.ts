@@ -1,8 +1,8 @@
-import { supabase } from "../../db/supabase-client";
+import { serviceClient } from "../../db/service-client";
 import { refreshSingleRepo, type RepoRadarItem } from "../../lib/repo-radar";
 
 export async function ingestRepoRadar(): Promise<void> {
-  const { data: items } = await supabase
+  const { data: items } = await serviceClient
     .from("repo_radar_items")
     .select("*")
     .eq("is_active", 1);
@@ -31,7 +31,7 @@ export async function ingestRepoRadar(): Promise<void> {
     { key: "ingest:elapsed_ms:repo_radar", value: "0" },
   ];
   for (const e of kvEntries) {
-    await supabase.from("kv_store").upsert(e, { onConflict: "key" });
+    await serviceClient.from("kv_store").upsert(e, { onConflict: "key" });
   }
 
   console.log(`  📡 repo_radar: refreshed ${updated} repos${errors ? `, ${errors} errors` : ""}`);

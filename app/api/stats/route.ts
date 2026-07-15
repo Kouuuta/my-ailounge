@@ -1,13 +1,13 @@
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { getItemsToday, getItemsThisWeek, getLastGlobalIngestion, getIngestionStatus } from "@/src/lib/analytics";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const [{ count: totalItems }, { count: stackTotal }, { data: stackRiskData }] = await Promise.all([
-    supabase.from("feed_items").select("*", { count: "exact", head: true }).neq("source", "manual"),
-    supabase.from("watchlist_items").select("*", { count: "exact", head: true }),
-    supabase.from("watchlist_items").select("risk_level"),
+    serviceClient.from("feed_items").select("*", { count: "exact", head: true }).neq("source", "manual"),
+    serviceClient.from("watchlist_items").select("*", { count: "exact", head: true }),
+    serviceClient.from("watchlist_items").select("risk_level"),
   ]);
 
   const [lastIngest, itemsToday, itemsThisWeek, statuses] = await Promise.all([

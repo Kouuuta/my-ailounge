@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { normalizeMessage } from "@/src/lib/log-parser";
 
 export async function GET(
@@ -12,7 +12,7 @@ export async function GET(
   const fromDate = req.nextUrl.searchParams.get("from_date");
   const toDate = req.nextUrl.searchParams.get("to_date");
 
-  let query = supabase
+  let query = serviceClient
     .from("log_anomalies")
     .select("*")
     .eq("analysis_id", numId);
@@ -28,7 +28,7 @@ export async function GET(
   if (includePatterns && anomalies.length > 0) {
     for (const a of anomalies) {
       const detectedAt = a.detected_at as string;
-      const { data: topErrors } = await supabase
+      const { data: topErrors } = await serviceClient
         .from("log_errors")
         .select("error_type")
         .eq("analysis_id", numId)

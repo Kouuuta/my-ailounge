@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 
 export async function GET(
   req: NextRequest,
@@ -10,7 +10,7 @@ export async function GET(
   const fromDate = req.nextUrl.searchParams.get("from_date");
   const toDate = req.nextUrl.searchParams.get("to_date");
 
-  let query = supabase
+  let query = serviceClient
     .from("log_errors")
     .select("timestamp")
     .eq("analysis_id", numId)

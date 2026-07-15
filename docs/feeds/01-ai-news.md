@@ -5,6 +5,7 @@
 
 ## June 2026
 
+- [ChatGPT Sites](https://openai.com/academy/chatgpt-sites) | 2026-06-02 | ai
 - [Our latest Google Finance upgrades, including a new app](https://blog.google/products-and-platforms/products/search/google-finance-updates-june-2026/) | 2026-06-25 | ai
 - [Ask an AI expert: What exactly is the full stack?](https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/) | 2026-06-29 | ai
 - [Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers](https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/) | 2026-06-30 | ai
@@ -94,6 +95,11 @@
 
 ## May 2026
 
+- [How finance teams use ChatGPT Work](https://openai.com/academy/how-finance-teams-use-codex) | 2026-05-12 | ai
+- [How data science teams use ChatGPT Work](https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex) | 2026-05-15 | ai
+- [How sales teams use ChatGPT Work](https://openai.com/academy/codex-for-work/how-sales-teams-use-codex) | 2026-05-15 | ai
+- [How business operations teams use ChatGPT Work](https://openai.com/academy/codex-for-work/how-business-operations-teams-use-codex) | 2026-05-15 | ai
+- [AI is becoming a first hire for small businesses](https://openai.com/index/ai-first-hire-small-business) | 2026-05-25 | ai
 - [Building a new enterprise AI services company with Blackstone, Hellman & Friedman, and Goldman Sachs](https://www.anthropic.com/news/enterprise-ai-services-company) | 2026-05-04 | ai
 - [Agents for financial services](https://www.anthropic.com/news/finance-agents) | 2026-05-05 | ai
 - [Higher usage limits for Claude and a compute deal with SpaceX](https://www.anthropic.com/news/higher-limits-spacex) | 2026-05-06 | ai
@@ -187,6 +193,12 @@
 
 ## April 2026
 - [Introducing Advanced Account Security](https://openai.com/index/advanced-account-security) | 2026-04-30 | ai
+- [ChatGPT Codex settings](https://openai.com/academy/codex-settings) | 2026-04-23 | ai
+- [What is ChatGPT Codex?](https://openai.com/academy/what-is-codex) | 2026-04-23 | ai
+- [Working with ChatGPT Codex](https://openai.com/academy/working-with-codex) | 2026-04-23 | ai
+- [How to get started with ChatGPT Codex](https://openai.com/academy/codex-how-to-start) | 2026-04-23 | ai
+- [How to use ChatGPT Work for everyday tasks](https://openai.com/academy/how-to-use-chatgpt-work-for-everyday-tasks) | 2026-04-23 | ai
+- [Modeling an AI jobs transition](https://openai.com/index/modeling-ai-jobs-transition) | 2026-04-25 | ai
 - [Anthropic expands partnership with Google and Broadcom for multiple gigawatts of next-generation compute](https://www.anthropic.com/news/google-broadcom-partnership-compute) | 2026-04-06 | ai
 - [Anthropic’s Long-Term Benefit Trust appoints Vas Narasimhan to Board of Directors](https://www.anthropic.com/news/narasimhan-board) | 2026-04-14 | ai
 - [Introducing Claude Opus 4.7](https://www.anthropic.com/news/claude-opus-4-7) | 2026-04-16 | ai
@@ -411,6 +423,16 @@
 
 ## July 2026
 - [The latest AI news we announced in June 2026](https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-june-2026/) | 2026-07-01 | ai
+- [Inviting hard questions](https://www.anthropic.com/news/hard-questions) | 2026-07-09 | ai
+- [UST is bringing Claude to physical AI](https://www.anthropic.com/news/ust-claude) | 2026-07-09 | ai
+- [Ben Bernanke appointed to Anthropic’s Long-Term Benefit Trust](https://www.anthropic.com/news/ben-bernanke) | 2026-07-09 | ai
+- [Introducing a way to reflect on how you use Claude](https://www.anthropic.com/news/reflect-with-claude) | 2026-07-09 | ai
+- [ChatGPT is now a partner for your most ambitious work](https://openai.com/index/chatgpt-for-your-most-ambitious-work) | 2026-07-09 | ai
+- [GPT-5.6: Frontier intelligence that scales with your ambition](https://openai.com/index/gpt-5-6) | 2026-07-09 | ai
+- [GPT-5.5 Bio Bug Bounty](https://openai.com/index/bio-bug-bounty) | 2026-07-09 | ai
+- [GPT-5.6 is now the preferred model in Microsoft 365 Copilot](https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot) | 2026-07-09 | ai
+- [Getting started with ChatGPT](https://openai.com/academy/getting-started) | 2026-07-10 | ai
+- [How Deutsche Telekom is rewiring telecommunications with AI](https://openai.com/index/deutsche-telekom) | 2026-07-10 | ai
 - [Expanding Managed Agents in Gemini API:  background tasks, remote MCP and more](https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/) | 2026-07-07 | ai
 - [More details on Fable 5’s cyber safeguards and our jailbreak framework](https://www.anthropic.com/news/fable-safeguards-jailbreak-framework) | 2026-07-02 | ai
 - [Government of Alberta uses Claude to find and fix cybersecurity vulnerabilities across government systems](https://www.anthropic.com/news/alberta-government-claude-cybersecurity) | 2026-07-06 | ai

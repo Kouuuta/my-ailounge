@@ -446,6 +446,19 @@
 
 ## July 2026
 - [Routing rules now available on AI Gateway](https://vercel.com/changelog/ai-gateway-routing-rules) | 2026-07-02 | nextjs
+- [GPT 5.6 Sol, Luna, and Terra now available on AI Gateway](https://vercel.com/changelog/gpt-5-6-now-available-on-ai-gateway) | 2026-07-09 | nextjs
+- [Muse Spark 1.1 is now available on AI Gateway](https://vercel.com/changelog/muse-spark-1-1-is-now-available-on-ai-gateway) | 2026-07-09 | nextjs
+- [Build logs now redact Sensitive Environment Variable values](https://vercel.com/changelog/build-logs-now-redact-sensitive-environment-variable-values) | 2026-07-09 | nextjs
+- [You can now deploy Lovable apps to Vercel](https://vercel.com/changelog/you-can-now-deploy-lovable-apps-to-vercel) | 2026-07-09 | nextjs
+- [Traces now support Tree and Waterfall views](https://vercel.com/changelog/traces-now-support-tree-and-waterfall-views) | 2026-07-10 | nextjs
+- [Seedream 5.0 Pro is now available on AI Gateway](https://vercel.com/changelog/seedream-5-0-pro-is-now-available-on-ai-gateway) | 2026-07-11 | nextjs
+- [Web Analytics and Speed Insights are now more cost-efficient](https://vercel.com/changelog/web-analytics-and-speed-insights-are-now-more-cost-efficient) | 2026-07-13 | nextjs
+- [Configure which sources can create deployments with Deployment Policies](https://vercel.com/changelog/configure-which-sources-can-create-deployments-with-deployment-policies) | 2026-07-13 | nextjs
+- [Manage Vercel Flags targeting rules from the CLI](https://vercel.com/changelog/manage-vercel-flags-targeting-rules-from-the-cli) | 2026-07-13 | nextjs
+- [Agent Runs now show subagent activity on eve projects](https://vercel.com/changelog/agent-runs-now-show-subagent-activity-on-eve-projects) | 2026-07-13 | nextjs
+- [Open-weight models surge to 29% of volume, price per token flattens](https://vercel.com/blog/ai-gateway-production-index-july-2026) | 2026-07-13 | nextjs
+- [Chat SDK adds X adapter support](https://vercel.com/changelog/chat-sdk-adds-x-adapter-support) | 2026-07-14 | nextjs
+- [Next.js Security Release and Our Next Patch Release](https://nextjs.org/blog/next-security-release-program) | 2026-07-13 | nextjs
 - [Secure internal communication between services (beta)](https://vercel.com/changelog/secure-internal-communication-between-services) | 2026-07-01 | nextjs
 - [Agent Runs now available in the Vercel MCP and CLI](https://vercel.com/changelog/agent-runs-vercel-mcp-cli) | 2026-07-03 | nextjs
 - [Manage Vercel Flags segments with Vercel CLI](https://vercel.com/changelog/manage-vercel-flags-segments-with-vercel-cli) | 2026-07-03 | nextjs

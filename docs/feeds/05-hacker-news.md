@@ -340,6 +340,26 @@
 
 ## July 2026
 - [Happy Voluntary Lobotomy Day, Microsoft](https://www.uplevel.pro/p/happy-voluntary-lobotomy-day-microsoft) | 2026-07-02 | hn, discussion
+- [Human Fear in Emacs](https://en.andros.dev/blog/b70b058a/human-fear-in-emacs/) | 2026-07-14 | hn, discussion
+- [My Intel Brief](https://myintelbrief.com/) | 2026-07-14 | hn, discussion
+- [Software as Craft: A First Look at Syntropy](https://noteflakes.com/articles/2026-06-13-syntropy) | 2026-07-14 | hn, discussion
+- [European Parliament MCP Server – Political Intelligence for AI Agents](https://github.com/Hack23/European-Parliament-MCP-Server) | 2026-07-14 | hn, discussion
+- [Context bombs: stopping AI attackers in their tracks](https://agentic.tracebit.com/context-bombs/) | 2026-07-14 | hn, discussion
+- [Themis – Self-hosted AI code reviews with your own keys and models](https://github.com/Zaimwa9/themis) | 2026-07-14 | hn, discussion
+- [The Last Picture Show: A Conversation with George Lucas](https://a-rabbitsfoot.com/editorial/confessions/the-last-picture-show-a-conversation-with-george-lucas/) | 2026-07-14 | hn, discussion
+- [I want to build an OTT app. Where should I start?](https://news.ycombinator.com/item?id=48903017) | 2026-07-14 | hn, discussion
+- [DriftTrip – A Virtual Road Trip](https://drifttrip.connelly.casa/) | 2026-07-14 | hn, discussion
+- [Weakening copyright to benefit AI would betray Australian Labor party's ethos](https://www.theguardian.com/australia-news/2026/jul/14/ed-husic-tells-labor-to-get-tougher-on-ai-companies-as-letting-them-self-regulate-doomed-to-fail) | 2026-07-14 | hn, discussion
+- [Anthropic banned my thirteen 20x accounts, what now?](https://news.ycombinator.com/item?id=48903047) | 2026-07-14 | hn, discussion
+- [Netflix accidentally shipped a Claude.md file](https://www.reddit.com/r/AgentsOfAI/s/GYaEDTim0U) | 2026-07-14 | hn, discussion
+- [There's an Ancient Solution to Our Modern Crisis of Attention](https://www.nytimes.com/2026/07/12/opinion/attention-crisis-seneca.html) | 2026-07-14 | hn, discussion
+- [Why frontier labs are scaling-pilled](https://invertedpassion.substack.com/p/why-frontier-labs-are-scaling-pilled) | 2026-07-14 | hn, discussion
+- [Indian scientists produce most detailed 3D atlas of the human brainstem](https://www.bbc.com/news/articles/cg53l737v1qo) | 2026-07-14 | hn, discussion
+- [I built a small transcription tool for non-English videos](https://transcrevervideo.com) | 2026-07-14 | hn, discussion
+- [The Lies They're Telling Towns and Tribes About the Benefits of AI Data Centers](https://karlbode.com/the-lies-theyre-telling-towns-and-tribes-about-the-benefits-of-ai-data-centers/) | 2026-07-14 | hn, discussion
+- [Benchmark your eng team's AI agent maturity in 5 minutes](https://agent-benchmarks.com/software-factory/) | 2026-07-14 | hn, discussion
+- [Helicone allows users to write SQL directly to a shared ClickHouse](https://www.justintorre.com/blogs/clickhouse-rls-query-parameters) | 2026-07-14 | hn, discussion
+- [Patent for Electric Motor Platform Without Rare-Earth Minerals](https://auto.economictimes.indiatimes.com/news/auto-technology/) | 2026-07-14 | hn, discussion
 - [Bonnie Tyler latest: Legendary rock singer dies 'unexpectedly' in Portugal](https://news.sky.com/story/bonnie-tyler-latest-legendary-rock-singer-dies-in-portugal-13542742) | 2026-07-09 | hn, discussion
 - [The Traverse of the GR20](https://mongr20.com/en/) | 2026-07-09 | hn, discussion
 - [China Weighs Limits on the AI Models American Companies Love](https://www.wsj.com/tech/ai/china-weighs-limits-on-the-ai-models-american-companies-love-c3ad8f2b) | 2026-07-09 | hn, discussion

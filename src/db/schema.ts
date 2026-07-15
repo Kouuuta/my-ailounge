@@ -1,4 +1,4 @@
-import { supabase } from "./supabase-client";
+import { serviceClient } from "./service-client";
 
 const SEED_WATCHLIST = [
   { name: "Next.js", category: "framework" },
@@ -30,7 +30,7 @@ const SEED_REPO_RADAR = [
   { owner: "vercel", repo: "ai", full_name: "vercel/ai", url: "https://github.com/vercel/ai" },
   { owner: "calcom", repo: "cal.com", full_name: "calcom/cal.com", url: "https://github.com/calcom/cal.com" },
   { owner: "getsentry", repo: "sentry", full_name: "getsentry/sentry", url: "https://github.com/getsentry/sentry" },
-  { owner: "supabase", repo: "supabase", full_name: "supabase/supabase", url: "https://github.com/supabase/supabase" },
+  { owner: "serviceClient", repo: "serviceClient", full_name: "serviceClient/serviceClient", url: "https://github.com/serviceClient/serviceClient" },
   { owner: "anomalyco", repo: "opencode", full_name: "anomalyco/opencode", url: "https://github.com/anomalyco/opencode" },
 ];
 
@@ -53,28 +53,28 @@ const SEED_PROMPTS = [
 ];
 
 export async function migrate(): Promise<void> {
-  // Tables are created via supabase-schema.sql — no-op for schema
+  // Tables are created via serviceClient-schema.sql — no-op for schema
   // Seed watchlist
-  const { count: wlCount } = await supabase.from("watchlist_items").select("*", { count: "exact", head: true });
+  const { count: wlCount } = await serviceClient.from("watchlist_items").select("*", { count: "exact", head: true });
   if (wlCount === 0) {
-    const { error } = await supabase.from("watchlist_items").insert(SEED_WATCHLIST);
+    const { error } = await serviceClient.from("watchlist_items").insert(SEED_WATCHLIST);
     if (error) console.error("Failed to seed watchlist:", error.message);
     else console.log(`Seeded ${SEED_WATCHLIST.length} watchlist items.`);
   }
 
   // Seed repo radar
-  const { count: rrCount } = await supabase.from("repo_radar_items").select("*", { count: "exact", head: true });
+  const { count: rrCount } = await serviceClient.from("repo_radar_items").select("*", { count: "exact", head: true });
   if (rrCount === 0) {
-    const { error } = await supabase.from("repo_radar_items").insert(SEED_REPO_RADAR);
+    const { error } = await serviceClient.from("repo_radar_items").insert(SEED_REPO_RADAR);
     if (error) console.error("Failed to seed repo radar:", error.message);
     else console.log(`Seeded ${SEED_REPO_RADAR.length} repo radar items.`);
   }
 
   // Seed featured prompts
-  const { count: prCount } = await supabase.from("prompts").select("*", { count: "exact", head: true }).eq("source", "curated");
+  const { count: prCount } = await serviceClient.from("prompts").select("*", { count: "exact", head: true }).eq("source", "curated");
   if (prCount === 0) {
     const now = new Date().toISOString();
-    const { error } = await supabase.from("prompts").insert(
+    const { error } = await serviceClient.from("prompts").insert(
       SEED_PROMPTS.map((p) => ({ ...p, source: "curated", created_at: now, updated_at: now }))
     );
     if (error) console.error("Failed to seed prompts:", error.message);

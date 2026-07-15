@@ -1,5 +1,5 @@
 import { migrate } from "../db/schema";
-import { supabase, closeDb } from "../db/client";
+import { getDb, closeDb } from "../db/client";
 import { recalcAllEngagementScores } from "../lib/engagement-scorer";
 import { ingestHackerNews } from "./hacker-news/index";
 import { ingestGithubTrending } from "./github-trending/index";
@@ -7,11 +7,11 @@ import { ingestRss } from "./rss/index";
 import { ingestRepoRadar } from "./repo-radar/index";
 
 async function setKv(key: string, value: string): Promise<void> {
-  await supabase.from("kv_store").upsert({ key, value }, { onConflict: "key" });
+  await getDb().from("kv_store").upsert({ key, value }, { onConflict: "key" });
 }
 
 async function countBySource(source: string): Promise<number> {
-  const { count } = await supabase
+  const { count } = await getDb()
     .from("feed_items")
     .select("*", { count: "exact", head: true })
     .eq("source", source);

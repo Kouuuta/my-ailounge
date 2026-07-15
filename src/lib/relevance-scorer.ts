@@ -1,4 +1,4 @@
-import { supabase } from "../db/supabase-client";
+import { serviceClient } from "../db/service-client";
 
 export interface RelevanceResult {
   score: number;
@@ -12,7 +12,7 @@ let cacheTimer: ReturnType<typeof setTimeout> | null = null;
 async function getWatchlist(): Promise<Array<{ name: string; category: string | null }>> {
   if (watchlistCache) return watchlistCache;
 
-  const { data } = await supabase.from("watchlist_items").select("name, category");
+  const { data } = await serviceClient.from("watchlist_items").select("name, category");
   watchlistCache = data ?? [];
 
   if (cacheTimer) clearTimeout(cacheTimer);

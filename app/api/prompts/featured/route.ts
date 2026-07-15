@@ -1,16 +1,16 @@
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const { count } = await supabase
+  const { count } = await serviceClient
     .from("prompts")
     .select("*", { count: "exact", head: true })
     .eq("is_featured", 1)
     .eq("source", "curated");
 
   if (!count || count === 0) {
-    const { data } = await supabase
+    const { data } = await serviceClient
       .from("prompts")
       .select("*")
       .eq("source", "curated")
@@ -24,7 +24,7 @@ export async function GET() {
     (Date.now() - new Date().getTimezoneOffset() * 60000) / 86400000,
   );
   const offset = dayOfYear % count;
-  const { data } = await supabase
+  const { data } = await serviceClient
     .from("prompts")
     .select("*")
     .eq("is_featured", 1)

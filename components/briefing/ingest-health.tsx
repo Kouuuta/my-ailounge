@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { getIngestionStatus, getGlobalIngestionStatus } from "@/src/lib/analytics";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 import { Activity, Radio, Rss, TrendingUp, Radar } from "lucide-react";
 
 const SOURCE_CONFIG: Record<string, { icon: React.ElementType; color: string }> = {
@@ -32,7 +32,7 @@ async function getTotalBySource(): Promise<Map<string, number>> {
   const sources = ["hn", "github_trending", "rss", "repo_radar"];
   const results = await Promise.all(
     sources.map(async (s) => {
-      const { count } = await supabase
+      const { count } = await serviceClient
         .from("feed_items")
         .select("*", { count: "exact", head: true })
         .eq("source", s);

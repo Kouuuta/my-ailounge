@@ -1,10 +1,10 @@
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { data: item } = await supabase.from("prompts").select("*").eq("id", Number(id)).single();
+  const { data: item } = await serviceClient.from("prompts").select("*").eq("id", Number(id)).single();
   if (!item) {
     return Response.json({ error: "Prompt not found" }, { status: 404 });
   }
@@ -16,7 +16,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const { id } = await params;
     const body = await request.json();
 
-    const { data: existing } = await supabase.from("prompts").select("id").eq("id", Number(id)).single();
+    const { data: existing } = await serviceClient.from("prompts").select("id").eq("id", Number(id)).single();
     if (!existing) {
       return Response.json({ error: "Prompt not found" }, { status: 404 });
     }
@@ -33,9 +33,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     updates.updated_at = new Date().toISOString();
-    await supabase.from("prompts").update(updates).eq("id", Number(id));
+    await serviceClient.from("prompts").update(updates).eq("id", Number(id));
 
-    const { data: item } = await supabase.from("prompts").select("*").eq("id", Number(id)).single();
+    const { data: item } = await serviceClient.from("prompts").select("*").eq("id", Number(id)).single();
     return Response.json({ ok: true, item });
   } catch (err) {
     return Response.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
@@ -44,10 +44,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { data: existing } = await supabase.from("prompts").select("id").eq("id", Number(id)).single();
+  const { data: existing } = await serviceClient.from("prompts").select("id").eq("id", Number(id)).single();
   if (!existing) {
     return Response.json({ error: "Prompt not found" }, { status: 404 });
   }
-  await supabase.from("prompts").delete().eq("id", Number(id));
+  await serviceClient.from("prompts").delete().eq("id", Number(id));
   return Response.json({ ok: true });
 }

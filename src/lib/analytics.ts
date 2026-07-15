@@ -1,4 +1,4 @@
-import { supabase } from "../db/supabase-client";
+import { serviceClient } from "../db/service-client";
 
 export interface SourceBreakdown {
   source: string;
@@ -19,7 +19,7 @@ export interface IngestionStatus {
 }
 
 export async function getTotalItems(): Promise<number> {
-  const { count } = await supabase
+  const { count } = await serviceClient
     .from("feed_items")
     .select("*", { count: "exact", head: true });
   return count ?? 0;
@@ -30,7 +30,7 @@ export async function getItemsToday(): Promise<number> {
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const { count } = await supabase
+  const { count } = await serviceClient
     .from("feed_items")
     .select("*", { count: "exact", head: true })
     .gte("fetched_at", today.toISOString())
@@ -40,7 +40,7 @@ export async function getItemsToday(): Promise<number> {
 
 export async function getItemsThisWeek(): Promise<number> {
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
-  const { count } = await supabase
+  const { count } = await serviceClient
     .from("feed_items")
     .select("*", { count: "exact", head: true })
     .gte("fetched_at", weekAgo);
@@ -48,13 +48,13 @@ export async function getItemsThisWeek(): Promise<number> {
 }
 
 export async function getItemsBySource(): Promise<SourceBreakdown[]> {
-  const { data } = await supabase.rpc("get_source_counts");
+  const { data } = await serviceClient.rpc("get_source_counts");
   if (!data) return [];
   return data as SourceBreakdown[];
 }
 
 export async function getItemsByCategory(): Promise<CategoryBreakdown[]> {
-  const { data } = await supabase.rpc("get_category_counts");
+  const { data } = await serviceClient.rpc("get_category_counts");
   if (!data) return [];
   return data as CategoryBreakdown[];
 }
@@ -67,7 +67,7 @@ export async function getIngestionStatus(): Promise<IngestionStatus[]> {
     `ingest:count:${s}`,
     `ingest:elapsed_ms:${s}`,
   ]);
-  const { data } = await supabase.from("kv_store").select("*").in("key", keys);
+  const { data } = await serviceClient.from("kv_store").select("*").in("key", keys);
   const lookup = new Map((data ?? []).map((r) => [r.key, r.value]));
 
   return sources.map((source) => ({
@@ -82,7 +82,7 @@ export async function getIngestionStatus(): Promise<IngestionStatus[]> {
 }
 
 export async function getLastGlobalIngestion(): Promise<string | null> {
-  const { data } = await supabase
+  const { data } = await serviceClient
     .from("kv_store")
     .select("value")
     .eq("key", "ingest:last_run:all")
@@ -91,7 +91,7 @@ export async function getLastGlobalIngestion(): Promise<string | null> {
 }
 
 export async function getGlobalIngestionStatus(): Promise<string | null> {
-  const { data } = await supabase
+  const { data } = await serviceClient
     .from("kv_store")
     .select("value")
     .eq("key", "ingest:status:all")

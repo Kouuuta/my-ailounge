@@ -1,4 +1,4 @@
-import { supabase } from "../db/supabase-client";
+import { serviceClient } from "../db/service-client";
 import { scoreRelevance } from "./relevance-scorer";
 import { recalcEngagementForItem } from "./engagement-scorer";
 
@@ -23,7 +23,7 @@ export async function retroactivelyScore(opts: {
 
   if (filters.length === 0) return { updated: 0 };
 
-  const { data: items } = await supabase
+  const { data: items } = await serviceClient
     .from("feed_items")
     .select("id, title, summary, tags, category")
     .or(filters.join(","));
@@ -47,7 +47,7 @@ export async function retroactivelyScore(opts: {
 
   await Promise.all(
     toUpdate.map(async (s) => {
-      await supabase
+      await serviceClient
         .from("feed_items")
         .update({
           relevance_base: s.relevance!.score,

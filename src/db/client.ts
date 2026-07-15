@@ -1,9 +1,9 @@
-import { supabase } from "./supabase-client";
+import { serviceClient } from "./service-client";
 
-export { supabase } from "./supabase-client";
+export { serviceClient } from "./service-client";
 
 export function getDb() {
-  return supabase;
+  return serviceClient;
 }
 
 export function closeDb() {

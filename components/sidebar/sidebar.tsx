@@ -129,7 +129,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   const pathname = usePathname();
   const router = useRouter();
   const { theme, toggle } = useTheme();
-  const { user, loading, signOut } = useUser();
+  const { user, role, loading, signOut } = useUser();
 
   async function handleLogout() {
     await signOut();
@@ -197,6 +197,16 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                 {user.email || ""}
               </p>
             </div>
+            {role && (
+              <span className={cn(
+                "text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0",
+                role === "lead"
+                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                  : "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+              )}>
+                {role}
+              </span>
+            )}
           </div>
         </div>
       )}

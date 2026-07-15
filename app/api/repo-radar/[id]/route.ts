@@ -1,4 +1,6 @@
-import { supabase } from "@/src/db/supabase-client";
+import { NextRequest, NextResponse } from "next/server";
+import { serviceClient } from "@/src/db/service-client";
+import { requireRole } from "@/src/lib/auth-helpers";
 
 export const dynamic = "force-dynamic";
 
@@ -7,7 +9,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const { id } = await params;
     const body = await request.json();
 
-    const { data: item } = await supabase
+    const { data: item } = await serviceClient
       .from("repo_radar_items")
       .select("*")
       .eq("id", Number(id))
@@ -31,9 +33,9 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
 
     updates.updated_at = new Date().toISOString();
-    await supabase.from("repo_radar_items").update(updates).eq("id", Number(id));
+    await serviceClient.from("repo_radar_items").update(updates).eq("id", Number(id));
 
-    const { data: updated } = await supabase
+    const { data: updated } = await serviceClient
       .from("repo_radar_items")
       .select("*")
       .eq("id", Number(id))
@@ -45,23 +47,29 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   }
 }
 
-export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const err = await requireRole(request, ["lead"]);
+  if (err) return err;
+
   try {
     const { id } = await params;
 
-    const { data: item } = await supabase
+    const { data: item } = await serviceClient
       .from("repo_radar_items")
       .select("id")
       .eq("id", Number(id))
       .single();
 
     if (!item) {
-      return Response.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    await supabase.from("repo_radar_items").delete().eq("id", Number(id));
-    return Response.json({ ok: true });
+    await serviceClient.from("repo_radar_items").delete().eq("id", Number(id));
+    return NextResponse.json({ ok: true });
   } catch (err) {
-    return Response.json({ error: String(err) }, { status: 500 });
+    return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

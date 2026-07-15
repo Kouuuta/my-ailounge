@@ -68,4 +68,5 @@
 
 ## July 2026
 - [Last Call 2026 Django Developer Survey](https://www.djangoproject.com/weblog/2026/jul/08/last-call-2026-django-developer-survey/) | 2026-07-08 | django
+- [Explore the DjangoCon US 2026 Speaker Lineup and Reserve Your Spot](https://www.djangoproject.com/weblog/2026/jul/13/explore-the-djangocon-us-2026-speaker-lineup-and-r/) | 2026-07-13 | django
 - [Django security releases issued: 6.0.7 and 5.2.16](https://www.djangoproject.com/weblog/2026/jul/07/security-releases/) | 2026-07-07 | django

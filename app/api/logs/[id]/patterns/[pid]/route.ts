@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,7 @@ async function resolvePatternKey(
 ): Promise<string> {
   const num = parseInt(pid, 10);
   if (!isNaN(num)) {
-    const { data: row } = await supabase
+    const { data: row } = await serviceClient
       .from("log_patterns")
       .select("pattern_key")
       .eq("id", num)
@@ -38,7 +38,7 @@ async function queryPatternRows(
   timestamp: string;
   is_error: number;
 }>> {
-  const { data: byKey } = await supabase
+  const { data: byKey } = await serviceClient
     .from("log_errors")
     .select("id, method, action, content, error_type, error_code, raw_message, timestamp, is_error")
     .eq("analysis_id", analysisId)
@@ -49,7 +49,7 @@ async function queryPatternRows(
   if (byKey && byKey.length > 0) return byKey as any;
 
   const prefix = patternToLike(patternKey.substring(0, 400)) + "%";
-  const { data: byPrefix } = await supabase
+  const { data: byPrefix } = await serviceClient
     .from("log_errors")
     .select("id, method, action, content, error_type, error_code, raw_message, timestamp, is_error")
     .eq("analysis_id", analysisId)
@@ -60,7 +60,7 @@ async function queryPatternRows(
   if (byPrefix && byPrefix.length > 0) return byPrefix as any;
 
   const like = patternToLike(patternKey);
-  const { data: byLike } = await supabase
+  const { data: byLike } = await serviceClient
     .from("log_errors")
     .select("id, method, action, content, error_type, error_code, raw_message, timestamp, is_error")
     .eq("analysis_id", analysisId)
@@ -84,7 +84,7 @@ export async function GET(
   const { id, pid } = await params;
   const numId = Number(id);
 
-  const { data: analysis } = await supabase
+  const { data: analysis } = await serviceClient
     .from("log_analyses")
     .select("id")
     .eq("id", numId)

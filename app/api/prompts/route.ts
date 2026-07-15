@@ -1,4 +1,4 @@
-import { supabase } from "@/src/db/supabase-client";
+import { serviceClient } from "@/src/db/service-client";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   const search = searchParams.get("search");
   const source = searchParams.get("source");
 
-  let query = supabase.from("prompts").select("*");
+  let query = serviceClient.from("prompts").select("*");
 
   if (category) query = query.eq("category", category);
   if (source) query = query.eq("source", source);
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "title, content, and category are required" }, { status: 400 });
     }
 
-    const { data, error } = await supabase.from("prompts").insert({
+    const { data, error } = await serviceClient.from("prompts").insert({
       title,
       content,
       category,
