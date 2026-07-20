@@ -1,16 +1,484 @@
 # Next.js News
+
 > Releases, RFCs, breaking changes, CVEs, canary updates, and Vercel blog posts.
 > Format: - [Title](URL) | YYYY-MM-DD | tag1, tag2
 
 ## June 2026
 
-- [Next.js 16.2 Released with Heavy AI Tooling and Optimizations](https://nextjs.org/blog/next-16-2) | 2026-06-08 | nextjs, release
-- [Experimental Agent DevTools Launched by Vercel for Autonomous AI Agents](https://vercel.com/blog/agent-devtools) | 2026-06-07 | vercel, canary
-- [Vercel Stabilizes Cross-Platform Next.js Adapter API](https://nextjs.org/blog/adapter-api-stable) | 2026-06-06 | nextjs, release
-- [Turbopack Reaches Near-Total Integration Compatibility with Server Fast Refresh](https://vercel.com/blog/turbopack-updates) | 2026-06-05 | vercel, release
-- [Preview: Next.js 16.3.0 Canary Shifts Partial Prefetching Defaults](https://github.com/vercel/next.js/releases) | 2026-06-04 | nextjs, canary
-- [Emergency Security Release Patches 13 Separate Vulnerabilities for Self-Hosted Setups](https://github.com/vercel/next.js/security/advisories) | 2026-06-03 | nextjs, security, cve
-- [Critical CVE-2026-44578 SSRF Vulnerability via WebSockets Found and Patched](https://github.com/advisories/GHSA-nextjs-ssrf) | 2026-06-03 | security, cve
-- [High Severity CVE-2026-23870 React Server Components Denial of Service Mitigated](https://github.com/advisories/GHSA-nextjs-rsc-dos) | 2026-06-02 | security, cve
-- [App Router Fully Adopted as Industry Standard while Pages Router Deprecates](https://nextjs.org/blog/app-router-standard) | 2026-06-01 | nextjs, rfc
-- [RFC Proposal: Rise of the Component-Level Cache Paradigm](https://github.com/vercel/next.js/discussions/cache-components) | 2026-06-01 | nextjs, rfc
+- [Chat SDK adds Twilio adapter support](https://vercel.com/changelog/chat-sdk-adds-twilio-adapter-support) | 2026-06-02 | nextjs
+- [Vercel CLI now supports verifying DNS configuration](https://vercel.com/changelog/vercel-cli-now-supports-verifying-dns-configuration) | 2026-06-23 | nextjs
+- [Preserve local environment variables when linking with the Vercel CLI](https://vercel.com/changelog/preserve-local-environment-variables-when-linking-with-the-vercel-cli) | 2026-06-23 | nextjs
+- [Scaffold your chat apps with create-chat-sdk](https://vercel.com/changelog/scaffold-your-chat-apps-with-create-chat-sdk) | 2026-06-23 | nextjs
+- [Pro teams can now run up to 500 concurrent builds](https://vercel.com/changelog/pro-teams-can-now-run-up-to-500-concurrent-builds) | 2026-06-24 | nextjs
+- [Deep Agents and OpenCode are now available in the AI SDK Harness](https://vercel.com/changelog/deepagents-and-opencode-harness-adapters) | 2026-06-25 | nextjs
+- [AI SDK 7 is now available](https://vercel.com/changelog/ai-sdk-7) | 2026-06-25 | nextjs
+- [Teaching agents product design at Vercel](https://vercel.com/blog/teaching-agents-product-design-at-vercel) | 2026-06-25 | nextjs
+- [AI SDK 7](https://vercel.com/blog/ai-sdk-7) | 2026-06-25 | nextjs
+- [Trace and debug eve agent sessions with Vercel Observability](https://vercel.com/changelog/eve-agent-observability) | 2026-06-26 | nextjs
+- [Query Web Analytics from the Vercel CLI](https://vercel.com/changelog/query-web-analytics-from-the-vercel-cli) | 2026-06-26 | nextjs
+- [Realtime voice, speech, and transcription now supported on AI Gateway](https://vercel.com/changelog/realtime-voice-speech-and-transcription-now-supported-on-ai-gateway) | 2026-06-29 | nextjs
+- [xAI Grok audio models now available on Vercel AI Gateway](https://vercel.com/changelog/xai-grok-audio-models-now-available-on-vercel-ai-gateway) | 2026-06-29 | nextjs
+- [Sandboxes now expire based on last use](https://vercel.com/changelog/sandboxes-now-expire-based-on-last-use) | 2026-06-29 | nextjs
+- [Build realtime voice agents on AI Gateway](https://vercel.com/blog/realtime-voice-agents-on-ai-gateway) | 2026-06-29 | nextjs
+- [Query Speed Insights from the Vercel CLI](https://vercel.com/changelog/query-speed-insights-from-the-vercel-cli) | 2026-06-29 | nextjs
+- [Vercel Functions can now be up to 5GB in package size](https://vercel.com/changelog/vercel-functions-can-now-be-up-to-5-gb-in-package-size) | 2026-06-29 | nextjs
+- [Vercel Open Source Program: Spring 2026 cohort](https://vercel.com/blog/vercel-open-source-program-spring-2026-cohort) | 2026-06-29 | nextjs
+- [Expanded Audit Log coverage, now delivered through Vercel Drains](https://vercel.com/changelog/expanded-audit-log-coverage-now-delivered-through-vercel-drains) | 2026-06-30 | nextjs
+- [Bring your Dockerfile to Vercel Functions](https://vercel.com/changelog/bring-your-dockerfile-to-vercel-functions) | 2026-06-30 | nextjs
+- [Run multiple frameworks in one project with Vercel Services](https://vercel.com/changelog/run-multiple-frameworks-in-one-project-with-vercel-services) | 2026-06-30 | nextjs
+- [Introducing VCR: Vercel Container Registry](https://vercel.com/changelog/introducing-vcr-vercel-container-registry) | 2026-06-30 | nextjs
+- [Vercel Sandbox now support Custom Images](https://vercel.com/changelog/vercel-sandbox-now-support-custom-images) | 2026-06-30 | nextjs
+- [Nano Banana 2 Lite (Gemini 3.1 Flash Lite Image) now on AI Gateway](https://vercel.com/changelog/nano-banana-2-lite-gemini-3-1-flash-lite-image-ai-gateway) | 2026-06-30 | nextjs
+- [An expanded Vercel Agent: chat, investigations, and approved actions, now in public beta](https://vercel.com/changelog/an-expanded-vercel-agent-chat-investigations-and-approved-actions-now-in-public-beta) | 2026-06-30 | nextjs
+- [Vercel Private Blob is now generally available](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available) | 2026-06-30 | nextjs
+- [Claude Sonnet 5 now available on Vercel AI Gateway](https://vercel.com/changelog/claude-sonnet-5-ai-gateway) | 2026-06-30 | nextjs
+- [Vercel Agent has updated pricing](https://vercel.com/changelog/vercel-agent-has-updated-pricing) | 2026-06-30 | nextjs
+- [Vercel Services: Run full stack on Vercel](https://vercel.com/blog/vercel-services-run-full-stack-on-vercel) | 2026-06-30 | nextjs
+- [Vercel and Shopify are rebuilding Hydrogen](https://vercel.com/blog/vercel-and-shopify-are-rebuilding-hydrogen) | 2026-06-30 | nextjs
+- [Vercel Ship 2026 recap](https://vercel.com/blog/vercel-ship-2026-recap) | 2026-06-30 | nextjs
+- [Run any Dockerfile on Vercel](https://vercel.com/blog/dockerfile-on-vercel) | 2026-06-30 | nextjs
+- [Next.js 16.3: Instant Navigations](https://nextjs.org/blog/next-16-3-instant-navigations) | 2026-06-25 | nextjs
+- [Next.js 16.3: AI Improvements](https://nextjs.org/blog/next-16-3-ai-improvements) | 2026-06-26 | nextjs
+- [Turbopack: What's New in Next.js 16.3](https://nextjs.org/blog/next-16-3-turbopack) | 2026-06-29 | nextjs
+- [Chat SDK now supports rich text in Telegram](https://vercel.com/changelog/chat-sdk-now-supports-rich-text-in-telegram) | 2026-06-15 | nextjs
+- [Vercel Flags no longer requires SDK Keys for Vercel deployments](https://vercel.com/changelog/authenticate-vercel-flags-with-openid-connect-by-default) | 2026-06-24 | nextjs
+- [Workflow SDK now compresses run and step payloads](https://vercel.com/changelog/workflow-sdk-now-compresses-run-and-step-payloads) | 2026-06-22 | nextjs
+- [Chat SDK adds Linq support](https://vercel.com/changelog/chat-sdk-adds-linq-support) | 2026-06-22 | nextjs
+- [Chat SDK adds Sendblue support](https://vercel.com/changelog/chat-sdk-adds-sendblue-support) | 2026-06-22 | nextjs
+- [Chat SDK adds Novu support](https://vercel.com/changelog/chat-sdk-adds-novu-support) | 2026-06-22 | nextjs
+- [Chat SDK adds Kapso support](https://vercel.com/changelog/chat-sdk-adds-kapso-support) | 2026-06-22 | nextjs
+- [GLM 5.2 Fast via Wafer now available on AI Gateway](https://vercel.com/changelog/glm-5-2-fast-via-wafer-now-available-on-ai-gateway) | 2026-06-24 | nextjs
+- [Redesigned trace viewer for Vercel Workflows](https://vercel.com/changelog/redesigned-trace-viewer-for-vercel-workflows) | 2026-06-23 | nextjs
+- [Custom OIDC Token Audiences](https://vercel.com/changelog/custom-oidc-token-audiences) | 2026-06-23 | nextjs
+- [Deploy Node servers with zero configuration](https://vercel.com/changelog/deploy-node-servers-with-zero-configuration) | 2026-06-23 | nextjs
+- [WebSocket support is now in Public Beta](https://vercel.com/changelog/websocket-support-is-now-in-public-beta) | 2026-06-22 | nextjs
+- [Increased limit for projects per Git repo](https://vercel.com/changelog/increased-limit-for-projects-per-git-repo) | 2026-06-22 | nextjs
+- [Vercel CLI now supports signing blob URLs](https://vercel.com/changelog/vercel-cli-now-supports-signing-blob-urls) | 2026-06-22 | nextjs
+- [Vercel Flags: Platform-native feature flags](https://vercel.com/blog/vercel-flags-platform-native-feature-flags) | 2026-06-22 | nextjs
+- [Deploy from Claude Design to Vercel](https://vercel.com/changelog/claude-design-and-vercel) | 2026-06-23 | nextjs
+- [Sakana Fugu Ultra now available on AI Gateway](https://vercel.com/changelog/sakana-fugu-ultra-now-available-on-ai-gateway) | 2026-06-22 | nextjs
+- [How Fern runs multi-tenant docs for Webflow and ElevenLabs on Vercel](https://vercel.com/blog/how-fern-runs-multi-tenant-docs-for-webflow-and-elevenlabs-on-vercel) | 2026-06-09 | nextjs
+- [How Code and Theory cut time-to-prototype 75% with v0](https://vercel.com/blog/how-code-and-theory-cut-time-to-prototype-75-with-v0) | 2026-06-09 | nextjs
+- [How the Weather Company serves real-time forecasts to 350 million daily active users on Vercel](https://vercel.com/blog/how-the-weather-company-serves-real-time-forecasts-to-350-million-daily-active-users-on-vercel) | 2026-06-09 | nextjs
+- [Workflow SDK now supports TanStack Start](https://vercel.com/changelog/workflow-sdk-now-supports-tanstack-start) | 2026-06-16 | nextjs
+- [Workflow SDK now supports inflight cancellation](https://vercel.com/changelog/workflow-sdk-now-supports-inflight-cancellation) | 2026-06-16 | nextjs
+- [GLM 5.2 now available on AI Gateway](https://vercel.com/changelog/glm-5-2-now-available-on-ai-gateway) | 2026-06-16 | nextjs
+- [Vercel Sandbox can now run for up to 24 hours](https://vercel.com/changelog/vercel-sandbox-can-now-run-for-up-to-24-hours) | 2026-06-16 | nextjs
+- [Vercel for Enterprise Apps and Agents](https://vercel.com/blog/vercel-for-enterprise-apps-and-agents) | 2026-06-16 | nextjs
+- [Introducing eve, an open-source agent framework](https://vercel.com/changelog/introducing-eve-an-open-source-agent-framework) | 2026-06-17 | nextjs
+- [Vercel Connect: Secure access to external services for your agents](https://vercel.com/changelog/vercel-connect-secure-access-to-external-services-for-your-agents) | 2026-06-17 | nextjs
+- [Vercel Passport is now in Public Beta](https://vercel.com/changelog/vercel-passport-is-now-in-public-beta) | 2026-06-17 | nextjs
+- [CLI deployment limits removed](https://vercel.com/changelog/cli-deployment-limits-removed) | 2026-06-17 | nextjs
+- [Introducing eve](https://vercel.com/blog/introducing-eve) | 2026-06-17 | nextjs
+- [Introducing Vercel Connect](https://vercel.com/blog/introducing-vercel-connect) | 2026-06-17 | nextjs
+- [The Agent Stack](https://vercel.com/blog/agent-stack) | 2026-06-17 | nextjs
+- [Vercel Ship 2026 recap](https://vercel.com/blog/vercel-ship-2026-recap) | 2026-06-17 | nextjs
+- [Auth0 joins the Vercel Marketplace](https://vercel.com/changelog/auth0-joins-the-vercel-marketplace) | 2026-06-15 | nextjs
+- [Vercel Functions can now run up to 30 minutes](https://vercel.com/changelog/vercel-functions-can-now-run-up-to-30-minutes) | 2026-06-15 | nextjs
+- [Increased Blob store limit for Hobby users](https://vercel.com/changelog/increased-blob-store-limit-for-hobby-users) | 2026-06-15 | nextjs
+- [Workflow SDK now runs natively in Nitro v3](https://vercel.com/changelog/workflow-sdk-now-runs-natively-in-nitro-v3) | 2026-06-13 | nextjs
+- [Introducing Vercel Drop](https://vercel.com/changelog/vercel-drop) | 2026-06-12 | nextjs
+- [Program Claude Code, Codex, Pi and other agent harnesses with AI SDK](https://vercel.com/changelog/program-agent-harnesses-with-ai-sdk) | 2026-06-12 | nextjs
+- [Kimi K2.7 Code now available on AI Gateway](https://vercel.com/changelog/kimi-k2-7-code-now-available-on-ai-gateway) | 2026-06-12 | nextjs
+- [Claude Fable 5 access suspended on AI Gateway](https://vercel.com/changelog/claude-fable-5-access-suspended-on-ai-gateway) | 2026-06-12 | nextjs
+- [Vercel plugin is now available in Grok Build](https://vercel.com/changelog/vercel-plugin-is-now-available-in-grok-build) | 2026-06-11 | nextjs
+- [DeepSeek models now available via Azure on AI Gateway](https://vercel.com/changelog/deepseek-models-now-available-via-azure-on-ai-gateway) | 2026-06-11 | nextjs
+- [How Okara runs CMO agents for 120,000 companies on Vercel](https://vercel.com/blog/how-okara-runs-cmo-agents-for-120000-companies-on-vercel) | 2026-06-11 | nextjs
+- [Live Feed: Next.js Official GitHub Releases](https://github.com/vercel/next.js/releases.atom) | 2026-06-11 | nextjs, release, canary
+- [Live API: Next.js Security Advisories](https://api.github.com/repos/vercel/next.js/security-advisories) | 2026-06-11 | nextjs, security, cve
+- [Threshold billing is now enabled for Pro teams](https://vercel.com/changelog/threshold-billing-is-now-enabled-for-pro-teams) | 2026-06-10 | nextjs
+- [Domain Search is now available through the Vercel CLI](https://vercel.com/changelog/domain-search-is-now-available-through-the-vercel-cli) | 2026-06-09 | nextjs
+- [Claude Fable 5 now available on AI Gateway](https://vercel.com/changelog/claude-fable-5-now-available-on-ai-gateway) | 2026-06-09 | nextjs
+- [Budgets for API keys on AI Gateway](https://vercel.com/changelog/budgets-for-api-keys-on-ai-gateway) | 2026-06-09 | nextjs
+- [Next.js v16.3.0-preview.3 Pre-release](https://github.com/vercel/next.js/releases/tag/v16.3.0-preview.3) | 2026-06-09 | nextjs, canary
+- [Next.js v16.2.9 Stable Release](https://github.com/vercel/next.js/releases/tag/v16.2.9) | 2026-06-09 | nextjs, release
+- [DeepSeek enters the fight for token volume, Anthropic continues to dominate spend](https://vercel.com/blog/ai-gateway-production-index-june-2026) | 2026-06-08 | nextjs
+- [The skills.sh API is now available](https://vercel.com/changelog/the-skills-sh-api-is-now-available) | 2026-06-05 | nextjs
+- [Drives for Vercel Sandbox in Private Beta](https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta) | 2026-06-05 | nextjs
+- [Updates to Legal Terms](https://vercel.com/changelog/updates-to-legal-terms-june-2026) | 2026-06-04 | nextjs
+- [Nemotron 3 Ultra now available on AI Gateway](https://vercel.com/changelog/nemotron-3-ultra-now-available-on-ai-gateway) | 2026-06-04 | nextjs
+- [Build and deploy Shopify storefronts on Vercel](https://vercel.com/changelog/build-and-deploy-shopify-storefronts-on-vercel) | 2026-06-04 | nextjs
+- [Trace any Vercel request from the CLI](https://vercel.com/changelog/trace-any-vercel-request-from-the-cli) | 2026-06-03 | nextjs
+- [Grok Imagine Video 1.5 on AI Gateway](https://vercel.com/changelog/grok-imagine-video-1-5-on-ai-gateway) | 2026-06-03 | nextjs
+- [Signed URLs are now available for Vercel Blob](https://vercel.com/changelog/signed-urls-are-now-available-for-vercel-blob) | 2026-06-02 | nextjs
+- [Edit Git settings for all projects in a repo](https://vercel.com/changelog/edit-git-settings-for-all-projects-in-a-repo) | 2026-06-02 | nextjs
+- [Build custom Slack runtimes](https://vercel.com/changelog/build-custom-slack-runtimes) | 2026-06-02 | nextjs
+- [Build Chat SDK web UIs in Vue or Svelte](https://vercel.com/changelog/build-chat-sdk-web-uis-in-vue-or-svelte) | 2026-06-02 | nextjs
+- [Vercel Blob now supports OIDC authentication](https://vercel.com/changelog/vercel-blob-now-supports-oidc-authentication) | 2026-06-01 | nextjs
+- [Qwen 3.7 Plus now available on AI Gateway](https://vercel.com/changelog/qwen-3-7-plus-now-available-on-ai-gateway) | 2026-06-01 | nextjs
+- [Elastic Build Machines now protect against out of memory builds](https://vercel.com/changelog/elastic-build-machines-now-protect-against-out-of-memory-builds) | 2026-06-01 | nextjs
+- [Chat SDK adds Velt support](https://vercel.com/changelog/chat-sdk-adds-velt-support) | 2026-06-01 | nextjs
+- [Chat SDK adds AgentPhone support](https://vercel.com/changelog/chat-sdk-adds-agentphone-support) | 2026-06-01 | nextjs
+
+## May 2026
+
+- [MiniMax M3 on AI Gateway](https://vercel.com/changelog/minimax-m3-on-ai-gateway) | 2026-05-31 | nextjs
+- [Chat SDK adds Lark and Feishu support](https://vercel.com/changelog/chat-sdk-adds-lark-feishu-support) | 2026-05-31 | nextjs
+- [Run Docker containers inside Vercel Sandbox](https://vercel.com/changelog/run-docker-containers-inside-vercel-sandbox) | 2026-05-29 | nextjs
+- [Port 8080 is now available in Vercel Sandboxes](https://vercel.com/changelog/port-8080-is-now-available-in-vercel-sandboxes) | 2026-05-29 | nextjs
+- [Function invocations now billed per unit](https://vercel.com/changelog/function-invocations-now-billed-per-unit) | 2026-05-29 | nextjs
+- [Protecting against token theft](https://vercel.com/blog/protecting-against-token-theft) | 2026-05-29 | nextjs
+- [Team-wide provider allowlist on AI Gateway](https://vercel.com/changelog/team-wide-provider-allowlist-on-ai-gateway) | 2026-05-28 | nextjs
+- [Opus 4.8 on AI Gateway](https://vercel.com/changelog/opus-4-8-on-ai-gateway) | 2026-05-28 | nextjs
+- [Amazon OpenSearch Serverless is now available in the Vercel Marketplace](https://vercel.com/changelog/amazon-opensearch-serverless-is-now-available-in-the-vercel-marketplace) | 2026-05-28 | nextjs
+- [Redesigned Deployments List](https://vercel.com/changelog/redesigned-deployments-list) | 2026-05-27 | nextjs
+- [Experimental native binaries for Vercel CLI](https://vercel.com/changelog/experimental-native-binaries-for-vercel-cli) | 2026-05-27 | nextjs
+- [How Conductor moved parallel coding agents from the laptop to the cloud with Vercel Sandbox](https://vercel.com/blog/how-conductor-moved-parallel-coding-agents-from-the-laptop-to-the-cloud-with-vercel-sandbox) | 2026-05-27 | nextjs
+- [Vercel Domains now supports price sorting and availability filtering](https://vercel.com/changelog/vercel-domains-now-supports-price-sorting-and-availability-filtering) | 2026-05-26 | nextjs
+- [Sandbox persistence is now GA](https://vercel.com/changelog/sandbox-persistence-is-now-ga) | 2026-05-26 | nextjs
+- [Microfrontends routing now applies to vc alias and branch domains](https://vercel.com/changelog/microfrontends-routing-now-applies-to-vc-alias-and-branch-domains) | 2026-05-26 | nextjs
+- [Firecrawl joins the Vercel Marketplace](https://vercel.com/changelog/firecrawl-joins-the-vercel-marketplace) | 2026-05-26 | nextjs
+- [Qwen 3.7 Max now available on Vercel AI Gateway](https://vercel.com/changelog/qwen-3-7-max-now-available-on-vercel-ai-gateway) | 2026-05-21 | nextjs
+- [Pull anomaly alert details using the Vercel CLI](https://vercel.com/changelog/pull-anomaly-alert-details-using-the-vercel-cli) | 2026-05-21 | nextjs
+- [Configure weighted traffic splits for Vercel Flags from the Vercel CLI](https://vercel.com/changelog/configure-weighted-traffic-splits-for-vercel-flags-from-the-vercel-cli) | 2026-05-21 | nextjs
+- [Vercel AI Gateway plugin for WordPress](https://vercel.com/changelog/vercel-ai-gateway-plugin-for-wordpress) | 2026-05-20 | nextjs
+- [Grok Build 0.1 now available on Vercel AI Gateway](https://vercel.com/changelog/grok-build-0-1-now-available-on-vercel-ai-gateway) | 2026-05-20 | nextjs
+- [Chat SDK now supports callback URLs on buttons and modals](https://vercel.com/changelog/chat-sdk-now-supports-callback-urls-on-buttons-and-modals) | 2026-05-20 | nextjs
+- [Chat SDK now includes AI SDK tools](https://vercel.com/changelog/chat-sdk-now-includes-ai-sdk-tools) | 2026-05-20 | nextjs
+- [Chat SDK adds message subjects and direct SDK access](https://vercel.com/changelog/chat-sdk-adds-message-subjects-and-direct-sdk-access) | 2026-05-20 | nextjs
+- [Nuxt MCP Toolkit now supports MCP apps](https://vercel.com/changelog/nuxt-mcp-toolkit-mcp-apps) | 2026-05-19 | nextjs
+- [Gemini 3.5 Flash on AI Gateway](https://vercel.com/changelog/gemini-3-5-flash-on-ai-gateway) | 2026-05-19 | nextjs
+- [Flat Rate CDN in Limited Beta](https://vercel.com/changelog/flat-rate-cdn-in-limited-beta) | 2026-05-19 | nextjs
+- [Firewall‑mitigated traffic is free on Vercel](https://vercel.com/changelog/web-application-firewall-mitigated-traffic-is-free-on-vercel) | 2026-05-18 | nextjs
+- [Run Claude Managed Agents with Vercel Sandbox](https://vercel.com/changelog/run-claude-managed-agents-with-vercel-sandbox) | 2026-05-18 | nextjs
+- [Consolidated Commit Status now available on GitHub](https://vercel.com/changelog/consolidated-commit-status-now-available-for-github) | 2026-05-18 | nextjs
+- [Use native curl syntax with Vercel CLI](https://vercel.com/changelog/use-native-curl-syntax-with-vercel-cli) | 2026-05-15 | nextjs
+- [Sort providers by cost, latency, or throughput on AI Gateway](https://vercel.com/changelog/sort-providers-by-cost-latency-or-throughput-on-ai-gateway) | 2026-05-15 | nextjs
+- [Protected Source Maps: Ship browser source maps securely](https://vercel.com/changelog/protected-source-maps-ship-browser-source-maps-securely) | 2026-05-14 | nextjs
+- [Trusted Sources for Deployment Protection](https://vercel.com/changelog/trusted-sources-for-deployment-protection) | 2026-05-13 | nextjs
+- [Node.js 26.x now available on Vercel Sandboxes](https://vercel.com/changelog/node-js-26-x-now-available-on-vercel-sandboxes) | 2026-05-12 | nextjs
+- [Manage Vercel Firewall in the CLI](https://vercel.com/changelog/manage-vercel-firewall-in-the-cli) | 2026-05-12 | nextjs
+- [Fast mode for Opus 4.7 available on AI Gateway](https://vercel.com/changelog/fast-mode-for-opus-4-7-available-on-ai-gateway) | 2026-05-12 | nextjs
+- [Create Vercel Firewall rules with natural language](https://vercel.com/changelog/create-vercel-waf-custom-rules-using-natural-language) | 2026-05-12 | nextjs
+- [AI Gateway production index](https://vercel.com/blog/ai-gateway-production-index) | 2026-05-12 | nextjs
+- [Vercel Sandbox firewall now supports request proxying and filtering](https://vercel.com/changelog/vercel-sandbox-firewall-now-supports-request-proxying-and-filtering) | 2026-05-11 | nextjs
+- [Automate progressive rollouts with Vercel Flags](https://vercel.com/changelog/progressive-rollouts-in-vercel-flags) | 2026-05-11 | nextjs
+- [How Superset built the IDE for AI agents on Vercel](https://vercel.com/blog/how-superset-built-the-ide-for-ai-agents-on-vercel) | 2026-05-10 | nextjs
+- [Chat SDK now supports conversation history](https://vercel.com/changelog/chat-sdk-conversation-history) | 2026-05-08 | nextjs
+- [Chat SDK adds web adapter support](https://vercel.com/changelog/chat-sdk-adds-web-adapter-support) | 2026-05-08 | nextjs
+- [Chat SDK adds Messenger adapter support](https://vercel.com/changelog/chat-sdk-adds-messenger-adapter) | 2026-05-08 | nextjs
+- [Vercel Flags now supports JSON values](https://vercel.com/changelog/vercel-flags-now-supports-json-values) | 2026-05-07 | nextjs
+- [Next.js May 2026 security release](https://vercel.com/changelog/next-js-may-2026-security-release) | 2026-05-07 | nextjs
+- [Secure Marketplace credentials with Production-only access](https://vercel.com/changelog/secure-marketplace-credentials-with-production-only-access) | 2026-05-06 | nextjs
+- [Auto-add Git committers to your team](https://vercel.com/changelog/auto-add-git-committers-to-your-team) | 2026-05-06 | nextjs
+- [CVE-2026-44578 — SSRF in WebSocket upgrades](https://github.com/advisories/GHSA-c4j6-fc7j-m34r) | 2026-05-06 | nextjs, security, cve
+- [Query observability metrics using the Vercel CLI](https://vercel.com/changelog/vercel-metrics-in-cli) | 2026-05-05 | nextjs
+- [How KIKO Milano scales for Black Friday](https://vercel.com/blog/how-kiko-milano-scales-for-black-friday) | 2026-05-05 | nextjs
+- [Introducing deepsec: The security harness for finding vulnerabilities in your codebase](https://vercel.com/blog/introducing-deepsec-find-and-fix-vulnerabilities-in-your-code-base) | 2026-05-04 | nextjs
+- [How General Intelligence used agents to build an agent platform on Vercel](https://vercel.com/blog/how-general-intelligence-used-agents-to-build-an-agent-platform-on-vercel) | 2026-05-04 | nextjs
+- [Postgres connections now work through Sandbox firewall](https://vercel.com/changelog/vercel-sandbox-firewall-now-supports-postgres-connections) | 2026-05-01 | nextjs
+- [How GitBook serves 30,000 sites with sub-second content updates](https://vercel.com/blog/how-gitbook-serves-30000-sites-with-sub-second-content-updates) | 2026-05-01 | nextjs
+- [GHSA-8h8q-6873-q5fj — React Server Components DoS](https://github.com/advisories/GHSA-8h8q-6873-q5fj) | 2026-05-01 | nextjs, security, cve
+
+## April 2026
+
+- [Grok 4.3 on AI Gateway](https://vercel.com/changelog/grok-4-3-on-ai-gateway) | 2026-04-30 | nextjs
+- [Custom tags available in beta on Vercel Sandbox](https://vercel.com/changelog/custom-tags-available-in-beta-on-vercel-sandbox) | 2026-04-30 | nextjs
+- [Vercel now supports Pro plan in Stripe Projects](https://vercel.com/changelog/vercel-now-supports-pro-plan-in-stripe-projects) | 2026-04-29 | nextjs
+- [Native Deployment Checks are now available](https://vercel.com/changelog/native-deployment-checks) | 2026-04-28 | nextjs
+- [2026 Vercel AI Accelerator recap](https://vercel.com/blog/2026-vercel-ai-accelerator-recap) | 2026-04-28 | nextjs
+- [Hobby projects now default to 30-day deployment retention](https://vercel.com/changelog/hobby-projects-now-default-to-30-day-deployment-retention) | 2026-04-27 | nextjs
+- [GPT 5.5 on AI Gateway](https://vercel.com/changelog/gpt-5.5-on-ai-gateway) | 2026-04-24 | nextjs
+- [Deepseek V4 on AI Gateway](https://vercel.com/changelog/deepseek-v4-on-ai-gateway) | 2026-04-23 | nextjs
+- [GPT Image 2 on AI Gateway](https://vercel.com/changelog/gpt-image-2-on-ai-gateway) | 2026-04-21 | nextjs
+- [Kimi K2.6 on AI Gateway](https://vercel.com/changelog/kimi-k2.6-on-ai-gateway) | 2026-04-20 | nextjs
+- [Deployment retention policies now preserve active branch deployments](https://vercel.com/changelog/deployment-retention-policies-now-preserve-active-branch-deployments) | 2026-04-17 | nextjs
+- [How Zo Computer improved AI reliability 20x on Vercel](https://vercel.com/blog/how-zo-computer-improved-ai-reliability-20x-on-vercel) | 2026-04-17 | nextjs
+- [Vercel Flags is now generally available](https://vercel.com/changelog/vercel-flags-ga) | 2026-04-16 | nextjs
+- [Claude Opus 4.7 on AI Gateway](https://vercel.com/changelog/opus-4.7-on-ai-gateway) | 2026-04-16 | nextjs
+- [A new programming model for durable execution](https://vercel.com/blog/a-new-programming-model-for-durable-execution) | 2026-04-16 | nextjs
+- [Seedance 2.0 Video Generation on AI Gateway](https://vercel.com/changelog/seedance-2.0-video-now-available-on-ai-gateway) | 2026-04-15 | nextjs
+- [Reduced pricing for Turbo build machines](https://vercel.com/changelog/reduced-pricing-for-turbo-build-machines) | 2026-04-15 | nextjs
+- [Logs filtering for Vercel Workflows now available](https://vercel.com/changelog/logs-filtering-for-vercel-workflows-now-available) | 2026-04-14 | nextjs
+- [Elastic Build Machines is now GA](https://vercel.com/changelog/elastic-build-machines-is-now-ga) | 2026-04-14 | nextjs
+- [Copy-to-Prompt instructions now available for Flags](https://vercel.com/changelog/copy-to-prompt-instructions-now-available-for-flags) | 2026-04-13 | nextjs
+- [Anomaly alerts are now generally available](https://vercel.com/changelog/anomaly-alerts-ga) | 2026-04-13 | nextjs
+- [Anomaly alert configuration now available](https://vercel.com/changelog/anomaly-alert-configuration-now-available) | 2026-04-10 | nextjs
+- [Zero-configuration Django support](https://vercel.com/changelog/zero-configuration-django-support) | 2026-04-09 | nextjs
+- [Agentic Infrastructure](https://vercel.com/blog/agentic-infrastructure) | 2026-04-09 | nextjs
+- [Vercel Sandbox now supports up to 32 vCPU + 64 GB RAM configurations](https://vercel.com/changelog/vercel-sandbox-now-supports-up-to-32-vcpu-64-gb-ram-configurations) | 2026-04-08 | nextjs
+- [Use and manage Vercel Sandbox directly from the Vercel CLI](https://vercel.com/changelog/use-vercel-sandbox-directly-within-vercel-cli) | 2026-04-08 | nextjs
+- [Summary of CVE-2026-23869](https://vercel.com/changelog/summary-of-cve-2026-23869) | 2026-04-08 | nextjs
+- [Zero Data Retention on AI Gateway](https://vercel.com/blog/zdr-on-ai-gateway) | 2026-04-08 | nextjs
+- [Query and visualize workflow data in Vercel Observability](https://vercel.com/changelog/query-and-visualize-workflow-data-in-vercel-observability) | 2026-04-07 | nextjs
+- [Opus 4.6 Fast Mode available on AI Gateway](https://vercel.com/changelog/opus-4-6-fast-mode-available-on-ai-gateway) | 2026-04-07 | nextjs
+- [Manage Vercel Microfrontends with AI Agents and the CLI](https://vercel.com/changelog/manage-vercel-microfrontends-with-ai-agents-and-the-cli) | 2026-04-07 | nextjs
+- [GLM 5.1 on AI Gateway](https://vercel.com/changelog/glm-5.1-on-ai-gateway) | 2026-04-07 | nextjs
+- [Chat SDK adds Liveblocks support](https://vercel.com/changelog/chat-sdk-adds-liveblocks-support) | 2026-04-07 | nextjs
+- [Team-wide Zero Data Retention and prompt training controls now on AI Gateway](https://vercel.com/changelog/zero-data-retention-no-prompt-training-on-ai-gateway) | 2026-04-06 | nextjs
+- [Vercel CLI commands now scoped to local directory](https://vercel.com/changelog/vercel-cli-commands-now-scope-to-the-local-directory) | 2026-04-06 | nextjs
+- [Query and manage Marketplace databases from the dashboard](https://vercel.com/changelog/query-and-manage-marketplace-databases-from-the-dashboard) | 2026-04-06 | nextjs
+- [Zero-configuration Go backend support](https://vercel.com/changelog/zero-configuration-go-backend-support) | 2026-04-02 | nextjs
+- [Custom Class Serialization in Workflow SDK](https://vercel.com/changelog/workflow-custom-class-serialization) | 2026-04-02 | nextjs
+- [Qwen 3.6 Plus on AI Gateway](https://vercel.com/changelog/qwen-3.6-plus-on-ai-gateway) | 2026-04-02 | nextjs
+- [Base fee for Observability Plus removed](https://vercel.com/changelog/no-base-fee-for-observability-plus) | 2026-04-02 | nextjs
+- [Gemma 4 on AI Gateway](https://vercel.com/changelog/gemma-4-on-ai-gateway) | 2026-04-02 | nextjs
+- [Build an MCP server with Nuxt](https://vercel.com/changelog/build-mcp-server-with-nuxt) | 2026-04-02 | nextjs
+- [Optimizing Vercel Sandbox snapshots](https://vercel.com/blog/optimizing-vercel-sandbox-snapshots) | 2026-04-02 | nextjs
+- [Vercel Queues now supports 7-day message TTL](https://vercel.com/changelog/queues-now-supports-7-day-ttl) | 2026-04-01 | nextjs
+- [GLM 5V Turbo on AI Gateway](https://vercel.com/changelog/glm-5v-turbo-on-ai-gateway) | 2026-04-01 | nextjs
+- [Chat SDK adds Zernio support](https://vercel.com/changelog/chat-sdk-adds-zernio-support) | 2026-04-01 | nextjs
+- [How Waldium made a blog platform work for humans and AI alike](https://vercel.com/blog/how-waldium-made-a-blog-platform-work-for-humans-and-ai-alike) | 2026-04-01 | nextjs
+
+## March 2026
+
+- [Transfer Marketplace resources between teams](https://vercel.com/changelog/transfer-marketplace-resources-between-teams) | 2026-03-31 | nextjs
+- [Axios package compromise and remediation steps](https://vercel.com/changelog/axios-package-compromise-and-remediation-steps) | 2026-03-31 | nextjs
+- [How FLORA shipped a creative agent on Vercel&apos;s AI stack](https://vercel.com/blog/how-flora-shipped-a-creative-agent-on-vercels-ai-stack) | 2026-03-31 | nextjs
+- [Vercel CDN now respects Cache-Control headers from external origins by default](https://vercel.com/changelog/vercels-cdn-now-respects-cache-control-headers-from-external-origins-by-default) | 2026-03-30 | nextjs
+- [Making Turborepo 96% faster with agents, sandboxes, and humans](https://vercel.com/blog/making-turborepo-ninety-six-percent-faster-with-agents-sandboxes-and-humans) | 2026-03-30 | nextjs
+- [Agent responsibly](https://vercel.com/blog/agent-responsibly) | 2026-03-30 | nextjs
+- [Vercel Sandboxes now allow unique, customizable names](https://vercel.com/changelog/vercel-sandboxes-now-allow-unique-customizable-names) | 2026-03-26 | nextjs
+- [Automatic persistence now in beta on Vercel Sandbox](https://vercel.com/changelog/vercel-sandbox-persistent-sandboxes-beta) | 2026-03-26 | nextjs
+- [Vercel plugin now supported on OpenAI Codex and Codex CLI](https://vercel.com/changelog/vercel-plugin-openai-codex-and-codex-cli-support) | 2026-03-26 | nextjs
+- [Unified reporting for all AI Gateway usage](https://vercel.com/blog/unified-reporting-for-your-ai-spend) | 2026-03-25 | nextjs
+- [Next.js Across Platforms: Adapters, OpenNext, and Our Commitments](https://nextjs.org/blog/nextjs-across-platforms) | 2026-03-25 | nextjs, vercel, release
+- [Elastic build machines now available in beta](https://vercel.com/changelog/elastic-build-machines-are-available-in-beta) | 2026-03-24 | nextjs
+- [Chat SDK now supports scheduled Slack messages](https://vercel.com/changelog/chat-sdk-now-supports-scheduled-slack-messages) | 2026-03-24 | nextjs
+- [Chat SDK now supports concurrent message handling](https://vercel.com/changelog/chat-sdk-now-supports-concurrent-message-handling) | 2026-03-24 | nextjs
+- [View specific error codes in runtime logs](https://vercel.com/changelog/view-specific-error-codes-in-runtime-logs) | 2026-03-23 | nextjs
+- [Enterprise teams can now set their default build machine](https://vercel.com/changelog/enterprise-teams-can-now-set-their-default-build-machine) | 2026-03-23 | nextjs
+- [Activity Log now available in Vercel CLI](https://vercel.com/changelog/activity-log-now-available-in-vercel-cli) | 2026-03-23 | nextjs
+- [SERHANT.&apos;s playbook for rapid AI iteration](https://vercel.com/blog/serhants-playbook-for-rapid-ai-iteration) | 2026-03-23 | nextjs
+- [new.website joins forces with v0](https://vercel.com/blog/new-website-joins-forces-with-v0) | 2026-03-23 | nextjs
+- [Sandbox SDK adds file permission control](https://vercel.com/changelog/sandbox-sdk-file-permissions) | 2026-03-20 | nextjs
+- [Vercel is now available in Stripe Projects](https://vercel.com/changelog/vercel-is-now-available-in-stripe-projects) | 2026-03-19 | nextjs
+- [Two startups at global scale without DevOps](https://vercel.com/blog/two-startups-at-global-scale-without-devops) | 2026-03-19 | nextjs
+- [Chat SDK brings agents to your users](https://vercel.com/blog/chat-sdk-brings-agents-to-your-users) | 2026-03-19 | nextjs
+- [Build knowledge agents without embeddings](https://vercel.com/blog/build-knowledge-agents-without-embeddings) | 2026-03-19 | nextjs
+- [v0 now includes diff view to review code changes](https://vercel.com/changelog/v0-now-includes-diff-view-to-review-code-changes) | 2026-03-18 | nextjs
+- [MiniMax M2.7 is live on AI Gateway](https://vercel.com/changelog/minimax-m2.7-on-ai-gateway) | 2026-03-18 | nextjs
+- [360 billion tokens, 3 million customers, 6 engineers](https://vercel.com/blog/360-billion-tokens-3-million-customers-6-engineers) | 2026-03-18 | nextjs
+- [Turbopack: What's New in Next.js 16.2](https://nextjs.org/blog/next-16-2-turbopack) | 2026-03-18 | nextjs, release
+- [Next.js 16.2: AI Improvements](https://nextjs.org/blog/next-16-2-ai) | 2026-03-18 | nextjs, release
+- [Next.js 16.2](https://nextjs.org/blog/next-16-2) | 2026-03-18 | nextjs
+- [End-to-end encryption for Vercel Workflow](https://vercel.com/changelog/workflow-encryption) | 2026-03-17 | nextjs
+- [New GitHub App permissions for Actions and Workflows](https://vercel.com/changelog/vercel-github-app-updated-permissions) | 2026-03-17 | nextjs
+- [Use GPT 5.4 Mini and Nano on AI Gateway](https://vercel.com/changelog/use-gpt-5-4-mini-and-nano-on-ai-gateway) | 2026-03-17 | nextjs
+- [Updates to Terms of Service](https://vercel.com/changelog/updates-to-terms-of-service-march-2026) | 2026-03-17 | nextjs
+- [Introducing the Vercel plugin for coding agents](https://vercel.com/changelog/introducing-vercel-plugin-for-coding-agents) | 2026-03-17 | nextjs
+- [Vercel Open Source Program: Winter 2026 cohort](https://vercel.com/blog/vercel-open-source-program-winter-2026-cohort) | 2026-03-17 | nextjs
+- [Streamdown 2.5 is now available](https://vercel.com/changelog/streamdown-2-5) | 2026-03-16 | nextjs
+- [LiteLLM server now supported on Vercel](https://vercel.com/changelog/litellm-server-now-supported-on-vercel) | 2026-03-16 | nextjs
+- [Meet the 2026 Vercel AI Accelerator Cohort](https://vercel.com/blog/2026-vercel-ai-accelerator-cohort) | 2026-03-16 | nextjs
+- [CVE-2026-29057 — HTTP request smuggling in rewrites](https://github.com/advisories/GHSA-ggv3-7p47-pfv8) | 2026-03-16 | nextjs, security, cve
+- [next-forge 6 is now available](https://vercel.com/changelog/next-forge-6) | 2026-03-13 | nextjs
+- [Vercel now supports Domain Connect as a DNS Provider](https://vercel.com/changelog/vercel-now-supports-domain-connect-as-a-dns-provider) | 2026-03-12 | nextjs
+- [Deprecating the DHE cipher suite for TLS connections](https://vercel.com/changelog/deprecating-the-dhe-cipher-suite-for-tls-connections) | 2026-03-12 | nextjs
+- [AI Elements 1.9 is now available](https://vercel.com/changelog/ai-elements-1-9) | 2026-03-12 | nextjs
+- [How Notion Workers run untrusted code at scale with Vercel Sandbox](https://vercel.com/blog/notion-workers-vercel-sandbox) | 2026-03-12 | nextjs
+- [Vercel Flags are now optimized for agents](https://vercel.com/changelog/vercel-flags-are-now-optimized-for-agents) | 2026-03-11 | nextjs
+- [Subscribe to webhook events for Vercel Flags](https://vercel.com/changelog/subscribe-to-webhook-events-for-vercel-flags) | 2026-03-11 | nextjs
+- [Improved data collection for Web Analytics and Speed Insights with resilient intake](https://vercel.com/changelog/improved-data-collection-for-web-analytics-and-speed-insights-with-resilient) | 2026-03-11 | nextjs
+- [Try Grok 4.20 on AI Gateway](https://vercel.com/changelog/grok-4-20-on-ai-gateway) | 2026-03-11 | nextjs
+- [Chat SDK adds WhatsApp adapter support](https://vercel.com/changelog/chat-sdk-adds-whatsapp-adapter-support) | 2026-03-11 | nextjs
+- [Vercel Sandbox now supports 1 vCPU + 2 GB RAM configurations](https://vercel.com/changelog/vercel-sandbox-now-supports-1-vcpu-2-gb-configurations) | 2026-03-10 | nextjs
+- [Chat SDK adds PostgreSQL state adapter](https://vercel.com/changelog/chat-sdk-adds-postgresql-state-adapter) | 2026-03-10 | nextjs
+- [Chat SDK now has an adapter directory](https://vercel.com/changelog/chat-sdk-adapter-directory) | 2026-03-10 | nextjs
+- [How we run Vercel&apos;s CDN in front of Discourse](https://vercel.com/blog/how-we-run-vercels-cdn-in-front-of-discourse) | 2026-03-10 | nextjs
+- [v0 API now supports custom MCP servers](https://vercel.com/changelog/v0-api-now-supports-custom-mcp-servers) | 2026-03-06 | nextjs
+- [Skip unaffected builds for projects in Bun monorepos](https://vercel.com/changelog/skip-unaffected-builds-for-projects-in-bun-monorepos) | 2026-03-06 | nextjs
+- [Deployment step now 15% faster](https://vercel.com/changelog/deployment-step-now-15-percent-faster) | 2026-03-06 | nextjs
+- [Chat SDK adds table rendering and streaming markdown](https://vercel.com/changelog/chat-sdk-adds-table-rendering-and-streaming-markdown) | 2026-03-06 | nextjs
+- [AI Gateway supports OpenAI&apos;s Responses API](https://vercel.com/changelog/ai-gateway-supports-openais-responses-api) | 2026-03-06 | nextjs
+- [Vercel&apos;s CDN now supports updating routing rules without a new deployment](https://vercel.com/changelog/vercels-cdn-now-supports-updating-routing-rules-without-a-new-deployment) | 2026-03-05 | nextjs
+- [Vercel CDN gets a new dashboard experience](https://vercel.com/changelog/vercels-cdn-gets-a-new-dashboard-experience) | 2026-03-05 | nextjs
+- [Stripe is now generally available on the Marketplace and v0](https://vercel.com/changelog/stripe-is-now-generally-available-on-the-marketplace-and-v0) | 2026-03-05 | nextjs
+- [Streamdown 2.4: More customization, accessibility and custom rendering](https://vercel.com/changelog/streamdown-2-4) | 2026-03-05 | nextjs
+- [Run cron jobs from deployment summary](https://vercel.com/changelog/run-cron-jobs-from-deployment-summary) | 2026-03-05 | nextjs
+- [Customize timeouts for faster automatic failover on Vercel AI Gateway](https://vercel.com/changelog/provider-level-custom-timeouts-for-faster-fail-over-on-ai-gateway) | 2026-03-05 | nextjs
+- [GPT 5.4 is now on AI Gateway](https://vercel.com/changelog/gpt-5-4-is-now-on-ai-gateway) | 2026-03-05 | nextjs
+- [Create private blob stores with a single click in v0](https://vercel.com/changelog/create-private-blob-stores-with-a-single-click-in-v0) | 2026-03-05 | nextjs
+- [From idea to secure checkout in minutes with Stripe](https://vercel.com/blog/from-idea-to-secure-checkout-in-minutes-with-stripe) | 2026-03-05 | nextjs
+- [Inception Mercury 2 is live on AI Gateway](https://vercel.com/changelog/mercury-2-on-ai-gateway) | 2026-03-04 | nextjs
+- [MCP Apps support on Vercel](https://vercel.com/changelog/mcp-apps-support-on-vercel) | 2026-03-04 | nextjs
+- [Vercel Workflow is now twice as fast](https://vercel.com/changelog/vercel-workflow-is-now-twice-as-fast) | 2026-03-03 | nextjs
+- [Vercel Sandbox now accepts environment variables at creation](https://vercel.com/changelog/vercel-sandbox-now-accepts-environment-variables-at-creation) | 2026-03-03 | nextjs
+- [GPT 5.3 Chat is now on AI Gateway](https://vercel.com/changelog/gpt-5-3-chat-is-now-on-ai-gateway) | 2026-03-03 | nextjs
+- [Gemini 3.1 Flash Lite is now on AI Gateway](https://vercel.com/changelog/gemini-3-1-flash-lite-is-now-on-ai-gateway) | 2026-03-03 | nextjs
+- [Scaling redirects to infinity on Vercel](https://vercel.com/blog/scaling-redirects-to-infinity-on-vercel) | 2026-03-03 | nextjs
+- [Building Slack agents can be easy](https://vercel.com/blog/building-slack-agents-can-be-easy) | 2026-03-03 | nextjs
+- [Vercel CLI for Marketplace integrations optimized for agents](https://vercel.com/changelog/vercel-cli-for-marketplace-integrations-optimized-for-agents) | 2026-03-02 | nextjs
+- [Advancing Python typing](https://vercel.com/blog/advancing-python-typing) | 2026-03-02 | nextjs
+
+## February 2026
+
+- [How Ramp kept 100% uptime through 100x traffic surges on Vercel](https://vercel.com/blog/how-ramp-kept-100-uptime-through-100x-traffic-surges-on-vercel) | 2026-02-17 | nextjs
+- [Gamma builds design-first agents with Vercel](https://vercel.com/blog/gamma-builds-design-first-agents-with-vercel) | 2026-02-28 | nextjs
+- [How Avalara turns pipe dreams into patent-pending with v0](https://vercel.com/blog/How-avalara-turns-pipedreams-into-patent-pending-with-v0) | 2026-02-28 | nextjs
+- [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta) | 2026-02-27 | nextjs
+- [Chat SDK adds Telegram adapter support](https://vercel.com/changelog/chat-sdk-adds-telegram-adapter-support) | 2026-02-27 | nextjs
+- [Keeping community human while scaling with agents](https://vercel.com/blog/keeping-community-human-while-scaling-with-agents) | 2026-02-27 | nextjs
+- [Nano Banana 2 is live on AI Gateway](https://vercel.com/changelog/nano-banana-2-is-live-on-ai-gateway) | 2026-02-26 | nextjs
+- [Developer role now available for Pro teams](https://vercel.com/changelog/developer-role-now-available-for-pro-teams) | 2026-02-26 | nextjs
+- [New dashboard redesign is now the default](https://vercel.com/changelog/dashboard-navigation-redesign-rollout) | 2026-02-26 | nextjs
+- [Activity log now tracks 100% of team and project changes](https://vercel.com/changelog/activity-log-now-tracks-100-of-team-and-project-changes) | 2026-02-25 | nextjs
+- [How OpenEvidence built a healthcare AI that physicians actually trust](https://vercel.com/blog/how-openevidence-built-a-healthcare-ai-that-physicians-can-trust) | 2026-02-25 | nextjs
+- [Slack Agent Skill simplifies building Slack agents with coding assistants](https://vercel.com/changelog/slack-agent-skill-simplifies-building-slack-agents-with-coding-assistants) | 2026-02-24 | nextjs
+- [Python Vercel Functions bundle size limit increased to 500MB](https://vercel.com/changelog/python-vercel-functions-bundle-size-limit-increased-to-500mb) | 2026-02-24 | nextjs
+- [GPT 5.3 Codex is now on AI Gateway](https://vercel.com/changelog/gpt-5-3-codex-is-now-on-ai-gateway) | 2026-02-24 | nextjs
+- [Security boundaries in agentic architectures](https://vercel.com/blog/security-boundaries-in-agentic-architectures) | 2026-02-24 | nextjs
+- [Support for now.json will be removed on March 31, 2026](https://vercel.com/changelog/support-for-now-json-will-be-removed-on-march-31-2026) | 2026-02-23 | nextjs
+- [Safely inject credentials in HTTP headers with Vercel Sandbox](https://vercel.com/changelog/safely-inject-credentials-in-http-headers-with-vercel-sandbox) | 2026-02-23 | nextjs
+- [Introducing npm i chat – One codebase, every chat platform](https://vercel.com/changelog/chat-sdk) | 2026-02-23 | nextjs
+- [Skills Night: 69,000+ ways agents are getting smarter](https://vercel.com/blog/skills-night-69000-ways-agents-are-getting-smarter) | 2026-02-20 | nextjs
+- [Wan models on AI Gateway](https://vercel.com/changelog/wan-models-on-ai-gateway) | 2026-02-19 | nextjs
+- [Veo video models on AI Gateway](https://vercel.com/changelog/veo-video-models-on-ai-gateway) | 2026-02-19 | nextjs
+- [Streamdown 2.3 — Refreshed design and interactive playground](https://vercel.com/changelog/streamdown-2-3) | 2026-02-19 | nextjs
+- [Private storage for Vercel Blob, now available in public beta](https://vercel.com/changelog/private-storage-for-vercel-blob-now-available-in-public-beta) | 2026-02-19 | nextjs
+- [Kling video models on AI Gateway](https://vercel.com/changelog/kling-video-models-on-ai-gateway) | 2026-02-19 | nextjs
+- [Grok Imagine Video on AI Gateway](https://vercel.com/changelog/grok-imagine-video-on-ai-gateway) | 2026-02-19 | nextjs
+- [Gemini 3.1 Pro is live on AI Gateway](https://vercel.com/changelog/gemini-3-1-pro-is-live-on-ai-gateway) | 2026-02-19 | nextjs
+- [Access billing usage and cost data via API](https://vercel.com/changelog/access-billing-usage-cost-data-api) | 2026-02-19 | nextjs
+- [Video Generation with AI Gateway](https://vercel.com/blog/video-generation-with-ai-gateway) | 2026-02-19 | nextjs
+- [Redesigned search and filtering for runtime logs](https://vercel.com/changelog/redesigned-search-and-filtering-for-runtime-logs) | 2026-02-18 | nextjs
+- [We Ralph Wiggumed WebStreams to make them 10x faster](https://vercel.com/blog/we-ralph-wiggumed-webstreams-to-make-them-10x-faster) | 2026-02-18 | nextjs
+- [Vercel Sandbox snapshots now allow custom retention periods](https://vercel.com/changelog/vercel-sandbox-snapshots-now-allow-custom-retention-periods) | 2026-02-17 | nextjs
+- [Recraft V4 on AI Gateway](https://vercel.com/changelog/recraft-v4-on-ai-gateway) | 2026-02-17 | nextjs
+- [Improved streaming runtime logs exports](https://vercel.com/changelog/improved-streaming-runtime-logs-exports) | 2026-02-17 | nextjs
+- [Claude Sonnet 4.6 is live on AI Gateway](https://vercel.com/changelog/claude-sonnet-4-6-is-live-on-ai-gateway) | 2026-02-17 | nextjs
+- [Automatic build fix suggestions with Vercel Agent](https://vercel.com/changelog/automatic-build-fix-suggestions-with-vercel-agent) | 2026-02-17 | nextjs
+- [Automated security audits now available for skills.sh](https://vercel.com/changelog/automated-security-audits-now-available-for-skills-sh) | 2026-02-17 | nextjs
+- [How Stably ships AI testing agents in hours, not weeks](https://vercel.com/blog/how-stably-ships-ai-testing-agents-in-hours-not-weeks) | 2026-02-17 | nextjs
+- [Qwen 3.5 Plus is on AI Gateway](https://vercel.com/changelog/qwen-3-5-plus-is-on-ai-gateway) | 2026-02-16 | nextjs
+- [Stale-if-error cache-control directive now supported for all responses](https://vercel.com/changelog/stale-if-error-cache-control-header-is-now-supported) | 2026-02-13 | nextjs
+- [Use MiniMax M2.5 on AI Gateway](https://vercel.com/changelog/use-minimax-m2-5-on-ai-gateway) | 2026-02-12 | nextjs
+- [New deployments with vulnerable versions of the third-party package next-mdx-remote are now blocked by default](https://vercel.com/changelog/new-deployments-with-vulnerable-versions-of-next-mdx-remote-are-now-blocked-by-default) | 2026-02-12 | nextjs
+- [Browserbase joins the Vercel Agent Marketplace](https://vercel.com/changelog/browserbase-joins-the-vercel-agent-marketplace) | 2026-02-12 | nextjs
+- [Building Next.js for an agentic future](https://nextjs.org/blog/agentic-future) | 2026-02-12 | nextjs
+- [Vercel Flags is now in public beta](https://vercel.com/changelog/vercel-flags-is-now-in-public-beta) | 2026-02-11 | nextjs
+- [GLM-5 is live on AI Gateway](https://vercel.com/changelog/glm-5-is-live-on-ai-gateway) | 2026-02-11 | nextjs
+- [Advanced egress firewall filtering for Vercel Sandbox](https://vercel.com/changelog/advanced-egress-firewall-filtering-for-vercel-sandbox) | 2026-02-11 | nextjs
+- [vercel logs CLI command now optimized for agents with historical log querying](https://vercel.com/changelog/vercel-logs-cli-command-now-optimized-for-agents-with-historical-log) | 2026-02-10 | nextjs
+- [Support for Sign in with Apple](https://vercel.com/changelog/sign-in-with-apple-support) | 2026-02-10 | nextjs
+- [PostHog joins the Vercel Marketplace](https://vercel.com/changelog/posthog-joins-the-vercel-marketplace) | 2026-02-10 | nextjs
+- [Agents can now access runtime logs with Vercel&apos;s MCP server](https://vercel.com/changelog/agents-can-now-access-runtime-logs-with-vercels-mcp-server) | 2026-02-10 | nextjs
+- [Introducing new token formats and secret scanning](https://vercel.com/changelog/new-token-formats-and-secret-scanning) | 2026-02-09 | nextjs
+- [How we built AEO tracking for coding agents](https://vercel.com/blog/how-we-built-aeo-tracking-for-coding-agents) | 2026-02-09 | nextjs
+- [Anyone can build agents, but it takes a platform to run them](https://vercel.com/blog/anyone-can-build-agents-but-it-takes-a-platform-to-run-them) | 2026-02-09 | nextjs
+- [Simplified file retrieval from Vercel Sandbox environments](https://vercel.com/changelog/simplified-file-retrieval-from-vercel-sandbox-environments) | 2026-02-06 | nextjs
+- [Sanity is now available on the Vercel Marketplace](https://vercel.com/changelog/sanity-vercel-marketplace) | 2026-02-06 | nextjs
+- [Introducing Geist Pixel](https://vercel.com/blog/introducing-geist-pixel) | 2026-02-06 | nextjs
+- [Use Claude Opus 4.6 on AI Gateway](https://vercel.com/changelog/claude-opus-4.6-on-ai-gateway) | 2026-02-05 | nextjs
+- [The Vercel AI Accelerator is back with $6m in credits](https://vercel.com/blog/the-vercel-ai-accelerator-is-back-with-6-million-in-credits) | 2026-02-05 | nextjs
+- [Parallel&apos;s Web Search and tools are live on Vercel](https://vercel.com/changelog/parallel-web-search-is-now-on-ai-gateway) | 2026-02-04 | nextjs
+- [Parallel joins the Vercel Agent Marketplace](https://vercel.com/changelog/parallel-joins-the-vercel-agent-marketplace) | 2026-02-04 | nextjs
+- [Build logs now support interactive links](https://vercel.com/changelog/build-logs-now-support-interactive-links) | 2026-02-04 | nextjs
+- [Zero-configuration support for Koa](https://vercel.com/changelog/zero-configuration-support-for-koa) | 2026-02-03 | nextjs
+- [Workflow 4.1 Beta: Event-sourced architecture](https://vercel.com/changelog/workflow-event-sourcing) | 2026-02-03 | nextjs
+- [Turbo build machines by default for new Pro projects](https://vercel.com/changelog/turbo-build-machines-by-default-for-new-pro-projects) | 2026-02-03 | nextjs
+- [Copy visual context to agents from Vercel Toolbar](https://vercel.com/changelog/copy-visual-context-to-agents) | 2026-02-03 | nextjs
+- [AI Gateway and one-click deploys now available on TRAE](https://vercel.com/changelog/ai-gateway-and-one-click-deploys-now-available-on-trae) | 2026-02-03 | nextjs
+- [The Vercel OSS Bug Bounty program is now available](https://vercel.com/blog/the-vercel-oss-bug-bounty-program-is-now-available) | 2026-02-03 | nextjs
+- [Making agent-friendly pages with content negotiation](https://vercel.com/blog/making-agent-friendly-pages-with-content-negotiation) | 2026-02-03 | nextjs
+- [Introducing the new v0](https://vercel.com/blog/introducing-the-new-v0) | 2026-02-03 | nextjs
+- [Python 3.13 and 3.14 are now available](https://vercel.com/changelog/python-3-13-and-3-14-are-now-available) | 2026-02-02 | nextjs
+
+## January 2026
+
+- [Vercel Sandboxes are now generally available](https://vercel.com/changelog/vercel-sandboxes-ga) | 2026-01-30 | nextjs
+- [cubic joins the Vercel Agents Marketplace](https://vercel.com/changelog/cubic-joins-the-vercel-agents-marketplace) | 2026-01-30 | nextjs
+- [AssistLoop joins the Vercel Agents Marketplace](https://vercel.com/changelog/assistloop-joins-the-vercel-agents-marketplace) | 2026-01-30 | nextjs
+- [Run untrusted code with Vercel Sandbox, now generally available](https://vercel.com/blog/vercel-sandbox-is-now-generally-available) | 2026-01-30 | nextjs
+- [Vercel Agent investigations now available in Slack](https://vercel.com/changelog/vercel-agent-investigations-now-available-in-slack) | 2026-01-28 | nextjs
+- [Tag-based cache invalidation now available for all responses](https://vercel.com/changelog/tag-based-cache-invalidation-now-available-for-all-responses) | 2026-01-28 | nextjs
+- [Skew Protection now supports prebuilt deployments](https://vercel.com/changelog/skew-protection-now-supports-prebuilt-deployments) | 2026-01-28 | nextjs
+- [How Stripe built a game-changing app in a single flight with v0](https://vercel.com/blog/how-stripe-built-a-game-changing-app-in-a-single-flight-with-v0) | 2026-01-28 | nextjs
+- [Introducing the vercel api CLI command](https://vercel.com/changelog/introducing-the-vercel-api-cli-command) | 2026-01-27 | nextjs
+- [How Sensay went from zero to product in six weeks](https://vercel.com/blog/how-sensay-went-from-zero-to-product-in-six-weeks) | 2026-01-27 | nextjs
+- [AGENTS.md outperforms skills in our agent evals](https://vercel.com/blog/agents-md-outperforms-skills-in-our-agent-evals) | 2026-01-27 | nextjs
+- [Trinity Large Preview is on AI Gateway](https://vercel.com/changelog/trinity-large-preview-is-on-ai-gateway) | 2026-01-26 | nextjs
+- [Summary of CVE-2026-23864](https://vercel.com/changelog/summary-of-cve-2026-23864) | 2026-01-26 | nextjs
+- [Summaries of CVE-2025-59471 and CVE-2025-59472](https://vercel.com/changelog/summaries-of-cve-2025-59471-and-cve-2025-59472) | 2026-01-26 | nextjs
+- [Skills v1.1.1: Interactive discovery, open source release, and agent support](https://vercel.com/changelog/skills-v1-1-1-interactive-discovery-open-source-release-and-agent-support) | 2026-01-26 | nextjs
+- [Qwen 3 Max Thinking now available on AI Gateway](https://vercel.com/changelog/qwen-3-max-thinking-now-available-on-ai-gateway) | 2026-01-26 | nextjs
+- [Live model performance metrics accessible via AI Gateway](https://vercel.com/changelog/live-model-performance-metrics-accessible-via-ai-gateway) | 2026-01-26 | nextjs
+- [Kimi K2.5 is live on AI Gateway](https://vercel.com/changelog/kimi-k2-5-on-ai-gateway) | 2026-01-26 | nextjs
+- [Claude Code Max via AI Gateway, available now for Claude Code](https://vercel.com/changelog/claude-code-max-via-ai-gateway-available-now-for-claude-code) | 2026-01-26 | nextjs
+- [Agent skills explained: An FAQ](https://vercel.com/blog/agent-skills-explained-an-faq) | 2026-01-26 | nextjs
+- [Use AI Gateway with Clawdbot](https://vercel.com/changelog/use-ai-gateway-with-clawdbot) | 2026-01-24 | nextjs
+- [Vercel now supports customizing platform error pages](https://vercel.com/changelog/vercel-now-supports-customizing-platform-error-pages) | 2026-01-23 | nextjs
+- [Faster deploys with improved function caching](https://vercel.com/changelog/faster-deploys-with-improved-function-caching) | 2026-01-23 | nextjs
+- [Configure build machine settings across all projects](https://vercel.com/changelog/configure-build-machine-settings-across-all-projects) | 2026-01-23 | nextjs
+- [New dashboard navigation available](https://vercel.com/changelog/new-dashboard-navigation-available) | 2026-01-22 | nextjs
+- [Filesystem snapshots supported on Vercel Sandboxes](https://vercel.com/changelog/filesystem-snapshots-supported-on-vercel-sandboxes) | 2026-01-22 | nextjs
+- [Testing if "bash is all you need"](https://vercel.com/blog/testing-if-bash-is-all-you-need) | 2026-01-22 | nextjs
+- [Use skills in your AI SDK agents via bash-tool](https://vercel.com/changelog/use-skills-in-your-ai-sdk-agents-via-bash-tool) | 2026-01-21 | nextjs
+- [Cron Jobs now visible in Deployment Summary](https://vercel.com/changelog/cron-jobs-now-visible-in-deployment-summary) | 2026-01-21 | nextjs
+- [Apply code suggestions from Vercel Agent with one click](https://vercel.com/changelog/apply-code-suggestions-from-vercel-agent-with-one-click) | 2026-01-21 | nextjs
+- [AI Code Elements](https://vercel.com/changelog/ai-code-elements) | 2026-01-21 | nextjs
+- [Introducing the Montréal, Canada region (yul1)](https://vercel.com/changelog/introducing-the-montreal-canada-vercel-region-yul1) | 2026-01-20 | nextjs
+- [Introducing skills, the open agent skills ecosystem](https://vercel.com/changelog/introducing-skills-the-open-agent-skills-ecosystem) | 2026-01-20 | nextjs
+- [Cron jobs now support 100 per project on every plan](https://vercel.com/changelog/cron-jobs-now-support-100-per-project-on-every-plan) | 2026-01-20 | nextjs
+- [Inside Turbopack: Building Faster by Building Less](https://nextjs.org/blog/turbopack-incremental-computation) | 2026-01-20 | nextjs
+- [Recraft image models now on AI Gateway](https://vercel.com/changelog/recraft-image-models-now-on-ai-gateway) | 2026-01-19 | nextjs
+- [Improved environment variables UI](https://vercel.com/changelog/improved-environment-variables-ui) | 2026-01-16 | nextjs
+- [SSH into running Vercel Sandboxes with the CLI](https://vercel.com/changelog/ssh-into-running-sandboxes-with-the-sandbox-cli) | 2026-01-15 | nextjs
+- [OpenResponses API now supported on Vercel AI Gateway](https://vercel.com/changelog/openresponses-api-now-supported-on-vercel-ai-gateway) | 2026-01-15 | nextjs
+- [On-demand Vercel Agent code reviews](https://vercel.com/changelog/on-demand-vercel-agent-code-reviews) | 2026-01-15 | nextjs
+- [Experimental build mode for Hono and Express projects](https://vercel.com/changelog/experimental-build-mode-hono-express) | 2026-01-15 | nextjs
+- [AWS databases are now live on the Vercel Marketplace and v0](https://vercel.com/blog/aws-databases-are-now-live-on-the-vercel-marketplace-and-v0) | 2026-01-15 | nextjs
+- [Reduced build times for large projects](https://vercel.com/changelog/reduced-build-times-for-large-projects) | 2026-01-14 | nextjs
+- [Node.js runtime now defaults to version 24 for Vercel Sandbox](https://vercel.com/changelog/node-js-runtime-now-defaults-to-version-24-for-vercel-sandbox) | 2026-01-14 | nextjs
+- [GPT 5.2 Codex now available on Vercel AI Gateway](https://vercel.com/changelog/gpt-5-2-codex-now-available-on-vercel-ai-gateway) | 2026-01-14 | nextjs
+- [AI Voice Elements](https://vercel.com/changelog/ai-voice-elements) | 2026-01-14 | nextjs
+- [Access Perplexity Web Search on Vercel AI Gateway with any model](https://vercel.com/changelog/access-perplexity-web-search-on-vercel-ai-gateway-with-any-model) | 2026-01-14 | nextjs
+- [Use Perplexity Web Search with Vercel AI Gateway](https://vercel.com/blog/use-perplexity-web-search-with-vercel-ai-gateway) | 2026-01-14 | nextjs
+- [Introducing: React Best Practices](https://vercel.com/blog/introducing-react-best-practices) | 2026-01-14 | nextjs
+- [Set team-wide defaults for Deployment Protection](https://vercel.com/changelog/set-team-wide-defaults-for-deployment-protection) | 2026-01-13 | nextjs
+- [Protection bypass for automation now supports multiple secrets](https://vercel.com/changelog/protection-bypass-for-automation-multiple-secrets) | 2026-01-13 | nextjs
+- [Project-level deployment suffixes](https://vercel.com/changelog/project-level-deployment-suffixes) | 2026-01-13 | nextjs
+- [Docs pages support Markdown responses](https://vercel.com/changelog/docs-pages-support-markdown-responses) | 2026-01-13 | nextjs
+- [Nick Bogaty joins Vercel as Chief Revenue Officer](https://vercel.com/blog/nick-bogaty-joins-vercel-as-chief-revenue-officer) | 2026-01-13 | nextjs
+- [Web Interface Guidelines now available as an agent command](https://vercel.com/changelog/web-interface-guidelines-now-available-as-an-agent-command) | 2026-01-12 | nextjs
+- [Streamdown v2: Smaller bundle size and new Remend options](https://vercel.com/changelog/streamdown-v2) | 2026-01-12 | nextjs
+- [Build cache storage increased for larger build machines](https://vercel.com/changelog/build-cache-storage-increased-for-larger-build-machines) | 2026-01-12 | nextjs
+- [How Mux shipped durable video workflows with their @mux/ai SDK](https://vercel.com/blog/how-mux-shipped-durable-video-workflows-with-their-mux-ai-sdk) | 2026-01-12 | nextjs
+- [Limit on-demand concurrent builds to one build per branch](https://vercel.com/changelog/limit-on-demand-concurrent-builds-to-one-build-per-branch) | 2026-01-09 | nextjs
+- [How to build agents with filesystems and bash](https://vercel.com/blog/how-to-build-agents-with-filesystems-and-bash) | 2026-01-09 | nextjs
+- [Bookmark domains on Vercel Domains](https://vercel.com/changelog/bookmark-domains-on-vercel-domains) | 2026-01-08 | nextjs
+- [Secure Compute is now self-serve](https://vercel.com/changelog/secure-compute-is-now-self-serve) | 2026-01-07 | nextjs
+- [Introducing bash-tool for filesystem-based context retrieval](https://vercel.com/changelog/introducing-bash-tool-for-filesystem-based-context-retrieval) | 2026-01-07 | nextjs
+- [How we made v0 an effective coding agent](https://vercel.com/blog/how-we-made-v0-an-effective-coding-agent) | 2026-01-07 | nextjs
+- [Vercel Agent code reviews now follow your code guidelines](https://vercel.com/changelog/vercel-agent-code-reviews-now-follow-your-code-guidelines) | 2026-01-06 | nextjs
+- [AI Gateway support for Claude Code](https://vercel.com/changelog/ai-gateway-support-for-claude-code) | 2026-01-05 | nextjs
+
+
+## July 2026
+- [Routing rules now available on AI Gateway](https://vercel.com/changelog/ai-gateway-routing-rules) | 2026-07-02 | nextjs
+- [GPT 5.6 Sol, Luna, and Terra now available on AI Gateway](https://vercel.com/changelog/gpt-5-6-now-available-on-ai-gateway) | 2026-07-09 | nextjs
+- [Muse Spark 1.1 is now available on AI Gateway](https://vercel.com/changelog/muse-spark-1-1-is-now-available-on-ai-gateway) | 2026-07-09 | nextjs
+- [Build logs now redact Sensitive Environment Variable values](https://vercel.com/changelog/build-logs-now-redact-sensitive-environment-variable-values) | 2026-07-09 | nextjs
+- [You can now deploy Lovable apps to Vercel](https://vercel.com/changelog/you-can-now-deploy-lovable-apps-to-vercel) | 2026-07-09 | nextjs
+- [Traces now support Tree and Waterfall views](https://vercel.com/changelog/traces-now-support-tree-and-waterfall-views) | 2026-07-10 | nextjs
+- [Seedream 5.0 Pro is now available on AI Gateway](https://vercel.com/changelog/seedream-5-0-pro-is-now-available-on-ai-gateway) | 2026-07-11 | nextjs
+- [Web Analytics and Speed Insights are now more cost-efficient](https://vercel.com/changelog/web-analytics-and-speed-insights-are-now-more-cost-efficient) | 2026-07-13 | nextjs
+- [Configure which sources can create deployments with Deployment Policies](https://vercel.com/changelog/configure-which-sources-can-create-deployments-with-deployment-policies) | 2026-07-13 | nextjs
+- [Manage Vercel Flags targeting rules from the CLI](https://vercel.com/changelog/manage-vercel-flags-targeting-rules-from-the-cli) | 2026-07-13 | nextjs
+- [Agent Runs now show subagent activity on eve projects](https://vercel.com/changelog/agent-runs-now-show-subagent-activity-on-eve-projects) | 2026-07-13 | nextjs
+- [Open-weight models surge to 29% of volume, price per token flattens](https://vercel.com/blog/ai-gateway-production-index-july-2026) | 2026-07-13 | nextjs
+- [Chat SDK adds X adapter support](https://vercel.com/changelog/chat-sdk-adds-x-adapter-support) | 2026-07-14 | nextjs
+- [Next.js Security Release and Our Next Patch Release](https://nextjs.org/blog/next-security-release-program) | 2026-07-13 | nextjs
+- [Secure internal communication between services (beta)](https://vercel.com/changelog/secure-internal-communication-between-services) | 2026-07-01 | nextjs
+- [Agent Runs now available in the Vercel MCP and CLI](https://vercel.com/changelog/agent-runs-vercel-mcp-cli) | 2026-07-03 | nextjs
+- [Manage Vercel Flags segments with Vercel CLI](https://vercel.com/changelog/manage-vercel-flags-segments-with-vercel-cli) | 2026-07-03 | nextjs
+- [Vercel Sandbox now supports FUSE-based filesystems](https://vercel.com/changelog/vercel-sandbox-now-supports-fuse-based-filesystems) | 2026-07-03 | nextjs
+- [Give your eve agent GitHub tools](https://vercel.com/changelog/github-tools-eve) | 2026-07-07 | nextjs
+- [More granular observability for Vercel Sandbox](https://vercel.com/changelog/more-granular-observability-for-vercel-sandbox) | 2026-07-07 | nextjs
+- [Vercel acquires Better Auth to accelerate open source auth](https://vercel.com/blog/vercel-acquires-better-auth) | 2026-07-07 | nextjs
+- [You can now view the Activity Log at a project-level](https://vercel.com/changelog/you-can-now-view-the-activity-log-at-a-project-level) | 2026-07-07 | nextjs
+- [Chat SDK adds Photon support](https://vercel.com/changelog/chat-sdk-adds-photon-support) | 2026-07-08 | nextjs
+- [Chat SDK adds Dial support](https://vercel.com/changelog/chat-sdk-adds-dial-support) | 2026-07-08 | nextjs
+- [Chat SDK now supports Vercel Connect](https://vercel.com/changelog/chat-sdk-vercel-connect) | 2026-07-08 | nextjs
+- [Use any Chat SDK adapter with eve](https://vercel.com/changelog/eve-chat-sdk-channel) | 2026-07-08 | nextjs
+- [Flags SDK now evaluates flags 10x faster](https://vercel.com/changelog/flags-sdk-now-evaluates-flags-10x-faster) | 2026-07-08 | nextjs
+- [Vercel Microfrontends checks for missing configuration](https://vercel.com/changelog/vercel-microfrontends-checks-for-missing-configuration) | 2026-07-08 | nextjs
+- [Update Project Settings from the Vercel CLI](https://vercel.com/changelog/update-project-settings-from-the-vercel-cli) | 2026-07-08 | nextjs
+- [Grok 4.5 now available on AI Gateway](https://vercel.com/changelog/grok-4-5-now-available-on-ai-gateway) | 2026-07-08 | nextjs
+- [Vercel Agent: An agent you can let near production](https://vercel.com/blog/vercel-agent) | 2026-07-08 | nextjs
+- [Resend joins the Vercel Marketplace](https://vercel.com/changelog/resend-vercel-marketplace) | 2026-07-01 | nextjs
+- [Vercel Security Dashboard is in private beta](https://vercel.com/changelog/vercel-security-dashboard-is-in-private-beta) | 2026-07-01 | nextjs
+- [Dry-run deployments with Vercel CLI](https://vercel.com/changelog/dry-run-deployments-with-vercel-cli) | 2026-07-01 | nextjs
+- [Enforce consistent code for agents and humans with konsistent](https://vercel.com/changelog/enforce-consistent-code-for-agents-and-humans-with-konsistent) | 2026-07-01 | nextjs
+- [Claude Fable 5 access restored on AI Gateway](https://vercel.com/changelog/claude-fable-5-access-restored-on-ai-gateway) | 2026-07-01 | nextjs
+- [Secure internal communication between services](https://vercel.com/changelog/secure-internal-communication-between-services) | 2026-07-01 | nextjs
