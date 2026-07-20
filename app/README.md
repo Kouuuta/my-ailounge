@@ -37,7 +37,14 @@ The UI and API layer for the Developer Dashboard. Built with Next.js App Router 
 | `PATCH /api/repo-radar/[id]` | `api/repo-radar/[id]/route.ts` | Route Handler | Update repo notes or is_active |
 | `DELETE /api/repo-radar/[id]` | `api/repo-radar/[id]/route.ts` | Route Handler | Remove a tracked repo |
 | `POST /api/repo-radar/refresh` | `api/repo-radar/refresh/route.ts` | Route Handler | Refresh all tracked repos from GitHub API |
-| `GET /api/stats` | `api/stats/route.ts` | Route Handler | Aggregate counts + last ingest (consumed by sidebar Quick Stats) |
+| `GET /api/stats` | `api/stats/route.ts` | Route Handler | Aggregate counts + last ingest (consumed by sidebar Quick Stats + StackSummary) |
+| `GET /api/ingest/status` | `api/ingest/status/route.ts` | Route Handler | Per-source ingestion status (consumed by IngestHealth widget) |
+| `POST /api/watchlist/[id]/cve` | `api/watchlist/[id]/cve/route.ts` | Route Handler | Re-check OSV.dev vulnerabilities for a watchlist item |
+| `POST /api/watchlist/[id]/version` | `api/watchlist/[id]/version/route.ts` | Route Handler | Re-fetch latest version from registry |
+| `GET /api/watchlist/export` | `api/watchlist/export/route.ts` | Route Handler | Download watchlist as PDF |
+| `GET /api/packages/search` | `api/packages/search/route.ts` | Route Handler | Search packages by name (curated list + npm registry fallback) |
+| `GET /api/logs/[id]/trend` | `api/logs/[id]/trend/route.ts` | Route Handler | Daily error trend for Nivo bar chart |
+| `GET /api/logs/[id]/export/pdf` | `api/logs/[id]/export/pdf/route.ts` | Route Handler | Download full analysis report as PDF |
 | `GET /api/prompts` | `api/prompts/route.ts` | Route Handler | List prompts (filters: category, source, search) |
 | `POST /api/prompts` | `api/prompts/route.ts` | Route Handler | Create a prompt |
 | `GET /api/prompts/featured` | `api/prompts/featured/route.ts` | Route Handler | Daily rotating featured prompt |
@@ -84,38 +91,61 @@ Tailwind v4 with `@theme inline` custom tokens:
 
 ## Homepage — `page.tsx` (Engineering Briefing)
 
-A **server component** (`force-dynamic`) that queries Supabase PostgreSQL (migrated from SQLite in June 2026) and renders:
+A **server component** (`force-dynamic`) that queries Supabase PostgreSQL and renders 6 layout rows.
 
-### Data Queries (5 feed sections + featured)
+### Data Queries (7 concurrent queries)
 
 | Section | SQL | Source |
 |---------|-----|--------|
-| AI Changes | `category = 'ai' AND source != 'manual' ORDER BY score DESC, published_at DESC LIMIT 5` | `feed_items` |
-| Framework Updates | `category IN ('nextjs', 'django') AND source != 'manual' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
-| Trending Repos | `source = 'github_trending' ORDER BY fetched_at DESC LIMIT 5` | `feed_items` |
-| Security | `(category = 'security' OR tags LIKE '%cve%') AND source != 'manual' ORDER BY published_at DESC LIMIT 5` | `feed_items` |
-| Recommended Tool | `source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC, fetched_at DESC LIMIT 1` | `feed_items` |
+| AI Changes | `category = 'ai' AND source != 'manual' ORDER BY score DESC, published_at DESC LIMIT 3` | `feed_items` |
+| Framework Updates | `category IN ('nextjs', 'django') AND source != 'manual' ORDER BY published_at DESC LIMIT 3` | `feed_items` |
+| Trending Repos | `source = 'github_trending' ORDER BY fetched_at DESC LIMIT 3` | `feed_items` |
+| Security | `(category = 'security' OR tags LIKE '%cve%') AND source != 'manual' ORDER BY published_at DESC LIMIT 3` | `feed_items` |
+| Recommended Tool | `source != 'manual' AND (tags LIKE '%ai%' OR tags LIKE '%tool%') ORDER BY score DESC LIMIT 1` | `feed_items` |
 | Featured (pinned) | Queries `user_feed_states` for current user's pinned IDs, then fetches those items `ORDER BY published_at DESC LIMIT 4` | `feed_items` + `user_feed_states` |
 | Featured Prompt | `is_featured = 1 AND source = 'curated' ORDER BY id LIMIT 1` | `prompts` |
 
-### Stack Summary
+### Component Tree
 
-A `StackSummary` component from `components/briefing/stack-summary.tsx` renders between the stat cards and featured news. Fetches `/api/stats` for `stackTotal`, `stackHigh`, `stackMedium`, `stackLow` and displays a clickable card linking to `/watchlist`.
+```
+HomePage
+├── Greeting (time-based + user email prefix + totalItems)
+├── [Row 2: 6-col grid]
+│   ├── FeaturedNews (pinned items hero — 1 large + 3 small cards)
+│   └── [2-col sidebar]
+│       ├── StatCard × 4 (Total Items, Items Today + weekly trend, This Week, Last Ingest)
+│       └── StackSummary (clickable card linking to /watchlist)
+├── [Row 3: 3-col grid]
+│   ├── FeedSection (AI — teal theme, "View all" → /feed?category=ai)
+│   ├── FeedSection (Trending — purple theme, "View all" → /feed?source=github_trending)
+│   └── FeedSection (Frameworks — blue theme, "View all" → /feed?category=nextjs)
+├── [Row 4: 2-col grid]
+│   ├── FeedSection (Security — rose theme, "View all" → /feed?category=security)
+│   └── FeaturedPrompt (daily rotating prompt, links to /prompts)
+├── [Row 5]
+│   └── FeedBreakdown (sources + categories Nivo bar chart — desktop side-by-side, mobile tabs)
+└── [Row 6: 2-col grid]
+    ├── InternTasks (recommended tool + today/tomorrow + "View all N tasks")
+    └── IngestHealth (per-ingester health with status dots, source icons, +N counts)
+```
+
+### Greeting
+
+A `"use client"` component (`components/briefing/greeting.tsx`) showing:
+- Time-based greeting ("Good morning/afternoon/evening") with the user's email prefix
+- Formatted current date and total item count
+- Uses `useUser()` from `AuthProvider`
 
 ### Stat Cards
 
 4 `StatCard` components from `components/briefing/stat-card.tsx`:
 
-1. **Total Items** — `supabase.from("feed_items").select("*", { count: "exact", head: true })` (with unread count subtitle)
-2. **Last Ingestion** — reads `ingest:last_run:all` from `kv_store`, displays as time ago
-3. **Items Today** — `.gte("fetched_at", todayISO).lt("fetched_at", tomorrowISO)` date range filter
-4. **Items This Week** — `.gte("fetched_at", weekAgoISO)` date comparison
+1. **Total Items** — `supabase.from("feed_items").select("*", { count: "exact", head: true })`, blue theme
+2. **Items Today** — `.gte("fetched_at", todayISO).lte("fetched_at", tomorrowISO)`, teal theme, shows weekly trend arrow
+3. **This Week** — `.gte("fetched_at", weekAgoISO)`, purple theme
+4. **Last Ingest** — reads `ingest:last_run:all` from `kv_store`, amber theme, displays as time ago
 
-> **Migration note:** These were originally raw SQLite queries (`COUNT(*)`, `date('now')`, `datetime('now', '-7 days')`). Now all use Supabase async filters.
-
-### Ingest Button
-
-An `IngestButton` in the page header (from `components/engineering-intelligence/ingest-button.tsx`) triggers `POST /api/ingest` on click, showing a spinner during execution and a `sonner` toast on completion.
+> **Migration note:** These were originally raw SQLite queries. Now all use Supabase async filters.
 
 ### Data Filtering
 
@@ -123,25 +153,17 @@ All homepage queries filter `source != 'manual'` to exclude manually added items
 
 ### Intern Tasks
 
-Day-based rotation from `src/config/intern-tasks.ts` (13 tasks). Shows today's task + tomorrow's preview with difficulty badges. Rendered via `components/briefing/intern-tasks.tsx`.
+Day-based rotation from `src/config/intern-tasks.ts` (13 tasks). Shows recommended tool (if available), today's task + tomorrow's preview with difficulty + category badges. Rendered via `components/briefing/intern-tasks.tsx`.
 
-### Component Tree
+### Changes in commit `b85e090`
 
-```
-HomePage
-├── IngestButton (header — triggers POST /api/ingest)
-├── StatCard × 4 (total items, last ingestion, today, week)
-├── StackSummary (clickable card with stack risk counts)
-├── FeaturedNews (hero section — top pinned item + 3-grid)
-├── FeedSection × 4 (AI, Trending, Frameworks, Security)
-│   ├── accent bar per section (teal/purple/blue/red)
-│   ├── icon bg + count badge per theme
-│   └── ItemCard × 5 per section
-├── FeedBreakdown (sources + categories Nivo bar chart — desktop side-by-side, mobile tabs)
-├── InternTasks (recommended tool + today/tomorrow)
-├── FeaturedPrompt (daily rotating prompt card, links to /prompts)
-├── IngestHealth (per-ingester health with ping dots, elapsed times, source icons, total counts)
-```
+- Design switched from glassmorphism to flat cards
+- All `animate-slide-up` animations and `delay` props removed
+- `StatCard` props simplified: `accentColor`/`gradient`/`secondary` → `theme`/`trend`
+- New `Greeting` component replaces static header
+- `IngestButton` removed from homepage (ingestion now runs via GH Actions cron)
+- Feed sections limited to 3 items (down from 5)
+- Featured items now sourced from `user_feed_states` pinned items
 
 ## Sub-READMEs
 

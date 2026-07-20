@@ -24,6 +24,16 @@ npm run ingest:manual — Manual feed markdown only (standalone, not in orchestr
 npm run ingest:prompts — Prompt Library (curated extras + UI design + community from GitHub)
 npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at docs/supabase-schema.sql
 
+## GitHub Actions Cron (scheduled ingestion)
+
+| Workflow | Schedule | `INGEST_SOURCES` |
+|----------|----------|------------------|
+| `.github/workflows/ingest-rss.yml` | Every 12h | `rss` |
+| `.github/workflows/ingest-hn-trending.yml` | Every 4h | `hn,github_trending` |
+| `.github/workflows/ingest-repo-radar.yml` | Every 6h | `repo_radar` |
+
+Secrets required: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `GH_ACCESS_TOKEN`
+
 ## ⚠️ Critical Constraints
 
 | Trap                            | Truth                                                                                               |
@@ -62,8 +72,12 @@ npm run db:migrate — Seed Supabase PostgreSQL DB (9 tables). Schema DDL at doc
 | Add a stats API endpoint        | app/api/stats/route.ts                        |
 | Modify theme colors / fonts     | app/globals.css @theme block                  |
 | Add a prompt page or feature    | app/prompts/page.tsx (UI), app/api/prompts/ (API) |
-| Add a login/signup page feature | app/login/page.tsx, app/signup/page.tsx |
+| Add a login/signup page feature | app/login/page.tsx, app/signup/page.tsx (domain gate: `@mindyou.com.ph` only) |
 | Add/modify auth middleware       | proxy.ts (PUBLIC_ROUTES + PUBLIC_API_ROUTES constants) |
+| Add/modify Auth Hook (before-signup) | supabase/functions/before-signup/index.ts + supabase/config.toml |
+| Add/modify GitHub Actions cron workflows | .github/workflows/ingest-rss.yml, ingest-hn-trending.yml, ingest-repo-radar.yml |
+| Add/modify VSCode Deno config    | .vscode/settings.json + .vscode/extensions.json |
+| Add/modify post-MVP roadmap      | docs/post-mvp-roadmap.md |
 | Add a prompt component          | components/prompts/<Name>.tsx                 |
 | Add a prompt ingester source    | src/ingesters/prompts/index.ts (add function + call in main) |
 | Add/modify the command palette  | components/command-palette.tsx (plus components/ui/command.tsx) |

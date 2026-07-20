@@ -25,6 +25,7 @@ REST API for tracking GitHub repositories. Integrates with the GitHub REST API (
 
 ### `DELETE /api/repo-radar/[id]` — Remove a repo
 
+- **Role required:** `lead` or `dev` (gated by `requireRole(request, ["lead", "dev"])`)
 - Hard delete from Supabase PostgreSQL
 - **Response**: `{ ok: true }`
 - **Error** `404`: repo not found
@@ -38,7 +39,7 @@ REST API for tracking GitHub repositories. Integrates with the GitHub REST API (
 
 ## GitHub API Integration
 
-- **Rate limiting**: unauthenticated GitHub API — 60 requests/hour. Refreshing many repos may hit limits
+- **Rate limiting**: uses `GH_ACCESS_TOKEN` env var for authenticated requests (5000 requests/hour). Falls back to unauthenticated (60 requests/hour) if no token set
 - **405 method not allowed**: DELETE/PATCH return errors for missing items
 - **User-Agent**: `my-ailounge/1.0`
 

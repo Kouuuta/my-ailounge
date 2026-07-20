@@ -47,7 +47,7 @@ npm run ingest:prompts   # Prompt Library (curated extras + community + UI desig
 
 | Module | Status |
 |--------|--------|
-| `db/` | ✅ Done — 9 tables, migration, seed data |
+| `db/` | ✅ Done — 10 tables + `user_roles`, migration, seed data |
 | `ingesters/manual-feeds/` | ✅ Done — parses markdown → Supabase PostgreSQL (standalone, not in orchestrator) |
 | `ingesters/rss/` | ✅ Done — 20 RSS feeds, regex parser |
 | `ingesters/hacker-news/` | ✅ Done — HN Algolia API, 20 stories |

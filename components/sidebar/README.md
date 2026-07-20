@@ -37,7 +37,7 @@ Replaces the old top `Navbar` component. Renders a fixed 240px sidebar with bran
 
 ### Dependencies
 
-- `useUser()` from `@/components/auth-provider` — provides `{ user, loading, signOut }`
+- `useUser()` from `@/components/auth-provider` — provides `{ user, role, loading, signOut, refreshRole }`
 - `useTheme()` from `@/components/theme-provider` — dark/light toggle
 - Fetches `GET /api/stats` on mount for Quick Stats
 
@@ -65,6 +65,13 @@ Shown when `user` is available and `loading` is false:
 
 - Active item highlighted with `bg-accent border border-border shadow-sm`
 - Inactive items show `text-muted-foreground`, hover to `text-foreground`
+
+### Role Badge
+
+A role badge appears next to the user info with 3 colors:
+- `lead` — amber (`bg-amber-500/10 text-amber-600`)
+- `dev` — emerald (`bg-emerald-500/10 text-emerald-600`)
+- `intern` — blue (`bg-blue-500/10 text-blue-600`)
 
 ### Sub-component: `SidebarStats`
 

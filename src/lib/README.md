@@ -90,7 +90,7 @@ Called from `POST /api/watchlist` after a successful insert.
 
 ### `auth-helpers.ts`
 
-API route middleware for role-based access control. Consumed by 3 DELETE endpoints.
+API route middleware for role-based access control. Consumed by 3 DELETE endpoints (widened from `["lead"]` to `["lead", "dev"]` in commit `68a3966`).
 
 **`requireRole(request, roles)`** — checks the user's role against `user_roles` table via `serviceClient`. Returns `NextResponse` with error if unauthorized, or `null` if allowed:
 
@@ -105,7 +105,7 @@ if (err) return err;
 | 401 | No authenticated user |
 | 403 | User's role not in the allowed list |
 
-**Usage:** `DELETE /api/watchlist/[id]`, `DELETE /api/repo-radar/[id]`, `DELETE /api/logs/[id]` — all require `lead` role.
+**Usage:** `DELETE /api/watchlist/[id]`, `DELETE /api/repo-radar/[id]`, `DELETE /api/logs/[id]` — all require `lead` or `dev` role.
 
 The `user_roles` table is populated automatically by a database trigger on signup (default: `'intern'`). Promotion to `lead` is manual via SQL. See `docs/rls-policies.sql` for the full RLS policy definitions.
 
@@ -152,7 +152,7 @@ Auto-detects the correct package registry ecosystem from a package name. Used by
 | Ruby | `rails`, `devise` | `"RubyGems"` |
 | PHP | `laravel`, `symfony` | `"Packagist"` |
 
-Uses a `KNOWN` lookup table (29 entries). Falls back to `"npm"` for unrecognized names.
+Uses a `KNOWN` lookup table (27 entries). Falls back to `"npm"` for unrecognized names.
 
 ---
 
@@ -190,7 +190,7 @@ Maps display names to registry-safe names. Used by `cve-matcher.ts` and `version
 | `"shadcn/ui"` | `"shadcn-ui"` |
 | `"TanStack Query"` | `"@tanstack/react-query"` |
 
-Contains 23 overrides. Falls back to `key` (lowercased, trimmed input) for unrecognized names.
+Contains 22 overrides. Falls back to `key` (lowercased, trimmed input) for unrecognized names.
 
 ---
 
@@ -258,7 +258,7 @@ GitHub REST API client and repo refresh logic for the Repo Radar dashboard. Uses
 
 **`refreshAll()`** — Iterates all active repos, calls `refreshSingleRepo()` on each, records summary in `kv_store` (via Supabase upsert). Returns `{ updated, errors, results }`.
 
-**Error handling:** All GitHub API calls share `githubFetch()` which throws on 403 (rate limit) and non-ok statuses.
+**Error handling:** All GitHub API calls share `githubFetch()` which uses `GH_ACCESS_TOKEN` env var for authentication (reduces rate limiting). Throws on 403 (rate limit) and non-ok statuses.
 
 Used by:
 - `app/api/repo-radar/` — add and refresh endpoints

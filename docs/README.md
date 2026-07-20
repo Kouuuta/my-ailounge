@@ -17,6 +17,8 @@ This folder contains onboarding guides, architecture references, research materi
 7. **`guides/developer-dashboard.md`** — Read the dashboard spec (modules, audiences, requirements).
 8. **`feeds/feeds-format-guide.md`** — Learn the markdown feed format for manual entries.
 9. **`tooling/agentic-coding-attribute-matrix.md`** — Understand AI coding patterns used in this repo.
+10. **`../.github/workflows/`** — Understand how scheduled ingestion runs via 3 GitHub Actions cron workflows.
+11. **`post-mvp-roadmap.md`** — See the planned feature roadmap (4 tiers, 16 items).
 
 ---
 
@@ -44,9 +46,9 @@ This folder contains onboarding guides, architecture references, research materi
 
 | Doc | Description |
 |-----|-------------|
-| `../src/db/README.md` | Database layer: originally SQLite (`better-sqlite3`, WAL mode, `getDb()` singleton), now **Supabase PostgreSQL** (`@supabase/supabase-js`, `serviceClient.from()`, async queries). 10 tables + `user_feed_states` with full column/index docs, migration history, seed data, env var setup. Includes `service-client.ts` (bypasses RLS), `server-client.ts` (cookie-based auth), `auth-helpers.ts` (role middleware) |
+| `../src/db/README.md` | Database layer: originally SQLite (`better-sqlite3`, WAL mode, `getDb()` singleton), now **Supabase PostgreSQL** (`@supabase/supabase-js`, `serviceClient.from()`, async queries). 10 tables + `user_feed_states` + `user_roles` (RBAC) with full column/index docs, migration history, seed data, env var setup. Includes `service-client.ts` (bypasses RLS), `server-client.ts` (cookie-based auth), `auth-helpers.ts` (role middleware) |
 | `supabase-schema.sql` | PostgreSQL DDL for all 10 tables — run this in Supabase SQL editor before seeding. Source of truth for table definitions. `feed_items` now includes `ai_relevance_score`, `ai_relevance_label`, `ai_relevance_reason`, `ai_tldr` columns; `is_pinned`/`is_read` moved to `user_feed_states` table |
-| `rls-policies.sql` | Row Level Security migration: `user_roles` table (`intern`/`lead`), auto-assign trigger on signup, `is_lead()` helper function, RLS policies for all 10 tables + `user_feed_states`. Run after `supabase-schema.sql` |
+| `rls-policies.sql` | Row Level Security migration: `user_roles` table (`intern`/`lead`/`dev`), auto-assign trigger on signup, `is_lead()` + `is_lead_or_dev()` helpers, Auth Hook domain gate (`before_user_created`), RLS policies for all 10 tables + `user_feed_states`. Run after `supabase-schema.sql` |
 
 ---
 
@@ -54,7 +56,7 @@ This folder contains onboarding guides, architecture references, research materi
 
 | Doc | Description |
 |-----|-------------|
-| `../src/ingesters/README.md` | Full ingestion pipeline: architecture diagram, 4 ingesters (manual-feeds, rss, hacker-news, github-trending) with format/source/commands, RSS feed URL list (12 feeds, 5 categories), HN Algolia API details, orchestrator + kv_store key schema, how to add a new RSS feed |
+| `../src/ingesters/README.md` | Full ingestion pipeline: architecture diagram (3 GH Actions cron + orchestrator), 4 ingesters (manual-feeds, rss, hacker-news, github-trending) with format/source/commands, RSS feed URL list, HN Algolia API details, orchestrator + `INGEST_SOURCES` env var + `kv_store` key schema, how to add a new RSS feed |
 | `../src/lib/README.md` | Shared utilities: `IngestEntry` interface, `upsertEntry()` dedup logic with relevance scoring + engagement boost, `appendToFeed()` markdown writer with 500-line trim, `scoreRelevance()` watchlist-based relevance scorer, `recalcEngagementForItem()` pin/read-based score boost, `retroactivelyScore()` re-scores existing items when watchlist grows, `checkVulnerabilities()` OSV.dev CVE matcher, `detectEcosystem()` registry auto-detection, `fetchLatestVersion()` 7-registry version fetcher, `toRegistryName()` display-to-registry-name mapping, `cn()` CSS utility |
 | `feeds/feeds-format-guide.md` | Standard markdown feed entry format and manual editing rules |
 
@@ -64,7 +66,7 @@ This folder contains onboarding guides, architecture references, research materi
 
 | Doc | Description |
 |-----|-------------|
-| `../src/lib/README.md` (analytics section) | 8 analytics functions (`getTotalItems`, `getItemsToday`, `getItemsThisWeek`, `getItemsBySource`, `getItemsByCategory`, `getIngestionStatus`, `getLastGlobalIngestion`, `getGlobalIngestionStatus`) with query patterns and return types. `getItemsBySource`/`getItemsByCategory` now use Supabase RPC functions (`get_source_counts`, `get_category_counts`) |
+| `../src/lib/README.md` (analytics section) | 8 analytics functions (`getTotalItems`, `getItemsToday`, `getItemsThisWeek`, `getItemsBySource`, `getItemsByCategory`, `getIngestionStatus`, `getLastGlobalIngestion`, `getGlobalIngestionStatus`) with query patterns and return types. `getItemsToday`/`getItemsThisWeek` filter by `fetched_at` date range; `getLastGlobalIngestion` reads `ingest:last_run:all` from `kv_store` |
 
 ---
 
@@ -73,7 +75,7 @@ This folder contains onboarding guides, architecture references, research materi
 | Page | Description |
 |------|-------------|
 | `/login` (`app/login/`) | Sign in — email/password form + GitHub OAuth, redirect support, glassmorphism card |
-| `/signup` (`app/signup/`) | Create account — email/password, min 6 char validation, redirects to /feed |
+| `/signup` (`app/signup/`) | Create account — email/password, domain gate (`@mindyou.com.ph` only), Auth Hook before-signup, client-side validation, redirects to /feed |
 | `/auth/callback` (`app/auth/`) | OAuth callback — exchanges code for session via @supabase/ssr |
 
 Auth is powered by Supabase Auth. Pages are exempt from middleware (see `proxy.ts` `PUBLIC_ROUTES`).
@@ -90,7 +92,8 @@ Auth is powered by Supabase Auth. Pages are exempt from middleware (see `proxy.t
 
 | Doc | Description |
 |-----|-------------|
-| `guides/developer-dashboard.md` | Dashboard requirements specification: 3 audiences (lead devs, interns, team), 8 modules with feature descriptions, non-binding stack suggestions. Module 8 (Intern Task Board) now marked as MVP with status |
+| `guides/developer-dashboard.md` | Dashboard requirements specification: 3 audiences (lead devs, interns, team), 8 modules with feature descriptions, non-binding stack suggestions |
+| `post-mvp-roadmap.md` | Post-MVP feature roadmap: 4 tiers (Automation & Intelligence, Dashboard Enhancements, Quality & Infrastructure, Polish) with 16 feature items |
 
 ---
 
@@ -99,10 +102,11 @@ Auth is powered by Supabase Auth. Pages are exempt from middleware (see `proxy.t
 | Doc | Description |
 |-----|-------------|
 | `../app/watchlist/README.md` | Full page: sortable table, expanded panel, package search combobox, inline editing, version health, CVE checking |
-| `../app/api/watchlist/README.md` | CRUD API: 5 routes (list+create, update+delete, CVE refresh, version fetch) |
+| `../app/api/watchlist/README.md` | CRUD API: 6 routes (list+create, update+delete, CVE refresh, version fetch, PDF export) |
 | `../src/lib/README.md` (cve-matcher, ecosystem-detector, version-fetcher, package-name-map sections) | Vulnerability checker, ecosystem detection, registry version fetchers, name mapping |
-| `../src/config/README.md` (package-suggestions section) | ~140 curated package names for the search combobox |
+| `../src/config/README.md` (package-suggestions section) | ~181 curated package names for the search combobox |
 | `../src/db/README.md` (watchlist_items table) | `watchlist_items` table schema: columns, `ecosystem` column, risk levels, seed data (14 items) |
+| `rls-policies.sql` | RBAC setup: `user_roles` table, auto-assign trigger, `is_lead()` and `is_lead_or_dev()` helpers, RLS policies for all 10 tables + `user_feed_states` |
 
 ---
 
@@ -155,6 +159,10 @@ Auth is powered by Supabase Auth. Pages are exempt from middleware (see `proxy.t
 
 | Doc | Description |
 |-----|-------------|
+| `../.github/workflows/` | 3 GitHub Actions cron workflows: `ingest-rss.yml` (12h), `ingest-hn-trending.yml` (4h), `ingest-repo-radar.yml` (6h) |
+| `../supabase/functions/before-signup/` | Deno Edge Function for Auth Hook: rejects signups from non-`@mindyou.com.ph` emails before user creation |
+| `../.vscode/extensions.json` | Recommends `denoland.vscode-deno` extension for Deno support in `supabase/functions/` |
+| `../.vscode/settings.json` | Deno config: enables paths for `supabase/functions`, sets Deno as TS formatter |
 | `internal/documentation-audit.md` | Original documentation audit: full inventory of features, pages, API routes, database tables, analytics, widgets, ingestion system, watchlist system, missing documentation |
 | `internal/documentation-audit-v2.md` | Re-evaluated audit after creation of `src/*/README.md` files: updated statuses, covered gaps, duplicate recommendations removed |
 | `internal/documentation-roadmap.md` | Prioritized documentation production plan: 12 proposed docs grouped by priority, with dependencies and implementation phases |

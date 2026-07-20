@@ -6,12 +6,12 @@ Reusable React components used by the Developer Dashboard pages.
 
 | Directory / File | Contents |
 |------------------|----------|
-| `ui/` | shadcn/ui-style primitives — 10 components (Button, Card, Badge, Input, Select, Tabs, Toggle, Separator, Table, Skeleton) |
-| `engineering-intelligence/` | Dashboard-specific widgets — 3 components (BreakdownCard, IngestButton, StatCard). `AutomationStatus` was replaced by `IngestHealth` in `briefing/` |
-| `briefing/` | Engineering Briefing homepage components — 8 components (StatCard, FeedSection, FeaturedNews, FeedBreakdown, InternTasks, IngestHealth, StackSummary, FeaturedPrompt) |
+| `ui/` | shadcn/ui-style primitives — 13 components (Button, Card, Badge, Input, Select, Tabs, Toggle, Separator, Table, Skeleton, DropdownMenu, Command, Dialog) |
+| `engineering-intelligence/` | Dashboard-specific widgets — 3 components (BreakdownCard, IngestButton, StatCard). `AutomationStatus` replaced by `IngestHealth` in `briefing/` |
+| `briefing/` | Engineering Briefing homepage components — 9 components (Greeting, StatCard, FeedSection, FeedItemCard, FeaturedNews, FeedBreakdown, InternTasks, IngestHealth, StackSummary, FeaturedPrompt) |
 | `sidebar/` | Fixed left sidebar — user info, nav, theme toggle, logout, Quick Stats |
-| `prompts/` | Prompt Library — 2 components (PromptCard, CategoryFilter + SourceFilter) |
-| `logs/` | Log Analysis Dashboard — 4 components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown) |
+| `prompts/` | Prompt Library — 3 components (PromptCard, CategoryFilter, SourceFilter) |
+| `logs/` | Log Analysis Dashboard — 9 components (CsvUpload, OverviewCards, ErrorTrendChart, SourceBreakdown, SeverityLegend, PatternDrillDown, DateFilter, PatternSearch, SeverityFilter) |
 | `command-palette/` | Command Palette — Cmd+K palette, searches pages/feed/prompts/watchlist/radar |
 | `intern-tasks/` | Intern Safe Task Board — 1 component (InternTaskCard) with expandable detail sections |
 | `theme-provider.tsx` | Dark/light mode React Context (used by Sidebar theme toggle) |

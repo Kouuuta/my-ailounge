@@ -6,7 +6,7 @@ Seed data and configuration for the Developer Dashboard features. Currently cont
 
 ### `package-suggestions.ts`
 
-Curated list of ~140 packages for the Watchlist add-item search combobox. Provides autocomplete suggestions across 10 ecosystems.
+Curated list of ~181 packages for the Watchlist add-item search combobox. Provides autocomplete suggestions across 10 ecosystems.
 
 **Interface:**
 
@@ -21,7 +21,7 @@ interface PackageSuggestion {
 
 | Ecosystem | Count | Examples |
 |-----------|-------|----------|
-| npm | 70 | React, Next.js, Vue, Svelte, Tailwind CSS, Prisma, Vite, Supabase, Clerk |
+| npm | 69 | React, Next.js, Vue, Svelte, Tailwind CSS, Prisma, Vite, Supabase, Clerk |
 | PyPI | 25 | Django, Flask, FastAPI, PyTorch, Pandas, SQLAlchemy |
 | crates.io | 11 | Serde, Tokio, Axum, Actix, Rocket |
 | Go | 10 | Cobra, Viper, Gin, Fiber, GORM |
@@ -29,7 +29,7 @@ interface PackageSuggestion {
 | NuGet | 7 | ASP.NET Core, Entity Framework, Serilog |
 | RubyGems | 6 | Rails, Devise, RSpec, Sidekiq |
 | Packagist | 5 | Laravel, Symfony, Composer, PHPUnit |
-| (none/infra) | 38 | PostgreSQL, Docker, Kubernetes, AWS, Redis, Nginx |
+| (none/infra) | 39 | PostgreSQL, Docker, Kubernetes, AWS, Redis, Nginx |
 
 
 **How it's consumed:**

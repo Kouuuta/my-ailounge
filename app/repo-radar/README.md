@@ -21,7 +21,7 @@ Each tracked repo displays as a card with:
 - **Issues**: open issue count with spike badge when >1.5x previous count
 - **Last activity**: time-ago timestamp
 - **Notes**: inline-editable notes field (click to edit, Enter/blur to save, Escape to cancel)
-- **Delete**: hover-reveal trash button with confirmation dialog
+- **Delete**: hover-reveal trash button with confirmation dialog (available for `lead` and `dev` roles only)
 
 ### Add Repository
 

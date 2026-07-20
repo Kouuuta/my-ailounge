@@ -175,3 +175,5 @@ Generate and download a PDF report of all watchlist items. Uses `pdf-lib` for PD
 | 404 | `{ "error": "Watchlist is empty" }` |
 
 **Error handling:** Empty watchlist returns 404.
+
+**Unicode sanitization (commit `7dda602`):** All text passed to `pdf.drawText()` is run through `sanitize()` which strips non-Windows-1252 characters to prevent PDF generation failures. Common replacements: `→` → `->`, `—` → `-`, `…` → `...`, smart quotes → straight quotes. Non-ANSI characters are replaced with `?`.

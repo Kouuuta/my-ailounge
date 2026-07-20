@@ -88,7 +88,7 @@ import { serviceClient, getDb } from "@/src/db/client";
 
 ### `schema.ts`
 
-Previously defined all 9 table schemas + indexes + seed data (~421 lines). Now drastically simplified (~85 lines):
+Previously defined all 10 table schemas + indexes + seed data (~421 lines). Now drastically simplified (~85 lines):
 
 - **Table DDL** moved to `docs/supabase-schema.sql` — run manually in Supabase SQL editor once
 - `migrate()` only handles **seed data** (initial rows for `watchlist_items`, `repo_radar_items`, `prompts`)
@@ -96,7 +96,7 @@ Previously defined all 9 table schemas + indexes + seed data (~421 lines). Now d
 
 #### Tables (historical reference)
 
-Same 10 tables, now served by PostgreSQL via Supabase. Column types below are the original SQLite types; PostgreSQL equivalents are in `docs/supabase-schema.sql`.
+Same 10 tables + `user_roles` (RBAC), now served by PostgreSQL via Supabase. Column types below are the original SQLite types; PostgreSQL equivalents are in `docs/supabase-schema.sql`.
 
 **`feed_items`** — Core ingestion store for the Developer Intelligence Feed.
 

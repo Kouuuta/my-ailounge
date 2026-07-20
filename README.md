@@ -152,13 +152,15 @@ Clone the repository and install dependencies:
 npm install
 ```
 
-Create the local database directory:
+Set up Supabase PostgreSQL (requires `.env.local` with `NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`):
 
 ```bash
-mkdir data
+# Run docs/supabase-schema.sql in Supabase SQL editor first, then:
+npm run db:migrate
 ```
 
-Set up the database:
+Or set up the database:
 
 ```bash
 npm run db:migrate
