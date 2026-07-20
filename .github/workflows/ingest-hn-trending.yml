@@ -1,4 +1,4 @@
-name: Scheduled Ingestion
+name: HN + GitHub Trending
 
 on:
   schedule:
@@ -8,6 +8,7 @@ on:
 env:
   NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  INGEST_SOURCES: hn,github_trending
 
 jobs:
   ingest:

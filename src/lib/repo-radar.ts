@@ -57,9 +57,13 @@ const GITHUB_API = "https://api.github.com";
 const userAgent = "my-ailounge/1.0";
 
 async function githubFetch(path: string): Promise<Response> {
-  const res = await fetch(`${GITHUB_API}${path}`, {
-    headers: { "User-Agent": userAgent, Accept: "application/vnd.github.v3+json" },
-  });
+  const headers: Record<string, string> = {
+    "User-Agent": userAgent,
+    Accept: "application/vnd.github.v3+json",
+  };
+  const token = process.env.GH_ACCESS_TOKEN;
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const res = await fetch(`${GITHUB_API}${path}`, { headers });
   if (res.status === 403) {
     const rateLimit = res.headers.get("X-RateLimit-Remaining");
     const reset = res.headers.get("X-RateLimit-Reset");

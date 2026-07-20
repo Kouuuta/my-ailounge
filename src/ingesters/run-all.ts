@@ -58,15 +58,30 @@ export async function runAll(opts?: { closeDb?: boolean }): Promise<IngestResult
 
   migrate();
 
+  const sourcesEnv = process.env.INGEST_SOURCES;
+  const activeSources = sourcesEnv ? new Set(sourcesEnv.split(",").map(s => s.trim())) : null;
+
+  const ALL_SOURCES: [string, string, () => Promise<void>][] = [
+    ["hn", "hn", ingestHackerNews],
+    ["github_trending", "github_trending", ingestGithubTrending],
+    ["rss", "rss", ingestRss],
+    ["repo_radar", "repo_radar", ingestRepoRadar],
+  ];
+
   const results: IngestResults["results"] = {};
-  results.hn = await runTracked("hn", "hn", ingestHackerNews);
-  results.github_trending = await runTracked("github_trending", "github_trending", ingestGithubTrending);
-  results.rss = await runTracked("rss", "rss", ingestRss);
-  results.repo_radar = await runTracked("repo_radar", "repo_radar", ingestRepoRadar);
+  for (const [label, source, fn] of ALL_SOURCES) {
+    if (activeSources && !activeSources.has(label)) {
+      console.log(`  ⏭  ${label} skipped (not in INGEST_SOURCES)`);
+      continue;
+    }
+    results[label] = await runTracked(label, source, fn);
+  }
 
   const allOk = Object.values(results).every((r) => r.ok);
 
-  const engagementCount = await recalcAllEngagementScores();
+  const engagementCount = sourcesEnv
+    ? 0
+    : await recalcAllEngagementScores();
   console.log(`  📊 Engagement scores recalculated for ${engagementCount} items`);
 
   await setKv("ingest:last_run:all", new Date().toISOString());
@@ -80,6 +95,10 @@ export async function runAll(opts?: { closeDb?: boolean }): Promise<IngestResult
   console.log("  " + "─".repeat(55));
   for (const src of ["hn", "github_trending", "rss", "repo_radar"]) {
     const r = results[src];
+    if (!r) {
+      console.log(`  ⏭  ${src.padEnd(16)} skipped`);
+      continue;
+    }
     const count = r.ok ? String(r.inserted) : "ERR";
     const time = new Date().toLocaleTimeString();
     const icon = r.ok ? "✅" : "❌";
