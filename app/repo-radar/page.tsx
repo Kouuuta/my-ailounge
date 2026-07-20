@@ -599,7 +599,7 @@ function RepoCard({
             </button>
           )}
         </div>
-        {role === "lead" && (
+        {role !== "intern" && (
           <button
             onClick={onDelete}
             className="ml-2 shrink-0 rounded-md p-1.5 text-muted-foreground md:opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive focus:opacity-100 md:group-hover:opacity-100"

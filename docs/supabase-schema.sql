@@ -26,11 +26,15 @@ CREATE INDEX IF NOT EXISTS idx_feed_source ON feed_items(source);
 CREATE INDEX IF NOT EXISTS idx_feed_published ON feed_items(published_at);
 CREATE INDEX IF NOT EXISTS idx_feed_relevance_score ON feed_items(ai_relevance_score DESC);
 
+ALTER TABLE feed_items ENABLE ROW LEVEL SECURITY;
+
 -- 2. kv_store
 CREATE TABLE IF NOT EXISTS kv_store (
   key   TEXT PRIMARY KEY,
   value TEXT
 );
+
+ALTER TABLE kv_store ENABLE ROW LEVEL SECURITY;
 
 -- 3. watchlist_items
 CREATE TABLE IF NOT EXISTS watchlist_items (
@@ -48,6 +52,8 @@ CREATE TABLE IF NOT EXISTS watchlist_items (
   updated_at        TIMESTAMPTZ DEFAULT NOW()
 );
 
+ALTER TABLE watchlist_items ENABLE ROW LEVEL SECURITY;
+
 -- 4. log_analyses
 CREATE TABLE IF NOT EXISTS log_analyses (
   id                BIGSERIAL PRIMARY KEY,
@@ -62,6 +68,8 @@ CREATE TABLE IF NOT EXISTS log_analyses (
   methods           TEXT,
   executive_summary TEXT
 );
+
+ALTER TABLE log_analyses ENABLE ROW LEVEL SECURITY;
 
 -- 5. log_errors
 CREATE TABLE IF NOT EXISTS log_errors (
@@ -81,6 +89,8 @@ CREATE TABLE IF NOT EXISTS log_errors (
 
 CREATE INDEX IF NOT EXISTS idx_log_errors_analysis ON log_errors(analysis_id);
 
+ALTER TABLE log_errors ENABLE ROW LEVEL SECURITY;
+
 -- 6. log_patterns
 CREATE TABLE IF NOT EXISTS log_patterns (
   id              BIGSERIAL PRIMARY KEY,
@@ -96,6 +106,8 @@ CREATE TABLE IF NOT EXISTS log_patterns (
 
 CREATE INDEX IF NOT EXISTS idx_log_patterns_analysis ON log_patterns(analysis_id);
 
+ALTER TABLE log_patterns ENABLE ROW LEVEL SECURITY;
+
 -- 7. log_anomalies
 CREATE TABLE IF NOT EXISTS log_anomalies (
   id              BIGSERIAL PRIMARY KEY,
@@ -110,6 +122,8 @@ CREATE TABLE IF NOT EXISTS log_anomalies (
 );
 
 CREATE INDEX IF NOT EXISTS idx_log_anomalies_analysis ON log_analyses(analysis_id);
+
+ALTER TABLE log_anomalies ENABLE ROW LEVEL SECURITY;
 
 -- 8. prompts
 CREATE TABLE IF NOT EXISTS prompts (
@@ -132,6 +146,8 @@ CREATE TABLE IF NOT EXISTS prompts (
 
 CREATE INDEX IF NOT EXISTS idx_prompts_category ON prompts(category);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_prompts_source_extid ON prompts(source, external_id) WHERE external_id IS NOT NULL;
+
+ALTER TABLE prompts ENABLE ROW LEVEL SECURITY;
 
 -- 9. repo_radar_items
 CREATE TABLE IF NOT EXISTS repo_radar_items (
@@ -163,6 +179,8 @@ CREATE TABLE IF NOT EXISTS repo_radar_items (
   created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE repo_radar_items ENABLE ROW LEVEL SECURITY;
 
 -- 10. user_feed_states — per-user read/pin state (replaced global is_pinned/is_read on feed_items)
 CREATE TABLE IF NOT EXISTS user_feed_states (

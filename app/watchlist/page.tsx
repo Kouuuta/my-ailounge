@@ -622,7 +622,7 @@ export default function WatchlistPage() {
                           </TableCell>
 
                           {/* Delete */}
-                          {role === "lead" && (
+                          {role !== "intern" && (
                             <TableCell>
                               <Button
                                 variant="ghost"

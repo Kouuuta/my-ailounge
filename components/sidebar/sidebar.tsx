@@ -202,7 +202,9 @@ export function Sidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
                 "text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0",
                 role === "lead"
                   ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                  : "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+                  : role === "dev"
+                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                    : "bg-blue-500/10 text-blue-600 dark:text-blue-400",
               )}>
                 {role}
               </span>

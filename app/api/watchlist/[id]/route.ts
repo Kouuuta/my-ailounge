@@ -46,7 +46,7 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const err = await requireRole(req, ["lead"]);
+  const err = await requireRole(req, ["lead", "dev"]);
   if (err) return err;
 
   const { id } = await params;

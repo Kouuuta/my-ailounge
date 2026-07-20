@@ -20,20 +20,31 @@ export default function SignupPage() {
     setError("");
     setLoading(true);
 
-    const supabase = getBrowserSupabase();
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: `${location.origin}/auth/callback` },
-    });
-
-    if (error) {
-      setError(error.message);
+    if (!email.endsWith("@mindyou.com.ph")) {
+      setError("Only @mindyou.com.ph emails allowed to sign up");
       setLoading(false);
       return;
     }
 
-    router.push("/feed");
+    const supabase = getBrowserSupabase();
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: `${location.origin}/auth/callback` },
+      });
+
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+        return;
+      }
+
+      router.push("/feed");
+    } catch {
+      setError("Signup failed. Check your connection and try again.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -49,7 +60,7 @@ export default function SignupPage() {
               Start your own dashboard
             </p>
             <p className="text-xs text-muted-foreground/60 mt-2">
-              Signup may be restricted to specific email domains configured in Supabase Auth.
+              Only <span className="font-medium text-foreground/80">@mindyou.com.ph</span> emails allowed
             </p>
           </div>
 
