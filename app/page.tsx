@@ -9,7 +9,6 @@ import {
 import { INTERN_TASKS } from "@/src/config/intern-tasks";
 import { BookOpen, Rss } from "lucide-react";
 import Link from "next/link";
-import { IngestButton } from "@/components/engineering-intelligence/ingest-button";
 import { Greeting } from "@/components/briefing/greeting";
 import { StatCard } from "@/components/briefing/stat-card";
 import { FeedSection } from "@/components/briefing/feed-section";
@@ -140,7 +139,6 @@ export default async function HomePage() {
             <Greeting totalItems={totalItems} />
           </div>
           <div className="flex items-center gap-2 shrink-0">
-            <IngestButton />
             <Link
               href="/feed"
               className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-foreground"
