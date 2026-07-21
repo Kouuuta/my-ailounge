@@ -2,7 +2,7 @@ name: RSS
 
 on:
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 */16 * * *"
   workflow_dispatch:
 
 env:
