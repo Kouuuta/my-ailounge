@@ -2,7 +2,7 @@ name: HN + GitHub Trending
 
 on:
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: "0 */23 * * *"
   workflow_dispatch:
 
 env:
