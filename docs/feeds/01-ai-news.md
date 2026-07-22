@@ -423,6 +423,21 @@
 
 ## July 2026
 - [The latest AI news we announced in June 2026](https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-june-2026/) | 2026-07-01 | ai
+- [Celebrating 25 years of visual search innovation](https://blog.google/products-and-platforms/products/search/google-images-25th-anniversary/) | 2026-07-14 | ai
+- [Create, edit and star in videos with two Google Vids updates](https://blog.google/products-and-platforms/products/workspace/gemini-omni-personal-avatars/) | 2026-07-16 | ai
+- [Connect more of your apps to Search](https://blog.google/products-and-platforms/products/search/connected-apps/) | 2026-07-16 | ai
+- [Introducing Claude for Teachers](https://www.anthropic.com/news/claude-for-teachers) | 2026-07-14 | ai
+- [Anthropic commits $10 million to Canadian AI research](https://www.anthropic.com/news/canadian-ai-research) | 2026-07-14 | ai
+- [Apply for Anthropic’s AI for Science rare disease research grants](https://www.anthropic.com/news/rare-disease-research-grants) | 2026-07-20 | ai
+- [How data science teams use ChatGPT Work](https://openai.com/academy/codex-for-work/how-data-science-teams-use-codex) | 2026-07-14 | ai
+- [How sales teams use ChatGPT Work](https://openai.com/academy/codex-for-work/how-sales-teams-use-codex) | 2026-07-14 | ai
+- [How to manage AI investments in the agentic era](https://openai.com/index/managing-ai-investments-in-agentic-era) | 2026-07-14 | ai
+- [GPT-Red: Unlocking Self-Improvement for Robustness](https://openai.com/index/unlocking-self-improvement-gpt-red) | 2026-07-15 | ai
+- [The US is advancing AI safety through state and federal action](https://openai.com/index/advancing-ai-safety-through-state-and-federal-action) | 2026-07-15 | ai
+- [How Cars24 scales conversations and builds faster with OpenAI](https://openai.com/index/cars24) | 2026-07-16 | ai
+- [Why teens deserve access to safe AI](https://openai.com/index/why-teens-deserve-access-safe-ai) | 2026-07-16 | ai
+- [A scorecard for the AI age](https://openai.com/index/a-scorecard-for-the-ai-age) | 2026-07-17 | ai
+- [Safety and alignment in an era of long-horizon models](https://openai.com/index/safety-alignment-long-horizon-models) | 2026-07-20 | ai
 - [Inviting hard questions](https://www.anthropic.com/news/hard-questions) | 2026-07-09 | ai
 - [UST is bringing Claude to physical AI](https://www.anthropic.com/news/ust-claude) | 2026-07-09 | ai
 - [Ben Bernanke appointed to Anthropic’s Long-Term Benefit Trust](https://www.anthropic.com/news/ben-bernanke) | 2026-07-09 | ai

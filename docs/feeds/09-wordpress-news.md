@@ -54,6 +54,10 @@
 
 ## July 2026
 - [Auto-apply coupon: how 209 lines of code replaced ~13,000](https://developer.woocommerce.com/2026/07/01/auto-apply-coupons/) | 2026-07-01 | wordpress
+- [Dev Advisory: Stripe for WooCommerce payment validation issue patched](https://developer.woocommerce.com/2026/07/14/advisory-stripe-for-woo-patch/) | 2026-07-14 | wordpress
+- [&#8216;Failed&#8217; status orders will now restore reduced stock in WooCommerce 11.0](https://developer.woocommerce.com/2026/07/17/failed-order-stock-update/) | 2026-07-17 | wordpress
+- [WordPress 7.1 Beta 1](https://wordpress.org/news/2026/07/wordpress-7-1-beta-1/) | 2026-07-15 | wordpress
+- [WordPress 7.0.2 Release](https://wordpress.org/news/2026/07/wordpress-7-0-2-release/) | 2026-07-17 | wordpress
 - [Product shipping class taxonomy will be private in WooCommerce 11.0](https://developer.woocommerce.com/2026/07/09/product-shipping-class-taxonomy-private/) | 2026-07-09 | wordpress
 - [A more reliable get_queried_object() in WooCommerce 11.0](https://developer.woocommerce.com/2026/07/13/updating-get_queried_object-in-shop/) | 2026-07-13 | wordpress
 - [WooCommerce 11.0: What&#8217;s coming for developers](https://developer.woocommerce.com/2026/07/13/woocommerce-11-0-pre-release/) | 2026-07-13 | wordpress

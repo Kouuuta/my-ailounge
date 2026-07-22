@@ -340,6 +340,26 @@
 
 ## July 2026
 - [Happy Voluntary Lobotomy Day, Microsoft](https://www.uplevel.pro/p/happy-voluntary-lobotomy-day-microsoft) | 2026-07-02 | hn, discussion
+- [Can Seedance 2.0 Draw in 2D? The Anime Animation Playbook](https://www.atlascloud.ai/blog/guides/seedance-2.0-animation-2d) | 2026-07-20 | hn, discussion
+- [Mark Walter's Insurers, Guggenheim Probed by Prosecutors](https://www.bloomberg.com/news/articles/2026-07-20/billionaire-mark-walter-s-firms-probed-by-federal-prosecutors) | 2026-07-20 | hn, discussion
+- [Smart Business solutions helping businesses succeed (blog post)](https://www.portotheme.com/the-smart-solutions-helping-businesses-succeed-in-2026/) | 2026-07-20 | hn, discussion
+- [Why do we love music? (2018)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6353111/) | 2026-07-20 | hn, discussion
+- [Provena: Open-Source Library for AI Agent Context Governance](https://github.com/rajfirke/provena) | 2026-07-20 | hn, discussion
+- [A Star Orbiting Our Galaxy's Supermassive Black Hole Tests Limits of Relativity](https://www.universetoday.com/articles/a-star-orbiting-our-galaxys-supermassive-black-hole-tests-the-limits-of-relativity) | 2026-07-20 | hn, discussion
+- [FIFA World Cup-A Technological Revolution and New Standard for Live Broadcasting](https://vimegs.com/fifa-world-cup-2026-a-technological-revolution-and-new-standard-for-live-sports-broadcasting/) | 2026-07-20 | hn, discussion
+- [ascdraw: Editor for ASCII/UTF-8 diagrams (in 144FPS)](https://github.com/exlee/ascdraw) | 2026-07-20 | hn, discussion
+- [A Linux Kernel 0-day Journey – From a limited UAF to Physical Memory R/W](https://1day.dev/posts/linux-kernel-0day.html) | 2026-07-20 | hn, discussion
+- [The Dark Energy Camera's New Image Is Reminiscent of van Gogh](https://www.universetoday.com/articles/the-dark-energy-cameras-new-image-is-reminiscent-of-van-gogh) | 2026-07-20 | hn, discussion
+- [Drinking with Datalog](https://ianthehenry.com/posts/drinking-with-datalog/) | 2026-07-20 | hn, discussion
+- [Free FIRE calculators that run entirely in the browser](https://firecalculatorhq.com/) | 2026-07-20 | hn, discussion
+- [The creepiest 'sales demo' of all time](https://www.appenmedia.com/opinion/letter-to-the-editor-the-creepiest-sales-demo-of-all-time/article_a8f0cc6c-29d3-41f7-8668-8a855f760efb.html) | 2026-07-20 | hn, discussion
+- [FreeCAD at Siemens [video]](https://www.youtube.com/watch?v=r-De57aHcIc) | 2026-07-20 | hn, discussion
+- [A New Storytelling Tool](https://ab.neudice.eu/) | 2026-07-20 | hn, discussion
+- [South Korean SMR-powered container ship design certified](https://www.world-nuclear-news.org/articles/korean-smr-powered-container-ship-design-certified) | 2026-07-20 | hn, discussion
+- [If you're running LLM bots on HN, can you at least report results?](https://news.ycombinator.com/item?id=48984609) | 2026-07-20 | hn, discussion
+- [Recallfox – remember everything you learn](https://recallfox.com) | 2026-07-20 | hn, discussion
+- [Sixty: A 60-second daily puzzle circuit](https://sixty.redvectorgames.com/) | 2026-07-20 | hn, discussion
+- [The World Hum Map and Database Project](https://www.thehum.info/) | 2026-07-20 | hn, discussion
 - [Human Fear in Emacs](https://en.andros.dev/blog/b70b058a/human-fear-in-emacs/) | 2026-07-14 | hn, discussion
 - [My Intel Brief](https://myintelbrief.com/) | 2026-07-14 | hn, discussion
 - [Software as Craft: A First Look at Syntropy](https://noteflakes.com/articles/2026-06-13-syntropy) | 2026-07-14 | hn, discussion

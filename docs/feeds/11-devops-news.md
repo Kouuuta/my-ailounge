@@ -90,6 +90,42 @@
 
 ## July 2026
 - [Z.ai Debuts ZCode to Compete With GitHub Copilot, Cursor and Anthropic](https://devops.com/z-ai-debuts-zcode-to-compete-with-github-copilot-cursor-and-anthropic/) | 2026-07-02 | devops
+- [Kubernetes won the container decade. Google&#8217;s Agent Substrate wants the next one.](https://thenewstack.io/kubernetes-ai-agent-runtime/) | 2026-07-15 | devops
+- [&#8220;There are no laws, only suggestions&#8221;: What AI agents do with your instructions](https://thenewstack.io/ai-agents-no-laws/) | 2026-07-16 | devops
+- [OpenAI&#8217;s GPT-Red automates prompt injection testing to harden AI agents](https://thenewstack.io/gpt-red-prompt-injection-testing/) | 2026-07-16 | devops
+- [Linux creator Linus Torvalds tells AI haters to walk away from Linux, or go fork it](https://thenewstack.io/torvalds-linux-ai-stance/) | 2026-07-16 | devops
+- [Why smarter AI caching sometimes makes everything slower](https://thenewstack.io/redis-vector-caching-tradeoffs/) | 2026-07-16 | devops
+- [You don&#8217;t have a deployment problem. You have a validation problem.](https://thenewstack.io/solving-the-validation-problem/) | 2026-07-16 | devops
+- [GoDaddy opened its registrar to AI agents. Then it had to build guardrails.](https://thenewstack.io/godaddy-developer-platform-domains/) | 2026-07-16 | devops
+- [AI hasn&#8217;t shifted the bottleneck from coding to code review](https://thenewstack.io/ai-code-bottleneck-myth/) | 2026-07-16 | devops
+- [Microsoft just open-sourced the app that put Comic Sans on the map](https://thenewstack.io/microsoft-comic-chat-open-source/) | 2026-07-17 | devops
+- [Arm and Google offer a smarter option to run agentic AI workloads](https://thenewstack.io/cpu-agentic-ai-axion/) | 2026-07-17 | devops
+- [From intent to enforcement: Lessons from operating Kubernetes controllers at scale](https://thenewstack.io/kubernetes-controllers-at-scale/) | 2026-07-17 | devops
+- [Why every AI agent decision needs a receipt](https://thenewstack.io/agent-evidence-packet-analytics/) | 2026-07-17 | devops
+- [&#8220;They&#8217;re dead if they don&#8217;t offer this&#8221;: DoorDash&#8217;s CLI for agents may be out of necessity](https://thenewstack.io/doordash-cli-agents-order/) | 2026-07-17 | devops
+- [1Password&#8217;s new browser integration for Claude changes how AI uses your credentials](https://thenewstack.io/1password-agent-authentication-framework/) | 2026-07-17 | devops
+- [Kimi K3 tops Arena&#8217;s coding leaderboard — and it&#8217;s open-weight](https://thenewstack.io/kimi-k3-open-weight-coding/) | 2026-07-17 | devops
+- [Musk open-sourced Grok Build to fight Anthropic. Anthropic pays him $1.25 billion a month.](https://thenewstack.io/musk-spacexai-grok-open-source/) | 2026-07-18 | devops
+- [Platform engineering&#8217;s new job: serving environments at agent speed](https://thenewstack.io/serving-environments-agent-speed/) | 2026-07-18 | devops
+- [The bottleneck for AI agents isn&#8217;t the model anymore. It&#8217;s the context layer.](https://thenewstack.io/ai-agent-infrastructure-bottleneck/) | 2026-07-18 | devops
+- [AI didn’t replace our security team — it multiplied it.](https://thenewstack.io/scaling-security-with-ai/) | 2026-07-18 | devops
+- [Self-healing GPU nodes in Kubernetes: What we learned building the EKS node monitoring agent](https://thenewstack.io/self-healing-gpu-nodes/) | 2026-07-19 | devops
+- [Move code review before the code](https://thenewstack.io/move-code-review-upstream/) | 2026-07-19 | devops
+- [Spark 4.2 has a feature that could retire your vector database](https://thenewstack.io/spark-4-2-ai-workloads/) | 2026-07-19 | devops
+- [Grok 4.5 vs. Claude Opus 4.8: Costs and what works, not the spec sheet](https://thenewstack.io/grok-opus-coding-tokens/) | 2026-07-20 | devops
+- [Anthropic employees worked &#8220;literally around the clock&#8221; to keep Fable 5 from disappearing](https://thenewstack.io/fable-5-permanent-subscription-access/) | 2026-07-20 | devops
+- [Amazon, Microsoft, and Google are converging on the same enterprise agent architecture](https://thenewstack.io/agent-platform-portability-contract/) | 2026-07-20 | devops
+- [Claude Fable 5 vs. Kimi K3: Same results, one-third the cost, 4x slower](https://thenewstack.io/kimi-k3-fable-coding-benchmark/) | 2026-07-20 | devops
+- [Anaconda Doesn’t Want to Be Just the Python Company Anymore](https://devops.com/anaconda-doesnt-want-to-be-just-the-python-company-anymore/) | 2026-07-16 | devops
+- [SmartBear Tightens Integration Between AI Coding and Testing Tools](https://devops.com/smartbear-tightens-integration-between-ai-coding-and-testing-tools/) | 2026-07-16 | devops
+- [Anaconda Acquires Kilo Code to Unify AI Development from First Prompt to Production](https://devops.com/anaconda-acquires-kilo-code-to-unify-ai-development-from-first-prompt-to-production/) | 2026-07-16 | devops
+- [How AI in APM Spots Problems Before Users Do](https://devops.com/how-ai-in-apm-spots-problems-before-users-do/) | 2026-07-16 | devops
+- [ManageEngine OpManager Nexus Adds MCP, GenAI, and Autonomous AI, With AI Sovereignty Built-In](https://devops.com/manageengine-opmanager-nexus-adds-mcp-genai-and-autonomous-ai-with-ai-sovereignty-built-in/) | 2026-07-16 | devops
+- [Why You Need AI Agent Security Validation in Software Testing](https://devops.com/why-you-need-ai-agent-security-validation-in-software-testing/) | 2026-07-16 | devops
+- [AI-Generated Code Is Cheap But the Context Infrastructure Behind It Is Not](https://devops.com/ai-generated-code-is-cheap-but-the-context-infrastructure-behind-it-is-not/) | 2026-07-17 | devops
+- [HashiCorp Introduces tfpolicy, a Native Policy Framework for Terraform](https://devops.com/hashicorp-introduces-tfpolicy-a-native-policy-framework-for-terraform/) | 2026-07-20 | devops
+- [xAI Open-Sources Grok Build Coding Agent After Cloud Upload Exposes SSH Keys, Repos](https://devops.com/xai-open-sources-grok-build-coding-agent-after-cloud-upload-exposes-ssh-keys-repos/) | 2026-07-20 | devops
+- [Ten Great DevOps Job Opportunities](https://devops.com/ten-great-devops-job-opportunities-15/) | 2026-07-20 | devops
 - [Why a five-minute sniff test is your secret supply chain defense](https://thenewstack.io/sbom-sniff-test-hardened-images/) | 2026-07-09 | devops
 - [Jensen Huang says traditional coding is dead. Here&#8217;s what comes next.](https://thenewstack.io/huang-engineers-building-ai-agents/) | 2026-07-09 | devops
 - [Enterprise AI benchmarks are broken](https://thenewstack.io/enterprise-ai-benchmarks-are-broken/) | 2026-07-09 | devops

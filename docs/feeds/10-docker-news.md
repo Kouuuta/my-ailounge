@@ -26,4 +26,9 @@
 
 ## July 2026
 - [Why AI Agents Need Isolation](https://www.docker.com/blog/why-ai-agents-need-isolation/) | 2026-07-01 | docker
+- [AI Engineer World&#8217;s Fair 2026: The Runtime Is Where Agent Trust Is Won](https://www.docker.com/blog/ai-engineer-worlds-fair-2026-the-runtime-is-where-agent-trust-is-won/) | 2026-07-14 | docker
+- [The Developer Has Changed. So Should Developer Conferences](https://www.docker.com/blog/docker-wearedevelopers-world-congress-north-america-2026/) | 2026-07-16 | docker
+- [AI Agents Explained: How to Build with Them Safely](https://www.docker.com/blog/what-are-ai-agents/) | 2026-07-16 | docker
+- [From the Captain&#8217;s Chair: Mohammad-Ali A&#8217;râbi](https://www.docker.com/blog/from-the-captains-chair-mohammad-ali-arabi/) | 2026-07-16 | docker
+- [Coding Agent Horror Stories: The Agent That Deleted Production](https://www.docker.com/blog/coding-agent-horror-stories-the-agent-that-deleted-production/) | 2026-07-20 | docker
 - [Your Laptop Is the New Production Environment](https://www.docker.com/blog/your-laptop-is-the-new-production-environment/) | 2026-07-08 | docker
