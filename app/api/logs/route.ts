@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serviceClient } from "@/src/db/service-client";
 import { parseLogCsv } from "@/src/lib/log-parser";
+import { requireRole } from "@/src/lib/auth-helpers";
 
 export async function GET() {
   const { data: rows } = await serviceClient
@@ -11,6 +12,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const denied = await requireRole(req, ["lead", "dev"]);
+  if (denied) return denied;
+
   const formData = await req.formData();
   const file = formData.get("file") as File | null;
 

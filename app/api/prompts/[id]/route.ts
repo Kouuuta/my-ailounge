@@ -1,4 +1,6 @@
+import { NextRequest } from "next/server";
 import { serviceClient } from "@/src/db/service-client";
+import { requireRole } from "@/src/lib/auth-helpers";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +13,10 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   return Response.json({ item });
 }
 
-export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireRole(request, ["lead", "dev"]);
+  if (denied) return denied;
+
   try {
     const { id } = await params;
     const body = await request.json();
@@ -42,7 +47,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   }
 }
 
-export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireRole(request, ["lead", "dev"]);
+  if (denied) return denied;
+
   const { id } = await params;
   const { data: existing } = await serviceClient.from("prompts").select("id").eq("id", Number(id)).single();
   if (!existing) {

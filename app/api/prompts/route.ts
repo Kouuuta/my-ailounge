@@ -1,4 +1,6 @@
+import { NextRequest } from "next/server";
 import { serviceClient } from "@/src/db/service-client";
+import { requireRole } from "@/src/lib/auth-helpers";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +38,10 @@ export async function GET(request: Request) {
   return Response.json({ items });
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const denied = await requireRole(request, ["lead", "dev"]);
+  if (denied) return denied;
+
   try {
     const body = await request.json();
     const { title, content, category, description, input_fields, output_description, model_recommendation } = body;
