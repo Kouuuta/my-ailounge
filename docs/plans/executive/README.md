@@ -14,5 +14,5 @@ Set direction, allocate capital, hold departments to outcomes. Owns the 100x pro
 _None yet. Copy [`../_TEMPLATE.md`](../_TEMPLATE.md) to start._
 
 ## Key links
-- Strategic targets → [`../../reference-prompts.md`](../../reference-prompts.md)
-- Pricing / unit economics → [`../../pricing.md`](../../pricing.md)
+- Strategic targets → [`../../tooling/reference-prompts.md`](../../tooling/reference-prompts.md)
+- Pricing / unit economics → [`../../research/pricing.md`](../../research/pricing.md)

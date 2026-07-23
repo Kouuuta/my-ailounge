@@ -32,7 +32,7 @@ Copy [`_TEMPLATE.md`](./_TEMPLATE.md) to log a new problem + potential solutions
 
 ## Cross-references
 
-- Pricing analysis → [`../pricing.md`](../pricing.md)
-- R&D backlog → [`../RnD_Technical_Tasks_Overview.md`](../RnD_Technical_Tasks_Overview.md)
-- Onboarding → [`../INSTRUCTIONS.md`](../INSTRUCTIONS.md)
+- Pricing analysis → [`../research/pricing.md`](../research/pricing.md)
+- R&D backlog → [`../guides/RnD_Technical_Tasks_Overview.md`](../guides/RnD_Technical_Tasks_Overview.md)
+- Onboarding → [`../getting-started/INSTRUCTIONS.md`](../getting-started/INSTRUCTIONS.md)
 - Lead flow diagram → [`../../diagrams/hotleads.md`](../../diagrams/hotleads.md)

@@ -100,15 +100,15 @@ The My-AILounge repository already contains several examples of Context Engineer
 
 The repository README provides high-level context about the purpose of the repository and the overall direction of the AI Council and AI Factory initiatives.
 
-### docs/INSTRUCTIONS.md
+### docs/getting-started/INSTRUCTIONS.md
 
 This document serves as onboarding documentation for contributors and provides guidance on tool setup, workflows, and team practices.
 
-### docs/reference-prompts.md
+### docs/tooling/reference-prompts.md
 
 Reference prompts provide reusable patterns for interacting with AI tools and improve consistency across contributors.
 
-### docs/research.md
+### docs/research/research.md
 
 Research documentation preserves findings, comparisons, and recommendations that can support future work.
 
